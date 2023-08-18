@@ -1,0 +1,14 @@
+{
+    "errors": {
+        "type": "list",
+        "schema": {
+            "type": "dict",
+            "schema": {
+            "service-id": {"type": "string"},
+            "code": {"type": "string"},
+            "details": {"type": "string"},
+            "status": {"type": "integer"}
+        }
+    }
+}
+}

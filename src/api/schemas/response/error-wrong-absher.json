@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "security_code_absher_invalid": {
+        "type": "string"
+      }
+    }
+  }
+}

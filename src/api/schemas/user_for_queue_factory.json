@@ -1,0 +1,20 @@
+{
+  "id": "",
+  "personal_number": "",
+  "names": "",
+  "alive": "True",
+  "gender_code": "2",
+  "hijiri_birth_date": "1400",
+  "birth_date": "2000",
+  "nationality_code": "",
+  "kingdom_entry_date": "1971-01-10 07:57:21 +0300",
+  "passport_number": "",
+  "service_start_date": "1974-03-30 03:13:47 +0300",
+  "job_code": "",
+  "religion_id": 1,
+  "laborer_status_id": "0",
+  "iqama_issue_date": "1978-03-17 08:48:44 +0300",
+  "last_update_time": "1977-08-29 05:28:58 +0300",
+  "created_at": "1970-01-10 07:57:21 +0300",
+  "saudi": "false"
+}

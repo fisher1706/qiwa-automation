@@ -1,0 +1,27 @@
+{
+    "MakePaymentRq": {
+        "Header": {
+            "TransactionId": "988997867867687678",
+            "ChannelId": "Qiwa",
+            "SessionId": "212",
+            "RequestTime": "2019-10-10 00:00:00.555",
+            "MWRequestTime": "2019-10-10 00:00:00.555",
+            "ServiceCode": "MP000001",
+            "DebugFlag": "1",
+            "UserInfo": {
+                "UserId": "",
+                "IDNumber": ""
+            }
+        },
+        "Body": {
+            "ApplicationId": "1",
+            "PGPaymentId": "423423425234534515631",
+            "ProductId": "4",
+            "ProviderId": "1",
+            "Description": "pending",
+            "Amount": "",
+            "Currency": "SAR",
+            "BrandType": "VISA"
+        }
+    }
+}

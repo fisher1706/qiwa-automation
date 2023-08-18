@@ -1,0 +1,13 @@
+{
+  "properties": {
+    "headers": {
+      "event": "",
+      "resource": "",
+      "state": "",
+      "x-match": ""
+    }
+  },
+  "routing_key": "",
+  "payload": "",
+  "payload_encoding": "string"
+}

@@ -1,0 +1,11 @@
+{
+    "memberships": [
+        {
+            "sequence_number": 0,
+            "labor_office_id": 0,
+            "laborer_id_no": 0,
+            "role": "Employee",
+            "is_active": true
+        }
+    ]
+}

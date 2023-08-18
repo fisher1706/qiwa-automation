@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "account_already_exist": {
+        "type": "string"
+      }
+    }
+  }
+}

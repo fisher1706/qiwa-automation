@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "session_empty": {
+        "type": "string"
+      }
+    }
+  }
+}

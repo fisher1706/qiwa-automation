@@ -1,0 +1,16 @@
+{
+  "GetUserEligibleServicesRq": {
+    "Header": {
+      "TransactionId": "2020080611031346700001",
+      "ChannelId": "Qiwa",
+      "RequestTime": "2020-08-06 11:03:13.467",
+      "ServiceCode": "GUES0001",
+      "DebugFlag": 1
+    },
+    "Body": {
+      "IdNo": "",
+      "LaborOfficeId": "",
+      "EstablishmentSequence":""
+    }
+  }
+}

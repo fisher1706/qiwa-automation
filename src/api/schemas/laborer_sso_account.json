@@ -1,0 +1,12 @@
+{
+  "data": {
+    "type": "account",
+    "attributes": {
+      "otp": "",
+      "birth-date": "",
+      "email": "",
+      "password": "",
+      "password-confirm": ""
+    }
+  }
+}

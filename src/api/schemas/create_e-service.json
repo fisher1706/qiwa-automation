@@ -1,0 +1,28 @@
+{
+  "data": {
+    "type": "eservice",
+    "attributes": {
+      "title-ar": "أختبار ذاتي",
+      "title-en": "english title",
+      "description-ar": "",
+      "description-en": "",
+      "rules-ar": "",
+      "rules-en": "",
+      "message-ar": "",
+      "message-en": "",
+      "needs-permission": "false",
+      "permission-code": "",
+      "tags": [],
+      "service-code": "auto test",
+      "links": [
+        {
+          "link": "http://link.com",
+          "name-ar": "اسم الارتباط",
+          "name-en": "link name"
+        }
+      ],
+      "state": "active",
+      "image": ""
+    }
+  }
+}

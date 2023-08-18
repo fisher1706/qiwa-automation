@@ -1,0 +1,110 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {"type":  "string"},
+      "type": {"type":  "string"},
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": { "type": "integer"},
+          "labor-office-id": { "type": "integer"},
+          "sequence-number": { "type": "integer"},
+          "number": {"type":  "string"},
+          "establishment-name": {"type":  "string"},
+          "establishment-status-id": { "type": "integer"},
+          "establishment-status": {"type":  "string"},
+          "main-economic-activity-id": { "type": "integer"},
+          "sub-economic-activity-id": { "type": "integer"},
+          "main-economic-activity": {"type":  "string"},
+          "sub-economic-activity": {"type":  "string"},
+          "cr-number": { "type": "integer"},
+          "establishment-id": { "type": "integer"},
+          "cr-release-date": {"type":  "string"},
+          "cr-end-date": {"type":  "string"},
+          "establishment-email": {"type":  "string"},
+          "seven-hundred-number": {"type":  "string"},
+          "unified-number-id": {"type":  "string"},
+          "owner-id": { "type": "integer"},
+          "insert-date": {"type":  "string"},
+          "is-main-branch": {"type":  "string"},
+          "establishment-type-code": { "type": "integer"},
+          "establishment-type-name": {"type":  "string"},
+          "pk-owner-id": { "type": "integer"},
+          "unified-national-number": {"type":  "string"},
+          "use-unified-national-number-flag": { "type": "integer"},
+          "city-code": { "type": "integer"},
+          "city-name": {"type":  "string"},
+          "district": {"type":  "string"},
+          "street": {"type":  "string"},
+          "postal-code": { "type": "integer"},
+          "zip-code": { "type": "integer"},
+          "municipal-license-number": {"type":  "string"},
+          "municipal-license-release-date": {"type":  "string"},
+          "municipal-license-end-date": {"type":  "string"},
+          "authorized-user-number": {"type":  "string"}
+          }
+      },
+      "relationships": {
+        "type": "dict",
+        "schema": {
+          "company-notes": {
+            "type": "dict",
+            "schema": {
+              "data": {"type": "list"}
+            }
+          }
+        },
+        "saudi-posts": {
+          "type": "dict",
+          "schema": {
+            "data": {"type": "list"}
+          }
+        },
+        "sca-license": {
+          "type": "dict",
+          "schema": {
+            "data": { "type": "string", "nullable": true}
+          }
+        },
+        "nitaq-info": {
+          "type": "dict",
+          "schema": {
+            "data": {
+              "type": "dict",
+              "schema": {
+                "id": {"type":  "string"},
+                "type": {"type":  "string"}
+              }
+            }
+          }
+        },
+        "extra-fees-detail": {
+          "type": "dict",
+          "schema": {
+            "data": { "type": "string", "nullable": true}
+          }
+        },
+        "branches": {
+          "type": "dict",
+          "schema": {
+            "data": {"type": "list"}
+          }
+        },
+        "entity": {
+          "type": "dict",
+          "schema": {
+            "data": {
+              "type": "dict",
+              "schema": {
+                "id": {"type":  "string"},
+                "type": {"type":  "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

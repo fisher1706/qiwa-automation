@@ -1,0 +1,19 @@
+{
+  "SearchUserSubscriptionsRq": {
+    "Header": {
+      "TransactionId": "54723889327749832789478392849324",
+      "ChannelId": "Qiwa",
+      "SessionId": "212",
+      "RequestTime": "2019-10-10 00:00:00.555",
+      "MWRequestTime": "2019-10-10 00:00:00.555",
+      "ServiceCode": "SUS00001",
+      "DebugFlag": "1"
+    },
+    "Body": {
+      "IdNo": "",
+      "UnifiedNumberId": "",
+      "PageSize": "100",
+      "PageIndex": "1"
+    }
+  }
+}

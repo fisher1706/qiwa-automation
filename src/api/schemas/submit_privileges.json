@@ -1,0 +1,19 @@
+{
+  "data": [
+  {
+    "type": "privilege",
+    "attributes": {
+      "personal-number": "",
+      "user-id": "",
+      "companies":[
+        {
+          "labor-office-id": "",
+          "sequence-number": "",
+          "establishment-id": "",
+          "service-ids": ""
+        }
+      ]
+    }
+  }
+]
+}

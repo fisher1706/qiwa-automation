@@ -1,0 +1,20 @@
+{
+	"data": {
+		"type": "space",
+		"id": "",
+		"attributes": {
+			"id": "",
+			"type": "",
+			"default-url": {
+				"ar": "https://super.qiwa.tech/spaces/create111",
+				"en": "https://super.qiwa.tech/spaces/create11"
+			},
+			"name": {
+				"ar": "",
+				"en": ""
+			},
+			"redirect-key-name": "",
+			"enabled": ""
+		}
+	}
+}

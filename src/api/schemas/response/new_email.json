@@ -1,0 +1,60 @@
+{
+  "data": {
+    "schema": {
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "schema": {
+          "id": {
+            "type": "integer"
+          },
+          "user-id": {
+            "type": "integer"
+          },
+          "state": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "confirmation-sent-at": {
+            "type": "string"
+          },
+          "confirmed-at": {
+            "type": "string",
+            "nullable": true
+          },
+          "notification": {
+            "nullable": true
+          },
+          "position": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "relationships": {
+        "schema": {
+          "user": {
+            "schema": {
+              "data": {
+                "schema": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

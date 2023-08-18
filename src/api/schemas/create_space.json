@@ -1,0 +1,18 @@
+{
+  "data": {
+    "type": "space",
+    "attributes": {
+      "name": {
+        "ar": "",
+        "en": ""
+      },
+      "default-url": {
+        "ar": "https://super.qiwa.tech/spaces/create",
+        "en": "https://super.qiwa.tech/spaces/create"
+      },
+      "enabled": "",
+      "redirect-key-name": "",
+      "type": ""
+    }
+  }
+}

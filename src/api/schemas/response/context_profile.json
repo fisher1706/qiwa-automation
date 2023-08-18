@@ -1,0 +1,18 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": { "type": "string" },
+      "type": { "type": "string" },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": { "type": "integer" },
+          "notification-phone": { "type": "string" },
+          "notification-email": { "type": "string", "nullable": true },
+          "last-pending-email": { "type": "string" }
+        }
+      }
+    }
+  }
+}
