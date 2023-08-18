@@ -1,0 +1,14 @@
+{
+  "data": {
+    "type": "subscriptions",
+    "attributes": {
+      "personal-number": "",
+      "companies": [
+        {
+          "labor-office-id": "",
+          "sequence-number": ""
+        }
+      ]
+    }
+  }
+}

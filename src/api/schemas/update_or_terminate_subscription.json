@@ -1,0 +1,28 @@
+{
+  "UpdateOrTerminateUserSubscriptionRq": {
+    "Header": {
+      "TransactionId": "6222121543",
+      "ChannelId": "Qiwa",
+      "SessionId": "212",
+      "RequestTime": "2019-10-10 00:00:00.555",
+      "MWRequestTime": "2019-10-10 00:00:00.555",
+      "ServiceCode": "GUES0001",
+      "DebugFlag": "1",
+            "UserInfo": {
+                "UserId": "",
+                "IDNumber": ""
+            }
+    },
+    "Body": {
+            "IdNo": "",
+            "EstablishmentsList": {
+                "Establishments": {
+                    "LaborOfficeId": "",
+                    "EstablishmentSequence": ""
+                }
+            },
+            "ActionType": "",
+            "SubscriptionExpiryDate":""
+        }
+    }
+}

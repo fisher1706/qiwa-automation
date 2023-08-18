@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": null,
+    "type": "session",
+    "attributes": {
+      "login": "",
+      "password": "",
+      "otp_code": ""
+    }
+  }
+}

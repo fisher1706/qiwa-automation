@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "sign_in_email_not_confirmed": {
+        "type": "string"
+      }
+    }
+  }
+}

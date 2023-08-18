@@ -1,0 +1,15 @@
+{
+  "data": {
+    "id": null,
+    "type": "payment",
+    "attributes": {
+      "id": null,
+      "callback-url": "",
+      "amount": 1000,
+      "product-id": "",
+      "entity-name": "subscription-group",
+      "entity-id": "",
+      "service-name": "UM"
+    }
+  }
+}

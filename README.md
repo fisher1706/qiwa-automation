@@ -1,92 +1,160 @@
-# qiwa-automation
+Description
+---
+Automated UI and API tests for Qiwa project
 
+    .
+    ├── fixtures                # Fixture files related to all test types
+    ├── helpers                 # Support methods to work with side libraries 
+    ├── infrastructure          # DevOps config files
+    ├── src                     # Test framework source files with tests implementation
+    │   ├── api                 # API tests source files
+    │   └── ui                  # UI tests source files
+    ├── test_data               # Methods and files for generating various test data
+    ├── tests                   # test files
+    │   ├── api                 # API tests
+    │   └── ui                  # UI tests
+    ├── .env             # Environment variables for local run 
+    ├── .gitignore              # List files and dirs ignored by git
+    ├── .gitlab-ci.yml          # Config file for gitlab ci with pipeline for tests repository
+    ├── .pylintrc               # Pylint code formatting rules
+    ├── CHANGELOG.md            # List of changes after each commit (not supported for a long time)
+    ├── conftest.py             # Key config file for pytest project
+    ├── docker-compose.yaml     # Docker compose for Allure and Selenium grid
+    ├── Dockerfile              # DevOps config files
+    ├── pytest.ini              # Pytest configuration
+    ├── README.md               # Project description
+    └── requirements.txt        # Project related packages
 
+Preconditions (local)
+---
+Make sure you have `git`, `python3` and `pip3` installed. If not, please do so by googling and following the instructions on the official resources.
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+Prepare local environment
+---
+* Clone the project to your local machine and navigate to the project directory:
+```shell
+git clone git@gitlab.qiwa.tech:takamol/qiwa/integration-testing/qa-automation.git
+cd qa-automation
 ```
-cd existing_repo
-git remote add origin https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation.git
-git branch -M master
-git push -uf origin master
+* Install and setup virtualenv for the project:
+```shell
+pip install virtualenv
+virtualenv --python python3 venv
+source venv/bin/activate
+```
+* Install all packages required for the tests run:
+```shell
+pip install -r requirements.txt
+```
+----
+Same actions you can de within PyCharm IDE via UI with hints
+
+Running tests locally
+---
+###Run all tests
+Once the environment is ready the tests can be executed. Run the following command to do so:
+```shell
+pytest features/tests
+```
+###Run tests on specific environment
+By default, tests are running on the environment: https://auth.qiwa.tech
+To run tests on the another env. add the argument: `--environment_url` with your environment value.
+```shell
+pytest features/tests --environment_url=https://auth.qiwa.info
+```
+###Run tests by specific test type for specific feature 
+All tests are grouped by features using tag name `@pytest.mark.user_suite`. So to run specific tests by tag name use cli argument `-m` + tag value. 
+
+**Please note that there are api and ui tests. It's highly recommended running ONLY `ui` OR `api` tests separately. Use the example below to do so:**
+```shell
+# run ui tests for user
+pytest features/tests -m "user_suite and ui"
+# run api tests for auth
+pytest features/tests -m "auth_suite and api"
+```
+> P.S. Available suites are listed in `pytest.ini` file in project root dir.
+###Run tests with Allure reporting
+To run tests with Allure reporting add the argument `--alluredir=allure-results` to the command.
+```shell
+pytest features/tests --alluredir=allure-results
 ```
 
-## Integrate with your tools
+View Allure report locally
+---
+If the tests were executed with `--alluredir` argument, allure results will be stored in the defined directory. To view allure results run the following command:
+```shell
+allure serve allure-results
+```
 
-- [ ] [Set up project integrations](https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/-/settings/integrations)
+Allure Docker Service setup (not locally):
+---
+Current version of Allure report is running as Allure server and supports multiple projects. It means that by one URL user can access to the various reports for the different types of tests.
 
-## Collaborate with your team
+Allure documentation:<br>
+https://github.com/fescobar/allure-docker-service
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Docker image with actual Allure server:<br>
+`frankescobar/allure-docker-service:2.13.3`
 
-## Test and Deploy
+<h3>How to send report files to the Allure server</h3>
+All report files in `.xml` format (also `.png` and `.properties`) are stored in local directory `allure-results` after tests run.
+Test results are sent to Allure service automatically on ci/cd side right after tests execution.
 
-Use the built-in continuous integration in GitLab.
+Code checker (pylint)
+---
+As a part of the test pipeline code verification is initialized on Merge request step.
+`pylint` config file is located in the project root directory in file `.pylintrc`.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Command to run code checker:
+```commandline
+pylint fixtures helpers src test_data tests conftest.py
+```
 
-***
+Discord notifications
+-
+### Requirements:
 
-# Editing this README
+1. Tests are triggered by tags with following template:<br>
+```pytest tests/{test_type} -m {project_name} {test_type} daily ...```<br>
+    **where**:<br>
+    `project_name`: um, core, up, etc...<br>
+    `test_type`: ui, api<br>
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+2. Discord channels created with name template for each suite: `{project_name}-{test_type} 
+-daily`
+3. Discord channel has created Webhook. `Edit channel -> Integrations -> Webhooks -> New Webhook`
+4. There are options in `TestReportManager` to control output:
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```python
+self.__with_stacktrace = False  # show detailed stacktrace for failed tests 
+self.__failed_only = True  # show only failed tests
+```
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+### Steps for adding
+All tests should have tags: `ui, api, daily` accordingly
+- Copy files to your project:
+  - `/fixtures/reports.py`
+  - `/helpers/discord_report.py` - update suite name according to project name
+  - `/helpers/decorators.py`
+- Update files:
+  - `conftest.py`
+    - add `fixtures.reports` to `pytest_plugins` list in `conftest.py`
+    - add code line to `pytest_addhooks` inside `if '-m'`
+  ```python
+  os.environ["SUITE_NAME"] = "-".join(suite_name.split(" and "))
+  ```
+  - `gitlab-ci.yaml` - tests should start with tags in the following order: 
+  ```python
+    pytest tests -m "ui and daily"
+    # or
+    pytest tests -m "api and daily"
+  ```
+  - add Discord hooks to the test data file. `discord_url` can be requested in AQA lead
+  ```python
+    DISCORD_HOOKS = {
+        "demo": {
+            "{project_name}-ui-daily": {discord_url},
+            "{project_name}-api-daily": {discord_url}
+        }
+    }
+  ```

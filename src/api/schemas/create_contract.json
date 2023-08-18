@@ -1,0 +1,129 @@
+{
+    "CreateNewContractRq": {
+        "Header": {
+            "TransactionId": "987986875",
+            "ChannelId": "Qiwa",
+            "SessionId": "212",
+            "RequestTime": "2019-10-10 00:00:00.555",
+            "MWRequestTime": "2019-10-10 00:00:00.555",
+            "ServiceCode": "CNC00001",
+            "DebugFlag": "1",
+            "UserInfo": {
+                "IDNumber": "1032622902"
+            }
+        },
+        "Body": {
+            "EstablishmentDetails": {
+                "LaborOfficeId": "9",
+                "SequenceNumber": "1488195",
+                "EstablishmentId": "3161286",
+                "UnifiedNumberId": "16718",
+                "EntityId": "9-3212-101",
+                "EstablishmentNameAr": "Name",
+                "EstablishmentNameEn": "Name",
+                "EstablishmentEmail": "name@name"
+            },
+            "LaborerDetails": {
+                "LaborerIdNo": 2102068950,
+                "LaborerName": "jana",
+                "LaborerTypeId": "2",
+                "LaborerIdExpiryDate": "2022-10-10 00:00:00.555",
+                "LaborerEmail": "lab@lab",
+                "LaborerMobileNumber": "011111111",
+                "DOBType": "1",
+                "LaborerDOB": {
+                    "HijriDate": "14300530"
+                },
+                "EducationId": "2",
+                "SpecialtyId": "2",
+                "WorkLocationId": "2",
+                "IBAN": "2"
+            },
+            "RequesterDetails": {
+                "RequesterIdNo": "1032622902",
+                "RequesterName": "name",
+                "RequesterUserId": "525"
+            },
+            "ContractDetails": {
+                "OccupationId": "265202",
+                "JobTitle": {
+                    "JobTitleAr": "job",
+                    "JobTitleEng": "job"
+                },
+                "LaborerJobNumber": "15",
+                "ContractTypeId": "1",
+                "ContractDurationId": "1",
+                "ContractPeriod": "12",
+                "ProbationPeriod": "90",
+                "WorkingHoursTypeId": "2",
+                "VacationPeriod": "21",
+                "Salary": "100000",
+                "SalaryTypeId": "1",
+                "Allowances": {
+                    "AllowancesItems": [
+                        {
+                            "Key": "Allowance1",
+                            "Value": "2000"
+                        },
+                        {
+                            "Key": "Allowance2",
+                            "Value": "500"
+                        }
+                    ]
+                },
+                "StartDate": {
+                    "HijriDate": "14420411",
+                    "GregDate": "2019-10-10 00:00:00.555"
+                },
+                "ExpiryDate": {
+                    "HijriDate": "14430411",
+                    "GregDate": "2020-10-10 00:00:00.555"
+                },
+                "RenewalStatusId": "1",
+                "NoticePeriod": "30",
+                "AddedClauses": {
+                    "AddedClausesItems": [
+                        {
+                            "Key": "Clause1",
+                            "Value": "1"
+                        },
+                        {
+                            "Key": "Clause2",
+                            "Value": "2"
+                        }
+                    ]
+                },
+                "SalaryFrequency": "1",
+                "AdditionalAllowancesList": {
+                    "Item": [
+                        {
+                            "BenefitNameAr": "benefit",
+                            "BenefitNameEn": "benefit",
+                            "Frequency": "1",
+                            "AmountType": "1",
+                            "Amount": "1000"
+                        },
+                        {
+                            "BenefitNameAr": "benefit2",
+                            "BenefitNameEn": "benefit2",
+                            "Frequency": "1",
+                            "AmountType": "1",
+                            "Amount": "2000"
+                        }
+                    ]
+                },
+                "HoursPerWeek": "40",
+                "DaysPerWeek": "5",
+                "HoursPerDay": "8",
+                "OptionalArticles": {
+                    "Period": "3",
+                    "Location": "location",
+                    "WorkField": "field"
+                }
+            },
+            "LanguageId": "1",
+            "DateTypeId": "2",
+            "RelatedToId": "3"
+        }
+    }
+}

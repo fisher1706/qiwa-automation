@@ -1,0 +1,36 @@
+{
+  "data": {
+    "id": "",
+    "type": "user",
+    "attributes": {
+      "id": "",
+      "personal-number": ""
+    },
+    "relationships": {
+      "subscriptions": {
+        "data": [
+        {
+          "id": "",
+          "type": "subscription"
+        }
+      ]
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "",
+      "type": "subscription",
+      "attributes": {
+        "id": "",
+        "labor-office-id": "",
+        "sequence-number": "",
+        "subscription-id": "1",
+        "subscription-period-in-month": "12"
+      }
+    }
+  ],
+  "meta": {
+    "unified-number-id": ""
+  }
+}

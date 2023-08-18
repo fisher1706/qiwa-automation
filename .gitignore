@@ -1,0 +1,13 @@
+*.pyc
+*.swp
+.idea/*
+/tmp
+*.local.ini
+config/*.local.yml
+.DS_Store
+/venv
+.pytest_cache
+.mypy_cache
+poetry.lock
+.env.local
+.vscode

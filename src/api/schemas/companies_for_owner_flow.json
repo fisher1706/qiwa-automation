@@ -1,0 +1,13 @@
+{
+  "id": "",
+  "type": "user",
+  "attributes": {
+    "personal-number": ""
+  },
+  "relationships": {
+    "type": "user",
+    "companies": {
+      "data": ""
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "data": {
+    "type": "discount-price",
+    "attributes": {
+      "labor-office-id": "",
+      "number-of-users": "",
+      "personal-number": "",
+      "personal-numbers": [""],
+      "sequence-number": "",
+      "user-id": ""
+    }
+  }
+}

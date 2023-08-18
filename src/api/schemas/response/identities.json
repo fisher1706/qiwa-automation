@@ -1,0 +1,18 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": { "type": "string"},
+      "type": { "type": "string"},
+      "attributes": { "type": "dict", "schema" : {
+        "account-id": { "type": "integer"},
+        "user-id": { "type": "integer"},
+        "language": { "type": "string"},
+        "notification-email": { "type": "string", "nullable": true},
+        "notification-phone": { "type": "string"},
+        "states": { "type": "list"}
+        }
+      }
+    }
+  }
+}

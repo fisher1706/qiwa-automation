@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "email_value": {
+        "type": "string"
+      }
+    }
+  }
+}

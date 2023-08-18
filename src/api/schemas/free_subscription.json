@@ -1,0 +1,11 @@
+{
+  "data": {
+    "type": "free-subscription",
+    "attributes": {
+      "sequence-number": "",
+      "labor-office-id": "",
+      "personal-number": "",
+      "establishment-id": ""
+    }
+  }
+}

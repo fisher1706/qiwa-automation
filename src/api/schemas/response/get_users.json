@@ -1,0 +1,224 @@
+{
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "items": {
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#/properties/data/items/properties/id",
+            "type": ["string", "null"]
+          },
+          "type": {
+            "$id": "#/properties/data/items/properties/type",
+            "type": ["string", "null"]
+          },
+          "attributes": {
+            "required": [
+              "user-id",
+              "member-id",
+              "personal-number",
+              "religion-id",
+              "nationality-code",
+              "nationality-name",
+              "gregorian-birth-date",
+              "job-code",
+              "job-name",
+              "service-start-date",
+              "passport-number",
+              "names",
+              "gender",
+              "laborer-status-name",
+              "gender-code",
+              "name",
+              "laborer-status-code",
+              "alive",
+              "kingdom-entry-date",
+              "id-release-date",
+              "memberships"
+            ],
+            "properties": {
+              "user-id": {
+                "$id": "#/properties/data/items/properties/attributes/properties/user-id",
+                "type": ["integer", "null"]
+              },
+              "member-id": {
+                "$id": "#/properties/data/items/properties/attributes/properties/member-id",
+                "type": ["string", "null"]
+              },
+              "personal-number": {
+                "$id": "#/properties/data/items/properties/attributes/properties/personal-number",
+                "type": ["string", "null"]
+              },
+              "religion-id": {
+                "$id": "#/properties/data/items/properties/attributes/properties/religion-id",
+                "type": ["integer", "null"]
+              },
+              "nationality-code": {
+                "$id": "#/properties/data/items/properties/attributes/properties/nationality-code",
+                "type": ["integer", "null"]
+              },
+              "nationality-name": {
+                "$id": "#/properties/data/items/properties/attributes/properties/nationality-name",
+                "type": ["string", "null"]
+              },
+              "gregorian-birth-date": {
+                "$id": "#/properties/data/items/properties/attributes/properties/gregorian-birth-date",
+                "type": ["string", "null"]
+              },
+              "job-code": {
+                "$id": "#/properties/data/items/properties/attributes/properties/job-code",
+                "type": ["integer", "null"]
+              },
+              "job-name": {
+                "$id": "#/properties/data/items/properties/attributes/properties/job-name",
+                "type": ["string", "null"]
+              },
+              "service-start-date": {
+                "$id": "#/properties/data/items/properties/attributes/properties/service-start-date",
+                "type": ["string", "null"]
+              },
+              "passport-number": {
+                "$id": "#/properties/data/items/properties/attributes/properties/passport-number",
+                "type": ["string", "null"]
+              },
+              "names": {
+                "items": {
+                  "$id": "#/properties/data/items/properties/attributes/properties/names/items",
+                  "type": ["string", "null"]
+                },
+                "$id": "#/properties/data/items/properties/attributes/properties/names",
+                "type": ["array", "null"]
+              },
+              "gender": {
+                "$id": "#/properties/data/items/properties/attributes/properties/gender",
+                "type": ["string", "null"]
+              },
+              "laborer-status-name": {
+                "$id": "#/properties/data/items/properties/attributes/properties/laborer-status-name",
+                "type": ["string", "null"]
+              },
+              "gender-code": {
+                "$id": "#/properties/data/items/properties/attributes/properties/gender-code",
+                "type": ["integer", "null"]
+              },
+              "name": {
+                "$id": "#/properties/data/items/properties/attributes/properties/name",
+                "type": ["string", "null"]
+              },
+              "laborer-status-code": {
+                "$id": "#/properties/data/items/properties/attributes/properties/laborer-status-code",
+                "type": ["integer", "null"]
+              },
+              "alive": {
+                "$id": "#/properties/data/items/properties/attributes/properties/alive",
+                "type": ["boolean", "string", "null"]
+              },
+              "kingdom-entry-date": {
+                "$id": "#/properties/data/items/properties/attributes/properties/kingdom-entry-date",
+                "type": ["string", "null"]
+              },
+              "id-release-date": {
+                "$id": "#/properties/data/items/properties/attributes/properties/id-release-date",
+                "type": ["string", "null"]
+              },
+              "memberships": {
+                "$id": "#/properties/data/items/properties/attributes/properties/memberships",
+                "type": ["object", "null"]
+              }
+            },
+            "$id": "#/properties/data/items/properties/attributes",
+            "type": ["object", "null"]
+          },
+          "relationships": {
+            "required": [],
+            "properties": {
+              "company": {
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "$id": "#/properties/data/items/properties/relationships/properties/company/properties/data/properties/id",
+                        "type": ["string", "null"]
+                      },
+                      "type": {
+                        "$id": "#/properties/data/items/properties/relationships/properties/company/properties/data/properties/type",
+                        "type": ["string", "null"]
+                      }
+                    },
+                    "$id": "#/properties/data/items/properties/relationships/properties/company/properties/data",
+                    "type": ["object", "null"]
+                  }
+                },
+                "$id": "#/properties/data/items/properties/relationships/properties/company",
+                "type": ["object", "null"]
+              },
+              "work-permit": {
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "$id": "#/properties/data/items/properties/relationships/properties/work-permit/properties/data",
+                    "type": ["object", "null"]
+                  }
+                },
+                "$id": "#/properties/data/items/properties/relationships/properties/work-permit",
+                "type": ["object", "null"]
+              }
+            },
+            "$id": "#/properties/data/items/properties/relationships",
+            "type": ["object", "null"]
+          }
+        },
+        "$id": "#/properties/data/items",
+        "type": ["object", "null"]
+      },
+      "$id": "#/properties/data",
+      "type": ["array", "null"]
+    },
+    "included": {
+      "items": {
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#/properties/included/items/properties/id",
+            "type": ["string", "null"]
+          },
+          "type": {
+            "$id": "#/properties/included/items/properties/type",
+            "type": ["string", "null"]
+          },
+          "attributes": {
+            "$id": "#/properties/included/items/properties/attributes",
+            "type": ["object", "null"]
+          }
+        },
+        "$id": "#/properties/included/items",
+        "type": ["object", "null"]
+      },
+      "$id": "#/properties/included",
+      "type": ["array", "null"]
+    }
+  },
+  "$id": "http://example.org/root.json#",
+  "type": ["object", "null"],
+  "definitions": {}
+}

@@ -1,0 +1,11 @@
+{
+  "id": "1",
+  "type": "subscription",
+  "attributes": {
+    "id": "1",
+    "labor-office-id": "",
+    "sequence-number": "",
+    "subscription-id": "1",
+    "subscription-period-in-month": "12"
+  }
+}

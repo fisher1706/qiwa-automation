@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "phone_already_taken": {
+        "type": "string"
+      }
+    }
+  }
+}

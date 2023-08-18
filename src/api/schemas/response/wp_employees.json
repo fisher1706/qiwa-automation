@@ -1,0 +1,13 @@
+{
+  "data": {
+    "type": "list"
+  },
+  "meta": {
+    "type": "dict",
+    "schema": {
+      "total_count": {
+        "type": "integer"
+      }
+    }
+  }
+}

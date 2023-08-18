@@ -1,0 +1,31 @@
+{
+  "SubscribeUserToEstablishmentsRq": {
+    "Header": {
+      "TransactionId": "6222121543",
+      "ChannelId": "Qiwa",
+      "SessionId": "212",
+      "RequestTime": "2019-10-10 00:00:00.555",
+      "MWRequestTime": "2019-10-10 00:00:00.555",
+      "ServiceCode": "SUTE0001",
+      "DebugFlag": "1",
+      "UserInfo": {
+        "UserId": "",
+        "IDNumber": ""
+      }
+    },
+    "Body": {
+      "SubscriptionsList": {
+        "SubscriptionItem":
+          {
+            "SubscriptionId": "1",
+            "Duration": "12",
+            "LaborOfficeId": "",
+            "SequenceNumber": "",
+            "EstablishmentId": ""
+          }
+
+      },
+      "PaymentReference": ""
+    }
+  }
+}

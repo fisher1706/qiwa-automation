@@ -1,0 +1,19 @@
+{
+  "data": { "type": "list" },
+  "included": { "type": "list" },
+  "meta": {
+    "type": "dict",
+    "schema": {
+      "from": { "type": "integer" },
+      "size": { "type": "integer" },
+      "total": {
+        "type": "dict",
+        "schema": {
+            "value": { "type": "integer" },
+            "relation": { "type": "string" }
+          }
+      },
+      "max_score": { "type": "any", "nullable": true }
+    }
+  }
+}
