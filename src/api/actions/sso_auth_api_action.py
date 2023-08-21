@@ -3,17 +3,18 @@ from urllib.parse import parse_qs, urlparse
 
 import allure
 
-from src.api.clients.auth_api_laborer_sso import AuthApiLaborerSSO
+from src.api.clients.auth_api_sso import AuthApiSSO
 from src.api.clients.oauth import OAuthApi
+from src.api.models.account import Account
 
 
-class AuthApiLaborerSSOActions(AuthApiLaborerSSO):  # pylint: disable=duplicate-code
+class AuthApiLaborerSSOActions(AuthApiSSO):  # pylint: disable=duplicate-code
     @property
     def oauth_api(self) -> OAuthApi:
         return OAuthApi(self.api)
 
     @allure.step("Login {personal_number} via Laborer SSO API")
-    def login_user(self, personal_number: str, password: str):
+    def login_user(self, personal_number: str, password: str) -> None:
         init = self.oauth_api.init()
         assert init.status_code == HTTPStatus.OK
         redirect_uri = urlparse(init.json()["data"]["attributes"]["redirect-uri"])
@@ -30,15 +31,8 @@ class AuthApiLaborerSSOActions(AuthApiLaborerSSO):  # pylint: disable=duplicate-
         )
         assert callback.status_code == HTTPStatus.OK
 
-    @allure.step("Prepare HSM")
-    def prepare_hsm(self, account, expected_code=200):
-        self.init_laborer_sso_hsm(
-            account.personal_number, account.year, account.month, account.day, expected_code
-        )
-        self.active_hsm(expected_code)
-
-    @allure.step("Create prepared user account via API")
-    def create_account_via_laborer_sso_api(self, account):
+    @allure.step
+    def create_account_via_laborer_sso_api(self, account: Account) -> None:
         self.phone_verification(account.phone_number)
         self.pre_check_user_email(account.email)
         self.register_user(account)

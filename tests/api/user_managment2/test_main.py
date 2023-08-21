@@ -3,7 +3,7 @@ import pytest
 
 from data.constants import UserInfo
 from data.user_data import UserData
-from src.api.actions.auth_api_actions import AuthApiActions
+from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.models.user_management import test_account_um_2
 
 
@@ -16,7 +16,7 @@ from src.api.models.user_management import test_account_um_2
 class TestMainAPI:  # pylint: disable=duplicate-code
     @pytest.fixture(autouse=True)
     def pre_test(self, api):
-        self.auth_api = AuthApiActions(api)
+        self.auth_api = WorkspacesApiActions(api)
         self.test_data = UserData()
 
     @allure.title(

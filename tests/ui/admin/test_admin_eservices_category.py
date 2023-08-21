@@ -3,7 +3,7 @@ import pytest
 
 from data.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
-from src.api.actions.auth_api_actions import AuthApiActions
+from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.actions.e_service_controller import EServiceController
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
@@ -24,12 +24,12 @@ class TestAdminEServicesCategory:
         self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
-        self.auth_api = AuthApiActions(api)
+        self.auth_api = WorkspacesApiActions(api)
         self.admin_actions = AdminPage()
 
     @pytest.fixture
     def create_category(self, super_user, api):
-        self.auth_api = AuthApiActions(api)
+        self.auth_api = WorkspacesApiActions(api)
         self.e_service_api = EServiceController(api)
         self.auth_api.login_user(super_user.personal_number, super_user.password)
         self.e_service.api.create_tag()

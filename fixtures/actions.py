@@ -3,7 +3,7 @@ import pytest
 
 from data.constants import UserInfo
 from data.user_data import UserData
-from src.api.actions.laborer_sso_auth_api_action import AuthApiLaborerSSOActions
+from src.api.actions.sso_auth_api_action import AuthApiLaborerSSOActions
 from src.api.models.account import Account
 from src.api.models.model_builder import ModelBuilder
 

@@ -4,7 +4,7 @@ from selene import browser
 
 from data.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
-from src.api.actions.auth_api_actions import AuthApiActions
+from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.actions.e_service_controller import EServiceController
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
@@ -27,13 +27,13 @@ class TestAdminEServices:
         self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
-        self.auth_api = AuthApiActions(api)
+        self.auth_api = WorkspacesApiActions(api)
         self.admin_actions = AdminPage()
         self.dashboard_action = DashboardPage()
 
     @pytest.fixture
     def create_and_delete_e_service(self, super_user, api, request):
-        self.auth_api = AuthApiActions(api)
+        self.auth_api = WorkspacesApiActions(api)
         self.e_service_api = EServiceController(api)
         self.auth_api.login_user(super_user.personal_number, super_user.password)
         self.e_service.api.get_e_services(is_admin=True)
