@@ -3,9 +3,9 @@ import pytest
 
 from src.api.models.user_management import test_account_um_2
 from src.ui.actions.um_actions.um_main import MainPageActions
-from utils.allure import project, TestmoProject
+from utils.allure import TestmoProject, project
 
-test_case_id = project(TestmoProject.USER_MANAGEMENT)
+testmo_case_id = project(TestmoProject.USER_MANAGEMENT)
 
 
 @allure.feature('Main page UI')
@@ -50,7 +50,7 @@ class TestMainPageUI:
         self.um_main.navigate_to_owner_flow()
 
     @allure.title("Check User has access to Establishments than subscription is Active/Inactive")
-    @test_case_id(7875, 7876)
+    @testmo_case_id(7875, 7876)
     def test_active_user_has_access(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
