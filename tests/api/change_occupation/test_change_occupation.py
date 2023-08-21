@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 import pytest
 
-from helpers.allure import project, TestmoProject
-from helpers.assertion import assert_status_code, assert_that
+from utils.allure import project, TestmoProject
+from utils.assertion import assert_status_code, assert_that
 from src.api import assertions, models, payloads
 from src.api.app import QiwaApi
 from src.api.clients.ibm_mock_api import IBMMockApi

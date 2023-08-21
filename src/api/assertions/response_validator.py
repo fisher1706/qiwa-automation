@@ -2,7 +2,7 @@ import allure
 from cerberus import Validator
 from requests import Response
 
-from helpers.schema_parser import load_json_schema
+from utils.schema_parser import load_json_schema
 
 
 class ResponseValidator:

@@ -1,6 +1,6 @@
 from data.constants import Language
-from helpers.logger import yaml_logger
-from helpers.random_manager import RandomManager
+from utils.logger import yaml_logger
+from utils.random_manager import RandomManager
 from src.api.models.account import Account
 from src.api.models.email import Email
 

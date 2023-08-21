@@ -5,8 +5,8 @@ from typing import Any, Callable, TypeVar
 
 import allure
 
-from helpers.assertion.assertion_base import AssertionBase
-from helpers.assertion.assertion_types import AssertionTypes
+from utils.assertion.assertion_base import AssertionBase
+from utils.assertion.assertion_types import AssertionTypes
 
 T = TypeVar("T")
 

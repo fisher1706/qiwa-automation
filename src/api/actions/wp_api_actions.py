@@ -1,6 +1,6 @@
 import allure
 
-from helpers.assertion import assert_that
+from utils.assertion import assert_that
 from src.api.clients.wp_api import WorkPermitApi
 from src.api.models.mock_mlsd.ibm.getworkpermitrequests import (
     IBMWorkPermitRequest,

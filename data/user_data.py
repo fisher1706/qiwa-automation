@@ -2,7 +2,7 @@ import allure
 
 from data.constants import UserInfo
 from data.mock_mlsd.establishment import Establishment
-from helpers.logger import yaml_logger
+from utils.logger import yaml_logger
 from src.api.clients.mock_api import MockApi
 from src.api.constants import nitaq
 from src.api.constants.subscription import Subscription

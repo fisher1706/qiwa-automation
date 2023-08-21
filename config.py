@@ -5,7 +5,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseSettings, HttpUrl, RedisDsn
 
-from helpers.path import abs_path_to_project
+from utils.path import abs_path_to_project
 
 Envs = Literal["local", "demo", "stage"]
 

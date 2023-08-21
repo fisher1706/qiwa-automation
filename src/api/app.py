@@ -6,7 +6,7 @@ from typing import Optional
 import allure
 
 from data.constants import UserInfo
-from helpers.crypto_manager import decode_authorization_token
+from utils.crypto_manager import decode_authorization_token
 from src.api.actions.auth_api_actions import AuthApiActions
 from src.api.actions.e_service_controller import EServiceController
 from src.api.actions.laborer_sso_auth_api_action import AuthApiLaborerSSOActions

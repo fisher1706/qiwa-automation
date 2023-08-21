@@ -1,4 +1,4 @@
-from helpers.schema_parser import load_json_schema
+from utils.schema_parser import load_json_schema
 
 
 class LaborerSSOAccount:

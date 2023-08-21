@@ -5,7 +5,7 @@ from requests import Response
 
 from data.constants import HEADERS
 from data.employee_transfer import employer, laborer
-from helpers.schema_parser import load_json_schema
+from utils.schema_parser import load_json_schema
 from src.api.assertions.response_validator import ResponseValidator
 
 

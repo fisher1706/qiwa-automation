@@ -5,7 +5,7 @@ from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.constants import ContractManagement, Language
-from helpers.random_manager import RandomManager
+from utils.random_manager import RandomManager
 from src.ui.components.raw.table import Table
 
 

@@ -1,6 +1,6 @@
 import allure
 
-from helpers.assertion import assert_that
+from utils.assertion import assert_that
 from src.api.models.mock_mlsd.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.mock_mlsd.ibm.root import IBMResponseData
 

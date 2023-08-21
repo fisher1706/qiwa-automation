@@ -1,7 +1,7 @@
 import allure
 from selene import browser
 
-from helpers.assertion import assert_that
+from utils.assertion import assert_that
 from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.e_services_page import EServicesPage
 

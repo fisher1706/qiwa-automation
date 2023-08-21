@@ -3,7 +3,7 @@ from http import HTTPStatus
 import allure
 
 import config
-from helpers.assertion import assert_status_code
+from utils.assertion import assert_status_code
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.mock_mlsd import ibm

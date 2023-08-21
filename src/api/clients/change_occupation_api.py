@@ -6,7 +6,7 @@ import allure
 from requests import Response
 
 import config
-from helpers.assertion import assert_status_code
+from utils.assertion import assert_status_code
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
 

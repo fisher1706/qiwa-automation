@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from helpers.assertion.assertion_mixin import AssertionMixin
+from utils.assertion.assertion_mixin import AssertionMixin
 
 T = TypeVar("T")
 

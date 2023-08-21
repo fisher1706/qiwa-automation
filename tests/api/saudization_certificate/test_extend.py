@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
-from helpers.assertion import assert_status_code
+from utils.assertion import assert_status_code
 from src.api import models
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
