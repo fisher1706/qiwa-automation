@@ -14,7 +14,6 @@ pytestmark = [pytest.mark.change_occupation_suite, pytest.mark.daily, pytest.mar
 testmo = project(TestmoProject.CHANGE_OCCUPATION)
 
 
-@testmo(case_id=123)
 def test_create_change_occupation_request(establishment):
     ibm = IBMMockApi()
     qiwa = QiwaApi.login_as_user(establishment.personal_number).select_company()
