@@ -2,10 +2,10 @@ from http import HTTPStatus
 
 import pytest
 
-from utils.assertion import assert_status_code, assert_that
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
 from src.api.models.qiwa.work_permit import work_permit_debts
+from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.work_permit_suite, pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 

@@ -3,8 +3,8 @@ import imaplib
 import socket
 
 from data.constants import EmailConst
-from utils.logger import yaml_logger
 from src.api.models.model_builder import ModelBuilder
+from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 

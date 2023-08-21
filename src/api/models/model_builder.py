@@ -1,8 +1,8 @@
 from data.constants import Language
-from utils.logger import yaml_logger
-from utils.random_manager import RandomManager
 from src.api.models.account import Account
 from src.api.models.email import Email
+from utils.logger import yaml_logger
+from utils.random_manager import RandomManager
 
 logger = yaml_logger.setup_logging(__name__)
 

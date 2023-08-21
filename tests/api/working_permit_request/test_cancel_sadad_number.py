@@ -2,11 +2,11 @@ from http import HTTPStatus
 
 import pytest
 
-from utils.assertion import assert_status_code, assert_that
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
 from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
 from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
+from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.stage, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 

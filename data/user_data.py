@@ -2,11 +2,11 @@ import allure
 
 from data.constants import UserInfo
 from data.mock_mlsd.establishment import Establishment
-from utils.logger import yaml_logger
 from src.api.clients.mock_api import MockApi
 from src.api.constants import nitaq
 from src.api.constants.subscription import Subscription
 from src.api.models.model_builder import ModelBuilder
+from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 

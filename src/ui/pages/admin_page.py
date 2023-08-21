@@ -8,8 +8,8 @@ from selene import be, browser, by, command, have, query
 from selene.support.shared.jquery_style import s, ss
 from selenium.common.exceptions import StaleElementReferenceException
 
-from utils.assertion import assert_that
 from src.ui.components.raw.table import Table
+from utils.assertion import assert_that
 
 
 class FilterLocators(Enum):
