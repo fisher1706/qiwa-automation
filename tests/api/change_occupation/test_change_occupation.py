@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
+from helpers.allure import project, TestmoProject
 from helpers.assertion import assert_status_code, assert_that
 from src.api import assertions, models, payloads
 from src.api.app import QiwaApi
@@ -10,8 +11,10 @@ from src.api.payloads.change_occupation import create_change_occupation_request
 from src.api.payloads.raw.change_occupation import Laborer
 
 pytestmark = [pytest.mark.change_occupation_suite, pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
+testmo = project(TestmoProject.CHANGE_OCCUPATION)
 
 
+@testmo(case_id=123)
 def test_create_change_occupation_request(establishment):
     ibm = IBMMockApi()
     qiwa = QiwaApi.login_as_user(establishment.personal_number).select_company()
