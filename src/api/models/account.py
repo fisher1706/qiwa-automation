@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from data.constants import UserInfo
-from helpers.random_manager import RandomManager
+from utils.random_manager import RandomManager
 
 
 @dataclass

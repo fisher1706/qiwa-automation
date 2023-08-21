@@ -5,7 +5,7 @@ from _pytest.config import Config
 from _pytest.main import Session
 from _pytest.reports import CollectReport, TestReport
 
-from helpers.discord_report import TestReportManager
+from utils.discord_report import TestReportManager
 
 
 def pytest_addoption(parser):

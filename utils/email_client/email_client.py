@@ -5,8 +5,8 @@ import time
 import traceback
 from urllib.parse import parse_qs, urlparse
 
-from helpers.email_client.email_support import EmailSupport
-from helpers.logger import yaml_logger
+from utils.email_client.email_support import EmailSupport
+from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 

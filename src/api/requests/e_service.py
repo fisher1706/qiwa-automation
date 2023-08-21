@@ -1,5 +1,5 @@
-from helpers.random_manager import RandomManager
-from helpers.schema_parser import load_json_schema
+from utils.random_manager import RandomManager
+from utils.schema_parser import load_json_schema
 
 
 class EService:
