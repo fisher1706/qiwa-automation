@@ -2,22 +2,27 @@ import enum
 from typing import Any, Callable
 
 import allure
+from allure_commons.types import LinkType
 
 
 class TestmoProject(enum.Enum):
     CHANGE_OCCUPATION = 3
-    WORK_PERMIT = 29
+    CONTRACT_MANAGEMENT = 4
     VISAS = 7
+    USER_MANAGEMENT = 26
+    WORK_PERMIT = 29
 
 
 def project(project_id: TestmoProject) -> Callable:
-    def testcase(case_id: int) -> Callable:
+    def testcase(*case_ids: int) -> Callable:
         def decorator(func: Callable) -> Callable:
-            @allure.testcase(
-                f"https://qiwa.testmo.net/repositories/{project_id.value}?group_id={case_id}",
-                "Testmo test case",
-            )
             def wrapper(*args: Any, **kwargs: Any) -> Callable:
+                for case_id in case_ids:
+                    allure.dynamic.link(
+                        f"https://qiwa.testmo.net/repositories/{project_id.value}?case_id={case_id}",
+                        LinkType.TEST_CASE,
+                        f"Testmo test case ({case_id})",
+                    )
                 return func(*args, **kwargs)
 
             return wrapper
