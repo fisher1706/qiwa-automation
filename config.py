@@ -63,7 +63,7 @@ class Settings(BaseSettings):
         any value in it will override corresponding setting from demo,
         the same is for explicitly passed environment to `Settings.for_env(...)` method (for stage purposes).
         """
-        kwargs = {}
+        kwargs: dict = {}
         envs_order = ["demo"]
         if env:
             envs_order.append(env)

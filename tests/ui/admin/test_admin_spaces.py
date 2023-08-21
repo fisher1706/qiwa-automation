@@ -3,7 +3,7 @@ import pytest
 
 from data.dataset import SpacesDataset
 from data.validation_message import ErrorMessage, SuccessMessage
-from src.api.actions.auth_api_actions import AuthApiActions
+from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.clients.spaces_api import SpacesApi
 from src.ui.actions.sign_in import LoginActions
 from src.ui.actions.spaces import SpacesActions
@@ -31,7 +31,7 @@ class TestAdminSpaces:
         if 'disable_auto_use' in request.keywords:
             yield
         else:
-            self.auth_api = AuthApiActions(api)
+            self.auth_api = WorkspacesApiActions(api)
             self.spaces_api = SpacesApi(api)
             self.auth_api.login_user(super_user.personal_number,
                                      super_user.password)

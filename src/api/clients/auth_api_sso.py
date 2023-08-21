@@ -13,7 +13,7 @@ from src.api.requests.account_laborer_sso import LaborerSSOAccount
 from src.api.requests.hsm_laborer_sso import LaborerSSOHsm
 
 
-class AuthApiLaborerSSO:
+class AuthApiSSO:
     url = config.settings.laborer_sso_api_url
 
     def __init__(self, api=HTTPClient()):
@@ -43,7 +43,7 @@ class AuthApiLaborerSSO:
         expected_code: int = 200,
         requests_number: int = None,
         expect_schema="laborer-sso-init.json",
-    ) -> AuthApiLaborerSSO:
+    ) -> AuthApiSSO:
         json_body = LaborerSSOHsm.create_init_body(personal_number, year, month, day)
         response: Response = ...
         if requests_number is not None:
@@ -70,7 +70,7 @@ class AuthApiLaborerSSO:
         expected_code: int = 200,
         sms_code: str = "000000",
         expected_schema="laborer-sso-init.json",
-    ) -> AuthApiLaborerSSO:
+    ) -> AuthApiSSO:
         json_body = LaborerSSOHsm.create_activate_body(sms_code)
         response = self.api.post(
             url=self.url, endpoint="/session/high-security-mode", json=json_body
@@ -102,7 +102,7 @@ class AuthApiLaborerSSO:
         return self
 
     @allure.step
-    def pre_check_user_email(self, user_email, expected_code=200) -> AuthApiLaborerSSO:
+    def pre_check_user_email(self, user_email, expected_code=200) -> AuthApiSSO:
         json_body = LaborerSSOHsm.email_pre_check(user_email)
         response = self.api.post(url=self.url, endpoint="/emails/precheck", json=json_body)
         ResponseValidator(response).check_status_code(
@@ -111,7 +111,7 @@ class AuthApiLaborerSSO:
         return self
 
     @allure.step
-    def verify_email_with_otp_code(self, expected_code: int = 200) -> AuthApiLaborerSSO:
+    def verify_email_with_otp_code(self, expected_code: int = 200) -> AuthApiSSO:
         response = self.api.get(url=self.url, endpoint="/emails/verify")
         ResponseValidator(response).check_status_code(
             name="Email verify", expect_code=expected_code
@@ -119,7 +119,7 @@ class AuthApiLaborerSSO:
         return self
 
     @allure.step
-    def confirm_verify_email_with_otp_code(self, expected_code: int = 200) -> AuthApiLaborerSSO:
+    def confirm_verify_email_with_otp_code(self, expected_code: int = 200) -> AuthApiSSO:
         json_body = LaborerSSOAccount.check_otp_code(otp_type="password")
         response = self.api.post(
             url=self.url, endpoint="/emails/confirm-verification", json=json_body
@@ -130,7 +130,7 @@ class AuthApiLaborerSSO:
         return self
 
     @allure.step
-    def answer_security_question(self, expected_code: int = 200) -> AuthApiLaborerSSO:
+    def answer_security_question(self, expected_code: int = 200) -> AuthApiSSO:
         json_body = {
             "data": {
                 "type": "account",
@@ -150,7 +150,7 @@ class AuthApiLaborerSSO:
         requests_number: int = None,
         expected_code: int = 200,
         expected_schema: str = "laborer-sso-error.json",
-    ) -> AuthApiLaborerSSO:
+    ) -> AuthApiSSO:
         json_body = LaborerSSOAccount.register_account(account)
         response: Response = ...
         if requests_number is not None:

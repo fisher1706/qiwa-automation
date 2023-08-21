@@ -6,10 +6,10 @@ from typing import Optional
 import allure
 
 from data.constants import UserInfo
-from src.api.actions.auth_api_actions import AuthApiActions
 from src.api.actions.e_service_controller import EServiceController
-from src.api.actions.laborer_sso_auth_api_action import AuthApiLaborerSSOActions
 from src.api.actions.saudization_api_actions import SaudizationApiActions
+from src.api.actions.sso_auth_api_action import AuthApiLaborerSSOActions
+from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.actions.wp_api_actions import WorkPermitApiActions
 from src.api.clients.change_occupation_api import ChangeOccupationApi
 from src.api.clients.saudization_api import SaudizationCertificateApi
@@ -24,7 +24,7 @@ class QiwaApi:
 
     def __init__(self) -> None:
         self.client = HTTPClient()
-        self.auth = AuthApiActions(self.client)
+        self.auth = WorkspacesApiActions(self.client)
         self.sso = AuthApiLaborerSSOActions(self.client)
         # APIs
         self.saudi_api = SaudizationCertificateApi(self.client)
