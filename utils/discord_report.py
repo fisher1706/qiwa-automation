@@ -5,7 +5,7 @@ from _pytest.config import Config
 from discord import SyncWebhook
 
 import config as cfg
-from helpers.decorators import singleton
+from utils.decorators import singleton
 
 DISCORD_HOOKS = {
     "demo": {

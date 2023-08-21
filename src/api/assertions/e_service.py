@@ -1,8 +1,8 @@
 import allure
 
-from helpers.assertion import assert_that
 from src.api.models.qiwa.e_service import admin_e_services, admin_groups_list
 from src.api.payloads.e_service.groups import Group
+from utils.assertion import assert_that
 
 
 @allure.step

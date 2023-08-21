@@ -5,7 +5,7 @@ from selene import be, browser, command
 from selene.support.shared.jquery_style import s
 
 import config
-from helpers.logger import yaml_logger
+from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 

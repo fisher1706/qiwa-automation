@@ -1,7 +1,7 @@
 import allure
 
-from helpers.assertion import assert_that
 from src.api import models
+from utils.assertion import assert_that
 
 
 @allure.step

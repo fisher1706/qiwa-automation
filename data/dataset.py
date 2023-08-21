@@ -1,6 +1,6 @@
 from data.constants import UserInfo
 from data.validation_message import ErrorMessage, SuccessMessage, ValidationMessage
-from helpers.random_manager import RandomManager
+from utils.random_manager import RandomManager
 
 
 class UserDataset:

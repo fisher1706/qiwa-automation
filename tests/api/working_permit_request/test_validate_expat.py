@@ -2,10 +2,10 @@ from http import HTTPStatus
 
 import pytest
 
-from helpers.assertion import assert_status_code, assert_that
 from src.api import models
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
+from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.stage, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 

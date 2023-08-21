@@ -3,7 +3,6 @@ from http import HTTPStatus
 import allure
 
 import config
-from helpers.assertion import assert_status_code
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.mock_mlsd import ibm
@@ -11,6 +10,7 @@ from src.api.models.mock_mlsd.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.mock_mlsd.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.mock_mlsd.ibm.root import IBMResponse, IBMResponseData
 from src.api.payloads.ibm.searchchangeoccupation import Body
+from utils.assertion import assert_status_code
 
 
 class IBMMockApi:

@@ -3,9 +3,9 @@ from http import HTTPStatus
 
 import pytest
 
-from helpers.assertion import assert_status_code, assert_that
 from src.api import models
 from src.api.clients.ott_service import OttServiceApi
+from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 
