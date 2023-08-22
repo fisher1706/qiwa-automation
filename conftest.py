@@ -14,11 +14,6 @@ def pytest_addoption(parser):
     )
 
 
-pytest_plugins = [
-    "fixtures.actions",
-]
-
-
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_report_teststatus(report: Union[CollectReport, TestReport], config: Config) -> None:
     yield
