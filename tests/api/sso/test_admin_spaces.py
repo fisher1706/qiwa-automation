@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from data.sso.dataset import SpacesDataset
-from src.api.clients.spaces_api import SpacesApi
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
+from src.api.clients.spaces import SpacesApi
+from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature('Space suite')
@@ -16,7 +16,7 @@ class TestAdminSpaces:
 
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
-        self.auth_api = WorkspacesApiActions(http_client)
+        self.auth_api = WorkspacesApiController(http_client)
         self.spaces_api = SpacesApi(http_client)
 
     @allure.title('create space with active status')

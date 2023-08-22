@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from data.constants import UserInfo
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
-from src.api.models.user_management import test_account_um_2
+from data.um.user_management_models2 import test_account_um_2
+from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature("Main API")
@@ -15,7 +15,7 @@ from src.api.models.user_management import test_account_um_2
 class TestMainAPI:  # pylint: disable=duplicate-code
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
-        self.auth_api = WorkspacesApiActions(http_client)
+        self.auth_api = WorkspacesApiController(http_client)
 
     @allure.title(
         "7872 Check that only User with access to User Management has access to the page"

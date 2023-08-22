@@ -10,7 +10,7 @@ from data.dedicated.employee_transfer import (
 )
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
-from src.api.clients.employee_transfer_api import EmployeeTransferApi
+from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.actions.sign_in import LoginActions

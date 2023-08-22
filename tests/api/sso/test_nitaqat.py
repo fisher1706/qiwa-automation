@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from data.sso.dataset import UserDataset
-from src.api.clients.nitaqat_api import NitaqatApi
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
+from src.api.clients.nitaqat_calculator import  NitaqatApi
+from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature('Nitaqat suite')
@@ -16,7 +16,7 @@ class TestNitaqat:
 
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
-        self.auth_api = WorkspacesApiActions(http_client)
+        self.auth_api = WorkspacesApiController(http_client)
         self.nitaqat_api = NitaqatApi(http_client)
 
     @allure.title('Calculate nitaqat with invalid data')
