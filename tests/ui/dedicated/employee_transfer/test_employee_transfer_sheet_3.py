@@ -25,29 +25,29 @@ from src.ui.actions.sign_in import LoginActions
 class TestEmployeeTransferSheet3:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
+    def pre_test(self, http_client):
         self.employee_transfer_actions = EmployeeTransferActions()
         self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
-        self.employee_transfer_api = EmployeeTransferApi(api)
+        self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
         self.employee_transfer_api.post_create_new_contract(laborer_between_my_establishments.login_id)
 
     @pytest.fixture()
-    def create_contract(self, api):
+    def create_contract(self, http_client):
         self.employee_transfer_actions.confirm_creation_of_contract(entity_laborer=laborer_between_my_establishments,
                                                                     transfer_type=TransferType.
                                                                     BETWEEN_MY_ESTABLISHMENTS)
 
     @pytest.fixture()
-    def create_contract_with_quota(self, api):
+    def create_contract_with_quota(self, http_client):
         self.employee_transfer_actions.confirm_creation_of_contract(entity_laborer=laborer_between_my_establishments,
                                                                     transfer_type=TransferType.
                                                                     BETWEEN_MY_ESTABLISHMENTS,
                                                                     is_get_balance_value=True)
 
     @pytest.fixture()
-    def quota_same_unfied_number(self, api):
+    def quota_same_unfied_number(self, http_client):
         self.employee_transfer_actions.confirm_creation_of_contract(entity_laborer=laborer_between_my_establishments,
                                                                     entity=employer_between_my_establishments,
                                                                     transfer_type=TransferType.

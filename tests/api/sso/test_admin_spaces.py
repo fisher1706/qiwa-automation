@@ -15,9 +15,9 @@ from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 class TestAdminSpaces:
 
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
-        self.auth_api = WorkspacesApiActions(api)
-        self.spaces_api = SpacesApi(api)
+    def pre_test(self, http_client):
+        self.auth_api = WorkspacesApiActions(http_client)
+        self.spaces_api = SpacesApi(http_client)
 
     @allure.title('create space with active status')
     @pytest.mark.parametrize('status', SpacesDataset.status)

@@ -27,12 +27,12 @@ class TestAdminSpaces:
         self.admin_actions = AdminPage()
 
     @pytest.fixture(autouse=True)
-    def create_and_delete_space(self, super_user, api, request):
+    def create_and_delete_space(self, super_user, http_client, request):
         if 'disable_auto_use' in request.keywords:
             yield
         else:
-            self.auth_api = WorkspacesApiActions(api)
-            self.spaces_api = SpacesApi(api)
+            self.auth_api = WorkspacesApiActions(http_client)
+            self.spaces_api = SpacesApi(http_client)
             self.auth_api.login_user(super_user.personal_number,
                                      super_user.password)
             self.spaces_api.get_spaces()

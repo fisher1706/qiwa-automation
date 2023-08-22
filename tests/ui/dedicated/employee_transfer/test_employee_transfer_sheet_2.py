@@ -28,11 +28,11 @@ from src.ui.actions.sign_in import LoginActions
 class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-code
 
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
+    def pre_test(self, http_client):
         self.employee_transfer_actions = EmployeeTransferActions()
         self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
-        self.employee_transfer_api = EmployeeTransferApi(api)
+        self.employee_transfer_api = EmployeeTransferApi(http_client)
 
     @allure.title('[Type 12] Approval by laborer and approval by current sponsor | Home Worker Transfer')
     def test_type_12_approval_by_laborer_and_approval_by_current_sponsor(self):

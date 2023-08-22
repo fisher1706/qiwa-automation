@@ -14,8 +14,8 @@ from src.api.models.user_management import test_account_um_2
 @pytest.mark.usefixtures("clean_up_session")
 class TestMainAPI:  # pylint: disable=duplicate-code
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
-        self.auth_api = WorkspacesApiActions(api)
+    def pre_test(self, http_client):
+        self.auth_api = WorkspacesApiActions(http_client)
 
     @allure.title(
         "7872 Check that only User with access to User Management has access to the page"

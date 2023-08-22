@@ -20,17 +20,17 @@ from src.ui.pages.workspaces_page import WorkspacesPage
 class TestAdminEServicesCategory:
 
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
+    def pre_test(self, http_client):
         self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
-        self.auth_api = WorkspacesApiActions(api)
+        self.auth_api = WorkspacesApiActions(http_client)
         self.admin_actions = AdminPage()
 
     @pytest.fixture
-    def create_category(self, super_user, api):
-        self.auth_api = WorkspacesApiActions(api)
-        self.e_service_api = EServiceController(api)
+    def create_category(self, super_user, http_client):
+        self.auth_api = WorkspacesApiActions(http_client)
+        self.e_service_api = EServiceController(http_client)
         self.auth_api.login_user(super_user.personal_number, super_user.password)
         self.e_service.api.create_tag()
         self.category_name = self.e_service.api.tag_english_name

@@ -15,9 +15,9 @@ from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 class TestNitaqat:
 
     @pytest.fixture(autouse=True)
-    def pre_test(self, api):
-        self.auth_api = WorkspacesApiActions(api)
-        self.nitaqat_api = NitaqatApi(api)
+    def pre_test(self, http_client):
+        self.auth_api = WorkspacesApiActions(http_client)
+        self.nitaqat_api = NitaqatApi(http_client)
 
     @allure.title('Calculate nitaqat with invalid data')
     @pytest.mark.parametrize("input_data", UserDataset.invalid_phone_api)

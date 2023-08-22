@@ -32,20 +32,20 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.language = Languages()
 
     @pytest.fixture()
-    def prepare_laborer_for_et_request(self, api):
-        self.employee_transfer_api = EmployeeTransferApi(api)
+    def prepare_laborer_for_et_request(self, http_client):
+        self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request()
 
     @pytest.fixture()
-    def create_contract(self, api):
-        self.employee_transfer_api = EmployeeTransferApi(api)
+    def create_contract(self, http_client):
+        self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request()
         self.employee_transfer_api.post_create_new_contract()
         self.employee_transfer_actions.confirm_creation_of_contract(laborer)
 
     @pytest.fixture()
-    def create_contract_with_quota(self, api):
-        self.employee_transfer_api = EmployeeTransferApi(api)
+    def create_contract_with_quota(self, http_client):
+        self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request()
         self.employee_transfer_api.post_create_new_contract()
         self.employee_transfer_actions.confirm_creation_of_contract(laborer, is_get_balance_value=True)
