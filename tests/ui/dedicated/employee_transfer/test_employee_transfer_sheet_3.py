@@ -3,12 +3,12 @@ import pytest
 from selene import browser
 
 from data.constants import EmployeeTransfer, Language
-from data.employee_transfer import (
+from data.dedicated.employee_transfer import (
     employer,
     employer_between_my_establishments,
     laborer_between_my_establishments,
 )
-from data.enums import TransferType
+from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer_api import EmployeeTransferApi
 from src.ui.actions.employee_transfer import EmployeeTransferActions

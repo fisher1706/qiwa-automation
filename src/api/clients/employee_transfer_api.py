@@ -4,7 +4,7 @@ import allure
 from requests import Response
 
 from data.constants import HEADERS
-from data.employee_transfer import employer, laborer
+from data.dedicated.employee_transfer import employer, laborer
 from src.api.assertions.response_validator import ResponseValidator
 from utils.schema_parser import load_json_schema
 

@@ -14,8 +14,8 @@ from data.constants import (
     Language,
     UserInfo,
 )
-from data.employee_transfer import Entity, Laborer, employer
-from data.enums import RowsPerPage, TransferType
+from data.dedicated.employee_transfer import Entity, Laborer, employer
+from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions

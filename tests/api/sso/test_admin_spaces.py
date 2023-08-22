@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from data.dataset import SpacesDataset
+from data.sso.dataset import SpacesDataset
 from src.api.actions.workspaces_api_actions import WorkspacesApiActions
 from src.api.clients.spaces_api import SpacesApi
 

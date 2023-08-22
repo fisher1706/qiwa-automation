@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.constants import ContractManagement, Language
-from data.contract_management import employer
+from data.dedicated.contract_management import employer
 from src.api.models.contract_details import ContractDetails, EmployeeDetails
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.pages.languages_page import Languages

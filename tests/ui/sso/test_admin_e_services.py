@@ -2,7 +2,7 @@ import allure
 import pytest
 from selene import browser
 
-from data.dataset import EServiceDataset
+from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
 from src.api.actions.e_service_controller import EServiceController
 from src.api.actions.workspaces_api_actions import WorkspacesApiActions

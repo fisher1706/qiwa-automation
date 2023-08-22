@@ -1,7 +1,5 @@
 import dataclasses
 
-from utils.crypto_manager import CryptoManager
-
 HEADERS = {
     "X-IBM-Client-Id": "514c55d8eb39044a69c1e9ab434ff616",
     "X-IBM-Client-Secret": "4e2b5e46d09fec6775177730e3b44aaf",

@@ -6,7 +6,7 @@ from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.constants import EmployeeTransfer, Language
-from data.enums import RequestStatus, TransferType
+from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
 from utils.assertion import assert_that
 

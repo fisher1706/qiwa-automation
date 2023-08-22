@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.constants import ContractManagement, Language, UserType
-from data.contract_management import (
+from data.dedicated.contract_management import (
     employer,
     laborer_expatriate,
     laborer_expatriate_not_in_the_establishment,

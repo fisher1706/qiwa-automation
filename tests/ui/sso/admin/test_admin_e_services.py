@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from data.dataset import EServiceDataset
+from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
 from src.ui.qiwa import qiwa
 
