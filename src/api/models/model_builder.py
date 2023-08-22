@@ -1,5 +1,5 @@
+from data.account import Account
 from data.constants import Language
-from src.api.models.account import Account
 from src.api.models.email import Email
 from utils.logger import yaml_logger
 from utils.random_manager import RandomManager

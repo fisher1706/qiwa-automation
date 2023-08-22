@@ -7,7 +7,7 @@ from utils.assertion import assert_that
 @allure.step
 def assert_change_occupation_request(
     actual: models.qiwa.data.request,
-    expected: models.ibm.searchchangeoccupation.ChangeOccupationItem,
+    expected: src.api.models.ibm.searchchangeoccupation.ChangeOccupationItem,
 ) -> None:
     assert_that(actual.id).as_("id").equals_to(expected.RequestInformation.RequestId)
     assert_that(actual.type).as_("type").equals_to("request")
@@ -18,7 +18,7 @@ def assert_change_occupation_request(
 @allure.step
 def assert_request_attributes(
     actual: models.qiwa.raw.change_occupation.Request,
-    expected: models.ibm.searchchangeoccupation.ChangeOccupationItem,
+    expected: src.api.models.ibm.searchchangeoccupation.ChangeOccupationItem,
 ) -> None:
     assert_that(actual.request_id).as_("request-id").equals_to(
         expected.RequestInformation.RequestId
@@ -54,7 +54,7 @@ def assert_request_attributes(
 @allure.step
 def assert_request_laborer(
     actual: models.qiwa.raw.change_occupation.Laborer,
-    expected: models.ibm.searchchangeoccupation.ChangeOccupationItem,
+    expected: src.api.models.ibm.searchchangeoccupation.ChangeOccupationItem,
 ) -> None:
     details = expected.RequestDetailsList.RequestDetailsItem[0]
     assert_that(actual.status_id).as_("status_id").equals_to(details.StatusDetails.StatusId)

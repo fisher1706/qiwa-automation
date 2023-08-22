@@ -6,9 +6,9 @@ import allure
 from requests import Response
 
 import config
+from data.account import Account
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.http_client import HTTPClient
-from src.api.models.account import Account
 from src.api.requests.account_laborer_sso import LaborerSSOAccount
 from src.api.requests.hsm_laborer_sso import LaborerSSOHsm
 

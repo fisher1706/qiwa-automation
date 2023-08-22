@@ -3,7 +3,7 @@ from typing import Dict, Generic, TypeVar
 from pydantic.generics import GenericModel
 
 from src.api.constants.ibm import IBMServicesResponse
-from src.api.models.mock_mlsd.ibm.header import IBMResponseHeader
+from src.api.models.ibm.header import IBMResponseHeader
 
 IBMDataBodyT = TypeVar("IBMDataBodyT")
 

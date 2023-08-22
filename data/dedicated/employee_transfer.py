@@ -1,4 +1,4 @@
-from src.api.models.users_types import Entity, Laborer
+from data.dedicated.users_types import Entity, Laborer
 
 employer = Entity(
     login_id=1016316828,

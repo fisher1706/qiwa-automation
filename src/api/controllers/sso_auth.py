@@ -3,9 +3,9 @@ from urllib.parse import parse_qs, urlparse
 
 import allure
 
+from data.account import Account
 from src.api.clients.auth_api_sso import AuthApiSSO
 from src.api.clients.oauth import OAuthApi
-from src.api.models.account import Account
 
 
 class AuthApiLaborerSSOController(AuthApiSSO):  # pylint: disable=duplicate-code

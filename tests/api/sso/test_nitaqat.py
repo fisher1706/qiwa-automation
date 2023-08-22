@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from data.sso.dataset import UserDataset
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 from src.api.clients.nitaqat_api import NitaqatApi
+from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 
 
 @allure.feature('Nitaqat suite')

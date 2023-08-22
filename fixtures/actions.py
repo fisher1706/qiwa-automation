@@ -1,10 +1,10 @@
 import allure
 import pytest
 
+from data.account import Account
 from data.constants import UserInfo
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
-from src.api.controllers.sso_auth_api_action import AuthApiLaborerSSOActions
-from src.api.models.account import Account
+from src.api.controllers.sso_auth import AuthApiLaborerSSOController
 from src.api.models.model_builder import ModelBuilder
 
 
@@ -75,7 +75,7 @@ def create_account(
         saudi_count=saudi_count,
         expat_count=expat_count,
     )
-    AuthApiLaborerSSOActions().complete_create_account_via_laborer_sso_api(test_data.account)
+    AuthApiLaborerSSOController().complete_create_account_via_laborer_sso_api(test_data.account)
     return test_data.account
 
 

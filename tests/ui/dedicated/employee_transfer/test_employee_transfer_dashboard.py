@@ -3,7 +3,7 @@ import pytest
 
 from data.constants import Language
 from data.dedicated.employee_transfer import employer
-from src.api.models.transfer_requests import request
+from data.dedicated.transfer_requests import request
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.pages.languages_page import Languages
 

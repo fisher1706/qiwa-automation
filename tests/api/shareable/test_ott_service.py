@@ -3,7 +3,6 @@ from http import HTTPStatus
 
 import pytest
 
-from src.api import models
 from src.api.clients.ott_service import OttServiceApi
 from utils.assertion import assert_status_code, assert_that
 
@@ -18,12 +17,12 @@ def test_token_generation_and_validation():
     assert_status_code(generate_ott.status_code).equals_to(HTTPStatus.OK)
 
     token = generate_ott.json()
-    models.ott_service.GenerateToken.parse_obj(token)
+    src.api.models.qiwa.raw.ott_service.GenerateToken.parse_obj(token)
     validate_ott = ott_service.validate_token(token)
     assert_status_code(validate_ott.status_code).equals_to(HTTPStatus.OK)
 
     token_data = validate_ott.json()
-    models.ott_service.ValidateToken.parse_obj(token_data)
+    src.api.models.qiwa.raw.ott_service.ValidateToken.parse_obj(token_data)
     assert_that("sequence-number").as_("sequence-number").in_(list(token_data["payload"].keys()))
     assert_that(token_data["payload"]).has("sequence-number")(data["sequence-number"])
 
@@ -45,7 +44,7 @@ def test_token_revalidation():
     assert_status_code(re_validate_ott.status_code).equals_to(HTTPStatus.NOT_FOUND)
 
     token = re_validate_ott.json()
-    models.ott_service.GenerateToken.parse_obj(token)
+    src.api.models.qiwa.raw.ott_service.GenerateToken.parse_obj(token)
     assert_that(token).has("ott")("not_found")
 
 
@@ -57,5 +56,5 @@ def test_token_validation_without_generation():
     assert_status_code(validate_ott.status_code).equals_to(HTTPStatus.NOT_FOUND)
 
     token = validate_ott.json()
-    models.ott_service.GenerateToken.parse_obj(token)
+    src.api.models.qiwa.raw.ott_service.GenerateToken.parse_obj(token)
     assert_that(token).has("ott")("not_found")
