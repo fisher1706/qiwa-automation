@@ -16,10 +16,6 @@ from src.ui.pages.languages_page import Languages
 
 
 @allure.feature('Employee Transfer sheet 1')
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.et
-@pytest.mark.stage
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-code
 

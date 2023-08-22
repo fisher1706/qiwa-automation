@@ -20,10 +20,6 @@ from src.ui.actions.sign_in import LoginActions
 
 
 @allure.feature('Employee Transfer sheet 2')
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.et
-@pytest.mark.stage
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-code
 

@@ -1,7 +1,7 @@
 from requests import Response
 
 from src.api import payloads
-from src.api.clients.e_service.e_service_api import EServiceApi
+from src.api.clients.e_service.e_services import EServiceApi
 from src.api.http_client import HTTPClient
 from src.api.payloads.e_service.groups import EService, Group
 

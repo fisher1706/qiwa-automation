@@ -1,15 +1,11 @@
 from http import HTTPStatus
 
-import pytest
-
 from src.api import models
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
 from src.api.constants.work_permit import WorkPermitStatus
 from src.api.controllers.ibm import IBMApiController
 from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
-
-pytestmark = [pytest.mark.work_permit_suite, pytest.mark.ss, pytest.mark.api, pytest.mark.wp, pytest.mark.daily]
 
 
 def test_get_transactions(user, establishment):

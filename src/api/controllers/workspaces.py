@@ -4,7 +4,7 @@ from typing import Any
 
 import allure
 
-from src.api.clients.workspaces_api import WorkspacesApi
+from src.api.clients.workspaces import WorkspacesApi
 
 
 class WorkspacesApiController(WorkspacesApi):

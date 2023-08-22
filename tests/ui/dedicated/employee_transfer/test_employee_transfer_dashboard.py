@@ -9,10 +9,6 @@ from src.ui.pages.languages_page import Languages
 
 
 @allure.feature('Employee Transfer Dashboard')
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.et
-@pytest.mark.stage
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestEmployeeTransfer:  # pylint: disable=unused-argument
 

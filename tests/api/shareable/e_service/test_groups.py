@@ -8,11 +8,6 @@ from src.api.assertions.model import validate_model
 from src.api.payloads.e_service.groups import EService, Group
 
 pytestmark = [
-    pytest.mark.e_service_suite,
-    pytest.mark.daily,
-    pytest.mark.api,
-    pytest.mark.ss,
-    pytest.mark.wp,
     pytest.mark.usefixtures("delete_groups")
 ]
 

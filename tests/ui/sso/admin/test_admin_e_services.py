@@ -5,8 +5,6 @@ from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
 from src.ui.qiwa import qiwa
 
-pytestmark = [pytest.mark.demo, pytest.mark.ui, pytest.mark.sso, pytest.mark.admin]
-
 
 @allure.title("Check admin e-services page is displayed")
 def test_check_admin_e_service_page_is_displayed():

@@ -3,8 +3,8 @@ import pytest
 
 from data.sso.dataset import SpacesDataset
 from data.validation_message import ErrorMessage, SuccessMessage
-from src.api.clients.spaces_api import SpacesApi
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
+from src.api.clients.spaces import SpacesApi
+from src.api.controllers.workspaces import WorkspacesApiController
 from src.ui.actions.sign_in import LoginActions
 from src.ui.actions.spaces import SpacesActions
 from src.ui.pages.admin_page import AdminPage
@@ -12,10 +12,6 @@ from src.ui.pages.workspaces_page import WorkspacesPage
 
 
 @allure.feature('Spaces')
-@pytest.mark.auth_suite
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.sso
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestAdminSpaces:
 
@@ -31,7 +27,7 @@ class TestAdminSpaces:
         if 'disable_auto_use' in request.keywords:
             yield
         else:
-            self.auth_api = WorkspacesApiActions(http_client)
+            self.auth_api = WorkspacesApiController(http_client)
             self.spaces_api = SpacesApi(http_client)
             self.auth_api.login_user(super_user.personal_number,
                                      super_user.password)

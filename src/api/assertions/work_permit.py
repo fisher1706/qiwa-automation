@@ -1,6 +1,6 @@
 import allure
 
-from src.api.clients.wp_api import WorkPermitApi
+from src.api.clients.work_permit import WorkPermitApi
 from src.api.models.ibm.getworkpermitrequests import (
     IBMWorkPermitRequest,
     IBMWorkPermitRequestList,

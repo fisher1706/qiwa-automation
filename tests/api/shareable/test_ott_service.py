@@ -1,12 +1,8 @@
 import time
 from http import HTTPStatus
 
-import pytest
-
 from src.api.clients.ott_service import OttServiceApi
 from utils.assertion import assert_status_code, assert_that
-
-pytestmark = [pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 
 
 def test_token_generation_and_validation():

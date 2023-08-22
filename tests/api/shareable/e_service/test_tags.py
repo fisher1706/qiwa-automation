@@ -3,11 +3,6 @@ import pytest
 from src.api.app import QiwaApi
 
 pytestmark = [
-    pytest.mark.e_service_suite,
-    pytest.mark.daily,
-    pytest.mark.api,
-    pytest.mark.ss,
-    pytest.mark.wp,
     pytest.mark.usefixtures("delete_service_categories")
 ]
 

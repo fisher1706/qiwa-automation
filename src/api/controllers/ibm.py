@@ -3,6 +3,7 @@ from http import HTTPStatus
 import allure
 
 import config
+import src
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody

@@ -37,6 +37,12 @@ types-requests = "^2.31.0.2"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.pytest.ini_options]
+markers = [
+    "stage",
+    "demo"
+]
+
 [tool.black]
 line-length = 99
 target-version = ['py310']

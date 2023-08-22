@@ -9,10 +9,6 @@ from src.ui.pages.languages_page import Languages
 
 
 @allure.feature('Contract Management Templates')
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.cm
-@pytest.mark.stage
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-many-statements
 

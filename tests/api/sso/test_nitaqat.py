@@ -2,15 +2,11 @@ import allure
 import pytest
 
 from data.sso.dataset import UserDataset
-from src.api.clients.nitaqat_calculator import  NitaqatApi
+from src.api.clients.nitaqat_calculator import NitaqatApi
 from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature('Nitaqat suite')
-@pytest.mark.nitaqat_suite
-@pytest.mark.daily
-@pytest.mark.api
-@pytest.mark.sso
 @pytest.mark.usefixtures("clean_up_session")
 class TestNitaqat:
 

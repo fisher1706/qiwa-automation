@@ -3,8 +3,8 @@ import pytest
 
 from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
-from src.api.controllers.e_service_controller import EServiceController
-from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
+from src.api.controllers.e_service import EServiceApiController
+from src.api.controllers.workspaces import WorkspacesApiController
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.pages.admin_page import AdminPage
@@ -12,10 +12,6 @@ from src.ui.pages.workspaces_page import WorkspacesPage
 
 
 @allure.feature('Admin E-Services')
-@pytest.mark.e_service_suite
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.core
 @pytest.mark.usefixtures("go_to_auth_page", "delete_service_categories")
 class TestAdminEServicesCategory:
 
@@ -24,13 +20,13 @@ class TestAdminEServicesCategory:
         self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
-        self.auth_api = WorkspacesApiActions(http_client)
+        self.auth_api = WorkspacesApiController(http_client)
         self.admin_actions = AdminPage()
 
     @pytest.fixture
     def create_category(self, super_user, http_client):
-        self.auth_api = WorkspacesApiActions(http_client)
-        self.e_service_api = EServiceController(http_client)
+        self.auth_api = WorkspacesApiController(http_client)
+        self.e_service_api = EServiceApiController(http_client)
         self.auth_api.login_user(super_user.personal_number, super_user.password)
         self.e_service.api.create_tag()
         self.category_name = self.e_service.api.tag_english_name

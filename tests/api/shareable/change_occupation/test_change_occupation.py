@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-import pytest
-
 from src.api import assertions, models, payloads
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
@@ -10,7 +8,6 @@ from src.api.payloads.raw.change_occupation import Laborer
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.change_occupation_suite, pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 testmo = project(TestmoProject.CHANGE_OCCUPATION)
 
 

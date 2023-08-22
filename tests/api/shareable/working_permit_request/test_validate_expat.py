@@ -7,7 +7,7 @@ from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.stage, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
+pytestmark = [pytest.mark.stage]
 
 
 @pytest.mark.parametrize("is_regular", [True, False])

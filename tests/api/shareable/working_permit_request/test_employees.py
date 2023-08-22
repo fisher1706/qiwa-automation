@@ -2,8 +2,6 @@ import pytest
 
 from src.api.app import QiwaApi
 
-pytestmark = [pytest.mark.work_permit_suite, pytest.mark.ss, pytest.mark.api, pytest.mark.wp, pytest.mark.daily]
-
 
 @pytest.mark.parametrize("page", [1, 2])
 def test_total_count(page, user, establishment):

@@ -1,18 +1,8 @@
 from http import HTTPStatus
 
-import pytest
-
 from src.api import assertions
 from src.api.app import QiwaApi
 from src.api.models.qiwa.e_service import admin_e_services, user_e_services
-
-pytestmark = [
-    pytest.mark.e_service_suite,
-    pytest.mark.daily,
-    pytest.mark.api,
-    pytest.mark.ss,
-    pytest.mark.wp,
-]
 
 
 def test_search_e_services_as_user():

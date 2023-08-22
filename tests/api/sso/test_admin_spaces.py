@@ -7,10 +7,6 @@ from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature('Space suite')
-@pytest.mark.auth_suite
-@pytest.mark.daily
-@pytest.mark.api
-@pytest.mark.sso
 @pytest.mark.usefixtures("clean_up_session")
 class TestAdminSpaces:
 

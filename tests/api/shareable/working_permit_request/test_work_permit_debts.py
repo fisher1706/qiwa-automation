@@ -7,8 +7,6 @@ from src.api.assertions.model import validate_model
 from src.api.models.qiwa.work_permit import work_permit_debts
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.work_permit_suite, pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
-
 
 @pytest.mark.parametrize("page, per_page", [(1, 10), (2, 7), (3, 11)])
 def test_get_work_permit_debts_info(user, page, per_page):

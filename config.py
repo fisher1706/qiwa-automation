@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Literal, Optional
 
 from pydantic import BaseSettings, HttpUrl, RedisDsn
-
-from utils.path import abs_path_to_project
 
 Envs = Literal["local", "demo", "stage"]
 
@@ -65,14 +64,15 @@ class Settings(BaseSettings):
         """
         kwargs: dict = {}
         envs_order = ["demo"]
+        path = Path(__file__).parent
         if env:
             envs_order.append(env)
-        elif os.path.isfile(abs_path_to_project(".env.local")):
+        elif os.path.isfile(path.joinpath(".env.local")):
             envs_order.append("local")
             # As demo settings are default, in case of local run
             # we need to pass remote_url=None explicitly, to avoid overriding it in .env.local
             kwargs["remote_url"] = None
-        env_files = [abs_path_to_project(f".env.{env}") for env in envs_order]
+        env_files = [path.joinpath(f".env.{env}") for env in envs_order]
         return cls(_env_file=env_files, **kwargs)
 
 

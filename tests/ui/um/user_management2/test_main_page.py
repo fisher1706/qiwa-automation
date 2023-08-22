@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from src.api.models.user_management import test_account_um_2
+from data.um.user_management_models2 import test_account_um_2
 from src.ui.actions.um_actions.um_main import MainPageActions
 from utils.allure import TestmoProject, project
 
@@ -9,10 +9,6 @@ testmo_case_id = project(TestmoProject.USER_MANAGEMENT)
 
 
 @allure.feature('Main page UI')
-@pytest.mark.main_um
-@pytest.mark.daily
-@pytest.mark.ui
-@pytest.mark.um
 @pytest.mark.usefixtures("go_to_auth_page")
 class TestMainPageUI:
 

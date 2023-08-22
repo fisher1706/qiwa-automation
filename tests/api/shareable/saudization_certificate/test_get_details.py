@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-import pytest
-
 from src.api import models
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
@@ -9,8 +7,6 @@ from src.api.controllers.ibm import IBMApiController
 from src.api.models.ibm import payloads
 from utils.assertion import assert_status_code, assert_that
 from utils.crypto_manager import decrypt_saudization_certificate
-
-pytestmark = [pytest.mark.saudization_suite, pytest.mark.daily, pytest.mark.api, pytest.mark.ss, pytest.mark.wp]
 
 
 def test_with_green_nitaq(green_nitaq_establishment):

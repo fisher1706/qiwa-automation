@@ -1,5 +1,6 @@
 import allure
 
+import src
 from src.api import models
 from utils.assertion import assert_that
 

@@ -7,10 +7,6 @@ from src.api.controllers.workspaces import WorkspacesApiController
 
 
 @allure.feature("Main API")
-@pytest.mark.subscription_suite
-@pytest.mark.daily
-@pytest.mark.api
-@pytest.mark.um
 @pytest.mark.usefixtures("clean_up_session")
 class TestMainAPI:  # pylint: disable=duplicate-code
     @pytest.fixture(autouse=True)

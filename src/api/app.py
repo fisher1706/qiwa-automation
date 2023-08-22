@@ -8,9 +8,9 @@ import allure
 from data.constants import UserInfo
 from src.api.assertions.saudization_certificate import SaudizationApiAssertions
 from src.api.assertions.work_permit import WorkPermitApiAssertions
-from src.api.clients.change_occupation_api import ChangeOccupationApi
-from src.api.clients.saudization_api import SaudizationCertificateApi
-from src.api.clients.wp_debts_api import WPDebtsApi
+from src.api.clients.change_occupation import ChangeOccupationApi
+from src.api.clients.saudization_certificate import SaudizationCertificateApi
+from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
 from src.api.controllers.sso_auth import AuthApiLaborerSSOController
 from src.api.controllers.workspaces import WorkspacesApiController
