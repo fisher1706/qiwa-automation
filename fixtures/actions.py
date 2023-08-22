@@ -2,8 +2,8 @@ import allure
 import pytest
 
 from data.constants import UserInfo
-from data.user_data import UserData
-from src.api.actions.sso_auth_api_action import AuthApiLaborerSSOActions
+from src.api.controllers.mock_mlsd_data import MockMlsdDataController
+from src.api.controllers.sso_auth_api_action import AuthApiLaborerSSOActions
 from src.api.models.account import Account
 from src.api.models.model_builder import ModelBuilder
 
@@ -20,7 +20,7 @@ def parametrized_owner(api):
 
     def _create(
         red_nitaq=False, with_subscription=True, cr_number=None, branches=None
-    ) -> UserData:
+    ) -> MockMlsdDataController:
         return create_est_with_laborers(
             api,
             red_nitaq=red_nitaq,
@@ -66,7 +66,7 @@ def create_account(
     saudi_count=None,
     expat_count=None,
 ):
-    test_data = UserData()
+    test_data = MockMlsdDataController()
     test_data.prepare_owner_account(
         user_type=user_type,
         personal_number=personal_number,
@@ -82,7 +82,7 @@ def create_account(
 @allure.step("Create establishment with laborers")
 def create_est_with_laborers(
     api, red_nitaq=False, with_subscription=True, cr_number=None, branches=None
-) -> UserData:
+) -> MockMlsdDataController:
     """
     Configurable owner creation. Several options are currently available, red_nitaq and with_subscription.
     Usage example:
@@ -90,7 +90,7 @@ def create_est_with_laborers(
         owner = parametrized_owner(with_subscription=False)
         ...
     """
-    test_data = UserData()
+    test_data = MockMlsdDataController()
     test_data.prepare_establishment(
         red_nitaq=red_nitaq,
         with_subscription=with_subscription,

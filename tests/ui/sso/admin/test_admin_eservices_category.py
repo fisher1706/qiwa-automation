@@ -3,8 +3,8 @@ import pytest
 
 from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
-from src.api.actions.e_service_controller import EServiceController
-from src.api.actions.workspaces_api_actions import WorkspacesApiActions
+from src.api.controllers.e_service_controller import EServiceController
+from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.pages.admin_page import AdminPage

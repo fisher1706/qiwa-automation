@@ -3,7 +3,7 @@ import pytest
 
 from data.sso.dataset import SpacesDataset
 from data.validation_message import ErrorMessage, SuccessMessage
-from src.api.actions.workspaces_api_actions import WorkspacesApiActions
+from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 from src.api.clients.spaces_api import SpacesApi
 from src.ui.actions.sign_in import LoginActions
 from src.ui.actions.spaces import SpacesActions

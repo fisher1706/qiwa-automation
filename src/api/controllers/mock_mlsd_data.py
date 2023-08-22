@@ -11,7 +11,7 @@ from utils.logger import yaml_logger
 logger = yaml_logger.setup_logging(__name__)
 
 
-class UserData:
+class MockMlsdDataController:
     def __init__(self):
         self.mock_api = MockApi()
         self.account = None

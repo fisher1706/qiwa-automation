@@ -6,11 +6,11 @@ from typing import Optional
 import allure
 
 from data.constants import UserInfo
-from src.api.actions.e_service_controller import EServiceController
-from src.api.actions.saudization_api_actions import SaudizationApiActions
-from src.api.actions.sso_auth_api_action import AuthApiLaborerSSOActions
-from src.api.actions.workspaces_api_actions import WorkspacesApiActions
-from src.api.actions.wp_api_actions import WorkPermitApiActions
+from src.api.controllers.e_service_controller import EServiceController
+from src.api.controllers.saudization_api_actions import SaudizationApiActions
+from src.api.controllers.sso_auth_api_action import AuthApiLaborerSSOActions
+from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
+from src.api.controllers.wp_api_actions import WorkPermitApiActions
 from src.api.clients.change_occupation_api import ChangeOccupationApi
 from src.api.clients.saudization_api import SaudizationCertificateApi
 from src.api.clients.wp_debts_api import WPDebtsApi

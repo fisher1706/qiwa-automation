@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.constants import UserInfo
-from src.api.actions.workspaces_api_actions import WorkspacesApiActions
+from src.api.controllers.workspaces_api_actions import WorkspacesApiActions
 from src.api.models.user_management import test_account_um_2
 
 
