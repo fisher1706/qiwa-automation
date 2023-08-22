@@ -8,7 +8,7 @@ from src.api.clients.oauth import OAuthApi
 from src.api.models.account import Account
 
 
-class AuthApiLaborerSSOActions(AuthApiSSO):  # pylint: disable=duplicate-code
+class AuthApiLaborerSSOController(AuthApiSSO):  # pylint: disable=duplicate-code
     @property
     def oauth_api(self) -> OAuthApi:
         return OAuthApi(self.api)

@@ -8,14 +8,14 @@ from src.api.models.mock_mlsd.ibm.getworkpermitrequests import (
 from utils.assertion import assert_that
 
 
-class WorkPermitApiActions(WorkPermitApi):
+class WorkPermitApiAssertions(WorkPermitApi):
     @allure.step
-    def assert_total_count(self, json: dict, expected_count: int) -> "WorkPermitApiActions":
+    def assert_total_count(self, json: dict, expected_count: int) -> "WorkPermitApiAssertions":
         assert_that(json["meta"]).has("total_count")(expected_count)
         return self
 
     @allure.step
-    def assert_items_count(self, json: dict, expected_count: int) -> "WorkPermitApiActions":
+    def assert_items_count(self, json: dict, expected_count: int) -> "WorkPermitApiAssertions":
         assert_that(json["data"]).as_("data size").is_length(expected_count)
         return self
 

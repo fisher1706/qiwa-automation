@@ -5,7 +5,7 @@ from src.api.models.mock_mlsd.ibm.root import IBMResponseData
 from utils.assertion import assert_that
 
 
-class SaudizationApiActions:
+class SaudizationApiAssertions:
     @allure.step
     def assert_error(self, response: dict, expected: IBMResponseData) -> None:
         expected_status = expected.Header.ResponseStatus

@@ -7,15 +7,15 @@ import allure
 from src.api.clients.workspaces_api import WorkspacesApi
 
 
-class WorkspacesApiActions(WorkspacesApi):
+class WorkspacesApiController(WorkspacesApi):
     @allure.step
-    def select_first_company(self) -> WorkspacesApiActions:
+    def select_first_company(self) -> WorkspacesApiController:
         workspace = self.__get_workspace_with("space-type", "company")
         self.select_company_by_id(workspace["company-id"])
         return self
 
     @allure.step
-    def select_company_with_sequence_number(self, number: int) -> WorkspacesApiActions:
+    def select_company_with_sequence_number(self, number: int) -> WorkspacesApiController:
         workspace = self.__get_workspace_with("company-sequence-number", number)
         self.select_company_by_id(workspace["company-id"])
         return self

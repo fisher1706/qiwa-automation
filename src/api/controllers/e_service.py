@@ -6,7 +6,7 @@ from src.api.http_client import HTTPClient
 from src.api.payloads.e_service.groups import EService, Group
 
 
-class EServiceController:
+class EServiceApiController:
     def __init__(self, client: HTTPClient):
         self.api = EServiceApi(client)
 
