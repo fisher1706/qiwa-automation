@@ -6,32 +6,32 @@ from typing import Optional
 import allure
 
 from data.constants import UserInfo
-from src.api.actions.e_service_controller import EServiceController
-from src.api.actions.saudization_api_actions import SaudizationApiActions
-from src.api.actions.sso_auth_api_action import AuthApiLaborerSSOActions
-from src.api.actions.workspaces_api_actions import WorkspacesApiActions
-from src.api.actions.wp_api_actions import WorkPermitApiActions
-from src.api.clients.change_occupation_api import ChangeOccupationApi
-from src.api.clients.saudization_api import SaudizationCertificateApi
-from src.api.clients.wp_debts_api import WPDebtsApi
+from src.api.assertions.saudization_certificate import SaudizationApiAssertions
+from src.api.assertions.work_permit import WorkPermitApiAssertions
+from src.api.clients.change_occupation import ChangeOccupationApi
+from src.api.clients.saudization_certificate import SaudizationCertificateApi
+from src.api.clients.wp_debts import WPDebtsApi
+from src.api.controllers.e_service import EServiceApiController
+from src.api.controllers.sso_auth import AuthApiLaborerSSOController
+from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.crypto_manager import decode_authorization_token
 
 
 class QiwaApi:
-    saudi_api_assertions = SaudizationApiActions()
+    saudi_api_assertions = SaudizationApiAssertions()
 
     def __init__(self) -> None:
         self.client = HTTPClient()
-        self.auth = WorkspacesApiActions(self.client)
-        self.sso = AuthApiLaborerSSOActions(self.client)
+        self.auth = WorkspacesApiController(self.client)
+        self.sso = AuthApiLaborerSSOController(self.client)
         # APIs
         self.saudi_api = SaudizationCertificateApi(self.client)
         self.wp_debts_api = WPDebtsApi(self.client)
-        self.wp_request_api = WorkPermitApiActions(self.client)
+        self.wp_request_api = WorkPermitApiAssertions(self.client)
         # Controllers
-        self.e_service = EServiceController(self.client)
+        self.e_service = EServiceApiController(self.client)
 
     @cached_property
     def change_occupation(self) -> ChangeOccupationApi:

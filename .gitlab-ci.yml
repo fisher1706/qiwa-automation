@@ -103,7 +103,7 @@ ui_tests_sso:
   tags:
     - shared
   script:
-    - pytest tests/ui -m "sso and ui and daily" -s --alluredir=allure-results
+    - pytest tests/ui/sso -s --alluredir=allure-results
   retry:
     max: 2
     when: always
@@ -124,7 +124,7 @@ ui_tests_um:
   tags:
     - shared
   script:
-    - pytest tests/ui -m "um and ui and daily" -s --alluredir=allure-results --discord_channel=um-ui-daily
+    - pytest tests/ui/um -s --alluredir=allure-results --discord_channel=um-ui-daily
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -135,14 +135,14 @@ ui_tests_um:
   only:
     - master
 
-ui_tests_ss_wp:
+ui_tests_shareable:
   image: takamol/qa-automation:$ENV-latest
   allow_failure: true
   stage: tests
   tags:
     - shared
   script:
-    - pytest tests/ui -m "ss and ui and wp and daily" -s --alluredir=allure-results --reruns 2 --discord_channel=ss-ui-wp-daily
+    - pytest tests/ui/shareable -s --alluredir=allure-results --reruns 2 --discord_channel=ss-ui-wp-daily
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -153,14 +153,14 @@ ui_tests_ss_wp:
   only:
     - master
 
-ui_tests_et:
+ui_tests_dedicated:
   image: $IMAGE
   allow_failure: true
   stage: tests
   tags:
     - shared
   script:
-    - pytest tests/ui -m "et and ui and daily" -s --alluredir=allure-results
+    - pytest tests/ui/dedicated -s --alluredir=allure-results
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -178,7 +178,7 @@ api_tests_sso:
   tags:
     - shared
   script:
-    - pytest tests/api -m "sso and api and daily" -s --alluredir=allure-results --reruns 2
+    - pytest tests/api/sso -s --alluredir=allure-results --reruns 2
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -196,7 +196,7 @@ api_tests_um:
   tags:
     - shared
   script:
-    - pytest tests/api -m "um and api and daily" -s --alluredir=allure-results --discord_channel=um-api-daily
+    - pytest tests/api/um -s --alluredir=allure-results --discord_channel=um-api-daily
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -207,14 +207,14 @@ api_tests_um:
   only:
     - master
 
-api_tests_wp:
+api_tests_shareable_demo:
   image: $IMAGE
   allow_failure: true
   stage: tests
   tags:
     - shared
   script:
-    - pytest tests/api -m "ss and api and wp and daily" -s --alluredir=allure-results --discord_channel=ss-api-wp-daily
+    - pytest tests/api/shareable -s --alluredir=allure-results --discord_channel=ss-api-wp-daily
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -225,14 +225,14 @@ api_tests_wp:
   only:
     - master
 
-api_tests_ss_stage:
+api_tests_shareable_stage:
   image: takamol/qa-automation:master-latest
   allow_failure: true
   stage: tests
   tags:
     - shared
   script:
-     - pytest tests/api -m "api and ss and stage" -s --alluredir=allure-results
+     - pytest tests/api/shareable -m stage -s --alluredir=allure-results --discord_channel=ss-api-wp-daily
   artifacts:
     paths:
       - $ALLURE_RESULTS_DIRECTORY
@@ -274,9 +274,9 @@ allure-ss-ui-wp-results:
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
   dependencies:
-    - ui_tests_ss_wp
+    - ui_tests_shareable
   needs:
-    - ui_tests_ss_wp
+    - ui_tests_shareable
   only:
     - master
 
@@ -286,9 +286,9 @@ allure-ui-et-results:
   variables:
     ALLURE_PROJECT_ID: et-ui-daily
   dependencies:
-    - ui_tests_et
+    - ui_tests_dedicated
   needs:
-    - ui_tests_et
+    - ui_tests_dedicated
   only:
     - stage
 
@@ -323,9 +323,9 @@ allure-api-wp-results:
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
   dependencies:
-    - api_tests_wp
+    - api_tests_shareable_demo
   needs:
-    - api_tests_wp
+    - api_tests_shareable_demo
   only:
     - master
 
@@ -335,8 +335,8 @@ allure-api-ss-stage-results:
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
   dependencies:
-    - api_tests_ss_stage
+    - api_tests_shareable_stage
   needs:
-    - api_tests_ss_stage
+    - api_tests_shareable_stage
   only:
     - master

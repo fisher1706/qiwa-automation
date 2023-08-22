@@ -1,5 +1,5 @@
 from data.constants import EmployeeTransfer, Language
-from data.enums import ServicesAndTools
+from data.dedicated.enums import ServicesAndTools
 from src.ui.pages.individual_page import IndividualPage
 
 

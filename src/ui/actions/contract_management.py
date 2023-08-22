@@ -2,12 +2,12 @@ import time
 from typing import Optional
 
 from data.constants import ContractManagement, EService, Language, UserInfo, UserType
-from src.api.models.contract_details import (
+from data.dedicated.contract_details import (
     ContractDetails,
     EmployeeDetails,
     EstablishmentDetails,
 )
-from src.api.models.users_types import Entity, Laborer
+from data.dedicated.users_types import Entity, Laborer
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.pages.contract_management_page import ContractManagementPage
