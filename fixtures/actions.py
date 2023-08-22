@@ -5,7 +5,6 @@ from data.account import Account
 from data.constants import UserInfo
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.controllers.sso_auth import AuthApiLaborerSSOController
-from src.api.models.model_builder import ModelBuilder
 
 
 @pytest.fixture(scope="function")
@@ -45,7 +44,7 @@ def super_user() -> Account:
     """
     Existing superuser account already registered in Qiwa
     """
-    return ModelBuilder.build_random_account(
+    return Account(
         personal_number="1215113732",
         password=UserInfo.DEFAULT_PASSWORD,
         email="api-tests-super-user@qa.qiwa.tech",
@@ -97,6 +96,6 @@ def create_est_with_laborers(
         cr_number=cr_number,
         branches=branches,
     )
-    auth = AuthApiLaborerSSOActions(api)
+    auth = AuthApiLaborerSSOController(api)
     auth.complete_create_account_via_laborer_sso_api(test_data.account)
     return test_data

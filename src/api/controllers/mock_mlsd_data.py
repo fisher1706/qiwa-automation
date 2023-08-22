@@ -1,11 +1,11 @@
 import allure
 
+from data.account import Account
 from data.constants import UserInfo
 from data.mock_mlsd.establishment import Establishment
 from src.api.clients.mock_api import MockApi
 from src.api.constants import nitaq
 from src.api.constants.subscription import Subscription
-from src.api.models.model_builder import ModelBuilder
 from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
@@ -47,7 +47,7 @@ class MockMlsdDataController:
             )
 
         password = password if password else UserInfo.PASSWORD
-        self.account = ModelBuilder.build_random_account(
+        self.account = Account(
             personal_number=personal_number,
             email=email,
             phone_number=phone_number,
@@ -108,7 +108,7 @@ class MockMlsdDataController:
         else:
             account = establishment_data["owner_number"]
 
-        self.account = ModelBuilder.build_random_account(account, UserInfo.DEFAULT_PASSWORD)
+        self.account = Account(account, UserInfo.DEFAULT_PASSWORD)
         logger.info(
             f"Unified Number ID: {self.unified_number_id}, Sequence Number: {self.sequence_number}, "
             f"Labor Office ID: {self.labor_office_id}"
