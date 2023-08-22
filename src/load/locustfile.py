@@ -6,13 +6,13 @@ from requests import Response
 
 import config
 from data.constants import UserInfo
-from src.api.clients.mock_api import MockApi
+from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.payloads import Data, Root
 from src.api.payloads.raw.auth import Auth
 
 
 def establishment_laborers(sequence_number: str, role: str) -> list[str]:
-    data_api = MockApi()
+    data_api = MockMlsdDataController()
     laborers = data_api.get_establishment_laborers(sequence_number)
     return [laborer["laborer_id_no"] for laborer in laborers if laborer["role"] == role]
 

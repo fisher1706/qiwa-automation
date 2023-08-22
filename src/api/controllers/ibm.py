@@ -12,7 +12,7 @@ from src.api.payloads.ibm.searchchangeoccupation import Body
 from utils.assertion import assert_status_code
 
 
-class IBMMockApi:
+class IBMApiController:
     client = HTTPClient()
     url = config.settings.mock_mlsd_url
 

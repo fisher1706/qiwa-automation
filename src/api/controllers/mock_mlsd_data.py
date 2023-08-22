@@ -1,19 +1,23 @@
 import allure
 
+import config
 from data.account import Account
 from data.constants import UserInfo
 from data.mock_mlsd.establishment import Establishment
-from src.api.clients.mock_api import MockApi
+from src.api.assertions.response_validator import ResponseValidator
 from src.api.constants import nitaq
 from src.api.constants.subscription import Subscription
+from src.api.http_client import HTTPClient
 from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 
 
 class MockMlsdDataController:
+    url = config.settings.mock_mlsd_url
+
     def __init__(self):
-        self.mock_api = MockApi()
+        self.api = HTTPClient()
         self.account = None
         self.unified_number_id = None
         self.sequence_number = None
@@ -36,7 +40,7 @@ class MockMlsdDataController:
     ):
         user_type = user_type if user_type else "saudi"
         if user_type in {"saudi", "expat", "border"} and not personal_number:
-            personal_number = self.mock_api.get_laborers_new(
+            personal_number = self.get_laborers_new(
                 user_type=user_type,
                 wp_type=wp_type,
                 role=role,
@@ -89,13 +93,13 @@ class MockMlsdDataController:
 
         establishment = Establishment.parse_obj(est_data)
 
-        establishment_data = self.mock_api.post_establishments_new(establishment)
+        establishment_data = self.post_establishments_new(establishment)
         self.unified_number_id = establishment_data["unified_number_id"]
         self.sequence_number = establishment_data["sequence_number"]
         self.labor_office_id = establishment_data["labor_office_id"]
 
         if with_laborers:
-            response = self.mock_api.get_establishment_laborers(self.sequence_number)
+            response = self.get_establishment_laborers(self.sequence_number)
             for item in response:
                 if item["role"] == "Owner":
                     payload["owner"] = item["laborer_id_no"]
@@ -113,3 +117,53 @@ class MockMlsdDataController:
             f"Unified Number ID: {self.unified_number_id}, Sequence Number: {self.sequence_number}, "
             f"Labor Office ID: {self.labor_office_id}"
         )
+
+    def get_laborers_new(
+        self,
+        user_type,
+        role="Owner",
+        branches=3,
+        wp_type="valid",
+        saudi_count=3,
+        expat_count=3,
+        subscription="have-subscription",
+    ):
+        """
+        :param expat_count: quantity of expats available in new company
+        :param saudi_count: quantity of saudis available in new company
+        :param branches: branches count for the user
+        :param wp_type: valid, invalid, expired
+        :param user_type: saudi, expat, border
+        :param role: Owner, EstablishmentUser, EstablishmentManager, Employee
+        :param subscription: have-subscription, self-pending, invite-pending
+        :return: account 'laborer_id' that can be registered to Qiwa
+        """
+        params = (
+            f"?e-count=1"
+            f"&wp={wp_type}"
+            f"&mobile-auth=true"
+            f"&saudi-count={saudi_count}"
+            f"&expat-count={expat_count}"
+            f"&nitaq-color=any"
+            f"&branches={branches}"
+            f"&subscription={subscription}"
+        )
+
+        response = self.api.get(self.url, endpoint=f"/laborers/new/{user_type}/{role}{params}")
+        ResponseValidator(response).check_status_code(name="Get mock Laborer ID", expect_code=200)
+        laborer_id_no = response.json()["laborer_id_no"]
+        return laborer_id_no
+
+    def post_establishments_new(self, est: Establishment = Establishment()):
+        payload = est.dict(exclude_none=True, by_alias=True)
+        response = self.api.post(self.url, endpoint="/establishments/new", json=payload)
+        ResponseValidator(response).check_status_code(name="Create establishment", expect_code=200)
+        json = response.json()
+        return json
+
+    def get_establishment_laborers(self, sequence_number, expect_code=200):
+        response = self.api.get(self.url, endpoint=f"/establishments/laborers/{sequence_number}")
+        ResponseValidator(response).check_status_code(
+            name=f"GET /establishments/laborers/{sequence_number}", expect_code=expect_code
+        )
+        return response.json()

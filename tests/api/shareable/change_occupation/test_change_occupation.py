@@ -4,7 +4,7 @@ import pytest
 
 from src.api import assertions, models, payloads
 from src.api.app import QiwaApi
-from src.api.clients.ibm_mock_api import IBMMockApi
+from src.api.controllers.ibm import IBMApiController
 from src.api.payloads.change_occupation import create_change_occupation_request
 from src.api.payloads.raw.change_occupation import Laborer
 from utils.allure import TestmoProject, project
@@ -15,7 +15,7 @@ testmo = project(TestmoProject.CHANGE_OCCUPATION)
 
 
 def test_create_change_occupation_request(establishment):
-    ibm = IBMMockApi()
+    ibm = IBMApiController()
     qiwa = QiwaApi.login_as_user(establishment.personal_number).select_company()
     qiwa.change_occupation.pass_ott_authorization()
 
@@ -45,7 +45,7 @@ def test_create_change_occupation_request(establishment):
 
 
 def test_get_change_occupation_requests(establishment):
-    ibm = IBMMockApi()
+    ibm = IBMApiController()
     qiwa = QiwaApi.login_as_user(establishment.personal_number).select_company()
     qiwa.change_occupation.pass_ott_authorization()
 

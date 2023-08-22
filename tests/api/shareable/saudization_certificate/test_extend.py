@@ -5,7 +5,7 @@ import pytest
 from src.api import models
 from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
-from src.api.clients.ibm_mock_api import IBMMockApi
+from src.api.controllers.ibm import IBMApiController
 from src.api.models.ibm import payloads
 from utils.assertion import assert_status_code
 
@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.saudization_suite, pytest.mark.daily, pytest.mark.api,
 
 def test_extending_certificate(create_green_nitaq_establishment):
     qiwa = QiwaApi.login_as_user(create_green_nitaq_establishment.account.personal_number).select_company()
-    ibm = IBMMockApi()
+    ibm = IBMApiController()
     
     qiwa.saudi_api.create_certificate()
     response = qiwa.saudi_api.extend_certificate()
