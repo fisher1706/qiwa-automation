@@ -274,9 +274,9 @@ allure-ss-ui-wp-results:
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
   dependencies:
-    - ui_tests_ss_wp
+    - ui_tests_shareable
   needs:
-    - ui_tests_ss_wp
+    - ui_tests_shareable
   only:
     - master
 
@@ -286,9 +286,9 @@ allure-ui-et-results:
   variables:
     ALLURE_PROJECT_ID: et-ui-daily
   dependencies:
-    - ui_tests_et
+    - ui_tests_dedicated
   needs:
-    - ui_tests_et
+    - ui_tests_dedicated
   only:
     - stage
 
@@ -323,9 +323,9 @@ allure-api-wp-results:
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
   dependencies:
-    - api_tests_wp
+    - api_tests_shareable_demo
   needs:
-    - api_tests_wp
+    - api_tests_shareable_demo
   only:
     - master
 
@@ -335,8 +335,8 @@ allure-api-ss-stage-results:
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
   dependencies:
-    - api_tests_ss_stage
+    - api_tests_shareable_stage
   needs:
-    - api_tests_ss_stage
+    - api_tests_shareable_stage
   only:
     - master
