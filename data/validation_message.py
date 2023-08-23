@@ -1,3 +1,7 @@
+import dataclasses
+
+
+@dataclasses.dataclass
 class SuccessMessage:
     LOGIN = {"type": "success", "text": "You have successfully logged in"}
     CHANGE_PHONE = {"type": "success", "text": "Phone number was changed"}
@@ -82,6 +86,7 @@ class SuccessMessage:
     }
 
 
+@dataclasses.dataclass
 class ValidationMessage:
     SHORT_AUTH_CODE = {
         "type": "validation",
@@ -145,6 +150,7 @@ class ValidationMessage:
     }
 
 
+@dataclasses.dataclass
 class ErrorMessage:
     INVALID_SMS_N_TIMES = {
         "type": "absher many attempts error",
