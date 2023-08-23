@@ -68,15 +68,15 @@ extension-pkg-whitelist = 'pydantic'
 ignore-imports = 'yes'
 
 [tool.pylint.format]
-# Length differ from Black's configuration
-# due to the presence of long strings and docstrings which Black does not format
-max-line-length = 120
+max-line-length = 99
 
 [tool.pylint.basic]
 good-names = ['e', 'i']
 
 [tool.pylint.design]
-max-args = 9
+max-args = 10
+min-public-methods = 1
+max-attributes = 10
 
 [tool.deptry.package_module_name_map]
 allure-pytest = "allure"
