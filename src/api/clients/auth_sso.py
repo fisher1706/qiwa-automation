@@ -193,7 +193,9 @@ class AuthApiSSO:
                     json=payload.dict(by_alias=True),
                 )
         else:
-            response = self.api.post(url=self.url, endpoint="/accounts", json=payload.dict(by_alias=True))
+            response = self.api.post(
+                url=self.url, endpoint="/accounts", json=payload.dict(by_alias=True)
+            )
         validator = ResponseValidator(response)
         validator.check_status_code(name="Register user", expect_code=expected_code)
         if expected_code != 200:
