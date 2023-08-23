@@ -68,7 +68,9 @@ extension-pkg-whitelist = 'pydantic'
 ignore-imports = 'yes'
 
 [tool.pylint.format]
-max-line-length = 99
+# Length differ from Black's configuration
+# due to the presence of long strings and docstrings which Black does not format
+max-line-length = 120
 
 [tool.pylint.basic]
 good-names = ['e', 'i']
