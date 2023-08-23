@@ -1,9 +1,12 @@
+import dataclasses
+
 import allure
 from selene import be, command, have, query
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s, ss
 
 
+@dataclasses.dataclass
 class MainPageLocators:
     ADD_NEW_USER_BTN = "button[data-testid='add-user-btn'] p"
     USER_MANAGEMENT_TITLE = "//div[contains(@data-testid, 'page-title')]/div/div/p"

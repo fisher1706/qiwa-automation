@@ -1,7 +1,10 @@
+import dataclasses
+
 from selene import have
 from selene.support.shared.jquery_style import s
 
 
+@dataclasses.dataclass
 class UserDetailsLocators:
     USER_DETAILS_TITLE = "//div[contains(@data-testid, 'section-header')]/div/p"
 

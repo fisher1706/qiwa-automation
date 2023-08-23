@@ -76,7 +76,9 @@ max-line-length = 120
 good-names = ['e', 'i']
 
 [tool.pylint.design]
-max-args = 9
+max-args = 10
+min-public-methods = 1
+max-attributes = 10
 
 [tool.deptry.package_module_name_map]
 allure-pytest = "allure"

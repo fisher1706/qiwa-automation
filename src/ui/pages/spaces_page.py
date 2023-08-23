@@ -1,3 +1,4 @@
+import dataclasses
 import platform
 import time
 
@@ -8,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
 
+@dataclasses.dataclass
 class SpacesPageLocators:
     """BUTTON AND ACTIONS"""
 

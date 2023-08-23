@@ -1,7 +1,7 @@
-class Titles:
-    USER_MANAGEMENT = "User Management"
+import dataclasses
 
 
+@dataclasses.dataclass
 class Texts:
     SUBSCRIPTION_INFO = (
         "Subscription is valid for all establishments within your establishment group. You will be "
@@ -12,6 +12,7 @@ class Texts:
     Establishment_And_User_Details = "Establishment and user details"
 
 
+@dataclasses.dataclass
 class ArabicTranslations:
     User_Management_Title = "إدارة صلاحيات مستخدمي المنشأة"
     Add_New_User_Btn = "إضافة مستخدم جديد"

@@ -1,7 +1,7 @@
 import time
 
 import allure
-from selene import Element, be, command, have
+from selene import Element, be, have
 from selene.support.shared.jquery_style import s, ss
 
 

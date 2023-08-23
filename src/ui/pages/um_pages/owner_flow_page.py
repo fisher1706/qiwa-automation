@@ -1,7 +1,10 @@
+import dataclasses
+
 from selene import have
 from selene.support.shared.jquery_style import s
 
 
+@dataclasses.dataclass
 class OwnerFlowLocators:
     TITLES = ".ffQsyv"
     PROCEED_WITH_SUBSCRIPTION_BTN = "div.exizz button.dbHICy"

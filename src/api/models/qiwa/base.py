@@ -1,9 +1,11 @@
-from pydantic import BaseModel  # pylint: disable = no-name-in-module
+from pydantic import BaseModel, ConfigDict  # pylint: disable = no-name-in-module
+
+
+def camel_to_kebab_case(string: str) -> str:
+    return "-".join(string.split("_"))
 
 
 class QiwaBaseModel(BaseModel):
-    class Config:
-        alias_generator = lambda key: "-".join(  # pylint: disable = unnecessary-lambda-assignment
-            key.split("_")
-        )
-        allow_population_by_field_name = True
+    model_config = ConfigDict(
+        alias_generator=camel_to_kebab_case, allow_population_by_field_name=True
+    )

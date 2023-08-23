@@ -1,8 +1,11 @@
+import dataclasses
+
 from data.constants import UserInfo
 from data.validation_message import ErrorMessage, SuccessMessage, ValidationMessage
 from utils.random_manager import RandomManager
 
 
+@dataclasses.dataclass
 class UserDataset:
     invalid_password = [
         [UserInfo.INVALID_PASSWORD, "", False, ValidationMessage.PASSWORD_VALIDATION],
@@ -69,6 +72,7 @@ class UserDataset:
     ]
 
 
+@dataclasses.dataclass
 class EServiceDataset:
     e_service_valid_data = [
         [
@@ -84,6 +88,7 @@ class EServiceDataset:
     ]
 
 
+@dataclasses.dataclass
 class SpacesDataset:
     valid_data_for_new_space = [
         [
