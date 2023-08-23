@@ -9,8 +9,16 @@ import config
 from data.account import Account
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.http_client import HTTPClient
-from src.api.requests.account_laborer_sso import LaborerSSOAccount
-from src.api.requests.hsm_laborer_sso import LaborerSSOHsm
+from src.api.payloads import Data, Root
+from src.api.payloads.sso.sso_auth import (
+    Auth,
+    Authorize,
+    CreateAccount,
+    Hsm,
+    SecurityQuestion,
+    VerifyEmail,
+    VerifyPhone,
+)
 
 
 class AuthApiSSO:
@@ -20,16 +28,8 @@ class AuthApiSSO:
         self.api = api
 
     def authorize(self, state: str, code: str) -> Response:
-        query = {
-            "client_id": "qiwa",
-            "redirect_uri": f"{config.settings.env_url}/oauth/callback",
-            "response_type": "code",
-            "scope": "openid email phone profile",
-            "code_challenge_method": "S256",
-            "state": state,
-            "code_challenge": code,
-        }
-        response = self.api.post(self.url, "/authorize", params=query)
+        query = Authorize(state=state, code_challenge=code)
+        response = self.api.post(self.url, "/authorize", params=query.dict())
         assert response.status_code == HTTPStatus.FOUND
         return response
 
@@ -37,27 +37,30 @@ class AuthApiSSO:
     def init_laborer_sso_hsm(
         self,
         personal_number: str,
-        year: int | str = 1430,
-        month: str = "01",
-        day: str = "01",
+        birth_date: str = "1430-01-01",
         expected_code: int = 200,
         requests_number: int = None,
         expect_schema="laborer-sso-init.json",
     ) -> AuthApiSSO:
-        json_body = LaborerSSOHsm.create_init_body(personal_number, year, month, day)
+        payload = Root(
+            data=Data(
+                type="session",
+                attributes=Hsm(personal_number=personal_number, birth_date=birth_date),
+            )
+        )
         response: Response = ...
         if requests_number is not None:
             for _ in range(requests_number):
                 response = self.api.post(
                     url=self.url,
                     endpoint="/session/high-security-mode/init/with-birthday",
-                    json=json_body,
+                    json=payload.dict(by_alias=True, exclude_unset=True),
                 )
         else:
             response = self.api.post(
                 url=self.url,
                 endpoint="/session/high-security-mode/init/with-birthday",
-                json=json_body,
+                json=payload.dict(by_alias=True, exclude_unset=True),
             )
         ResponseValidator(response).check_status_code(
             name="Init HSM", expect_code=expected_code
@@ -68,12 +71,19 @@ class AuthApiSSO:
     def active_hsm(
         self,
         expected_code: int = 200,
-        sms_code: str = "000000",
+        absher: str = "000000",
         expected_schema="laborer-sso-init.json",
     ) -> AuthApiSSO:
-        json_body = LaborerSSOHsm.create_activate_body(sms_code)
+        payload = Root(
+            data=Data(
+                type="registration",
+                attributes=Hsm(otp=absher),
+            )
+        )
         response = self.api.post(
-            url=self.url, endpoint="/session/high-security-mode", json=json_body
+            url=self.url,
+            endpoint="/session/high-security-mode",
+            json=payload.dict(exclude_unset=True),
         )
         validator = ResponseValidator(response)
         validator.check_status_code(name="Activate HSM", expect_code=expected_code)
@@ -91,10 +101,15 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def phone_verification(self, phone_number="966746055769", expected_code=200):
-        json_body = LaborerSSOHsm.phone_verification(phone_number)
+    def phone_verification(self, phone_number: str, expected_code=200):
+        payload = Root(
+            data=Data(
+                type="registration",
+                attributes=VerifyPhone(phone=phone_number),
+            )
+        )
         response = self.api.post(
-            url=self.url, endpoint="/phones/init-verification", json=json_body
+            url=self.url, endpoint="/phones/init-verification", json=payload.dict()
         )
         ResponseValidator(response).check_status_code(
             name="Phone verification", expect_code=expected_code
@@ -102,9 +117,14 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def pre_check_user_email(self, user_email, expected_code=200) -> AuthApiSSO:
-        json_body = LaborerSSOHsm.email_pre_check(user_email)
-        response = self.api.post(url=self.url, endpoint="/emails/precheck", json=json_body)
+    def pre_check_user_email(self, email: str, expected_code=200) -> AuthApiSSO:
+        payload = Root(
+            data=Data(
+                type="user-email",
+                attributes=VerifyEmail(email=email),
+            )
+        )
+        response = self.api.post(url=self.url, endpoint="/emails/precheck", json=payload.dict())
         ResponseValidator(response).check_status_code(
             name="Email pre-check", expect_code=expected_code
         )
@@ -119,10 +139,14 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def confirm_verify_email_with_otp_code(self, expected_code: int = 200) -> AuthApiSSO:
-        json_body = LaborerSSOAccount.check_otp_code(otp_type="password")
+    def confirm_verify_email_with_otp_code(
+        self, otp_code: str = "0000", expected_code: int = 200
+    ) -> AuthApiSSO:
+        payload = Root(data=Data(type="password", attributes=Auth(otp=otp_code)))
         response = self.api.post(
-            url=self.url, endpoint="/emails/confirm-verification", json=json_body
+            url=self.url,
+            endpoint="/emails/confirm-verification",
+            json=payload.dict(exclude_unset=True),
         )
         ResponseValidator(response).check_status_code(
             name="Email confirm verify", expect_code=expected_code
@@ -131,13 +155,10 @@ class AuthApiSSO:
 
     @allure.step
     def answer_security_question(self, expected_code: int = 200) -> AuthApiSSO:
-        json_body = {
-            "data": {
-                "type": "account",
-                "attributes": {"mother-dob": "1-1-2011", "mother-name": "Some name"},
-            }
-        }
-        response = self.api.post(url=self.url, endpoint="/security-questions", json=json_body)
+        security_payload = Root(data=Data(type="account", attributes=SecurityQuestion()))
+        response = self.api.post(
+            url=self.url, endpoint="/security-questions", json=security_payload.dict(by_alias=True)
+        )
         ResponseValidator(response).check_status_code(
             name="Email confirm verify", expect_code=expected_code
         )
@@ -151,13 +172,28 @@ class AuthApiSSO:
         expected_code: int = 200,
         expected_schema: str = "laborer-sso-error.json",
     ) -> AuthApiSSO:
-        json_body = LaborerSSOAccount.register_account(account)
+        payload = Root(
+            data=Data(
+                type="account",
+                attributes=CreateAccount(
+                    otp=account.confirmation_code,
+                    birth_date=account.birth_day,
+                    email=account.email,
+                    password=account.password,
+                    password_confirm=account.password,
+                ),
+            )
+        )
         response: Response = ...
         if requests_number is not None:
             for _ in range(requests_number):
-                response = self.api.post(url=self.url, endpoint="/accounts", json=json_body)
+                response = self.api.post(
+                    url=self.url,
+                    endpoint="/accounts",
+                    json=payload.dict(by_alias=True),
+                )
         else:
-            response = self.api.post(url=self.url, endpoint="/accounts", json=json_body)
+            response = self.api.post(url=self.url, endpoint="/accounts", json=payload.dict(by_alias=True))
         validator = ResponseValidator(response)
         validator.check_status_code(name="Register user", expect_code=expected_code)
         if expected_code != 200:
@@ -173,17 +209,19 @@ class AuthApiSSO:
 
     @allure.step
     def login(self, login, password, expected_code=200):
-        login_body = LaborerSSOAccount.login_user(login, password)
-        response = self.api.post(url=self.url, endpoint="/session/login", json=login_body)
+        login_body = Root(data=Data(type="login", attributes=Auth(login=login, password=password)))
+        response = self.api.post(
+            url=self.url, endpoint="/session/login", json=login_body.dict(exclude_unset=True)
+        )
         ResponseValidator(response).check_status_code(name="Login", expect_code=expected_code)
 
     @allure.step
     def login_with_otp(self, otp_code="0000", expected_code=200):
-        check_otp_code_body = LaborerSSOAccount.check_otp_code(otp_code)
+        check_otp_code_body = Root(data=Data(type="otp", attributes=Auth(otp=otp_code)))
         response = self.api.post(
             url=self.url,
             endpoint="/session/login-with-otp",
-            json=check_otp_code_body,
+            json=check_otp_code_body.dict(exclude_unset=True),
         )
         ResponseValidator(response).check_status_code(
             name="Login with OTP", expect_code=expected_code

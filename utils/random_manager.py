@@ -36,8 +36,7 @@ class RandomManager:
             suffix = choice(range(8, 10))
         return f"{prefix}{random_number}{suffix}"
 
-    def random_phone_number(self, size=9, with_prefix=True, prefix="966"):
-        prefix = prefix if with_prefix else ""
+    def random_phone_number(self, size: int = 9, prefix: str = "966") -> str:
         return f"{prefix}{self._random_int(size)}"
 
     @staticmethod

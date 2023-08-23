@@ -12,7 +12,7 @@ from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
-from src.api.controllers.sso_auth import AuthApiLaborerSSOController
+from src.api.controllers.sso_auth import AuthApiSSOController
 from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
@@ -25,7 +25,7 @@ class QiwaApi:
     def __init__(self) -> None:
         self.client = HTTPClient()
         self.auth = WorkspacesApiController(self.client)
-        self.sso = AuthApiLaborerSSOController(self.client)
+        self.sso = AuthApiSSOController(self.client)
         # APIs
         self.saudi_api = SaudizationCertificateApi(self.client)
         self.wp_debts_api = WPDebtsApi(self.client)

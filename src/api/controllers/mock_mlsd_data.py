@@ -23,41 +23,6 @@ class MockMlsdDataController:
         self.sequence_number = None
         self.labor_office_id = None
 
-    @allure.step("Prepare new Owner account")
-    def prepare_owner_account(
-        self,
-        user_type=None,
-        role="Owner",
-        personal_number=None,
-        email=None,
-        password=None,
-        phone_number=None,
-        wp_type="valid",
-        saudi_count=3,
-        expat_count=3,
-        branches=None,
-        subscription="have-subscription",
-    ):
-        user_type = user_type if user_type else "saudi"
-        if user_type in {"saudi", "expat", "border"} and not personal_number:
-            personal_number = self.get_laborers_new(
-                user_type=user_type,
-                wp_type=wp_type,
-                role=role,
-                saudi_count=saudi_count,
-                expat_count=expat_count,
-                branches=branches,
-                subscription=subscription,
-            )
-
-        password = password if password else UserInfo.PASSWORD
-        self.account = Account(
-            personal_number=personal_number,
-            email=email,
-            phone_number=phone_number,
-            password=password,
-        )
-
     @allure.step("Prepare establishment")
     def prepare_establishment(
         self,
@@ -112,7 +77,7 @@ class MockMlsdDataController:
         else:
             account = establishment_data["owner_number"]
 
-        self.account = Account(account, UserInfo.DEFAULT_PASSWORD)
+        self.account = Account(account, UserInfo.PASSWORD)
         logger.info(
             f"Unified Number ID: {self.unified_number_id}, Sequence Number: {self.sequence_number}, "
             f"Labor Office ID: {self.labor_office_id}"

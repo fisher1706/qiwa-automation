@@ -8,7 +8,7 @@ from src.api.clients.auth_sso import AuthApiSSO
 from src.api.clients.oauth import OAuthApi
 
 
-class AuthApiLaborerSSOController(AuthApiSSO):  # pylint: disable=duplicate-code
+class AuthApiSSOController(AuthApiSSO):
     @property
     def oauth_api(self) -> OAuthApi:
         return OAuthApi(self.api)
@@ -37,11 +37,9 @@ class AuthApiLaborerSSOController(AuthApiSSO):  # pylint: disable=duplicate-code
         self.pre_check_user_email(account.email)
         self.register_user(account)
 
-    @allure.step("Complete create user account via laborer SSO API")
-    def complete_create_account_via_laborer_sso_api(self, account):
-        self.init_laborer_sso_hsm(
-            account.personal_number, account.year, account.month, account.day
-        )
+    @allure.step
+    def register_account_via_sso_api(self, account: Account) -> None:
+        self.init_laborer_sso_hsm(account.personal_number)
         self.active_hsm()
         self.create_account_via_laborer_sso_api(account)
 

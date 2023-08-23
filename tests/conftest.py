@@ -4,7 +4,7 @@ from data.account import Account
 from data.constants import UserInfo
 from src.api.app import QiwaApi
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
-from src.api.controllers.sso_auth import AuthApiLaborerSSOController
+from src.api.controllers.sso_auth import AuthApiSSOController
 from src.api.http_client import HTTPClient
 
 
@@ -37,8 +37,8 @@ def parametrized_owner(http_client):
 
     test_data = MockMlsdDataController()
     test_data.prepare_establishment()
-    auth = AuthApiLaborerSSOController(http_client)
-    auth.complete_create_account_via_laborer_sso_api(test_data.account)
+    auth = AuthApiSSOController(http_client)
+    auth.register_account_via_sso_api(test_data.account)
     return test_data
 
 
@@ -47,10 +47,11 @@ def owner_module() -> Account:
     """
     Single owner account for all tests within the module (suite)
     """
-    test_data = MockMlsdDataController()
-    test_data.prepare_owner_account()
-    AuthApiLaborerSSOController().complete_create_account_via_laborer_sso_api(test_data.account)
-    return test_data.account
+    mock_data = MockMlsdDataController()
+    personal_number = mock_data.get_laborers_new(user_type="saudi")
+    account = Account(personal_number)
+    AuthApiSSOController().register_account_via_sso_api(account)
+    return account
 
 
 @pytest.fixture
@@ -60,7 +61,7 @@ def super_user() -> Account:
     """
     return Account(
         personal_number="1215113732",
-        password=UserInfo.DEFAULT_PASSWORD,
+        password=UserInfo.PASSWORD,
         email="api-tests-super-user@qa.qiwa.tech",
     )
 

@@ -1,5 +1,0 @@
-{
-  "completed": {"type": ["integer"]},
-  "pending": {"type": ["integer"]},
-  "user_trainings": {"type": ["dict", "list"]}
-}
