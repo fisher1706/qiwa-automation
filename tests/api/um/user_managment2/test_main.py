@@ -18,5 +18,5 @@ class TestMainAPI:  # pylint: disable=duplicate-code
     )
     def test_access_for_user_without_um_permission(self):
         owner = test_account_um_2
-        self.auth_api.login_user(owner.account.personal_number, UserInfo.DEFAULT_PASSWORD)
+        self.auth_api.login_user(owner.account.personal_number, UserInfo.PASSWORD)
         self.auth_api.select_company_with_sequence_number(owner.sequence_number)

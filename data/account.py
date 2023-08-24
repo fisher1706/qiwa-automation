@@ -12,9 +12,7 @@ class Account:
     phone_number: str = field(default_factory=RandomManager().random_phone_number)
     confirmation_code: str = "0000"
     language: str = "en"
-    day: str = "01"
-    month: str = "01"
-    year: str = "1430"
+    birth_day: str = "1430-01-01"
 
     def __post_init__(self):
         if not self.email:

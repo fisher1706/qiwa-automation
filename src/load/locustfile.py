@@ -8,7 +8,7 @@ import config
 from data.constants import UserInfo
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.payloads import Data, Root
-from src.api.payloads.raw.auth import Auth
+from src.api.payloads.sso.sso_auth import Auth
 
 
 def establishment_laborers(sequence_number: str, role: str) -> list[str]:
@@ -37,7 +37,7 @@ class QiwaUser(HttpUser):
         payload = Root(
             data=Data(
                 type="login",
-                attributes=Auth(login=self.personal_number, password=UserInfo.DEFAULT_PASSWORD),
+                attributes=Auth(login=self.personal_number, password=UserInfo.PASSWORD),
             )
         )
         return self.client.post(
@@ -49,7 +49,7 @@ class QiwaUser(HttpUser):
             data=Data(
                 type="login",
                 attributes=Auth(
-                    login=self.personal_number, password=UserInfo.DEFAULT_PASSWORD, otp_code="0000"
+                    login=self.personal_number, password=UserInfo.PASSWORD, otp_code="0000"
                 ),
             )
         )
