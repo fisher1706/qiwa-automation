@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from http import HTTPStatus
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
 import allure
 from requests import Response
