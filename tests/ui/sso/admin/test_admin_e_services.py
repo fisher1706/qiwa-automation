@@ -4,9 +4,13 @@ import pytest
 from data.sso.dataset import EServiceDataset
 from data.validation_message import SuccessMessage
 from src.ui.qiwa import qiwa
+from utils.allure import TestmoProject, project
+
+testmo_case_id = project(TestmoProject.QIWA_ADMIN)
 
 
 @allure.title("Check admin e-services page is displayed")
+@testmo_case_id(6314)
 def test_check_admin_e_service_page_is_displayed():
     qiwa.login_as_admin() \
         .admin_page.wait_page_to_load() \
@@ -17,6 +21,7 @@ def test_check_admin_e_service_page_is_displayed():
 
 @allure.title("Check e-service creation")
 @pytest.mark.parametrize("en_title, ar_title, service_code, en_link, ar_link", EServiceDataset.e_service_valid_data)
+@testmo_case_id(6314, 6316)
 def test_creation_e_service(en_title, ar_title, service_code, en_link, ar_link):
     qiwa.login_as_admin() \
         .admin_page.wait_page_to_load() \
@@ -33,6 +38,7 @@ def test_creation_e_service(en_title, ar_title, service_code, en_link, ar_link):
 
 
 @allure.title("Edit e-services")
+@testmo_case_id(6315)
 def test_edit_e_service(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     new_title = "new english title"
@@ -49,7 +55,8 @@ def test_edit_e_service(create_e_service_via_api, delete_e_service_via_api):
         .check_e_service_detail()
 
 
-@allure.title("reset changes and data")
+@allure.title("Reset changes and data")
+@testmo_case_id(6317, 6318)
 def test_reset_changes(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     new_title = "new english title"
@@ -65,8 +72,9 @@ def test_reset_changes(create_e_service_via_api, delete_e_service_via_api):
         .check_privilege_checkbox_is_not_checked()
 
 
-@allure.title("view created e-service")
+@allure.title("View created e-service")
 @pytest.mark.slow
+@testmo_case_id(6319)
 def test_view_created_e_service(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     qiwa.login_as_admin() \
@@ -81,7 +89,8 @@ def test_view_created_e_service(create_e_service_via_api, delete_e_service_via_a
         .search_by_category_name(category_name=e_service_title)
 
 
-@allure.title("filtration on the e-service page")
+@allure.title("Filtration on the e-service page")
+@testmo_case_id(6321)
 def test_filtration_e_service_page(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     qiwa.login_as_admin() \
@@ -90,7 +99,8 @@ def test_filtration_e_service_page(create_e_service_via_api, delete_e_service_vi
         .filter_e_services(english_title=e_service_title)
 
 
-@allure.title("check clear all filters functionality")
+@allure.title("Check clear all filters functionality")
+@testmo_case_id(6322)
 def test_check_clear_filters(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     qiwa.login_as_admin() \
@@ -102,6 +112,7 @@ def test_check_clear_filters(create_e_service_via_api, delete_e_service_via_api)
 
 
 @allure.title("Add and edit icon to the e-service")
+@testmo_case_id(6324)
 def test_add_icon(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     qiwa.login_as_admin() \
@@ -118,6 +129,7 @@ def test_add_icon(create_e_service_via_api, delete_e_service_via_api):
 
 
 @allure.title("Change icon for the e-service")
+@testmo_case_id(6325)
 def test_delete_icon(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api
     qiwa.login_as_admin() \

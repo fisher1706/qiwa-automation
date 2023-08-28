@@ -51,14 +51,8 @@ class SuccessMessage:
         "type": "e-service category successfully created",
         "text": "The category has been successfully saved",
     }
-    E_SERVICE_CATEGORY_UPDATE_MESSAGE = {
-        "type": "e-service category successfully created",
-        "text": "The category has been successfully updated",
-    }
-    E_SERVICE_CATEGORY_DELETED = {
-        "type": "e-service category successfully deleted",
-        "text": "The category has been successfully deleted",
-    }
+    E_SERVICE_CATEGORY_UPDATE_MESSAGE = "The category has been successfully updated"
+    E_SERVICE_CATEGORY_DELETED = "The category has been successfully deleted"
     SPACE_CREATED_MESSAGE = {
         "type": "space successfully created",
         "text": "Space has been successfully created",

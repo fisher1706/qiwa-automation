@@ -11,6 +11,7 @@ class TestmoProject(enum.Enum):
     VISAS = 7
     USER_MANAGEMENT = 26
     WORK_PERMIT = 29
+    QIWA_ADMIN = 23
 
 
 def project(project_id: TestmoProject) -> Callable:

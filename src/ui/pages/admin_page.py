@@ -4,6 +4,7 @@ import time
 from enum import Enum
 from pathlib import Path
 
+import allure
 from selene import be, browser, by, command, have, query
 from selene.support.shared.jquery_style import s, ss
 from selenium.common.exceptions import StaleElementReferenceException
@@ -85,6 +86,7 @@ class AdminPage:
     E_SERVICES_ENGLISH_LINK_TITLE = by.xpath('//*[@class="links-list"]/li/span[2]')
     E_SERVICES_DETAIL_LINK = by.xpath('//*[@class="links-list"]/li/a')
 
+    @allure.step
     def wait_page_to_load(self) -> AdminPage:
         element = s(self.E_SERVICES)
         element.wait_until(be.visible)
@@ -99,6 +101,7 @@ class AdminPage:
         self.e_services_table.body.should(be.not_.blank)
         return self
 
+    @allure.step
     def go_to_e_services_tab(self) -> AdminPage:
         element = s(self.E_SERVICES)
         element.should(be.visible).click()
@@ -135,10 +138,10 @@ class AdminPage:
         button.should(be.clickable).click()
         return self
 
-    def check_successful_action(self, expected_message) -> AdminPage:
+    def check_successful_action(self, expected_message: str) -> AdminPage:
         message = s(self.E_SERVICES_SUCCESSFUL_MESSAGE)
         message.wait_until(be.visible)
-        message.should(have.text((expected_message["text"])))
+        message.should(have.text(expected_message))
         return self
 
     def filter_by_english_title(self, title):
@@ -227,49 +230,62 @@ class AdminPage:
         delete_icon = s(self.DELETE_ICON)
         delete_icon.perform(command.js.scroll_into_view).should(be.clickable).click()
 
-    def go_to_e_services_categories_list_page(self):
+    @allure.step
+    def go_to_e_services_categories_list_page(self) -> AdminPage:
         s(self.CATEGORY_LIST_BUTTON).should(be.visible).click()
+        return self
 
-    def check_e_services_category_page(self):
+    @allure.step
+    def check_e_services_category_page(self) -> AdminPage:
         s(self.E_SERVICE_CATEGORY_HEADER).should(be.visible)
         s(self.E_SERVICES_CATEGORY_TABLE).should(be.visible)
         s(self.ADD_E_SERVICE_CATEGORY).should(be.visible)
+        return self
 
-    def click_add_category_button(self):
+    @allure.step
+    def click_add_category_button(self) -> AdminPage:
         s(self.ADD_E_SERVICE_CATEGORY).should(be.clickable).click()
+        return self
 
-    def create_new_category_field(self, arabic_name, english_name, code, is_cancel=False):
+    @allure.step
+    def fill_new_category_field(self, arabic_name: str, english_name: str, code: str) -> AdminPage:
         arabic_name_field = s(self.NEW_CATEGORY_AR_NAME_FIELD)
         arabic_name_field.wait_until(be.visible)
         arabic_name_field.clear().type(arabic_name)
         s(self.NEW_CATEGORY_EN_NAME_FIELD).should(be.visible).clear().type(english_name)
         s(self.NEW_CODE_FIELD).should(be.visible).clear().type(code)
-        if not is_cancel:
-            s(self.SAVE_CATEGORY_BUTTON).should(be.enabled).click()
-        else:
-            s(self.CANCEL_BUTTON).should(be.enabled).click()
+        return self
 
-    def filter_category_by_english_name(self, english_name):
+    @allure.step
+    def click_save_category_button(self) -> AdminPage:
+        s(self.SAVE_CATEGORY_BUTTON).should(be.enabled).click()
+        return self
+
+    @allure.step
+    def click_cansel_creating_category_button(self) -> AdminPage:
+        s(self.CANCEL_BUTTON).should(be.enabled).click()
+        return self
+
+    def filter_category_by_english_name(self, english_name: str) -> AdminPage:
         s(self.CATEGORY_ENGLISH_NAME_FILTER).should(be.visible).clear().type(english_name)
         time.sleep(3)
+        return self
 
-    def delete_category(self):
+    def delete_category(self) -> AdminPage:
         s(self.DELETE_CATEGORY_BUTTON).should(be.clickable).click()
         alert = browser.switch_to.alert
         assert_that(alert.text).as_("Alert message").equals_to(
             "Are you sure you want to delete this category?"
         )
         alert.accept()
+        return self
 
-    def edit_category(self, new_en_name, is_cancel=False):
+    def edit_category(self, new_en_name: str) -> AdminPage:
         s(self.EDIT_CATEGORY_BUTTON).should(be.visible).click()
         s(self.EDIT_ENGLISH_NAME_FIELD).clear().type(new_en_name)
-        if not is_cancel:
-            s(self.SAVE_CATEGORY_BUTTON).should(be.enabled).click()
-        else:
-            s(self.CANCEL_BUTTON).should(be.enabled).click()
+        return self
 
-    def check_cancel_action(self):
+    def check_cancel_action(self) -> None:
         s(self.NEW_CATEGORY_AR_NAME_FIELD).should(be.not_.visible)
         s(self.NEW_CATEGORY_EN_NAME_FIELD).should(be.not_.visible)
         s(self.NEW_CODE_FIELD).should(be.not_.visible)
@@ -277,7 +293,7 @@ class AdminPage:
     def check_filtration_on_category_page(self, en_name: str) -> None:
         s(self.CATEGORY_ENGLISH_NAME_COLUMN).should(have.text(en_name))
 
-    def clear_filters_on_category_page(self):
+    def clear_filters_on_category_page(self) -> None:
         s(self.CLEAR_CATEGORY_FILTER_BUTTON).should(be.clickable).click()
         time.sleep(3)
-        assert len(ss(self.CATEGORY_ENGLISH_NAME_COLUMN)) > 1
+        ss(self.CATEGORY_ENGLISH_NAME_COLUMN).should(have.size_greater_than(1))
