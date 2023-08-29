@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     hold_browser_open: bool = False
     remote_url: Optional[HttpUrl] = None
     remote_enableVNC: bool = True
-    remote_enableVideo: bool = False
+    remote_enableVideo: bool = True
     remote_enableLog: bool = True
     remote_acceptInsecureCerts: bool = True
 
