@@ -1,3 +1,5 @@
+import time
+
 import allure
 from selene import be, have
 from selene.support.shared.jquery_style import ss
@@ -27,6 +29,8 @@ class WorkspacesPage:
 
     @allure.step
     def select_business_account(self):
+        # TODO investigate the possibility to remove time sleep
+        time.sleep(10)
         self.business_account_card.click()
         return self
 
