@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import time
-
 import allure
 from selene.support.shared.jquery_style import s
 
@@ -37,7 +35,6 @@ class SSOAuthPage:
         self.otp_code_second_cell.type(number)
         self.otp_code_third_cell.type(number)
         self.otp_code_fourth_cell.type(number)
-        time.sleep(5)
         return self
 
     @allure.step

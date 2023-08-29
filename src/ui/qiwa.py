@@ -46,16 +46,8 @@ class Qiwa:
 
     @allure.step
     def login_as_admin(self) -> Qiwa:
-        self.login_page.open_login_page()
-        (
-            self.sso_auth_page.enter_user_id("1215113732")
-            .enter_password(UserInfo.PASSWORD)
-            .login()
-            .enter_otp_code("0000")
-            .confirm_otp_code()
-        )
-        self.workspace_page.should_have_workspace_list_appear()
-        self.workspace_page.select_admin_account()
+        self.login_as_user("1215113732")
+        self.workspace_page.should_have_workspace_list_appear().select_admin_account()
         return self
 
     @allure.step
