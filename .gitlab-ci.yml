@@ -164,6 +164,7 @@ api_tests_shareable_stage:
   stage: send-test-reports
   variables:
     ALLURE_PROJECT_ID: $ALLURE_PROJECT_ID
+    DEPENDENCY_JOB: $DEPENDENCY_JOB
   dependencies:
     - $DEPENDENCY_JOB
 
