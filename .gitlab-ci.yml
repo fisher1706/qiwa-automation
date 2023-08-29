@@ -8,7 +8,7 @@ include:
 
 variables:
   IMAGE: takamol/qa-automation:master-latest
-  ALLURE_RESULTS_DIRECTORY: allure-results
+  ALLURE_DIRECTORY: allure-results
 
 stages:
   - build
@@ -31,8 +31,6 @@ stages:
 build:
   stage: build
   extends: .package
-  variables:
-    ENV: master
   tags:
     - dind
   only:
@@ -48,8 +46,6 @@ build_test_allure:
   extends: .package
   tags:
     - dind
-  variables:
-    ENV: testallure
   only:
     - add_allure_cleaner
 
@@ -96,247 +92,125 @@ isort:
   only:
     - merge_requests
 
-ui_tests_sso:
-  image: takamol/qa-automation:$ENV-latest
+.testrun_template: &testrun
+  image: $IMAGE
   allow_failure: true
   stage: tests
   tags:
     - shared
+  artifacts:
+    paths:
+      - $ALLURE_DIRECTORY
+    expire_in: 1 day
+    when: always
+  only:
+    - master
+
+ui_tests_sso:
+  <<: *testrun
   script:
-    - pytest tests/ui/sso -s --alluredir=allure-results
+    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
   retry:
     max: 2
     when: always
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
-  variables:
-    ENV: master
-  only:
-    - master
 
 ui_tests_um:
-  image: $IMAGE
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/ui/um -s --alluredir=allure-results --discord_channel=um-ui-daily
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
+    - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-ui-daily
   variables:
     ENV: stage
-  only:
-    - master
 
 ui_tests_shareable:
-  image: takamol/qa-automation:$ENV-latest
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/ui/shareable -s --alluredir=allure-results --reruns 2 --discord_channel=ss-ui-wp-daily
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
-  variables:
-    ENV: master
-  only:
-    - master
+    - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --discord_channel=ss-ui-wp-daily
 
 ui_tests_dedicated:
-  image: $IMAGE
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/ui/dedicated -s --alluredir=allure-results
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
+    - pytest tests/ui/dedicated -s --alluredir=$ALLURE_DIRECTORY
   variables:
     ENV: demo
-  only:
-    - master
 
 api_tests_sso:
-  image: $IMAGE
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/api/sso -s --alluredir=allure-results --reruns 2
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
-  variables:
-    ENV: master
-  only:
-    - master
+    - pytest tests/api/sso -s --alluredir=$ALLURE_DIRECTORY --reruns 2
 
 api_tests_um:
-  image: $IMAGE
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/api/um -s --alluredir=allure-results --discord_channel=um-api-daily
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
+    - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-api-daily
   variables:
     ENV: stage
-  only:
-    - master
 
 api_tests_shareable_demo:
-  image: $IMAGE
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-    - pytest tests/api/shareable -s --alluredir=allure-results --discord_channel=ss-api-wp-daily
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
-  variables:
-    ENV: master
-  only:
-    - master
+    - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
 
 api_tests_shareable_stage:
-  image: takamol/qa-automation:master-latest
-  allow_failure: true
-  stage: tests
-  tags:
-    - shared
+  <<: *testrun
   script:
-     - pytest tests/api/shareable -m stage -s --alluredir=allure-results --discord_channel=ss-api-wp-daily
-  artifacts:
-    paths:
-      - $ALLURE_RESULTS_DIRECTORY
-    expire_in: 1 day
-    when: always
+     - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
   variables:
     ENV: stage
-  only:
-    - master
+
+.allure_results_template: &allure_results
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  extends: .generate_allure_report
+  stage: send-test-reports
+  variables:
+    ALLURE_PROJECT_ID: $ALLURE_PROJECT_ID
+  dependencies:
+    - $DEPENDENCY_JOB
 
 allure-ui-sso-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
-  dependencies:
-    - ui_tests_sso
-  needs:
-    - ui_tests_sso
-  only:
-    - master
+    DEPENDENCY_JOB: ui_tests_sso
 
 allure-ui-um-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
-  dependencies:
-    - ui_tests_um
-  needs:
-    - ui_tests_um
-  only:
-    - master
-
+    DEPENDENCY_JOB: ui_tests_um
 
 allure-ss-ui-wp-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
-  dependencies:
-    - ui_tests_shareable
-  needs:
-    - ui_tests_shareable
-  only:
-    - master
+    DEPENDENCY_JOB: ui_tests_shareable
 
 allure-ui-et-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: et-ui-daily
-  dependencies:
-    - ui_tests_dedicated
-  needs:
-    - ui_tests_dedicated
-  only:
-    - stage
-
+    DEPENDENCY_JOB: ui_tests_dedicated
 
 allure-api-sso-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
-  dependencies:
-    - api_tests_sso
-  needs:
-    - api_tests_sso
-  only:
-    - master
+    DEPENDENCY_JOB: api_tests_sso
 
 allure-api-um-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: um-api-daily
-  dependencies:
-    - api_tests_um
-  needs:
-    - api_tests_um
-  only:
-    - master
+    DEPENDENCY_JOB: api_tests_um
 
 allure-api-wp-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
-  dependencies:
-    - api_tests_shareable_demo
-  needs:
-    - api_tests_shareable_demo
-  only:
-    - master
+    DEPENDENCY_JOB: api_tests_shareable_demo
 
 allure-api-ss-stage-results:
-  extends: .generate_allure_report
-  stage: send-test-reports
+  <<: *allure_results
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-  dependencies:
-    - api_tests_shareable_stage
-  needs:
-    - api_tests_shareable_stage
-  only:
-    - master
+    DEPENDENCY_JOB: api_tests_shareable_stage
