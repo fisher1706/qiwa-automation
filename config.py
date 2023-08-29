@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     qiwa_certificates_validation_url: HttpUrl
     qiwa_change_occupation_url: HttpUrl
     qiwa_ott_service_url: HttpUrl
-    qiwa_delegation_url: HttpUrl
+    qiwa_delegation_url: Optional[HttpUrl]
 
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
