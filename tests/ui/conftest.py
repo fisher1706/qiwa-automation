@@ -3,7 +3,7 @@ from datetime import datetime
 import allure
 import allure_commons
 import pytest
-from allure_commons.types import AttachmentType
+from allure_commons.types import AttachmentType, LinkType
 from selene import support
 from selene.support.shared import browser
 from selenium import webdriver
@@ -79,3 +79,13 @@ def pytest_runtest_makereport(item):
                 img = file.read()
             allure.attach(img, name=f"{timestamp}.png", attachment_type=AttachmentType.PNG)
     setattr(item, "rep_" + rep.when, rep)
+
+
+@pytest.fixture(autouse=True)
+def attach_video_record_link(setup_driver):
+    if config.settings.remote_url and config.settings.remote_enableVideo:
+        allure.dynamic.link(
+            f"https://selenoid-ui.qiwa.tech/video/{browser.driver.session_id}.mp4",
+            LinkType.LINK,
+            "Video record",
+        )
