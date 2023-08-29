@@ -157,61 +157,64 @@ api_tests_shareable_stage:
   variables:
     ENV: stage
 
-.allure_results_template: &allure_results
+.allure_results_template: &test_results
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   extends: .generate_allure_report
   stage: send-test-reports
-  variables:
-    ALLURE_PROJECT_ID: $ALLURE_PROJECT_ID
-    DEPENDENCY_JOB: $DEPENDENCY_JOB
-  dependencies:
-    - $DEPENDENCY_JOB
 
 allure-ui-sso-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
-    DEPENDENCY_JOB: ui_tests_sso
+  dependencies:
+    - ui_tests_sso
 
 allure-ui-um-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
-    DEPENDENCY_JOB: ui_tests_um
+  dependencies:
+    - ui_tests_um
 
 allure-ss-ui-wp-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
-    DEPENDENCY_JOB: ui_tests_shareable
+  dependencies:
+    - ui_tests_shareable
 
 allure-ui-et-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: et-ui-daily
-    DEPENDENCY_JOB: ui_tests_dedicated
+  dependencies:
+    - ui_tests_dedicated
 
 allure-api-sso-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
-    DEPENDENCY_JOB: api_tests_sso
+  dependencies:
+    - api_tests_sso
 
 allure-api-um-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: um-api-daily
-    DEPENDENCY_JOB: api_tests_um
+  dependencies:
+    - api_tests_um
 
 allure-api-wp-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
-    DEPENDENCY_JOB: api_tests_shareable_demo
+  dependencies:
+    - api_tests_shareable_demo
 
 allure-api-ss-stage-results:
-  <<: *allure_results
+  <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-    DEPENDENCY_JOB: api_tests_shareable_stage
+  dependencies:
+    - api_tests_shareable_stage
