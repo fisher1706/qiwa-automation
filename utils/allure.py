@@ -1,4 +1,5 @@
 import enum
+import functools
 from typing import Any, Callable
 
 import allure
@@ -17,6 +18,7 @@ class TestmoProject(enum.Enum):
 def project(project_id: TestmoProject) -> Callable:
     def testcase(*case_ids: int) -> Callable:
         def decorator(func: Callable) -> Callable:
+            @functools.wraps(func)
             def wrapper(*args: Any, **kwargs: Any) -> Callable:
                 for case_id in case_ids:
                     allure.dynamic.link(
