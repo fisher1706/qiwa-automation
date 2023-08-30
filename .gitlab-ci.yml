@@ -31,6 +31,8 @@ stages:
 build:
   stage: build
   extends: .package
+  variables:
+    ENV: master
   tags:
     - dind
   only:
