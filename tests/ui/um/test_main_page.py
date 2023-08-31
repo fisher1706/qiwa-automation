@@ -5,7 +5,7 @@ from data.um.user_management_models2 import test_account_um_2
 from src.ui.actions.um_actions.um_main import MainPageActions
 from utils.allure import TestmoProject, project
 
-testmo_case_id = project(TestmoProject.USER_MANAGEMENT)
+case_id = project(TestmoProject.USER_MANAGEMENT)
 
 
 @allure.feature('Main page UI')
@@ -16,7 +16,8 @@ class TestMainPageUI:
     def pre_test(self):
         self.um_main = MainPageActions()
 
-    @allure.title("7873 Check Main page UI")
+    @allure.title("Check Main page UI")
+    @case_id(7873)
     def test_main_page_elements(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
@@ -25,7 +26,8 @@ class TestMainPageUI:
         self.um_main.check_texts_on_main_page()
         self.um_main.check_search_main_page([owner.account.personal_number, user_name])
 
-    @allure.title("7880 Check the 'Users in _' tab and 'Users in Establishment Group' tab")
+    @allure.title("Check the 'Users in _' tab and 'Users in Establishment Group' tab")
+    @case_id(7880)
     def test_all_users_table(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
@@ -33,7 +35,8 @@ class TestMainPageUI:
                                                         seq_number=owner.sequence_number)
         self.um_main.compare_number_of_users_in_table()
 
-    @allure.title("7877 Check that User redirected to the 'All establishments under your Unified ID' section")
+    @allure.title("Check that User redirected to the 'All establishments under your Unified ID' section")
+    @case_id(7877)
     def test_user_is_redirected_to_user_details(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
@@ -46,26 +49,29 @@ class TestMainPageUI:
         self.um_main.navigate_to_owner_flow()
 
     @allure.title("Check User has access to Establishments than subscription is Active/Inactive")
-    @testmo_case_id(7875, 7876)
+    @case_id(7875, 7876)
     def test_active_user_has_access(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
         self.um_main.check_user_status()
         self.um_main.check_user_status(False)
 
-    @allure.title("7878 Check 'Users in Establishment Group' table pagination")
+    @allure.title("Check 'Users in Establishment Group' table pagination")
+    @case_id(7878)
     def test_pagination_for_users_table(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
         self.um_main.check_pagination_btns()
 
-    @allure.title("23717 Check that Group Manager displayed at the top of the users list")
+    @allure.title("Check that Group Manager displayed at the top of the users list")
+    @case_id(23717)
     def test_that_owner_is_first_in_table(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
         self.um_main.check_owner_role_in_table()
 
-    @allure.title("7879 Check that 'User Management' page has AR localization")
+    @allure.title("Check that 'User Management' page has AR localization")
+    @case_id(7879)
     def test_localization(self):
         owner = test_account_um_2
         self.um_main.log_in_and_navigate_to_um(owner)
