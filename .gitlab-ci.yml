@@ -105,6 +105,8 @@ isort:
       - $ALLURE_DIRECTORY
     expire_in: 1 day
     when: always
+  variables:
+    ENV: demo
   only:
     - master
 
@@ -132,8 +134,6 @@ ui_tests_dedicated:
   <<: *testrun
   script:
     - pytest tests/ui/dedicated -s --alluredir=$ALLURE_DIRECTORY
-  variables:
-    ENV: demo
 
 api_tests_sso:
   <<: *testrun
