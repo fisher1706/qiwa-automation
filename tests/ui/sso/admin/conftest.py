@@ -21,7 +21,20 @@ def delete_e_service_via_api():
 
 
 @pytest.fixture
-def create_category(self, super_user, http_client):
+def create_category(super_user, http_client):
     qiwa.login_as_admin().e_service.api.get_e_services(is_admin=True)
     qiwa.e_service.api.create_tag()
     return qiwa.e_service.api.tag_english_name
+
+
+@pytest.fixture
+def create_space(http_client, request):
+    qiwa.login_as_admin().spaces_api.get_spaces()
+    qiwa.spaces_api.create_space()
+    return qiwa.spaces_api.space_title
+
+
+@pytest.fixture
+def delete_spase():
+    yield
+    qiwa.spaces_api.delete_space_request()

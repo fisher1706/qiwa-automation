@@ -12,6 +12,8 @@ from selenium.common.exceptions import StaleElementReferenceException
 from src.ui.components.raw.table import Table
 from utils.assertion import assert_that
 
+# TODO : split into separate classes for admin admin e-services, update locators
+
 
 class FilterLocators(Enum):
     TITLE_ENGLISH_FIELD = '//*[@id="titleEn"]'
@@ -87,7 +89,7 @@ class AdminPage:
     E_SERVICES_DETAIL_LINK = by.xpath('//*[@class="links-list"]/li/a')
 
     @allure.step
-    def wait_page_to_load(self) -> AdminPage:
+    def wait_admin_page_to_load(self) -> AdminPage:
         element = s(self.E_SERVICES)
         element.wait_until(be.visible)
         return self
@@ -111,7 +113,7 @@ class AdminPage:
         browser.open("https://super.qiwa.tech/en/e-services/")
         return self
 
-    def go_to_spaces_tab(self):
+    def go_to_spaces_tab(self) -> None:
         element = s(self.SPACES)
         element.should(be.visible).click()
 
@@ -120,16 +122,14 @@ class AdminPage:
         element.should(be.visible).click()
         return self
 
-    def fill_in_the_fields_for_new_e_service(
-        self, english_title, arabic_title, service_code, english_link, arabic_link
-    ) -> AdminPage:
+    def fill_in_the_fields_for_new_e_service(self) -> AdminPage:
         s(self.E_SERVICES_STATUS_FIELD).click()
         s(self.ACTIVE_STATUS).click()
-        s(self.TITLE_ENGLISH_FIELD).type(english_title)
-        s(self.TITLE_ARABIC_FIELD).type(arabic_title)
-        s(self.SERVICE_CODE_FIELD).type(service_code)
-        s(self.ENGLISH_LINK_NAME_FIELD).type(english_link)
-        s(self.ARABIC_LINK_NAME_FIELD).type(arabic_link)
+        s(self.TITLE_ENGLISH_FIELD).type("English")
+        s(self.TITLE_ARABIC_FIELD).type("إنجليزي")
+        s(self.SERVICE_CODE_FIELD).type("test_service_code")
+        s(self.ENGLISH_LINK_NAME_FIELD).type("english_link")
+        s(self.ARABIC_LINK_NAME_FIELD).type("رابط انجليزي")
         return self
 
     def click_on_save_e_service_button(self) -> AdminPage:
@@ -248,12 +248,12 @@ class AdminPage:
         return self
 
     @allure.step
-    def fill_new_category_field(self, arabic_name: str, english_name: str, code: str) -> AdminPage:
+    def fill_new_category_field(self) -> AdminPage:
         arabic_name_field = s(self.NEW_CATEGORY_AR_NAME_FIELD)
         arabic_name_field.wait_until(be.visible)
-        arabic_name_field.clear().type(arabic_name)
-        s(self.NEW_CATEGORY_EN_NAME_FIELD).should(be.visible).clear().type(english_name)
-        s(self.NEW_CODE_FIELD).should(be.visible).clear().type(code)
+        arabic_name_field.clear().type("فريد الاختبار الذاتي")
+        s(self.NEW_CATEGORY_EN_NAME_FIELD).should(be.visible).clear().type("unique-auto-test")
+        s(self.NEW_CODE_FIELD).should(be.visible).clear().type("auto-test-code")
         return self
 
     @allure.step
