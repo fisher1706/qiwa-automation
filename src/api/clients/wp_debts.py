@@ -5,7 +5,7 @@ from src.api.http_client import HTTPClient
 
 
 class WPDebtsApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
     route = "/wp-debts"
 
     def __init__(self, client: HTTPClient):

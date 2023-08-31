@@ -45,7 +45,7 @@ class ConfirmationToken(QiwaBaseModel):
 
 class Authorize(QiwaBaseModel):
     client_id: str = "qiwa"
-    redirect_uri: str = f"{config.settings.env_url}/oauth/callback"
+    redirect_uri: str = f"{config.qiwa_urls.auth}/oauth/callback"
     response_type: str = "code"
     scope: str = "openid email phone profile"
     code_challenge_method: str = "S256"

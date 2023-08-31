@@ -9,7 +9,7 @@ from src.api.http_client import HTTPClient
 
 
 class WorkspacesApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
 
     def __init__(self, api=HTTPClient()):
         self.api = api

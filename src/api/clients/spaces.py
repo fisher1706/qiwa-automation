@@ -7,7 +7,7 @@ from src.api.requests.spaces import Spaces
 
 
 class SpacesApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
 
     def __init__(self, api):
         self.api = api

@@ -4,5 +4,5 @@ import config
 
 
 class UrlForBreadcrumbs(Enum):
-    E_SERVICES_URL = config.settings.qiwa_spa_url + "/company/e-services"
-    DELEGATION_DASHBOARD_URL = config.settings.qiwa_delegation_url
+    E_SERVICES_URL = config.qiwa_urls.spa + "/company/e-services"
+    DELEGATION_DASHBOARD_URL = config.qiwa_urls.delegationservice
