@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-
 from data.validation_message import SuccessMessage
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project

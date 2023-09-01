@@ -30,7 +30,6 @@ class Qiwa:
     admin_page = AdminPage()
     feedback = FeedbackPopup()
     delegation_dashboard_page = DelegationDashboardPage()
-    delegation_page = DelegationPage()
     admin_spaces_page = AdminSpacesPage()
 
     @allure.step

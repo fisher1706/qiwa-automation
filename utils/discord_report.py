@@ -1,3 +1,4 @@
+# pylint: R0902
 from time import gmtime, strftime
 from typing import List
 
