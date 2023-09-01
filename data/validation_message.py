@@ -51,27 +51,12 @@ class SuccessMessage:
         "type": "e-service category successfully created",
         "text": "The category has been successfully saved",
     }
-    E_SERVICE_CATEGORY_UPDATE_MESSAGE = {
-        "type": "e-service category successfully created",
-        "text": "The category has been successfully updated",
-    }
-    E_SERVICE_CATEGORY_DELETED = {
-        "type": "e-service category successfully deleted",
-        "text": "The category has been successfully deleted",
-    }
-    SPACE_CREATED_MESSAGE = {
-        "type": "space successfully created",
-        "text": "Space has been successfully created",
-    }
-    SPACE_EDIT_MESSAGE = {
-        "type": "space successfully edited",
-        "text": "Space has been successfully edited",
-    }
+    E_SERVICE_CATEGORY_UPDATE_MESSAGE = "The category has been successfully updated"
+    E_SERVICE_CATEGORY_DELETED = "The category has been successfully deleted"
+    SPACE_CREATED_MESSAGE = "Space has been successfully created"
+    SPACE_EDIT_MESSAGE = "Space has been successfully edited"
 
-    SPACE_DELETED_MESSAGE = {
-        "type": "space successfully deleted",
-        "text": "The space has been successfully deleted",
-    }
+    SPACE_DELETED_MESSAGE = "The space has been successfully deleted"
     ET_REQUEST = {
         "type": "et request",
         "text": "Your Employees transfer – Laborer transfer request was successful!",
@@ -216,10 +201,7 @@ class ErrorMessage:
         "type": "",
         "text": "هذا البريد الإلكتروني مستخدم بالفعل، يرجى إدخال بريد إلكتروني آخر",
     }
-    INVALID_SPACE_ENGLISH_NAME = {
-        "type": "invalid english name field format on space",
-        "text": "The Name English field format is invalid",
-    }
+    INVALID_SPACE_ENGLISH_NAME = "The Name English field format is invalid"
     ERROR_MESSAGE_WHEN_USER_TRIES_SUBSCRIBE_HIMSELF = {
         "type": "error",
         "text": "You have an active subscription. You "

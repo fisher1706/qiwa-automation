@@ -8,7 +8,7 @@ import config
 from data.constants import UserInfo
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.payloads import Data, Root
-from src.api.payloads.sso.sso_auth import Auth
+from src.api.payloads.raw.sso_oauth import Auth
 
 
 def establishment_laborers(sequence_number: str, role: str) -> list[str]:
