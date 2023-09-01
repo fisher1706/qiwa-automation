@@ -10,7 +10,9 @@ from src.api.app import QiwaApi
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.dashboard_page import DashboardPage
-from src.ui.pages.delegation_page import DelegationPage
+from src.ui.pages.delegations_pages.delegation_dashboard_page import (
+    DelegationDashboardPage,
+)
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
@@ -27,6 +29,7 @@ class Qiwa:
     e_services_page = EServicesPage()
     admin_page = AdminPage()
     feedback = FeedbackPopup()
+    delegation_dashboard_page = DelegationDashboardPage()
     delegation_page = DelegationPage()
     admin_spaces_page = AdminSpacesPage()
 
