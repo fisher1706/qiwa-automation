@@ -1,8 +1,11 @@
 [tool.poetry]
-name = "qa-automation"
+name = "qiwa-automation"
 version = "0.1.0"
-description = "packadge manager for qa-automation"
-authors = ["Rostyslav <rostyslav.stryzhak@cd.p2h.com>"]
+description = "autotests for Qiwa project"
+authors = [
+    "Rostyslav Stryzhak <rostyslav.stryzhak@cd.p2h.com>",
+    "Kyrylo Horilyi <kyrylo.horilyi@cd.p2h.com>",
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]

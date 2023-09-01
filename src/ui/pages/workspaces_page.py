@@ -1,20 +1,21 @@
 import time
 
 import allure
-from selene import Element, be, have
-from selene.support.shared.jquery_style import s, ss
+from selene import be, have
+from selene.support.shared.jquery_style import ss
 
 
 class WorkspacesPage:
-    account_cards = s(".gXYHZg")
-    individual_account_card = s(".hmkUlH")
-    business_account_card = s(".feHDll")
-    admin_account_card = s(".gORgzz")
-    business_account_list = ss('[id="tabpanel-:r0:-0"] button')
+    account_cards = ss("[data-component='Tile']")
+    individual_account_card = account_cards.element_by(have.text("Individual account"))
+    business_account_card = account_cards.element_by(have.text("Business Account"))
+    admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
+    business_account_list = ss("[data-component='TabPanel'] button")
 
     @allure.step
-    def should_have_workspace_list_appear(self) -> Element:
-        return self.account_cards.should(be.clickable)
+    def should_have_workspace_list_appear(self):
+        self.account_cards.should(be.clickable.each)
+        return self
 
     @allure.step
     def select_admin_account(self):
@@ -27,15 +28,20 @@ class WorkspacesPage:
         return self
 
     @allure.step
+    def select_business_account(self):
+        # TODO investigate the possibility to remove time sleep
+        time.sleep(10)
+        self.business_account_card.click()
+        return self
+
+    @allure.step
     def select_first_company_account(self):
-        time.sleep(6)
-        self.business_account_card.hover().click()
+        self.select_business_account()
         self.business_account_list.first.click()
         return self
 
     @allure.step
     def select_company_account_with_sequence_number(self, sequence_number: int | str):
-        self.business_account_list.element_by_its(
-            ".workspaces-number", have.text(str(sequence_number))
-        )
+        self.select_business_account()
+        self.business_account_list.element_by(have.text(str(sequence_number))).click()
         return self

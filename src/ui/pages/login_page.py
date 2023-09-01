@@ -5,13 +5,9 @@ from selene import be, browser, command
 from selene.support.shared.jquery_style import s
 
 import config
-from utils.logger import yaml_logger
-
-logger = yaml_logger.setup_logging(__name__)
 
 
 class LoginPage:
-    sign_in_block = s(".main")
     login_field = s('input[data-test-id="userId"]')
     password_field = s('input[data-test-id="password"]')
     continue_button = s('[data-test-id="login"]')
@@ -21,7 +17,6 @@ class LoginPage:
     @allure.step
     def open_login_page(self) -> LoginPage:
         browser.open(f"{config.settings.laborer_sso_ui_url}/en/sign-in")
-        self.sign_in_block.wait_until(be.visible)
         return self
 
     @allure.step
@@ -42,17 +37,12 @@ class LoginPage:
         return self
 
     @allure.step
-    def click_continue_button(self, click_button: bool = True) -> LoginPage:
-        element = self.continue_button
-        if click_button:
-            element.should(be.clickable).click()
-        else:
-            element.should(be.disabled)
+    def click_continue_button(self) -> LoginPage:
+        self.continue_button.click()
         return self
 
     @allure.step
     def enter_2fa_code(self, code: str = "0000") -> LoginPage:
-        logger.info(f"Enter otp code: {code}")
         element = self.two_fa_field
         element.wait_until(be.visible)
         element.should(be.blank).type(code).press_tab()
@@ -69,12 +59,6 @@ class LoginPage:
         return self
 
     @allure.step
-    def click_sign_in_button(self, click_button: bool = True) -> LoginPage:
-        button = self.sign_in_button
-        if click_button:
-            button.wait_until(be.clickable)
-            button.should(be.clickable).click()
-        else:
-            button.should(be.disabled)
-            logger.debug('Skip click on "Sign in" button. Not clickable')
+    def click_sign_in_button(self) -> LoginPage:
+        self.sign_in_button.click()
         return self

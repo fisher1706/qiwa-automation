@@ -6,6 +6,7 @@
 config/*.local.yml
 .DS_Store
 /venv
+.venv
 .pytest_cache
 .mypy_cache
 poetry.lock
