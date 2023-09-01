@@ -15,6 +15,7 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
 )
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.login_page import LoginPage
+from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 
@@ -29,6 +30,7 @@ class Qiwa:
     admin_page = AdminPage()
     feedback = FeedbackPopup()
     delegation_dashboard_page = DelegationDashboardPage()
+    admin_spaces_page = AdminSpacesPage()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> Qiwa:

@@ -118,5 +118,6 @@ class EServicesPage:
         time.sleep(3)
         return self
 
-    def click_delete_e_service(self) -> None:
+    def click_delete_e_service(self) -> EServicesPage:
         s(self.DELETE_E_SERVICE_BUTTON).with_(timeout=1).should(be.clickable).click()
+        return self
