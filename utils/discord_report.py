@@ -8,22 +8,20 @@ import config as cfg
 from utils.decorators import singleton
 
 DISCORD_HOOKS = {
-    "demo": {
-        "core-ui-daily": "https://discord.com/api/webhooks/"
-        "1007039337722036366/ChDkJMqqOLq-9zv8r4RiziFoEn74uOYHdA8gyFHfC7rrjf9oO8aW-IFW94UBZvzCcx86",
-        "core-api-daily": "https://discord.com/api/webhooks/"
-        "1006335307517534268/Ph5PJYFxh5DZUScIF3K9Nyj25XmBLrndcD2hYr_BKh82bEhoDtMCEqv2CBh7hAej_SAi",
-        "um-ui-daily": "https://discord.com/api/webhooks/"
-        "1007039707454115933/DymGRtN11oDwsY3Aoqm3-HJl813AIbeOVdR331X2nDQ9JiSA5SvQrMEh_fSX0uc3jBks",
-        "um-api-daily": "https://discord.com/api/webhooks/"
-        "1006335410366062732/S1ZsSSr2i38lEqcvymnCyksMPpHiToPVB8iif5OoUIuc-T1W9RoZfzE0fo-Wd94OErAc",
-        "general": "https://discord.com/api/webhooks/"
-        "1006335720094433303/Zq75ewWPWQuMG4dIuENJBKzavjFu8jeQBaV38zUtsqrLPlxuUDwBeYBXsCITrTQP82YY",
-        "ss-ui-wp-daily": "https://discord.com/api/webhooks/"
-        "1086212077670105129/ucd-IJROLEblEyVhDl82-cvPzMEyPn8REcq_wk9yAx0azjwKT0mF6IvgKn2KTq93XOJj",
-        "ss-api-wp-daily": "https://discord.com/api/webhooks/"
-        "1086211711314427995/2rRsUnX4PUZ1PSt9CC8gjcmqI20LGtFzCbp9k-AwOJuMIDvXZUfsC0HSJtprciuqVDOa",
-    }
+    "core-ui-daily": "https://discord.com/api/webhooks/"
+                     "1007039337722036366/ChDkJMqqOLq-9zv8r4RiziFoEn74uOYHdA8gyFHfC7rrjf9oO8aW-IFW94UBZvzCcx86",
+    "core-api-daily": "https://discord.com/api/webhooks/"
+                      "1006335307517534268/Ph5PJYFxh5DZUScIF3K9Nyj25XmBLrndcD2hYr_BKh82bEhoDtMCEqv2CBh7hAej_SAi",
+    "um-ui-daily": "https://discord.com/api/webhooks/"
+                   "1007039707454115933/DymGRtN11oDwsY3Aoqm3-HJl813AIbeOVdR331X2nDQ9JiSA5SvQrMEh_fSX0uc3jBks",
+    "um-api-daily": "https://discord.com/api/webhooks/"
+                    "1006335410366062732/S1ZsSSr2i38lEqcvymnCyksMPpHiToPVB8iif5OoUIuc-T1W9RoZfzE0fo-Wd94OErAc",
+    "general": "https://discord.com/api/webhooks/"
+               "1006335720094433303/Zq75ewWPWQuMG4dIuENJBKzavjFu8jeQBaV38zUtsqrLPlxuUDwBeYBXsCITrTQP82YY",
+    "ss-ui-wp-daily": "https://discord.com/api/webhooks/"
+                      "1086212077670105129/ucd-IJROLEblEyVhDl82-cvPzMEyPn8REcq_wk9yAx0azjwKT0mF6IvgKn2KTq93XOJj",
+    "ss-api-wp-daily": "https://discord.com/api/webhooks/"
+                       "1086211711314427995/2rRsUnX4PUZ1PSt9CC8gjcmqI20LGtFzCbp9k-AwOJuMIDvXZUfsC0HSJtprciuqVDOa",
 }
 
 
@@ -54,7 +52,7 @@ class TestReportManager:
         self.__failed_only = True
 
     def define_webhook_url(self):
-        self.webhook_url = DISCORD_HOOKS[self.__project_env][self.suite_name]
+        self.webhook_url = DISCORD_HOOKS[self.suite_name]
 
     @staticmethod
     def get_webhook(webhook: str) -> SyncWebhook:
@@ -110,7 +108,7 @@ class TestReportManager:
 
     def force_message_split(self, report_text: str) -> List[str]:
         chunks, chunk_size = len(report_text), self.MESSAGE_SIZE
-        return [report_text[i : i + chunk_size] for i in range(0, chunks, chunk_size)]
+        return [report_text[i: i + chunk_size] for i in range(0, chunks, chunk_size)]
 
     def send_message(self, report_text: str):
         reports = self.force_message_split(report_text)
@@ -160,7 +158,7 @@ class TestReportManager:
         self.__report.append(outcome)
 
     def get_failed_message(
-        self, report, str_duration: str, test_name: str, is_rerun: bool = True
+            self, report, str_duration: str, test_name: str, is_rerun: bool = True
     ) -> str:
         marker = self.RERUN if is_rerun else self.RED_CIRCLE
         test_trace = ""
