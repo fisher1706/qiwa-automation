@@ -12,7 +12,7 @@ from utils.assertion import assert_status_code
 
 
 class ChangeOccupationApi:
-    url = config.settings.qiwa_change_occupation_url
+    url = config.qiwa_urls.qiwa_change_occupation
     route = "/change-occupation"
 
     def __init__(self, client: HTTPClient, token: AuthorizationToken):

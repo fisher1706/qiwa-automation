@@ -7,7 +7,7 @@ from src.api.payloads.sso.oauth import OauthInit
 
 
 class OAuthApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
     route = "/oauth"
 
     def __init__(self, client: HTTPClient):

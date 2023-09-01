@@ -140,7 +140,7 @@ class EmployeeTransferPage:
 
     def __init__(self):
         super().__init__()
-        self.et_url = config.settings.employee_transfer
+        self.et_url = config.qiwa_urls.employee_transfer
 
     @staticmethod
     def __extract_number_inside_parentheses(text: str) -> str:

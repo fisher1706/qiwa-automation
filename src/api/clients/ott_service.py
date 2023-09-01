@@ -5,7 +5,7 @@ from src.api.http_client import HTTPClient
 
 
 class OttServiceApi:
-    url = config.settings.qiwa_ott_service_url
+    url = config.qiwa_urls.qiwa_ott_service
     route = "/ott-service"
 
     def __init__(self):

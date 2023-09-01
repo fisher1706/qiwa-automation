@@ -7,7 +7,7 @@ from src.api.http_client import HTTPClient
 
 
 class GroupsApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
     route = "/admin/groups"
 
     def __init__(self, client: HTTPClient):

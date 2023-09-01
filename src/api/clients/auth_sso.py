@@ -22,7 +22,7 @@ from src.api.payloads.sso.sso_auth import (
 
 
 class AuthApiSSO:
-    url = config.settings.laborer_sso_api_url
+    url = config.qiwa_urls.laborer_sso_auth_api
 
     def __init__(self, api=HTTPClient()):
         self.api = api

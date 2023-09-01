@@ -13,7 +13,7 @@ from src.api.http_client import HTTPClient
 class WorkPermitApi:
     def __init__(self, api: HTTPClient):
         self.api = api
-        self.url = config.settings.api_url + "/working-permit-request"
+        self.url = config.qiwa_urls.api + "/working-permit-request"
 
     @allure.step("GET /working-permit-request/work-permit-transactions")
     def get_wp_transactions(

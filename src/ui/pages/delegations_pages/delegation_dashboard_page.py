@@ -45,7 +45,7 @@ class DelegationDashboardPage:
         self.active_breadcrumb.should(be.visible)
         self.active_breadcrumb_text.should(have.exact_text("Services"))
         self.active_breadcrumb_link.should(
-            have.attribute(name="href", value=config.settings.qiwa_spa_url + "/company/e-services")
+            have.attribute(name="href", value=config.qiwa_urls.spa + "/company/e-services")
         )
         return self
 

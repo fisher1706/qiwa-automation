@@ -25,7 +25,7 @@ employees = establishment_laborers(sequence_number=SEQUENCE_NUMBER, role="Employ
 
 class QiwaUser(HttpUser):
     wait_time = between(1, 3)
-    host = config.settings.api_url
+    host = config.qiwa_urls.api
     first_start = True
 
     def __init__(self, *args, **kwargs):

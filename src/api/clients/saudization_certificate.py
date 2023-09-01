@@ -6,7 +6,7 @@ from src.api.http_client import HTTPClient
 
 
 class SaudizationCertificateApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
     route = "/saudization-certificate"
 
     def __init__(self, client: HTTPClient):

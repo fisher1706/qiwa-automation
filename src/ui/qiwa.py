@@ -72,7 +72,7 @@ class Qiwa:
 
     @allure.step
     def open_delegation_dashboard_page(self) -> Qiwa:
-        browser.open(config.settings.qiwa_delegation_url)
+        browser.open(config.qiwa_urls.delegationservice)
         return self
 
 
