@@ -1,4 +1,5 @@
 import random
+import secrets
 import string
 from random import choice, choices, randint
 
@@ -62,3 +63,11 @@ class RandomManager:
             [x for x in range(number_of_privileges) if x != skipped_privilege], k=privileges_in_set
         )
         return privileges
+
+    @staticmethod
+    def generate_safe_url_string(str_len=10):
+        return secrets.token_urlsafe(str_len)
+
+    def generate_url(self, size=8, prefix="auto", host="auth.qiwa.tech", path=None):
+        _path = f"/{path}" if path else ""
+        return f"https://{prefix}-{self.random_alphanumeric(size)}-{host}{_path}"

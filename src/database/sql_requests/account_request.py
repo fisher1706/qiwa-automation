@@ -20,14 +20,12 @@ class AccountRequests:
 
     def get_account_national_id(self, national_id: str) -> str:
         account_record = (
-                self.session.query(Accounts).filter(Accounts.national_id == national_id).first()
-            )
+            self.session.query(Accounts).filter(Accounts.national_id == national_id).first()
+        )
         return account_record.id
 
     def get_account_iqama_id(self, iqama_id: str) -> str:
-        account_record = (
-                self.session.query(Accounts).filter(Accounts.iqama_id == iqama_id).first()
-            )
+        account_record = self.session.query(Accounts).filter(Accounts.iqama_id == iqama_id).first()
         return account_record.id
 
     def delete_account_record(self, account_id: str) -> None:
