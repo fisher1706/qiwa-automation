@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import Any
 
+import config
 from src.database.client.db_client import DBClient
 from src.database.models.db_tables_description import AccountsEmails, Emails
 
 
 class AccountsEmailsRequest:
-    session = DBClient().set_auth_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
 
     def get_email_confirmation_token_request(self, account_id: str, state: str = "pending") -> str:
         email_token_data = (

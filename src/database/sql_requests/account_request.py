@@ -1,3 +1,4 @@
+import config
 from src.database.client.db_client import DBClient
 from src.database.models.db_tables_description import (
     AccountActiveSessionKeys,
@@ -9,7 +10,7 @@ from src.database.models.db_tables_description import (
 
 
 class AccountRequests:
-    session = DBClient().set_auth_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
 
     def update_users_birthday(self, national_id: str) -> None:
         account_record = (

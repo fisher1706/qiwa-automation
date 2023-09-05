@@ -7,29 +7,19 @@ import config
 
 
 class DBClient:
-    # __db_instance = None
-    #
-    # def __new__(cls):
-    #     if cls.__db_instance is None:
-    #         cls.__db_instance = super().__new__(cls)
-    #     return cls.__db_instance
-    #
-    def __del__(self):
-        DBClient().close_session()
+    def __init__(self, db_url: str):
+        self.db_url = db_url
 
-    def __init__(self):
-        self.sso_auth_db_url = config.settings.sso_auth_db_url
-
-    def set_auth_db_session(self) -> Session:
-        engine = create_engine(url=self.sso_auth_db_url)
+    def set_db_session(self) -> Session:
+        engine = create_engine(url=self.db_url)
         Session = sessionmaker(bind=engine)  # pylint: disable=C0103, W0621
         session = Session()
         return session
 
-    def close_session(self) -> None:
-        self.set_auth_db_session().close()
+    def close_sb_session(self):
+        self.set_db_session().close_all()
 
 
 if __name__ == "__main__":
-    db_client = DBClient()
-    print(db_client.set_auth_db_session())
+    db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+    print(db_client.set_db_session())

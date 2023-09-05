@@ -1,11 +1,12 @@
 from sqlalchemy import DateTime
 
+import config
 from src.database.client.db_client import DBClient
 from src.database.models.db_tables_description import OauthApplications, OauthGrants
 
 
 class AppRequest:
-    session = DBClient().set_auth_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
 
     def create_applications_request(self, account_id: str, application_add):
         application_add = OauthApplications(
