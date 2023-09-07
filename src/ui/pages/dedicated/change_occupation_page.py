@@ -8,15 +8,15 @@ from src.ui.components.raw.table import Table
 
 
 class ChangeOccupationPage:
-    title = s('.c-service-heading__text')
-    field_search = s('.c-search-input-group__input')
-    tables = ss('.table')
+    title = s(".c-service-heading__text")
+    field_search = s(".c-search-input-group__input")
+    tables = ss(".table")
     table_employee_list = Table(tables[0])
     change_occupation_requests = Table(tables[1])
-    occupation_list = ss('.c-occupation-list__data li')
-    create_change_occupation = s('.o-modal__footer button')
-    agree_checkbox = s('.c-pending-requests__notice-checkbox')
-    btn_send_change_occupation_request = s('.c-pending-requests__cta button')
+    occupation_list = ss(".c-occupation-list__data li")
+    create_change_occupation = s(".o-modal__footer button")
+    agree_checkbox = s(".c-pending-requests__notice-checkbox")
+    btn_send_change_occupation_request = s(".c-pending-requests__cta button")
 
     def check_change_occupation_title(self):
         self.title.should(have.exact_text(Titles.CHANGE_OCCUPATION))
@@ -27,17 +27,18 @@ class ChangeOccupationPage:
         return self
 
     def check_employee_eligibility(self, eligible: str):
-        self.table_employee_list.row(1).cell(Label.ELIGIBILITY).s('div')\
-            .should(have.exact_text(eligible))
+        self.table_employee_list.row(1).cell(Label.ELIGIBILITY).s("div").should(
+            have.exact_text(eligible)
+        )
         return self
 
     def click_btn_change_occupation(self):
         time.sleep(1)
-        self.table_employee_list.row(1).cell(Label.ACTIONS).s('button').click()
+        self.table_employee_list.row(1).cell(Label.ACTIONS).s("button").click()
         return self
 
     def select_occupation(self, occupation: str):
-        self.occupation_list.element_by(have.exact_text(occupation)).s('.c-radio__mark').click()
+        self.occupation_list.element_by(have.exact_text(occupation)).s(".c-radio__mark").click()
         return self
 
     def click_create_change_occupation(self):
@@ -45,7 +46,9 @@ class ChangeOccupationPage:
         return self
 
     def check_request_is_exist(self, personal_number: str):
-        self.change_occupation_requests.row(1).cell(Label.IQAMA_NUMBER).should(have.exact_text(personal_number))
+        self.change_occupation_requests.row(1).cell(Label.IQAMA_NUMBER).should(
+            have.exact_text(personal_number)
+        )
         return self
 
     def click_agree_checkbox(self):

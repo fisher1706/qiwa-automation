@@ -6,21 +6,21 @@ from src.ui.components.raw.table import Table
 
 
 class RequestsPage:
-    header = s('.c-change-requests__heading')
-    change_occupation_requests = Table(s('.table'))
-    detail = ss('.detail .c-change-requests__laborer-item-value')
+    header = s(".c-change-requests__heading")
+    change_occupation_requests = Table(s(".table"))
+    detail = ss(".detail .c-change-requests__laborer-item-value")
     iqama_number = detail[1]
     request_status = detail[3]
     iqama_number_bulk = detail[7]
     request_status_bulk = detail[9]
-    btn_return_to_the_previous_page = s('.c-change-requests__action--back button')
+    btn_return_to_the_previous_page = s(".c-change-requests__action--back button")
 
     def check_request_title(self):
         self.header.hover().should(have.exact_text(Titles.CHANGE_OCCUPATION_REQUEST))
         return self
 
     def expand_details(self):
-        self.change_occupation_requests.row(1).cell('Actions').s('a').click()
+        self.change_occupation_requests.row(1).cell("Actions").s("a").click()
         return self
 
     def check_iqama_number(self, iqama_number: str):

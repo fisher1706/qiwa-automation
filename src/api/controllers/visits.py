@@ -20,7 +20,7 @@ class VisitsApiController:
         active_appointment_id = jmespath.search(
             f"data[?attributes.\"status-name-en\"=='Active' && "
             f"attributes.\"requester-personal-number\"=='{user_id}'].id",
-            response.json()
+            response.json(),
         )
         return active_appointment_id[0] if active_appointment_id else 0
 
@@ -31,7 +31,9 @@ class VisitsApiController:
 
     @allure.step
     def get_appointment_info(self, appointment_id):
-        return self.client.get(url=self.url, endpoint=self.route + f"/{appointment_id}", headers=HEADERS)
+        return self.client.get(
+            url=self.url, endpoint=self.route + f"/{appointment_id}", headers=HEADERS
+        )
 
     @allure.step
     def cancel_active_visit(self, user_id) -> None:
@@ -39,4 +41,7 @@ class VisitsApiController:
         if active_appointment_id:
             self.cancel_appointment(active_appointment_id)
             appointment_options = self.get_appointment_info(active_appointment_id)
-            assert appointment_options.json()['data']['attributes']['status-name-en'] == VisitStatus.CANCELED
+            assert (
+                appointment_options.json()["data"]["attributes"]["status-name-en"]
+                == VisitStatus.CANCELED
+            )

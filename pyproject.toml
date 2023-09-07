@@ -5,6 +5,7 @@ description = "autotests for Qiwa project"
 authors = [
     "Rostyslav Stryzhak <rostyslav.stryzhak@cd.p2h.com>",
     "Kyrylo Horilyi <kyrylo.horilyi@cd.p2h.com>",
+    "Dmytro Popovskyi <dmytro.popovskyi@p2h.com>",
 ]
 readme = "README.md"
 

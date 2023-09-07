@@ -52,13 +52,13 @@ class TransferType(str, Enum):
 
 
 class SearchingType(str, Enum):
-    VISIT_REFERENCE_NUMBER = 'Visit Reference Number'
-    ID = 'Id'
-    ESTABLISHMENT_NUMBER = 'Establishment Number'
+    VISIT_REFERENCE_NUMBER = "Visit Reference Number"
+    ID = "Id"
+    ESTABLISHMENT_NUMBER = "Establishment Number"
 
 
 class VisitStatus(str, Enum):
-    ACTIVE = 'Active'
-    DONE = 'Done'
-    CANCELED = 'Cancelled'
-    EXPIRED = 'Expired'
+    ACTIVE = "Active"
+    DONE = "Done"
+    CANCELED = "Cancelled"
+    EXPIRED = "Expired"
