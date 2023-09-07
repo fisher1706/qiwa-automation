@@ -121,14 +121,14 @@ ui_tests_sso:
 ui_tests_um:
   <<: *testrun
   script:
-    - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-ui-daily
+    - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=$UM_UI_DAILY
   variables:
     ENV: stage
 
 ui_tests_shareable:
   <<: *testrun
   script:
-    - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --discord_channel=ss-ui-wp-daily
+    - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --discord_channel=$SS_UI_WP_DAILY
 
 ui_tests_dedicated:
   <<: *testrun
@@ -143,19 +143,19 @@ api_tests_sso:
 api_tests_um:
   <<: *testrun
   script:
-    - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-api-daily
+    - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=$UM_API_DAILY
   variables:
     ENV: stage
 
 api_tests_shareable_demo:
   <<: *testrun
   script:
-    - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
+    - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --discord_channel=$SS_API_WP_DAILY
 
 api_tests_shareable_stage:
   <<: *testrun
   script:
-     - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
+     - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --discord_channel=$SS_API_WP_DAILY
   variables:
     ENV: stage
 

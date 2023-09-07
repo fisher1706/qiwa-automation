@@ -3,7 +3,6 @@ from _pytest.main import Session
 from discord import SyncWebhook
 
 import config
-from utils.discord_report import DISCORD_HOOKS
 
 
 def pytest_addoption(parser):
@@ -13,8 +12,8 @@ def pytest_addoption(parser):
 
 
 def pytest_sessionfinish(session: Session, exitstatus: int):  # pylint: disable=unused-argument
-    discord = session.config.getoption("--discord_channel")
-    if discord:
+    discord_webhook = session.config.getoption("--discord_channel")
+    if discord_webhook:
         reporter: _pytest.terminal.TerminalReporter = session.config.pluginmanager.get_plugin(
             "terminalreporter"
         )
@@ -25,12 +24,11 @@ def pytest_sessionfinish(session: Session, exitstatus: int):  # pylint: disable=
         skipped = len(stats.get("skipped", []))
         total = passed + failed + errors + skipped
         message = (
-            f":blue_circle: Environment: {config.settings.env}\n"
+            f":earth_africa: Environment: {config.settings.env}\n"
             f":purple_circle: Total: {total}\n"
             f":green_circle: Passed: {passed}\n"
             f":red_circle: Failed: {failed}\n"
             f":orange_circle: Errors: {errors}\n"
             f":white_circle: Skipped: {skipped}\n"
         )
-        webhook_url = DISCORD_HOOKS[discord]
-        SyncWebhook.from_url(webhook_url).send(message, username=discord)
+        SyncWebhook.from_url(discord_webhook).send(message, username="Test Run")
