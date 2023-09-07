@@ -35,6 +35,7 @@ def setup_driver():
         driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()), options=chrome_options
         )
+
     else:
         if browser_name not in SupportedBrowser.version:
             raise NameError(f"Defined browser name '{browser_name}' is not supported")
