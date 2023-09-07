@@ -172,7 +172,7 @@ class ContractManagementPage:
 
     def __init__(self):
         self.template_name = None
-        self.cm_url = config.settings.contract_management
+        self.cm_url = config.qiwa_urls.contract_management
         self.templates_url = self.cm_url + "/templates"
         self.random_manager = RandomManager()
 

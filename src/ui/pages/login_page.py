@@ -16,7 +16,7 @@ class LoginPage:
 
     @allure.step
     def open_login_page(self) -> LoginPage:
-        browser.open(f"{config.settings.laborer_sso_ui_url}/en/sign-in")
+        browser.open(f"{config.qiwa_urls.laborer_sso_auth}/en/sign-in")
         return self
 
     @allure.step
@@ -28,7 +28,7 @@ class LoginPage:
 
     @allure.step
     def visit(self) -> LoginPage:
-        browser.open(config.settings.env_url + "/en/sign-in")
+        browser.open(config.qiwa_urls.auth + "/en/sign-in")
         return self
 
     @allure.step

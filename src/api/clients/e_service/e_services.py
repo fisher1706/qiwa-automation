@@ -9,7 +9,7 @@ from src.api.requests.e_service import EService
 
 
 class EServiceApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
 
     def __init__(self, client: HTTPClient):
         self.client = client

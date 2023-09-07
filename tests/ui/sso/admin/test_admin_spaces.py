@@ -1,138 +1,134 @@
 import allure
-import pytest
 
-from data.sso.dataset import SpacesDataset
 from data.validation_message import ErrorMessage, SuccessMessage
-from src.api.clients.spaces import SpacesApi
-from src.api.controllers.workspaces import WorkspacesApiController
-from src.ui.actions.sign_in import LoginActions
-from src.ui.actions.spaces import SpacesActions
-from src.ui.pages.admin_page import AdminPage
-from src.ui.pages.workspaces_page import WorkspacesPage
+from src.ui.qiwa import qiwa
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.QIWA_ADMIN)
 
 
-@allure.feature('Spaces')
-@pytest.mark.usefixtures("go_to_auth_page")
-class TestAdminSpaces:
+@case_id(54975)
+@allure.title("Create space - positive test")
+def test_add_space():
+    qiwa.login_as_admin() \
+        .admin_page.wait_admin_page_to_load() \
+        .go_to_spaces_tab()
+    qiwa.admin_spaces_page.wait_admin_spaces_page_to_load() \
+        .go_to_add_space_page() \
+        .check_elements_on_create_space_page() \
+        .fill_in_the_fields_for_new_space() \
+        .click_create_space_button() \
+        .check_message(SuccessMessage.SPACE_CREATED_MESSAGE) \
+        .wait_admin_page_to_load() \
+        .filter_space_by_en_title("English") \
+        .delete_space()
 
-    @pytest.fixture(autouse=True)
-    def pre_test(self):
-        self.login_action = LoginActions()
-        self.workspace_actions = WorkspacesPage()
-        self.spaces_action = SpacesActions()
-        self.admin_actions = AdminPage()
 
-    @pytest.fixture(autouse=True)
-    def create_and_delete_space(self, super_user, http_client, request):
-        if 'disable_auto_use' in request.keywords:
-            yield
-        else:
-            self.auth_api = WorkspacesApiController(http_client)
-            self.spaces_api = SpacesApi(http_client)
-            self.auth_api.login_user(super_user.personal_number,
-                                     super_user.password)
-            self.spaces_api.get_spaces()
-            self.spaces_api.create_space()
-            self.space_name = self.spaces_api.space_title
-            yield
-            if 'disable_deleting' in request.keywords:
-                pass
-            else:
-                self.spaces_api.delete_space()
+@allure.title("Edit created space - positive test")
+@case_id(54976)
+def test_edit_space(create_space, delete_spase):
+    space_title = create_space
+    new_space_title = "new english title"
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filter_space_by_en_title(space_title) \
+        .go_to_edit_space_page() \
+        .enter_data_to_eng_name_field(new_space_title) \
+        .click_create_space_button() \
+        .check_message(SuccessMessage.SPACE_EDIT_MESSAGE)
 
-    @allure.title("Create space - positive test")
-    @pytest.mark.disable_auto_use
-    @pytest.mark.parametrize("english_title, arabic_title, arabic_link, english_link, redirect_key_name, user_type",
-                             SpacesDataset.valid_data_for_new_space)
-    @pytest.mark.parametrize("title", SpacesDataset.spaces_titles[1])
-    def test_add_space(self, super_user, english_title, arabic_title, english_link, arabic_link,
-                       redirect_key_name, user_type, title):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
 
-        self.admin_actions.wait_page_to_load()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.create_new_space(english_title, arabic_title, english_link, arabic_link,
-                                            redirect_key_name, user_type, title)
-        self.spaces_action.check_message(SuccessMessage.SPACE_CREATED_MESSAGE)
+@allure.title("Delete created space - positive test")
+@case_id(54977)
+def test_delete_space(create_space, delete_spase):
+    space_title = create_space
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filter_space_by_en_title(space_title) \
+        .delete_space_request() \
+        .check_message(SuccessMessage.SPACE_DELETED_MESSAGE)
 
-        self.spaces_action.wait_page_to_load()
-        self.spaces_action.filter_space_by_en_title(english_title)
-        self.spaces_action.delete_space()
 
-    @allure.title("Edit created space - positive test")
-    def test_edit_space(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
+@allure.title("Check reset data button - positive test")
+@case_id(54978)
+def test_check_reset_data_button(create_space, delete_spase):
+    space_title = create_space
+    new_space_title = "new english title"
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filter_space_by_en_title(space_title) \
+        .go_to_edit_space_page() \
+        .enter_data_to_eng_name_field(new_space_title) \
+        .click_reset_space_changes_button() \
+        .should_space_english_title_have_text(space_title)
 
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        new_title = "new english title"
-        self.spaces_action.edit_space(new_title)
-        self.spaces_action.check_message(SuccessMessage.SPACE_EDIT_MESSAGE)
 
-    @allure.title("Delete created space - positive test")
-    @pytest.mark.disable_deleting
-    def test_delete_space(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
+@allure.title("Check message for invalid format for field - negative test")
+@case_id(54979)
+def test_invalid_text_format_for_field(create_space, delete_spase):
+    space_title = create_space
+    invalid_space_format = "new1english#title"
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filter_space_by_en_title(space_title) \
+        .go_to_edit_space_page() \
+        .enter_data_to_eng_name_field(invalid_space_format) \
+        .check_invalid_format_message(ErrorMessage.INVALID_SPACE_ENGLISH_NAME)
 
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        self.spaces_action.delete_space()
-        self.spaces_action.check_message(SuccessMessage.SPACE_DELETED_MESSAGE)
 
-    @allure.title("Check reset data button - positive test")
-    def test_check_reset_data_button(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
+@allure.title("Check required field - negative test")
+@case_id(54980)
+def test_save_space_with_empty_fields(create_space, delete_spase):
+    space_title = create_space
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filter_space_by_en_title(space_title) \
+        .go_to_edit_space_page() \
+        .empty_fields_should_have_proper_error_message()
 
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        new_title = "new english title"
-        self.spaces_action.edit_space(new_title, save=False)
-        self.spaces_action.click_reset_changes_button()
-        self.spaces_action.comparison_text_from_title_english_field(self.space_name)
 
-    @allure.title("Check message for invalid format for field - negative test")
-    def test_invalid_text_format_for_field(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
+@allure.title("Check filtration on spaces page - positive tests")
+@case_id(54981)
+def test_filtration(create_space, delete_spase):
+    space_title = create_space
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filtration_should_have_results(space_title)
 
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        wrong_format = "new1english#title"
-        self.spaces_action.edit_space(wrong_format, save=False)
-        self.spaces_action.check_invalid_format_message(ErrorMessage.INVALID_SPACE_ENGLISH_NAME)
 
-    @allure.title("Check required field - negative test")
-    def test_save_space_with_empty_fields(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
-
-        self.spaces_action.filter_space_by_en_title(self.space_name)
-        self.spaces_action.go_to_edit_space_page()
-        self.spaces_action.check_empty_fields()
-
-    @allure.title("Check filtration on spaces page")
-    def test_filtration(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
-        self.spaces_action.check_space_filters(self.space_name)
-
-    @allure.title("Check clear filter button")
-    def test_clear_filters(self, super_user):
-        self.login_action.complete_login(super_user)
-        self.workspace_actions.select_admin_account()
-        self.admin_actions.go_to_spaces_tab()
-        self.spaces_action.wait_page_to_load()
-        self.spaces_action.check_space_filters(self.space_name, clear_filter=True)
+@allure.title("Check clear filter button - positive tests")
+@case_id(54982)
+def test_clear_filters(create_space, delete_spase):
+    space_title = create_space
+    qiwa.login_as_admin() \
+        .admin_page.wait_page_to_load() \
+        .go_to_e_services_tab() \
+        .go_to_e_services_categories_list_page() \
+        .check_e_services_category_page() \
+        .wait_page_to_load() \
+        .filtration_should_have_results(space_title) \
+        .clear_filters()

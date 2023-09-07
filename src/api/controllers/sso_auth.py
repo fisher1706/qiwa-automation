@@ -1,6 +1,3 @@
-from http import HTTPStatus
-from urllib.parse import parse_qs, urlparse
-
 import allure
 
 from data.account import Account
@@ -16,20 +13,10 @@ class AuthApiSSOController(AuthApiSSO):
     @allure.step("Login {personal_number} via Laborer SSO API")
     def login_user(self, personal_number: str, password: str) -> None:
         init = self.oauth_api.init()
-        assert init.status_code == HTTPStatus.OK
-        redirect_uri = urlparse(init.json()["data"]["attributes"]["redirect-uri"])
-        redirect_uri_query = parse_qs(redirect_uri.query)
         self.login(personal_number, password)
         self.login_with_otp()
-        authorize = self.authorize(
-            state=redirect_uri_query["state"][0], code=redirect_uri_query["code_challenge"][0]
-        )
-        url = urlparse(authorize.headers.get("location"))
-        url_query = parse_qs(url.query)
-        callback = self.oauth_api.callback(
-            state=url_query["state"][0], auth_code=url_query["code"][0]
-        )
-        assert callback.status_code == HTTPStatus.OK
+        authorize = self.authorize(state=init["state"][0], code=init["code_challenge"][0])
+        self.oauth_api.callback(state=authorize["state"][0], auth_code=authorize["code"][0])
 
     @allure.step
     def create_account_via_laborer_sso_api(self, account: Account) -> None:
@@ -39,8 +26,8 @@ class AuthApiSSOController(AuthApiSSO):
 
     @allure.step
     def register_account_via_sso_api(self, account: Account) -> None:
-        self.init_laborer_sso_hsm(account.personal_number)
-        self.active_hsm()
+        self.init_sso_hsm(account.personal_number)
+        self.active_sso_hsm()
         self.create_account_via_laborer_sso_api(account)
 
     @allure.step

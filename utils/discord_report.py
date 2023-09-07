@@ -1,3 +1,4 @@
+# pylint: disable = R0902
 from time import gmtime, strftime
 from typing import List
 
@@ -43,7 +44,7 @@ class TestReportManager:
     def __init__(self):
         self.__report: List = []
         self.suite_name = None
-        self.__project_env = cfg.settings.project_env
+        self.__project_env = cfg.settings.env
         self.webhook_url = None
         self.__total_duration: int = 0
         self.__failed_tests: int = 0

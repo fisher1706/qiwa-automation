@@ -7,7 +7,7 @@ from src.api.requests.spaces import Spaces
 
 
 class SpacesApi:
-    url = config.settings.api_url
+    url = config.qiwa_urls.api
 
     def __init__(self, api):
         self.api = api
@@ -35,10 +35,15 @@ class SpacesApi:
         else:
             assert expect_code == 404, f"The space with {self.space_id} is not deleted"
 
-    @allure.step("POST /admin/spaces :: create space")
+    @allure.step
     def create_space(
-        self, body=True, expect_code=201, space_type="space", enabled=True, user_type="user"
-    ):
+        self,
+        body: bool = True,
+        expect_code: int = 201,
+        space_type: str = "space",
+        enabled: bool = True,
+        user_type: str = "user",
+    ) -> None:
         json_body = (
             Spaces.create_space_body(space_type=space_type, enabled=enabled, user_type=user_type)
             if body
@@ -66,7 +71,7 @@ class SpacesApi:
             raise AssertionError("The data with id of the space is missing") from err
 
     @allure.step("DELETE /admin/spaces/id :: delete space")
-    def delete_space(self):
+    def delete_space_request(self):
         response = self.api.delete(url=self.url, endpoint=f"/admin/spaces/{self.space_id}")
         try:
             ResponseValidator(response).check_status_code(name="Delete spaces", expect_code=200)

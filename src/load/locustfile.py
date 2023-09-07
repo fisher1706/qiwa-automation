@@ -8,7 +8,7 @@ import config
 from data.constants import UserInfo
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.payloads import Data, Root
-from src.api.payloads.sso.sso_auth import Auth
+from src.api.payloads.raw.sso_oauth import Auth
 
 
 def establishment_laborers(sequence_number: str, role: str) -> list[str]:
@@ -25,7 +25,7 @@ employees = establishment_laborers(sequence_number=SEQUENCE_NUMBER, role="Employ
 
 class QiwaUser(HttpUser):
     wait_time = between(1, 3)
-    host = config.settings.api_url
+    host = config.qiwa_urls.api
     first_start = True
 
     def __init__(self, *args, **kwargs):

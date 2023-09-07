@@ -4,11 +4,9 @@ import config
 from src.api.models.qiwa.base import QiwaBaseModel
 
 
-class RestorePassword(QiwaBaseModel):
-    personal_number: Optional[str | int]
-    token: Optional[str]
-    new_password: Optional[str]
-    new_password_confirmation: Optional[str]
+class OauthInit(QiwaBaseModel):
+    state: Optional[str | dict]
+    code: Optional[str]
 
 
 class Auth(QiwaBaseModel):
@@ -39,13 +37,9 @@ class CreateAccount(QiwaBaseModel):
     password_confirm: str
 
 
-class ConfirmationToken(QiwaBaseModel):
-    confirmation_token: str
-
-
 class Authorize(QiwaBaseModel):
     client_id: str = "qiwa"
-    redirect_uri: str = f"{config.settings.env_url}/oauth/callback"
+    redirect_uri: str = f"{config.qiwa_urls.auth}/oauth/callback"
     response_type: str = "code"
     scope: str = "openid email phone profile"
     code_challenge_method: str = "S256"

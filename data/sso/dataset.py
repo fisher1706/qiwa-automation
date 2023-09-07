@@ -2,7 +2,6 @@ import dataclasses
 
 from data.constants import UserInfo
 from data.validation_message import ErrorMessage, SuccessMessage, ValidationMessage
-from utils.random_manager import RandomManager
 
 
 @dataclasses.dataclass
@@ -69,47 +68,4 @@ class UserDataset:
         " ",
         "{}",
         "nil",
-    ]
-
-
-@dataclasses.dataclass
-class EServiceDataset:
-    e_service_valid_data = [
-        [
-            "English",
-            "إنجليزي",
-            f"{RandomManager.random_string(5)}_test_service_code",
-            "english_link",
-            "رابط انجليزي",
-        ]
-    ]
-    e_service_category_valid_data = [
-        ["فريد الاختبار الذاتي", "unique auto-test", "auto-test-code"]
-    ]
-
-
-@dataclasses.dataclass
-class SpacesDataset:
-    valid_data_for_new_space = [
-        [
-            "English",
-            "إنجليزي",
-            "https://english-link.com",
-            "https://arabic-link.com",
-            "redirect_key_name",
-            "super-user",
-        ]
-    ]
-
-    status = [[True], [False]]
-
-    spaces_titles = [["SPACES"], ["CREATE SPACE"]]
-
-    invalid_fields_message = [
-        ["en_name", "The Name English field format is invalid"],
-        ["ar_name", "The Name Arabic field format is invalid"],
-        ["en_url", "The Default url English field is not a valid URL"],
-        ["er_url", "The Default url Arabic field is not a valid URL"],
-        ["redirect_key", "The Redirect Key Name field format is invalid"],
-        ["type", "The Type field format is invalid"],
     ]

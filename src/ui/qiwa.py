@@ -11,6 +11,9 @@ from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.dashboard_page import DashboardPage
+from src.ui.pages.delegations_pages.delegation_dashboard_page import (
+    DelegationDashboardPage,
+)
 from src.ui.pages.dedicated.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated.business_page import BusinessPage
 from src.ui.pages.dedicated.change_occupation_page import ChangeOccupationPage
@@ -20,6 +23,7 @@ from src.ui.pages.delegation_page import DelegationPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
+from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 
@@ -39,6 +43,8 @@ class Qiwa:
     individual_page = IndividualPage()
     visits_page = VisitsPage()
     business_page = BusinessPage()
+    delegation_dashboard_page = DelegationDashboardPage()
+    admin_spaces_page = AdminSpacesPage()
 
     # Components
     feedback = FeedbackPopup()
@@ -86,7 +92,7 @@ class Qiwa:
 
     @allure.step
     def open_delegation_dashboard_page(self) -> Qiwa:
-        browser.open(config.settings.qiwa_delegation_url)
+        browser.open(config.qiwa_urls.delegation_service)
         return self
 
 
