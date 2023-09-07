@@ -1,7 +1,6 @@
 import allure
 import pytest
 
-from data.sso.dataset import SpacesDataset
 from src.api.clients.spaces import SpacesApi
 from src.api.controllers.workspaces import WorkspacesApiController
 
@@ -25,7 +24,7 @@ class TestAdminSpaces:
         self.spaces_api.delete_space_request()
 
     @allure.title('update space with active status')
-    @pytest.mark.parametrize('status', SpacesDataset.status)
+    @pytest.mark.parametrize('status', [[True], [False]])
     def test_edit_space_with__different_statuses(self, super_user, status):
         self.auth_api.login_user(super_user.personal_number, super_user.password)
         self.spaces_api.get_spaces()
