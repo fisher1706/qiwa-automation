@@ -88,16 +88,12 @@ Command to run pylint code checker:
 pylint data fixtures helpers src utils tests conftest.py
 ```
 
-* To install Black locally execute `pip3 install black` command
-
-Then it can be used to reformat code for the whole project or specific files:
+Command to run black checker for the whole project or specific files:
 ```commandline
 black conftest.py
 ```
 
-* To install Isort locally execute `pip3 install isort` command
-
-Then it can be used to sort imports alphabetically, and automatically separated into sections and by type for the whole project or specific files:
+Command to sort imports alphabetically, and automatically separated into sections and by type for the whole project:
 ```commandline
 isort .
 ```
