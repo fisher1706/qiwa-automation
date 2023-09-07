@@ -11,7 +11,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.*"
-webdriver-manager = "3.8.5"
+webdriver-manager = "3.9.0"
 pyyaml = "^6.0"
 requests = "^2.28.2"
 allure-pytest = "^2.13.1"
