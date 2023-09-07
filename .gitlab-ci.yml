@@ -111,8 +111,6 @@ isort:
     when: always
   variables:
     ENV: demo
-  only:
-    - master
 
 ui_tests_sso:
   <<: *testrun
