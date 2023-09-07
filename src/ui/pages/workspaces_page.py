@@ -44,4 +44,6 @@ class WorkspacesPage:
     def select_company_account_with_sequence_number(self, sequence_number: int | str):
         self.select_business_account()
         self.business_account_list.element_by(have.text(str(sequence_number))).click()
+        # TODO investigate the possibility to remove time sleep
+        time.sleep(5)
         return self
