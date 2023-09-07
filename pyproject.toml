@@ -64,6 +64,7 @@ ignore-patterns = 'test_(.)*\.py,conftest.py'
 disable = [
     'missing-docstring',
     'too-many-public-methods',
+    'too-many-instance-attributes',
     'fixme'
 ]
 extension-pkg-whitelist = 'pydantic'

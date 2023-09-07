@@ -64,6 +64,7 @@ class AppointmentRequestPage:
 
     @allure.step
     # TODO: Remove after fix
+    # pylint: disable=no-member
     def set_and_confirm_otp_temp(self, otp_code: str = "0000") -> AppointmentRequestPage:
         ss(".c-otp-input input")[4].type(otp_code)
         ss(".o-modal__otp-actions--single-action button")[1].click()

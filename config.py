@@ -42,7 +42,6 @@ class Settings(BaseSettings):
 
 @dataclasses.dataclass
 class QiwaUrls:
-    # pylint: disable=too-many-instance-attributes
     # Instantiate URLs
     domain: Domains
 
