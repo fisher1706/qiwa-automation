@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     um_ibm_test: Optional[HttpUrl]
     ibm_url: Optional[HttpUrl]
     payment_gateway_url: Optional[HttpUrl]
+    agent_sys_url: Optional[HttpUrl]
 
     # Qiwa URLs
     # TODO: make domain based

@@ -8,6 +8,7 @@ from selene.support.shared.jquery_style import ss
 class WorkspacesPage:
     account_cards = ss("[data-component='Tile']")
     individual_account_card = account_cards.element_by(have.text("Individual account"))
+    lo_agent_card = account_cards.element_by(have.text("LO agent"))
     business_account_card = account_cards.element_by(have.text("Business Account"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
@@ -25,6 +26,13 @@ class WorkspacesPage:
     @allure.step
     def select_individual_account(self):
         self.individual_account_card.click()
+        return self
+
+    @allure.step
+    def select_lo_agent(self):
+        # TODO investigate the possibility to remove time sleep
+        time.sleep(5)
+        self.lo_agent_card.click()
         return self
 
     @allure.step

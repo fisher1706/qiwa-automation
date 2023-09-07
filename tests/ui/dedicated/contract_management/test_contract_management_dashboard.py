@@ -4,7 +4,7 @@ import pytest
 from data.constants import ContractManagement, Language
 from data.dedicated.contract_management import employer
 from src.ui.actions.contract_management import ContractManagementActions
-from src.ui.pages.languages_page import Languages
+from src.ui.components.footer import Footer
 
 
 @allure.feature('Contract Management Dashboard')
@@ -14,7 +14,7 @@ class TestContractManagement:  # pylint: disable=unused-argument
     @pytest.fixture(autouse=True)
     def pre_test(self):
         self.contract_management_actions = ContractManagementActions()
-        self.language = Languages()
+        self.footer = Footer()
 
     @allure.title('Verify the contract authentication score and buttons in the Contract Management page')
     @allure.testcase('https://qiwa.testmo.net/repositories/4?group_id=1217', '9273,9274,9289')
@@ -27,7 +27,7 @@ class TestContractManagement:  # pylint: disable=unused-argument
             ContractManagement.CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES, Language.EN)
         self.contract_management_actions.verify_score(
             ContractManagement.TOTAL_CONTRACT_AUTHENTICATION, Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
 
         self.contract_management_actions.verify_title(ContractManagement.TITLE, Language.AR)
         self.contract_management_actions.verify_description(ContractManagement.DESCRIPTION, Language.AR)

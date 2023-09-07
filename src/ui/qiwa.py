@@ -8,10 +8,17 @@ import config
 from data.constants import UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.feedback_pop_up import FeedbackPopup
+from src.ui.components.footer import Footer
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.dashboard_page import DashboardPage
+from src.ui.pages.dedicated.appointment_request_page import AppointmentRequestPage
+from src.ui.pages.dedicated.business_page import BusinessPage
+from src.ui.pages.dedicated.change_occupation_page import ChangeOccupationPage
+from src.ui.pages.dedicated.requests_page import RequestsPage
+from src.ui.pages.dedicated.visits_page import VisitsPage
 from src.ui.pages.delegation_page import DelegationPage
 from src.ui.pages.e_services_page import EServicesPage
+from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.workspaces_page import WorkspacesPage
@@ -25,8 +32,17 @@ class Qiwa:
     dashboard_page = DashboardPage()
     e_services_page = EServicesPage()
     admin_page = AdminPage()
-    feedback = FeedbackPopup()
     delegation_page = DelegationPage()
+    appointment_page = AppointmentRequestPage()
+    change_occupation_page = ChangeOccupationPage()
+    requests_page = RequestsPage()
+    individual_page = IndividualPage()
+    visits_page = VisitsPage()
+    business_page = BusinessPage()
+
+    # Components
+    feedback = FeedbackPopup()
+    footer = Footer()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> Qiwa:

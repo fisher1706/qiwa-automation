@@ -1,0 +1,10 @@
+{
+  "data": {
+    "type": "appointment",
+    "id": "",
+    "attributes": {
+      "id": "",
+      "reason": ""
+    }
+  }
+}

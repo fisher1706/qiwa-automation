@@ -9,10 +9,12 @@ from data.constants import UserInfo
 from src.api.assertions.saudization_certificate import SaudizationApiAssertions
 from src.api.assertions.work_permit import WorkPermitApiAssertions
 from src.api.clients.change_occupation import ChangeOccupationApi
+from src.api.controllers.ibm_stage import IBMApiStageController
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
 from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.visits import VisitsApiController
 from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
@@ -30,7 +32,9 @@ class QiwaApi:
         self.saudi_api = SaudizationCertificateApi(self.client)
         self.wp_debts_api = WPDebtsApi(self.client)
         self.wp_request_api = WorkPermitApiAssertions(self.client)
+        self.ibm_api = IBMApiStageController(self.client)
         # Controllers
+        self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)
 
     @cached_property

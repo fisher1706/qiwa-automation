@@ -10,7 +10,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.*"
-webdriver-manager = "3.9.0"
+webdriver-manager = "3.8.5"
 pyyaml = "^6.0"
 requests = "^2.28.2"
 allure-pytest = "^2.13.1"
@@ -25,7 +25,7 @@ pydantic = "^1.10.6"
 aiohttp = "^3.8.4"
 pycryptodome = "^3.17"
 locust = "^2.15.1"
-
+jmespath = "1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint-gitlab = "^1.2.0"

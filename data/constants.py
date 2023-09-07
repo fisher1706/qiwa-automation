@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 
 HEADERS = {
     "X-IBM-Client-Id": "514c55d8eb39044a69c1e9ab434ff616",
@@ -7,7 +7,7 @@ HEADERS = {
 }
 
 
-@dataclasses.dataclass
+@dataclass
 class Language:
     EN = "en"
     AR = "ar"
@@ -21,7 +21,7 @@ class UserType:  # pylint: disable=too-few-public-methods
     MEMBER = "member"
 
 
-@dataclasses.dataclass
+@dataclass
 class EmailConst:  # pylint: disable=too-few-public-methods
     INBOX_FOLDER = '"Inbox"'
     UNSEEN_EMAILS = "UNSEEN"
@@ -33,7 +33,7 @@ class EmailConst:  # pylint: disable=too-few-public-methods
     ADD_FLAG = "+FLAGS"
 
 
-@dataclasses.dataclass
+@dataclass
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
@@ -41,7 +41,7 @@ class UserInfo:
     EXPIRED_DATE = "2023-05-10"
 
 
-@dataclasses.dataclass
+@dataclass
 class EServiceAction:
     TRANSFER_TO_COMPANY = "Transfer to company"
     TRANSFER_BETWEEN_BRANCHES = "Transfer between branches"
@@ -52,7 +52,7 @@ class EServiceAction:
     CONTRACT_MANAGEMENT = "Request Service"
 
 
-@dataclasses.dataclass
+@dataclass
 class EService:
     CHANGE_OCCUPATION = "Change Occupation"
     NITAQAT_CALCULATOR = "Nitaqat calculator"
@@ -87,7 +87,7 @@ class EService:
     ]
 
 
-@dataclasses.dataclass
+@dataclass
 class EmployeeTransfer:
     TRANSFER_REQUESTS = {Language.EN: "TRANSFER REQUESTS", Language.AR: "طلبات النقل"}
     DASHBOARD = {Language.EN: "Dashboard", Language.AR: "لوحة المعلومات"}
@@ -104,24 +104,24 @@ class EmployeeTransfer:
     TERMS_POPUP_DESCRIPTION = [
         {
             Language.EN: "Acknowledge the possibility of the transfer application being rejected by the Ministry of "
-            "Interior for any reason.",
+                         "Interior for any reason.",
             Language.AR: "أقر بعلمي باحتمالية رفض وزارة الداخلية طلب النقل لأي سبب.",
         },
         {
             Language.EN: "I acknowledge and undertake to treat the transferred employee based on the Labor Law and "
-            "its Executive Regulation and the decrees issued in implementation thereof.",
+                         "its Executive Regulation and the decrees issued in implementation thereof.",
             Language.AR: "أتعهد بمعاملة الموظف المنقول وفقاً لنظام العمل ولائحته التنفيذية والقرارات الصادرة تنفيذاً "
-            "له. ",
+                         "له. ",
         },
         {
             Language.EN: "To benefit from the Freedom of transfer initiative, the establishment must be committed to "
-            "the following:"
-            "\n"
-            "1. Authenticating all non Saudi employees contracts in QIWA by 20% ("
-            "Contract Management Service)",
+                         "the following:"
+                         "\n"
+                         "1. Authenticating all non Saudi employees contracts in QIWA by 20% ("
+                         "Contract Management Service)",
             Language.AR: "يجب أن تكون المنشأة مقدمة الطلب ملتزمة بالتالي لتتمكن من طلب نقل الموظف:"
-            "\n"
-            "1- توثيق جميع عقود العاملين في المنشأة بنسبة ٪؜20 في منصة قوى (خدمة توثيق عقود الموظفين)",
+                         "\n"
+                         "1- توثيق جميع عقود العاملين في المنشأة بنسبة ٪؜20 في منصة قوى (خدمة توثيق عقود الموظفين)",
         },
     ]
     TERMS_POPUP_BTN_APPROVE = {Language.EN: "Approve", Language.AR: "موافق"}
@@ -200,17 +200,17 @@ class EmployeeTransfer:
     ]
 
 
-@dataclasses.dataclass
+@dataclass
 class ContractManagement:
     VERIFICATION_CODE = {Language.EN: "Verification Code", Language.AR: "رمز التحقق"}
     TITLE = {Language.EN: "Contract Management", Language.AR: "إدارة العقود"}
     DESCRIPTION = {
         Language.EN: "A service provided to establishments on Qiwa platform to create and authenticate employee "
-        "contracts digitally. After the contract gets created and submitted, it will be sent to the "
-        "employee’s account on Qiwa for approval or rejection.",
+                     "contracts digitally. After the contract gets created and submitted, it will be sent to the "
+                     "employee’s account on Qiwa for approval or rejection.",
         Language.AR: "خدمة تتيح للمنشآت إنشاء وتوثيق وإنهاء عقود الموظفين إلكترونيًا، وبعد إنشاء العقد الوظيفي يمكن "
-        "للموظف الموافقة على العقد أو رفضه أو طلب تعديله عبر حسابه في قوى أفراد. وفي حال موافقة الطرفين "
-        "يعتبر العقد موثق من وزارة الموارد البشرية والتنمية الاجتماعية",
+                     "للموظف الموافقة على العقد أو رفضه أو طلب تعديله عبر حسابه في قوى أفراد. وفي حال موافقة الطرفين "
+                     "يعتبر العقد موثق من وزارة الموارد البشرية والتنمية الاجتماعية",
     }
     CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES = {
         Language.EN: "Contract Authentication Score for Saudi Employees",
@@ -235,7 +235,7 @@ class ContractManagement:
     }
     MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT = {
         Language.EN: "The contract has been sent successfully! Please inform the employee to login to Qiwa platform and"
-        " accept the contract.",
+                     " accept the contract.",
         Language.AR: "تم ارسال العقد بنجاح! الرجاء إبلاغ الموظف بالدخول على منصة قوى والموافقة على العقد.",
     }
     CONTRACT_TYPE = {Language.EN: "Contract Type", Language.AR: "نوع العقد"}
@@ -246,6 +246,37 @@ class ContractManagement:
     MSG_SUCCESS_TEMPLATE_REMOVING = "The contract template has been deleted successfully"
 
 
-@dataclasses.dataclass
+@dataclass
 class SupportedBrowser:
     version = {"chrome": "102.0", "firefox": "93.0", "opera": "80.0"}
+
+
+@dataclass
+class EstablishmentStatus:
+    EXISTING = 'قائمة'
+
+
+@dataclass
+class Occupation:
+    SUPERVISOR = 'مشرف عمال'
+    MANAGER_DIRECTOR = 'مدير الادارة'
+    SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION = 'أمين عام منظمة ذات اهتمامات خاصة'
+
+
+@dataclass
+class Label:
+    ACTIONS = 'Actions'
+    ELIGIBILITY = 'Eligibility'
+    IQAMA_NUMBER = 'Iqama number'
+
+
+@dataclass
+class Eligibility:
+    ELIGIBLE = 'Eligible'
+    NOT_ELIGIBLE = 'Not Eligible'
+
+
+@dataclass
+class Titles:
+    CHANGE_OCCUPATION_REQUEST = 'Change occupation requests'
+    CHANGE_OCCUPATION = 'Change Occupation'

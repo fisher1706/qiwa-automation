@@ -15,7 +15,7 @@ class RequestStatus(Enum):
     ALL = "All"
     DRAFT = "Draft"
     PENDING_FOR_CURRENT_EMPLOYER_APPROVAL = "Pending For Current Employer Approval"
-    PENDING_FOR_LABORER_APPROVAL = "Pending For Laborer Approval"
+    PENDING_FOR_LABORER_APPROVAL = "Pending for Laborer Approval"
     PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER = (
         "Pending Completing Transfer In Absher By New Employer"
     )
@@ -40,12 +40,25 @@ class RequestStatus(Enum):
         return [var.value for var in RequestStatus]
 
 
-class ServicesAndTools(Enum):
+class ServicesAndTools(str, Enum):
     HOME_WORKER_TRANSFER = "Home Worker Transfer"
     EMPLOYEE_TRANSFER = "View and review employee transfer requests"
     JOB_CONTRACTS = "View and review job contracts"
 
 
-class TransferType(Enum):
+class TransferType(str, Enum):
     FROM_ANOTHER_BUSINESS_OWNER = "From another business owner"
     BETWEEN_MY_ESTABLISHMENTS = "Between my establishments"
+
+
+class SearchingType(str, Enum):
+    VISIT_REFERENCE_NUMBER = 'Visit Reference Number'
+    ID = 'Id'
+    ESTABLISHMENT_NUMBER = 'Establishment Number'
+
+
+class VisitStatus(str, Enum):
+    ACTIVE = 'Active'
+    DONE = 'Done'
+    CANCELED = 'Cancelled'
+    EXPIRED = 'Expired'
