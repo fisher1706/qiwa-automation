@@ -11,8 +11,8 @@ class RequestsPage:
     detail = ss('.detail .c-change-requests__laborer-item-value')
     iqama_number = detail[1]
     request_status = detail[3]
-    iqama_number_bulk = detail[8]
-    request_status_bulk = detail[10]
+    iqama_number_bulk = detail[7]
+    request_status_bulk = detail[9]
     btn_return_to_the_previous_page = s('.c-change-requests__action--back button')
 
     def check_request_title(self):

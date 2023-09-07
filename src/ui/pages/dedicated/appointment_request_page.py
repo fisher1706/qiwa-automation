@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import browser
-from selene.support.shared.jquery_style import s
+from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.dedicated.enums import SearchingType
@@ -59,4 +59,11 @@ class AppointmentRequestPage:
     def set_and_confirm_otp_modal(self, otp_code: str = '0000') -> AppointmentRequestPage:
         self.input_otp_code_modal.type(otp_code)
         self.proceed_modal()
+        return self
+
+    @allure.step
+    # TODO: Remove after fix
+    def set_and_confirm_otp_temp(self, otp_code: str = '0000') -> AppointmentRequestPage:
+        ss('.c-otp-input input')[4].type(otp_code)
+        ss('.o-modal__otp-actions--single-action button')[1].click()
         return self

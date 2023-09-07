@@ -205,10 +205,10 @@ def test_submit_co_for_multiple_requests_in_one_bulk():
 
     qiwa.change_occupation_page.click_agree_checkbox()\
         .click_btn_send_change_occupation_request()
-    qiwa.appointment_page.set_and_confirm_otp_modal()
+    qiwa.appointment_page.set_and_confirm_otp_temp()
     qiwa.requests_page.check_request_title() \
         .expand_details() \
-        .check_iqama_number(employee.personal_number) \
+        .check_iqama_number(employee_1.personal_number) \
         .check_request_status(RequestStatus.PENDING_FOR_LABORER_APPROVAL.value)\
-        .check_iqama_number_bulk(employee_1.personal_number)\
-        .check_request_status_bulk(RequestStatus.PENDING_FOR_LABORER_APPROVAL)
+        .check_iqama_number_bulk(employee.personal_number)\
+        .check_request_status_bulk(RequestStatus.PENDING_FOR_LABORER_APPROVAL.value)

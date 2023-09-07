@@ -24,3 +24,4 @@ class BusinessPage:
 
     def select_change_occupation(self) -> BusinessPage:
         self.CHANGE_OCCUPATION.s('.btn').click()
+        return self

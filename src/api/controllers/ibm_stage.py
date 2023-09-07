@@ -65,5 +65,5 @@ class IBMApiStageController:
         try:
             return response["CreateNewAppointmentRs"]["Body"]['AppointmentId']
         except KeyError:
-            pytest.fail(reason=str(response['CreateNewAppointmentRs']['Header']['ResponseStatus']))
+            pytest.fail(reason=str(response))
         return 0
