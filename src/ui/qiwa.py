@@ -19,7 +19,6 @@ from src.ui.pages.dedicated.business_page import BusinessPage
 from src.ui.pages.dedicated.change_occupation_page import ChangeOccupationPage
 from src.ui.pages.dedicated.requests_page import RequestsPage
 from src.ui.pages.dedicated.visits_page import VisitsPage
-from src.ui.pages.delegation_page import DelegationPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
@@ -36,7 +35,6 @@ class Qiwa:
     dashboard_page = DashboardPage()
     e_services_page = EServicesPage()
     admin_page = AdminPage()
-    delegation_page = DelegationPage()
     appointment_page = AppointmentRequestPage()
     change_occupation_page = ChangeOccupationPage()
     requests_page = RequestsPage()

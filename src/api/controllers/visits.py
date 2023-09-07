@@ -11,7 +11,7 @@ from src.api.requests.visit import Visit
 class VisitsApiController:
     def __init__(self, client: HTTPClient):
         self.client = client
-        self.url = config.settings.api_url
+        self.url = config.qiwa_urls.api
         self.route = "/labor-offices/appointment"
 
     @allure.step

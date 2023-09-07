@@ -21,7 +21,7 @@ class AppointmentRequestPage:
 
     @allure.step
     def visit(self) -> AppointmentRequestPage:
-        browser.open(config.settings.agent_sys_url)
+        browser.open(config.qiwa_urls.agent_sys_url)
         return self
 
     @allure.step

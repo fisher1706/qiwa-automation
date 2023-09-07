@@ -18,10 +18,11 @@ from src.api.payloads.ibm.createnewappointment import (
 )
 
 
+# TODO: Adjust and move it to the ibm.py
 class IBMApiStageController:
     def __init__(self, client: HTTPClient):
         self.client = client
-        self.url = config.settings.ibm_url
+        self.url = config.qiwa_urls.ibm_url
         self.route = "/takamol/staging/qiwalo/createnewappointment"
 
     @allure.step
