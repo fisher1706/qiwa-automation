@@ -1,0 +1,9 @@
+{           "TransactionId": {"type": "string"},
+            "RequestTime": {"type": "string"},
+            "MWResponseTime": {"type": "string"},
+            "ServiceCode": {"type": "string"},
+            "Status": {"type": "string"},
+            "Code": {"type": "string"},
+            "ArabicMsg": {"type": "string"},
+            "EnglishMsg": {"type": "string"}
+}

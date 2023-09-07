@@ -1,0 +1,16 @@
+{
+        "Header": {"type": "dict", "schema": {
+            "TransactionId": {"type": "string"},
+            "ChannelId": {"type": "string"},
+            "SessionId": {"type": "string"},
+            "RequestTime": {"type": "string"},
+            "MWRequestTime": {"type": "string"},
+            "ServiceCode": {"type": "string"},
+            "DebugFlag": {"type": "number"}
+            }},
+        "Error": {"type": "dict", "schema": {
+            "Code": {"type": "string"},
+            "Reason": {"type": "string"},
+            "Node": {"type": "string"},
+            "Detail": {"type": "string"}
+}}}
