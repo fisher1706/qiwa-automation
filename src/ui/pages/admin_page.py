@@ -12,6 +12,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from src.ui.components.raw.table import Table
 from utils.assertion import assert_that
 
+
 # TODO : split into separate classes for admin admin e-services, update locators
 
 

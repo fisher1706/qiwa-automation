@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import time
 
 from selene import have, command
@@ -18,43 +20,43 @@ class ChangeOccupationPage:
     agree_checkbox = s(".c-pending-requests__notice-checkbox")
     btn_send_change_occupation_request = s(".c-pending-requests__cta button")
 
-    def check_change_occupation_title(self):
+    def check_change_occupation_title(self) -> ChangeOccupationPage:
         self.title.should(have.exact_text(Titles.CHANGE_OCCUPATION))
         return self
 
-    def find_expected_employee(self, personal_number: str):
+    def find_expected_employee(self, personal_number: str) -> ChangeOccupationPage:
         self.field_search.perform(command.js.set_value("")).type(personal_number)
         return self
 
-    def check_employee_eligibility(self, eligible: str):
+    def check_employee_eligibility(self, eligible: str) -> ChangeOccupationPage:
         self.table_employee_list.row(1).cell(Label.ELIGIBILITY).s("div").should(
             have.exact_text(eligible)
         )
         return self
 
-    def click_btn_change_occupation(self):
+    def click_btn_change_occupation(self) -> ChangeOccupationPage:
         time.sleep(1)
         self.table_employee_list.row(1).cell(Label.ACTIONS).s("button").click()
         return self
 
-    def select_occupation(self, occupation: str):
+    def select_occupation(self, occupation: str) -> ChangeOccupationPage:
         self.occupation_list.element_by(have.exact_text(occupation)).s(".c-radio__mark").click()
         return self
 
-    def click_create_change_occupation(self):
+    def click_create_change_occupation(self) -> ChangeOccupationPage:
         self.create_change_occupation.click()
         return self
 
-    def check_request_is_exist(self, personal_number: str):
+    def check_request_is_exist(self, personal_number: str) -> ChangeOccupationPage:
         self.change_occupation_requests.row(1).cell(Label.IQAMA_NUMBER).should(
             have.exact_text(personal_number)
         )
         return self
 
-    def click_agree_checkbox(self):
+    def click_agree_checkbox(self) -> ChangeOccupationPage:
         self.agree_checkbox.click()
         return self
 
-    def click_btn_send_change_occupation_request(self):
+    def click_btn_send_change_occupation_request(self) -> ChangeOccupationPage:
         self.btn_send_change_occupation_request.click()
         return self

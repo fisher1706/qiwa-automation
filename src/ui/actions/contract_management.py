@@ -10,8 +10,8 @@ from data.dedicated.contract_details import (
 from data.dedicated.users_types import Entity, Laborer
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
-from src.ui.pages.contract_management_page import ContractManagementPage
 from src.ui.components.footer import Footer
+from src.ui.pages.contract_management_page import ContractManagementPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 
 

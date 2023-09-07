@@ -20,9 +20,9 @@ from data.validation_message import SuccessMessage
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
+from src.ui.components.footer import Footer
 from src.ui.pages.employee_transfer_page import EmployeeTransferPage
 from src.ui.pages.individual_page import IndividualPage
-from src.ui.components.footer import Footer
 from src.ui.pages.workspaces_page import WorkspacesPage
 from utils.assertion import assert_that
 

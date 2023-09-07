@@ -14,7 +14,7 @@ logger = yaml_logger.setup_logging(__name__)
 
 
 class MockMlsdDataController:
-    url = config.settings.mock_mlsd_url
+    url = config.settings.ibm_url
 
     def __init__(self):
         self.api = HTTPClient()
