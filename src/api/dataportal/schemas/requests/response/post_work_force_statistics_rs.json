@@ -1,0 +1,13 @@
+{
+  "WFSResponse": {"type": "dict","schema": {
+      "response": {"type": "dict","schema": {
+          "fact": {"type": "dict","schema": {
+              "id": {"type": "number"},
+              "item": {"type": "list"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

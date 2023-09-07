@@ -1,0 +1,25 @@
+{
+    "WFSRequest": {
+        "request": {
+            "dim": {
+                "id": 16,
+                "key": "WFS",
+                "params": {
+                    "selections": {
+                        "items": [
+                            {
+                                "name": "Availabledata",
+                                "seq": 1,
+                                "grouped": true,
+                                "func": "string"
+                            }
+                        ]
+                    },
+                    "filters": {
+                        "filter": []
+                    }
+                }
+            }
+        }
+    }
+}
