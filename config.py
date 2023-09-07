@@ -60,7 +60,8 @@ class QiwaUrls:
         self.employee_transfer: str = f"{protocol}employee-transfer.{domain}"
         self.laborer_sso_auth_api: str = f"{protocol}laborer-sso-auth-api.{domain}"
         self.laborer_sso_auth: str = f"{protocol}laborer-sso-auth.{domain}"
-        self.delegationservice: str = f"{protocol}delegationservice.{domain}"
+        self.delegation_service: str = f"{protocol}delegationservice.{domain}"
+        self.delegation_service_api: str = f"{protocol}api-proxy.{domain}"
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
 
