@@ -5,6 +5,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
         total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
     ) -> str:
         import config
+
         return (
             f":earth_africa: Environment: {config.settings.env}\n"
             f":purple_circle: Total: {total}\n"
@@ -18,6 +19,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
     def parse_report(xml_report: str) -> tuple:
         import datetime
         import xml.etree.ElementTree as ET
+
         tree = ET.parse(xml_report)
         root = tree.getroot()[0]
         name = root.get("name")
@@ -32,6 +34,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
         return name, message_template(total, passed, failed, errors, skipped, duration)
 
     from discord import SyncWebhook
+
     testsuite, message = parse_report(junitxml_report)
     SyncWebhook.from_url(webhook_url).send(message, username=testsuite)
 
