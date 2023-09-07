@@ -1,11 +1,9 @@
-from typing import Union
-
-import pytest
-from _pytest.config import Config
+import _pytest.terminal
 from _pytest.main import Session
-from _pytest.reports import CollectReport, TestReport
+from discord import SyncWebhook
 
-from utils.discord_report import TestReportManager
+import config
+from utils.discord_report import DISCORD_HOOKS
 
 
 def pytest_addoption(parser):
@@ -14,23 +12,25 @@ def pytest_addoption(parser):
     )
 
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_report_teststatus(report: Union[CollectReport, TestReport], config: Config) -> None:
-    yield
-    if report.when == "setup" and report.passed is True:
-        config.setup_duration = report.duration
-    if report.when == "call" or report.passed is False:
-        discord = config.getoption("--discord_channel")
-        if discord:
-            test_report = TestReportManager()
-            test_report.suite_name = discord
-            test_report.define_webhook_url()
-            test_report.create_message_add_to_report(report, config)
-
-
 def pytest_sessionfinish(session: Session, exitstatus: int):  # pylint: disable=unused-argument
-    test_report = TestReportManager()
-    if test_report.webhook_url:
-        test_report.send_report()
-        test_report.send_duration_report()
-        test_report.send_count_report()
+    discord = session.config.getoption("--discord_channel")
+    if discord:
+        reporter: _pytest.terminal.TerminalReporter = session.config.pluginmanager.get_plugin(
+            "terminalreporter"
+        )
+        stats = reporter.stats
+        passed = len(stats.get("passed", []))
+        failed = len(stats.get("failed", []))
+        errors = len(stats.get("error", []))
+        skipped = len(stats.get("skipped", []))
+        total = passed + failed + errors + skipped
+        message = (
+            f":blue_circle: Environment: {config.settings.env}\n"
+            f":purple_circle: Total: {total}\n"
+            f":green_circle: Passed: {passed}\n"
+            f":red_circle: Failed: {failed}\n"
+            f":orange_circle: Errors: {errors}\n"
+            f":white_circle: Skipped: {skipped}\n"
+        )
+        webhook_url = DISCORD_HOOKS[discord]
+        SyncWebhook.from_url(webhook_url).send(message, username=discord)
