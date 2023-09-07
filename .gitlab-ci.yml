@@ -228,7 +228,7 @@ allure-api-ss-stage-results:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   stage: notification
   script:
-    - python utils/discord_notify.py $XML_REPORT $WEBHOOK
+    - python3 utils/discord_notify.py $XML_REPORT $WEBHOOK
 
 discord_um_ui_notification:
   <<: *discord_notification
