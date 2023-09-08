@@ -7,7 +7,7 @@ include:
     file: '/common-jobs/.allure-report.yml'
 
 variables:
-  IMAGE: takamol/qa-automation:master-latest
+  IMAGE: takamol/qiwa-automation:master-latest
   ALLURE_DIRECTORY: allure-results
   XML_REPORT: report.xml
 
@@ -104,6 +104,7 @@ isort:
   tags:
     - shared
   script:
+    - echo $TEST_SUITE
     - pytest $TEST_SUITE -s --alluredir=$ALLURE_DIRECTORY || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
