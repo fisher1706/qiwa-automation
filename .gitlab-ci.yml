@@ -105,6 +105,8 @@ isort:
   stage: tests
   tags:
     - shared
+  before_script:
+    - echo ls
   artifacts:
     paths:
       - $XML_REPORT
