@@ -43,8 +43,6 @@ if __name__ == "__main__":
     import sys
     from pathlib import Path
 
-    print(len(sys.argv))
-
     if len(sys.argv) < 3:
         print("Usage: python discord_notify.py <junitxml report> <webhook_url>")
         sys.exit(1)
