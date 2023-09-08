@@ -14,6 +14,7 @@ Domains = Literal["qiwa.tech", "qiwa.info"]
 class Settings(BaseSettings):
     env: Envs
     domain: Domains
+    mock_mlsd_url: Optional[HttpUrl]
     ibm_url: Optional[HttpUrl]
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"

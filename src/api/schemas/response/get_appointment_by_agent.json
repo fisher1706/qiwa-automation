@@ -1,0 +1,129 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": {
+            "type": "number"
+          },
+          "labor-office-id": {
+            "type": "string"
+          },
+          "sequence-number": {
+            "type": "number"
+          },
+          "establishment-name": {
+            "type": "string"
+          },
+          "office-id": {
+            "type": "number"
+          },
+          "office-name": {
+            "type": "string"
+          },
+          "service-id": {
+            "type": "number"
+          },
+          "service-name-localized": {
+            "type": "string"
+          },
+          "service-name-ar": {
+            "type": "string"
+          },
+          "service-name-en": {
+            "type": "string"
+          },
+          "region-id": {
+            "type": "number"
+          },
+          "region-name-localized": {
+            "type": "string"
+          },
+          "region-name-ar": {
+            "type": "string"
+          },
+          "region-name-en": {
+            "type": "string"
+          },
+          "requester-id": {
+            "type": "number"
+          },
+          "requester-personal-number": {
+            "type": "string"
+          },
+          "requester-name": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "creation-date": {
+            "type": "string"
+          },
+          "status-id": {
+            "type": "number"
+          },
+          "status-name-localized": {
+            "type": "string"
+          },
+          "status-name-ar": {
+            "type": "string"
+          },
+          "status-name-en": {
+            "type": "string"
+          },
+          "cancelation-reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "requester-type-id": {
+            "type": "number"
+          },
+          "requester-type-name-localized": {
+            "type": "string"
+          },
+          "requester-type-name-ar": {
+            "type": "string"
+          },
+          "requester-type-name-en": {
+            "type": "string"
+          },
+          "sub-service-id": {
+            "type": "number"
+          },
+          "sub-service-name-localized": {
+            "type": "string",
+            "nullable": true
+          },
+          "sub-service-name-ar": {
+            "type": "string",
+            "nullable": true
+          },
+          "sub-service-name-en": {
+            "type": "string",
+            "nullable": true
+          },
+          "last-modified-date": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  },
+  "access_errors": {
+    "type": "string",
+    "nullable": true
+  }
+}

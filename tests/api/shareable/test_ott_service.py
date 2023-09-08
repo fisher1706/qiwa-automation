@@ -1,6 +1,7 @@
 import time
 from http import HTTPStatus
 
+import src
 from src.api.clients.ott_service import OttServiceApi
 from utils.assertion import assert_status_code, assert_that
 

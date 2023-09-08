@@ -1,0 +1,27 @@
+{
+  "data": {
+    "type": "list"
+  },
+  "included": {
+    "type": "list"
+  },
+  "meta": {
+    "type": "dict",
+    "schema": {
+      "current-page": {
+        "type": "number"
+      },
+      "total-pages": {
+        "type": "number"
+      },
+      "total": {
+        "type": "dict",
+        "schema": {
+          "value": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
