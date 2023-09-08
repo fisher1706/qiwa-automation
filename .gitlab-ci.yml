@@ -106,7 +106,7 @@ isort:
   tags:
     - shared
   before_script:
-    - echo ls
+    - ls
   artifacts:
     paths:
       - $XML_REPORT
