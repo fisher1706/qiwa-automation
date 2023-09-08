@@ -4,10 +4,9 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
     def message_template(
         total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
     ) -> str:
-        import config
-
+        import os
         return (
-            f":earth_africa: Environment: {config.settings.env}\n"
+            f":earth_africa: Environment: {os.getenv('ENV') or 'local'}\n"
             f":purple_circle: Total: {total}\n"
             f":green_circle: Passed: {passed}\n"
             f":red_circle: Failed: {failed}\n"
