@@ -113,6 +113,8 @@ isort:
       - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
     when: always
+  only:
+    - master
 
 ui_tests_sso:
   <<: *testrun
