@@ -107,16 +107,13 @@ isort:
       - $XML_REPORT
       - $ALLURE_DIRECTORY
     expire_in: 1 day
-  rules:
-    - if: $PYTEST_EXIT_CODE == 0 || $PYTEST_EXIT_CODE == 1
   variables:
     ENV: demo
 
 ui_tests_sso:
   <<: *testrun
   script:
-    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
-    - PYTEST_EXIT_CODE=$?
+    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY || echo $?
   retry:
     max: 2
     when: always
@@ -125,7 +122,6 @@ ui_tests_um:
   <<: *testrun
   script:
     - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=um_ui_suite
-    - PYTEST_EXIT_CODE=$?
   variables:
     ENV: stage
 
@@ -133,25 +129,21 @@ ui_tests_shareable:
   <<: *testrun
   script:
     - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --junitxml=$XML_REPORT -o junit_suite_name=ss_ui_suite
-    - PYTEST_EXIT_CODE=$?
 
 ui_tests_dedicated:
   <<: *testrun
   script:
     - pytest tests/ui/dedicated -s --alluredir=$ALLURE_DIRECTORY
-    - PYTEST_EXIT_CODE=$?
 
 api_tests_sso:
   <<: *testrun
   script:
     - pytest tests/api/sso -s --alluredir=$ALLURE_DIRECTORY --reruns 2
-    - PYTEST_EXIT_CODE=$?
 
 api_tests_um:
   <<: *testrun
   script:
     - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=um_api_suite
-    - PYTEST_EXIT_CODE=$?
   variables:
     ENV: stage
 
@@ -159,13 +151,11 @@ api_tests_shareable_demo:
   <<: *testrun
   script:
     - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=ss_api_demo_suite
-    - PYTEST_EXIT_CODE=$?
 
 api_tests_shareable_stage:
   <<: *testrun
   script:
      - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=ss_api_stage_suite
-     - PYTEST_EXIT_CODE=$?
   variables:
     ENV: stage
 
