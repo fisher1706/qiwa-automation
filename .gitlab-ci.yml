@@ -8,7 +8,7 @@ include:
 
 variables:
   IMAGE: takamol/qiwa-automation:master-latest
-  ALLURE_DIRECTORY: allure-results
+  ALLURE_RESULTS_DIRECTORY: allure-results
   XML_REPORT: report.xml
 
 stages:
@@ -105,12 +105,12 @@ isort:
     - shared
   script:
     - echo $TEST_SUITE
-    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
       - $XML_REPORT
-      - $ALLURE_DIRECTORY
+      - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
     when: always
 
