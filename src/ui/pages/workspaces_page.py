@@ -31,7 +31,7 @@ class WorkspacesPage:
     @allure.step
     def select_lo_agent(self):
         # TODO investigate the possibility to remove time sleep
-        time.sleep(5)
+        time.sleep(20)
         self.lo_agent_card.click()
         return self
 

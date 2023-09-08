@@ -25,6 +25,7 @@ from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.workspaces_page import WorkspacesPage
+from src.ui.pages.wp_page import WorkPermitPage
 
 
 class Qiwa:
@@ -43,6 +44,7 @@ class Qiwa:
     business_page = BusinessPage()
     delegation_dashboard_page = DelegationDashboardPage()
     admin_spaces_page = AdminSpacesPage()
+    work_permit_page = WorkPermitPage()
 
     # Components
     feedback = FeedbackPopup()

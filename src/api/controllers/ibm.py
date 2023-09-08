@@ -6,7 +6,7 @@ import pytest
 
 import config
 import src
-from data.constants import HEADERS
+from data.constants import HEADERS, ClientServiceId, SubServiceId
 from data.dedicated.change_occupation import User
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
@@ -117,7 +117,7 @@ class IBMApiController:
                 SequenceNumber=user.sequence_number,
             ),
             OfficeID="1413",
-            ClientServiceId="3",
+            ClientServiceId="4",
             RequesterDetails=RequesterDetails(
                 RequesterIdNo=user.personal_number,
                 RequesterName="",
@@ -127,7 +127,7 @@ class IBMApiController:
             Date=datetime.today().strftime("%Y-%m-%d"),
             RegionId="1",
             RequesterTypeId="2",
-            SubServiceId="6",
+            SubServiceId="12",
             VisitReasonId="1",
         )
         payload = CreateNewAppointmentRqPayload(
