@@ -5,6 +5,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
         total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
     ) -> str:
         import os
+
         return (
             f":earth_africa: Environment: {os.getenv('ENV') or 'local'}\n"
             f":purple_circle: Total: {total}\n"
