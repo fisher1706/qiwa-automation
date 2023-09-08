@@ -105,8 +105,6 @@ isort:
   stage: tests
   tags:
     - shared
-  before_script:
-    - ls
   artifacts:
     paths:
       - $XML_REPORT
@@ -118,7 +116,9 @@ isort:
 ui_tests_sso:
   <<: *testrun
   script:
-    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
+    - set +e
+    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY || EXIT_CODE=$?
+    - exit $EXIT_CODE
   retry:
     max: 2
     when: always
