@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testsuites>
-    <testsuite name="my/suite" errors="0" failures="0" skipped="0" tests="1" time="65.039"
-               timestamp="2023-09-07T14:17:09.106996" hostname="w3admins-MacBook-Pro.local">
-        <testcase classname="tests.api.shareable.test_ott_service" name="test_foo" time="65.005"/>
-    </testsuite>
-</testsuites>
