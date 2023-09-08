@@ -98,17 +98,16 @@ isort:
 
 .testrun_template: &testrun
   image: $IMAGE
-  allow_failure: true
+  allow_failure:
+    exit_codes: 1
   stage: tests
   tags:
     - shared
   artifacts:
-    reports:
-      junit: $XML_REPORT
     paths:
+      - $XML_REPORT
       - $ALLURE_DIRECTORY
     expire_in: 1 day
-    when: always
   variables:
     ENV: demo
 
