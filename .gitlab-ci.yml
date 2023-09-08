@@ -105,7 +105,7 @@ isort:
     - shared
   script:
     - echo $TEST_SUITE
-    - pytest $TEST_SUITE -s --alluredir=$ALLURE_DIRECTORY || EXIT_CODE=$?
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
@@ -122,51 +122,43 @@ ui_tests_sso:
 
 ui_tests_um:
   <<: *testrun
-  script:
-    - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=um_ui_suite || EXIT_CODE=$?
-    - exit $EXIT_CODE
   variables:
     ENV: stage
+    TEST_SUITE: tests/ui/um
 
 ui_tests_shareable:
   <<: *testrun
-  script:
-    - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --junitxml=$XML_REPORT -o junit_suite_name=ss_ui_suite || EXIT_CODE=$?
-    - exit $EXIT_CODE
+  variables:
+    TEST_SUITE: tests/ui/shareable
+
 
 ui_tests_dedicated:
   <<: *testrun
-  script:
-    - pytest tests/ui/dedicated -s --alluredir=$ALLURE_DIRECTORY || EXIT_CODE=$?
-    - exit $EXIT_CODE
+  variables:
+    TEST_SUITE: tests/ui/dedicated
 
 api_tests_sso:
   <<: *testrun
-  script:
-    - pytest tests/api/sso -s --alluredir=$ALLURE_DIRECTORY --reruns 2 || EXIT_CODE=$?
-    - exit $EXIT_CODE
+  variables:
+    TEST_SUITE: tests/api/sso
 
 api_tests_um:
   <<: *testrun
-  script:
-    - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=um_api_suite || EXIT_CODE=$?
-    - exit $EXIT_CODE
   variables:
     ENV: stage
+    TEST_SUITE: tests/api/um
 
 api_tests_shareable_demo:
   <<: *testrun
-  script:
-    - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=ss_api_demo_suite || EXIT_CODE=$?
-    - exit $EXIT_CODE
+  variables:
+    TEST_SUITE: tests/api/shareable
 
 api_tests_shareable_stage:
   <<: *testrun
-  script:
-     - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=ss_api_stage_suite || EXIT_CODE=$?
-     - exit $EXIT_CODE
   variables:
     ENV: stage
+    TEST_SUITE: tests/api/shareable
+    OPTIONS: "-m stage"
 
 .allure_results_template: &test_results
   rules:
