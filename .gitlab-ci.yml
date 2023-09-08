@@ -114,9 +114,8 @@ isort:
 ui_tests_sso:
   <<: *testrun
   script:
-    - set +e
-    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY || EXIT_CODE=$?
-    - exit $EXIT_CODE
+    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
+    - exit $?
   retry:
     max: 2
     when: always
