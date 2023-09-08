@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     env: Envs
     domain: Domains
     mock_mlsd_url: Optional[HttpUrl]
+    ibm_url: HttpUrl
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
     timeout: int = 20

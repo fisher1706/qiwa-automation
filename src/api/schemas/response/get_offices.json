@@ -1,0 +1,33 @@
+{
+  "data": {
+    "type": "list"
+  },
+  "included": {
+    "type": "list"
+  },
+  "meta": {
+    "type": "dict",
+    "schema": {
+      "from": {
+        "type": "number"
+      },
+      "size": {
+        "type": "number"
+      },
+      "total": {
+        "type": "dict",
+        "schema": {
+          "value": {
+            "type": "number"
+          },
+          "relation": {
+            "type": "string"
+          }
+        }
+      },
+      "max_score": {
+        "type": "number"
+      }
+    }
+  }
+}

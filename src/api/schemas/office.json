@@ -1,0 +1,39 @@
+{
+  "included": [
+    {
+      "type": "appointment-service",
+      "id": "",
+      "attributes": {
+        "id": "",
+        "is-active": true
+      }
+    }
+  ],
+  "data": {
+    "type": "labor-offices",
+    "id": "",
+    "attributes": {
+      "office-name": "",
+      "hourly-capacity": "",
+      "working-hours-from": "",
+      "working-hours-to": "",
+      "gmap-address": "",
+      "region-id": "",
+      "latitude": "",
+      "longitude": "",
+      "id": "",
+      "is-active": true,
+      "is-electronic-office": false
+    },
+    "relationships": {
+      "appointment-service": {
+        "data": [
+          {
+            "type": "appointment-service",
+            "id": ""
+          }
+        ]
+      }
+    }
+  }
+}

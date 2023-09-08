@@ -1,0 +1,26 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string",
+        "nullable": true
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "operation-date": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
