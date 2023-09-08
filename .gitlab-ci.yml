@@ -116,7 +116,7 @@ isort:
 ui_tests_sso:
   <<: *testrun
   script:
-    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY || echo $?
+    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
   retry:
     max: 2
     when: always
