@@ -98,7 +98,10 @@ isort:
 
 .testrun_template: &testrun
   image: $IMAGE
-  allow_failure: true
+  allow_failure:
+    exit_codes:
+      - 0
+      - 1
   stage: tests
   tags:
     - shared
