@@ -1,8 +1,8 @@
 import pytest
 
+from src.api.app import QiwaApi
 from data.account import Account
 from data.constants import UserInfo
-from src.api.app import QiwaApi
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.controllers.sso_auth import AuthApiSSOController
 from src.api.http_client import HTTPClient
