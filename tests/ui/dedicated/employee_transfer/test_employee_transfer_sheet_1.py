@@ -11,8 +11,8 @@ from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.actions.sign_in import LoginActions
-from src.ui.components.profile_menu import UserProfileMenu
 from src.ui.components.footer import Footer
+from src.ui.components.profile_menu import UserProfileMenu
 
 
 @allure.feature('Employee Transfer sheet 1')

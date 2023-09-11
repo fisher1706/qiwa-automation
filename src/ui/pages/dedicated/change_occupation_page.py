@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import time
 
-from selene import have, command
+from selene import command, have
 from selene.support.shared.jquery_style import s, ss
 
-from data.constants import Titles, Label
+from data.constants import Label, Titles
 from src.ui.components.raw.table import Table
 
 
