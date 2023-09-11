@@ -7,14 +7,16 @@ include:
     file: '/common-jobs/.allure-report.yml'
 
 variables:
-  IMAGE: takamol/qa-automation:master-latest
-  ALLURE_DIRECTORY: allure-results
+  IMAGE: takamol/qiwa-automation:master-latest
+  ALLURE_RESULTS_DIRECTORY: allure-results
+  XML_REPORT: report.xml
 
 stages:
   - build
   - linting
   - tests
   - send-test-reports
+  - notification
 
 .package:
   image: takamol/ci-cd:package-latest
@@ -96,68 +98,73 @@ isort:
 
 .testrun_template: &testrun
   image: $IMAGE
-  allow_failure: true
+  allow_failure:
+    exit_codes: 1
   stage: tests
   tags:
     - shared
+  script:
+    - echo $TEST_SUITE
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - exit $EXIT_CODE
   artifacts:
     paths:
-      - $ALLURE_DIRECTORY
+      - $XML_REPORT
+      - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
     when: always
-  variables:
-    ENV: demo
   only:
     - master
 
 ui_tests_sso:
   <<: *testrun
-  script:
-    - pytest tests/ui/sso -s --alluredir=$ALLURE_DIRECTORY
-  retry:
-    max: 2
-    when: always
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/ui/sso
 
 ui_tests_um:
   <<: *testrun
-  script:
-    - pytest tests/ui/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-ui-daily
   variables:
     ENV: stage
+    TEST_SUITE: tests/ui/um
 
 ui_tests_shareable:
   <<: *testrun
-  script:
-    - pytest tests/ui/shareable -s --alluredir=$ALLURE_DIRECTORY --reruns 2 --discord_channel=ss-ui-wp-daily
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/ui/shareable
+
 
 ui_tests_dedicated:
   <<: *testrun
-  script:
-    - pytest tests/ui/dedicated -s --alluredir=$ALLURE_DIRECTORY
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/ui/dedicated
 
 api_tests_sso:
   <<: *testrun
-  script:
-    - pytest tests/api/sso -s --alluredir=$ALLURE_DIRECTORY --reruns 2
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/api/sso
 
 api_tests_um:
   <<: *testrun
-  script:
-    - pytest tests/api/um -s --alluredir=$ALLURE_DIRECTORY --discord_channel=um-api-daily
   variables:
     ENV: stage
+    TEST_SUITE: tests/api/um
 
 api_tests_shareable_demo:
   <<: *testrun
-  script:
-    - pytest tests/api/shareable -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/api/shareable
 
 api_tests_shareable_stage:
   <<: *testrun
-  script:
-     - pytest tests/api/shareable -m stage -s --alluredir=$ALLURE_DIRECTORY --discord_channel=ss-api-wp-daily
   variables:
     ENV: stage
+    TEST_SUITE: tests/api/shareable
+    OPTIONS: "-m stage"
 
 .allure_results_template: &test_results
   rules:
@@ -169,54 +176,84 @@ allure-ui-sso-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
-  dependencies:
-    - ui_tests_sso
+  needs: [ui_tests_sso]
 
 allure-ui-um-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
-  dependencies:
-    - ui_tests_um
+  needs: [ui_tests_um]
 
 allure-ss-ui-wp-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
-  dependencies:
-    - ui_tests_shareable
+  needs: [ui_tests_shareable]
 
 allure-ui-et-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: et-ui-daily
-  dependencies:
-    - ui_tests_dedicated
+  needs: [ui_tests_dedicated]
 
 allure-api-sso-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
-  dependencies:
-    - api_tests_sso
+  needs: [api_tests_sso]
 
 allure-api-um-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: um-api-daily
-  dependencies:
-    - api_tests_um
+  needs: [api_tests_um]
 
 allure-api-wp-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
-  dependencies:
-    - api_tests_shareable_demo
+  needs: [api_tests_shareable_demo]
 
 allure-api-ss-stage-results:
   <<: *test_results
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-  dependencies:
-    - api_tests_shareable_stage
+  needs: [api_tests_shareable_stage]
+
+.discord_notification_template: &discord_notification
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  stage: notification
+  image: $IMAGE
+  script:
+    - python utils/discord_notify.py $XML_REPORT $WEBHOOK
+
+discord_um_ui_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $UM_UI_DAILY
+  needs: [ui_tests_um]
+
+discord_ss_ui_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $SS_UI_WP_DAILY
+  needs: [ui_tests_shareable]
+
+discord_um_api_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $UM_API_DAILY
+  needs: [api_tests_um]
+
+discord_ss_api_demo_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $SS_API_WP_DAILY
+  needs: [api_tests_shareable_demo]
+
+discord_ss_api_stage_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $SS_API_WP_DAILY
+  needs: [api_tests_shareable_stage]

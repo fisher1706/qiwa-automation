@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     remote_enableVideo: bool = True
     remote_enableLog: bool = True
     remote_acceptInsecureCerts: bool = True
+    screen_resolution: str = "1024x720x24"
 
     @classmethod
     def for_env(cls, env: Optional[Envs]) -> Settings:

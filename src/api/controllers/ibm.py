@@ -14,13 +14,13 @@ from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.ibm.root import IBMResponse, IBMResponseData
 from src.api.payloads.ibm.createnewappointment import (
+    Body,
     CreateNewAppointmentRq,
     CreateNewAppointmentRqPayload,
-    RequesterDetails,
     EstablishmentDetails,
-    UserInfo,
     Header,
-    Body,
+    RequesterDetails,
+    UserInfo,
 )
 from utils.assertion import assert_status_code
 

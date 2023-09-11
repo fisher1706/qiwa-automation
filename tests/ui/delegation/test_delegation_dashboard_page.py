@@ -5,6 +5,9 @@ import pytest
 
 from data.delegation.dataset import delegation_statuses
 from src.api.app import QiwaApi
+from src.ui.pages.delegations_pages.delegation_dashboard_page import (
+    DelegationDashboardPage,
+)
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_status_code
@@ -69,6 +72,8 @@ def test_correct_data_on_delegation_dashboard():
         .should_employee_name_be_correct(first_delegation_data['employeeName'])\
         .should_entity_name_be_correct(first_delegation_data['entityNameEn'])\
         .should_delegation_permission_be_correct(first_delegation_data['permissions'][0]['nameEn'])\
-        .should_delegation_start_date_be_correct(first_delegation_data)\
-        .should_delegation_expiry_date_be_correct(first_delegation_data)\
+        .should_delegation_dates_be_correct_on_dashboard(first_delegation_data['status'], first_delegation_data["startDate"],
+                                                         DelegationDashboardPage.start_date_on_delegation_table) \
+        .should_delegation_dates_be_correct_on_dashboard(first_delegation_data['status'], first_delegation_data["expireAt"],
+                                                         DelegationDashboardPage.expiry_date_on_delegation_table) \
         .should_delegation_status_be_correct(first_delegation_data['status'])
