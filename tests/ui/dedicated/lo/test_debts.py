@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.change_occupation import lo_co_user_2
+from data.dedicated.change_occupation import lo_co_user_2, work_permit
 from data.dedicated.enums import SearchingType
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
@@ -21,7 +21,7 @@ def pre_test():
 @allure.title('AS-305 Verify that the list of debts is available for the user')
 @case_id(32976)
 def test_verify_that_the_list_of_debts_is_available_for_the_user():
-    appointment_id = IBMApiController().create_new_appointment(lo_co_user_2)
+    appointment_id = IBMApiController().create_new_appointment(lo_co_user_2, work_permit)
     qiwa.login_as_user(login=lo_co_user_2.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
@@ -40,7 +40,7 @@ def test_verify_that_the_list_of_debts_is_available_for_the_user():
               'number')
 @case_id(32977)
 def test_verify_that_the_user_can_generate_sadad_bill_only_for_debts_that_do_not_have_sadad_bill_number():
-    appointment_id = IBMApiController().create_new_appointment(lo_co_user_2)
+    appointment_id = IBMApiController().create_new_appointment(lo_co_user_2, work_permit)
     qiwa.login_as_user(login=lo_co_user_2.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
@@ -51,3 +51,4 @@ def test_verify_that_the_user_can_generate_sadad_bill_only_for_debts_that_do_not
     qiwa.appointment_page.execute()
     qiwa.work_permit_page.verify_wp_debts_service() \
         .generate_sadad_number()
+    # TODO ADD METHOD FOR DELETE SADAD NUMBER
