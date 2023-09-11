@@ -50,7 +50,7 @@ def setup_driver():
                 "enableVNC": config.settings.remote_enableVNC,
                 "enableVideo": config.settings.remote_enableVideo,
                 "enableLog": config.settings.remote_enableLog,
-                "screenResolution": "1024x720x24"
+                "screenResolution": "1024x720x24",
             },
         )
         driver = webdriver.Remote(config.settings.remote_url, options=chrome_options)
