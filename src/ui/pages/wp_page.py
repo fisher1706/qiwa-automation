@@ -1,13 +1,7 @@
 from __future__ import annotations
 
-import time
-from datetime import time
-
-import allure
-from selene import be, browser, command, have
+from selene import be, browser, have
 from selene.support.shared.jquery_style import s
-
-import config
 
 
 class WorkPermitPage:
@@ -57,7 +51,6 @@ class WorkPermitPage:
     def verify_search_by_border_or_iqama(self, iqama) -> WorkPermitPage:
         self.search_border_or_iqama.type(iqama)
         self.search_btn.click()
-        time.sleep(5)
         return self
 
     def check_available_periods(self) -> WorkPermitPage:
@@ -94,7 +87,7 @@ class WorkPermitPage:
 
     def verify_redirect_to_overview(self) -> WorkPermitPage:
         url2 = 'https://lo-work-permits.qiwa.info/work-permits/overview'
-        url = browser.location()
+        url = browser.driver.current_url()
         assert url == url2
         return self
 
@@ -125,7 +118,6 @@ class WorkPermitPage:
         return self
 
     def click_on_back_to_wp(self) -> WorkPermitPage:
-        time.sleep(5)
         self.back_to_wp.click()
         return self
 
@@ -159,7 +151,6 @@ class WorkPermitPage:
         return self
 
     def verify_unpaid_debts(self) -> WorkPermitPage:
-        time.sleep(5)
         self.click_on_filter()
         self.not_paid_radio.click()
         self.show_me_results_btn.click()
@@ -177,7 +168,7 @@ class WorkPermitPage:
         self.otp_code_second_cell.type(number)
         self.otp_code_third_cell.type(number)
         self.otp_code_fourth_cell.type(number)
-        #self.confirm_button.click()
+        self.confirm_button.click()
         return self
 
     def back_to_work_permits_from_debts(self) -> WorkPermitPage:
@@ -189,6 +180,3 @@ class WorkPermitPage:
         self.next_btn.should(be.clickable).click()
         self.prev_btn.should(be.clickable).click()
         return self
-
-
-
