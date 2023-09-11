@@ -13,10 +13,14 @@ class WorkPermitPage:
     wp_period_9 = s("//button[normalize-space()='9']")
     wp_period_12 = s("//button[normalize-space()='12']")
     wp_period_group = s("//div[@class='o-button-group']")
-    error_msg = s("//div[@class='c-work-permit-button__action-label c-work-permit-button__action-label--error']")
+    error_msg = s(
+        "//div[@class='c-work-permit-button__action-label c-work-permit-button__action-label--error']"
+    )
     continue_with_wp_request = s("//button[normalize-space()='Continue with work permit request']")
     show_all_employees = s("//button[normalize-space()='Show all employees']")
-    show_selected_employees = s("div[class='o-button-group o-button-group--text'] button[class='btn-selected']")
+    show_selected_employees = s(
+        "div[class='o-button-group o-button-group--text'] button[class='btn-selected']"
+    )
     show_not_selected_employees_btn = s("button[class='o-button--disabled']")
     iqama_number = s("td[data-label='Iqama number'] span[class='column-wraper']")
     late_years_no_extra = s("")
@@ -86,7 +90,7 @@ class WorkPermitPage:
         return self
 
     def verify_redirect_to_overview(self) -> WorkPermitPage:
-        url2 = 'https://lo-work-permits.qiwa.info/work-permits/overview'
+        url2 = "https://lo-work-permits.qiwa.info/work-permits/overview"
         url = browser.driver.current_url()
         assert url == url2
         return self
@@ -147,7 +151,7 @@ class WorkPermitPage:
         self.only_paid_radio.click()
         self.show_me_results_btn.click()
         self.click_on_filter()
-        self.paid.should(have.exact_text('Paid'))
+        self.paid.should(have.exact_text("Paid"))
         return self
 
     def verify_unpaid_debts(self) -> WorkPermitPage:
@@ -155,12 +159,12 @@ class WorkPermitPage:
         self.not_paid_radio.click()
         self.show_me_results_btn.click()
         self.click_on_filter()
-        self.not_paid.should(have.exact_text('Not Paid'))
+        self.not_paid.should(have.exact_text("Not Paid"))
         return self
 
     def generate_sadad_number(self) -> WorkPermitPage:
         self.generate_sadad.click()
-        self.proceed_otp_code('0000')
+        self.proceed_otp_code("0000")
         return self
 
     def proceed_otp_code(self, number: str) -> WorkPermitPage:
