@@ -10,8 +10,8 @@ from data.dedicated.contract_details import (
 from data.dedicated.users_types import Entity, Laborer
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
+from src.ui.components.footer import Footer
 from src.ui.pages.contract_management_page import ContractManagementPage
-from src.ui.pages.languages_page import Languages
 from src.ui.pages.workspaces_page import WorkspacesPage
 
 
@@ -21,7 +21,7 @@ class ContractManagementActions(ContractManagementPage):
         self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
-        self.language = Languages()
+        self.footer = Footer()
 
     def fill_establishment_details(self, user_type: UserType):
         establishment_details = EstablishmentDetails()
@@ -73,7 +73,7 @@ class ContractManagementActions(ContractManagementPage):
     def navigate_to_cm_service(self, entity: Entity):
         self.login_action.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
-        self.language.click_on_lang_button(Language.EN)
+        self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.CONTRACT_MANAGEMENT)
         self.wait_until_title_verification_code_appears(
             ContractManagement.VERIFICATION_CODE, Language.EN

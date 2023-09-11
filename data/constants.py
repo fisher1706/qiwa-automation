@@ -1,4 +1,4 @@
-import dataclasses
+from dataclasses import dataclass
 
 HEADERS = {
     "X-IBM-Client-Id": "514c55d8eb39044a69c1e9ab434ff616",
@@ -7,7 +7,7 @@ HEADERS = {
 }
 
 
-@dataclasses.dataclass
+@dataclass
 class Language:
     EN = "en"
     AR = "ar"
@@ -21,7 +21,7 @@ class UserType:  # pylint: disable=too-few-public-methods
     MEMBER = "member"
 
 
-@dataclasses.dataclass
+@dataclass
 class EmailConst:  # pylint: disable=too-few-public-methods
     INBOX_FOLDER = '"Inbox"'
     UNSEEN_EMAILS = "UNSEEN"
@@ -33,7 +33,7 @@ class EmailConst:  # pylint: disable=too-few-public-methods
     ADD_FLAG = "+FLAGS"
 
 
-@dataclasses.dataclass
+@dataclass
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
@@ -41,7 +41,7 @@ class UserInfo:
     EXPIRED_DATE = "2023-05-10"
 
 
-@dataclasses.dataclass
+@dataclass
 class EServiceAction:
     TRANSFER_TO_COMPANY = "Transfer to company"
     TRANSFER_BETWEEN_BRANCHES = "Transfer between branches"
@@ -52,7 +52,7 @@ class EServiceAction:
     CONTRACT_MANAGEMENT = "Request Service"
 
 
-@dataclasses.dataclass
+@dataclass
 class EService:
     CHANGE_OCCUPATION = "Change Occupation"
     NITAQAT_CALCULATOR = "Nitaqat calculator"
@@ -87,7 +87,7 @@ class EService:
     ]
 
 
-@dataclasses.dataclass
+@dataclass
 class EmployeeTransfer:
     TRANSFER_REQUESTS = {Language.EN: "TRANSFER REQUESTS", Language.AR: "طلبات النقل"}
     DASHBOARD = {Language.EN: "Dashboard", Language.AR: "لوحة المعلومات"}
@@ -200,7 +200,7 @@ class EmployeeTransfer:
     ]
 
 
-@dataclasses.dataclass
+@dataclass
 class ContractManagement:
     VERIFICATION_CODE = {Language.EN: "Verification Code", Language.AR: "رمز التحقق"}
     TITLE = {Language.EN: "Contract Management", Language.AR: "إدارة العقود"}
@@ -246,6 +246,37 @@ class ContractManagement:
     MSG_SUCCESS_TEMPLATE_REMOVING = "The contract template has been deleted successfully"
 
 
-@dataclasses.dataclass
+@dataclass
 class SupportedBrowser:
     version = {"chrome": "102.0", "firefox": "93.0", "opera": "80.0"}
+
+
+@dataclass
+class EstablishmentStatus:
+    EXISTING = "قائمة"
+
+
+@dataclass
+class Occupation:
+    SUPERVISOR = "مشرف عمال"
+    MANAGER_DIRECTOR = "مدير الادارة"
+    SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION = "أمين عام منظمة ذات اهتمامات خاصة"
+
+
+@dataclass
+class Label:
+    ACTIONS = "Actions"
+    ELIGIBILITY = "Eligibility"
+    IQAMA_NUMBER = "Iqama number"
+
+
+@dataclass
+class Eligibility:
+    ELIGIBLE = "Eligible"
+    NOT_ELIGIBLE = "Not Eligible"
+
+
+@dataclass
+class Titles:
+    CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
+    CHANGE_OCCUPATION = "Change Occupation"

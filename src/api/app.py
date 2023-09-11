@@ -19,6 +19,7 @@ from src.api.controllers.lo.offices_api_actions import OfficesApiActions
 from src.api.controllers.lo.services_api_actions import ServiceApiActions
 from src.api.controllers.lo.visits_api_actions import VisitsApiActions
 from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.visits import VisitsApiController
 from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
@@ -43,6 +44,7 @@ class QiwaApi:
         self.spaces_api = SpacesApi(self.client)
         self.delegation_api = DelegationAPI(self.client)
         # Controllers
+        self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)
 
     @cached_property

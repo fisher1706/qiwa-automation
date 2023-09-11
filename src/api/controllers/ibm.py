@@ -1,21 +1,35 @@
+from datetime import datetime
 from http import HTTPStatus
 
 import allure
+import pytest
 
 import config
 import src
+from data.constants import HEADERS
+from data.dedicated.change_occupation import User
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.ibm.root import IBMResponse, IBMResponseData
-from src.api.payloads.ibm.searchchangeoccupation import Body
+from src.api.payloads.ibm.createnewappointment import (
+    CreateNewAppointmentRq,
+    CreateNewAppointmentRqPayload,
+    RequesterDetails,
+    EstablishmentDetails,
+    UserInfo,
+    Header,
+    Body,
+)
 from utils.assertion import assert_status_code
 
 
 class IBMApiController:
-    client = HTTPClient()
-    url = config.settings.mock_mlsd_url
+    def __init__(self) -> None:
+        self.client = HTTPClient()
+        self.url = config.settings.ibm_url
+        self.route = "/takamol/staging"
 
     @allure.step
     def get_work_permit_requests_from_ibm(
@@ -27,7 +41,7 @@ class IBMApiController:
             }
         }
         response = self.client.post(
-            self.url, "/takamol/staging/workpermit/getworkpermitrequests", json=payload
+            url=self.url, endpoint=self.route + "/workpermit/getworkpermitrequests", json=payload
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         json_model = IBMResponse[IBMWorkPermitRequestList].parse_obj(response.json())
@@ -43,7 +57,7 @@ class IBMApiController:
             }
         }
         response = self.client.post(
-            self.url, "/takamol/staging/saudicer/getsaudicert", json=payload
+            url=self.url, endpoint=self.route + "/saudicer/getsaudicert", json=payload
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         json_model = IBMResponse[GetSaudiCertificateRsBody].parse_obj(response.json())
@@ -59,7 +73,7 @@ class IBMApiController:
             }
         }
         response = self.client.post(
-            self.url, "/takamol/staging/saudicer/validestsaudicert", json=payload
+            url=self.url, endpoint=self.route + "/saudicer/validestsaudicert", json=payload
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         json_model = IBMResponse.parse_obj(response.json())
@@ -75,10 +89,59 @@ class IBMApiController:
             }
         }
         response = self.client.post(
-            self.url, "/takamol/staging/chgoccupation/searchchangeoccupation", json=payload
+            url=self.url,
+            endpoint=self.route + "/chgoccupation/searchchangeoccupation",
+            json=payload,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         json_model = IBMResponse[src.api.models.ibm.searchchangeoccupation.Body].parse_obj(
             response.json()
         )
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
+
+    @allure.step
+    def create_new_appointment(self, user: User) -> int:
+        header = Header(
+            TransactionId="0",
+            ChannelId="Qiwa",
+            SessionId="0",
+            RequestTime="2023-08-03 09:00:00.555",
+            ServiceCode="CNA00001",
+            DebugFlag="1",
+            UserInfo=UserInfo(UserId=user.personal_number, IDNumber=user.personal_number),
+        )
+
+        body = Body(
+            EstablishmentDetails=EstablishmentDetails(
+                LaborOfficeId=user.labor_office_id,
+                SequenceNumber=user.sequence_number,
+            ),
+            OfficeID="1413",
+            ClientServiceId="3",
+            RequesterDetails=RequesterDetails(
+                RequesterIdNo=user.personal_number,
+                RequesterName="",
+                RequesterUserId=user.personal_number,
+            ),
+            Time="93",
+            Date=datetime.today().strftime("%Y-%m-%d"),
+            RegionId="1",
+            RequesterTypeId="2",
+            SubServiceId="6",
+            VisitReasonId="1",
+        )
+        payload = CreateNewAppointmentRqPayload(
+            CreateNewAppointmentRq=CreateNewAppointmentRq(Header=header, Body=body)
+        )
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwalo/createnewappointment",
+            json=payload.dict(),
+            headers=HEADERS,
+        )
+        response = response.json()
+        try:
+            return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
+        except KeyError:
+            pytest.fail(reason=str(response))
+        return 0

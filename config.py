@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     env: Envs
     domain: Domains
     mock_mlsd_url: Optional[HttpUrl]
-    ibm_url: HttpUrl
+    ibm_url: Optional[HttpUrl]
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
     timeout: int = 20
@@ -65,6 +65,7 @@ class QiwaUrls:
         self.delegation_service_api: str = f"{protocol}api-proxy.{domain}"
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
+        self.agent_sys_url: str = f"{protocol}lo-agent-system.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))

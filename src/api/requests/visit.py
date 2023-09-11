@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-# from src.api.client.api_support import ApiSupport
-
 
 class Visit:
     @staticmethod

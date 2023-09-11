@@ -10,7 +10,7 @@ from data.dedicated.contract_management import (
     laborer_saudi_not_in_the_establishment,
 )
 from src.ui.actions.contract_management import ContractManagementActions
-from src.ui.pages.languages_page import Languages
+from src.ui.components.footer import Footer
 
 
 @allure.feature('Contract Management Contract Creation')
@@ -20,7 +20,7 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
     @pytest.fixture(autouse=True)
     def pre_test(self):
         self.contract_management_actions = ContractManagementActions()
-        self.language = Languages()
+        self.footer = Footer()
 
     @allure.title('Create a new contract for Saudi Laborer in the Establishment')
     @allure.testcase('https://qiwa.testmo.net/repositories/4?group_id=1218', '9319,9276')
@@ -37,7 +37,7 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
             ContractManagement.MSG_SUCCESS_CONTRACT_CREATION,
             Language.EN
         )
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.contract_management_actions.verify_success_contract_creation(
             ContractManagement.MSG_SUCCESS_CONTRACT_CREATION,
             Language.AR
@@ -88,7 +88,7 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
             ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.EN
         )
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.contract_management_actions.verify_success_contract_creation(
             ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.AR

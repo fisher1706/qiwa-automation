@@ -5,7 +5,7 @@ from data.constants import Language
 from data.dedicated.employee_transfer import employer
 from data.dedicated.transfer_requests import request
 from src.ui.actions.employee_transfer import EmployeeTransferActions
-from src.ui.pages.languages_page import Languages
+from src.ui.components.footer import Footer
 
 
 @allure.feature('Employee Transfer Dashboard')
@@ -15,34 +15,34 @@ class TestEmployeeTransfer:  # pylint: disable=unused-argument
     @pytest.fixture(autouse=True)
     def pre_test(self):
         self.employee_transfer_actions = EmployeeTransferActions()
-        self.language = Languages()
+        self.footer = Footer()
 
     @allure.title('Create the Dashboard page | Block 1 UI test')
     def test_view_employee_transfer_dashboard(self):
         self.employee_transfer_actions.navigate_to_et_service(employer)
         self.employee_transfer_actions.verify_info_banner(Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.verify_info_banner(Language.AR)
 
     @allure.title('Create the Dashboard page | Terms & Conditions pop-up UI test')
     def test_terms_and_conditions_pop_up_ui_test(self):
         self.employee_transfer_actions.navigate_to_et_service(employer)
         self.employee_transfer_actions.verify_terms_conditions_popup(Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.verify_terms_conditions_popup(Language.AR)
 
     @allure.title('Create Transfer Requests | Sent Requests General UI test')
     def test_sent_requests_general_ui_test(self):
         self.employee_transfer_actions.navigate_to_et_service(employer)
         self.employee_transfer_actions.verify_sent_requests_tab(Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.verify_sent_requests_tab(Language.AR)
 
     @allure.title('Create Transfer Requests | Received Requests General UI test')
     def test_received_requests_general_ui_test(self):
         self.employee_transfer_actions.navigate_to_et_service(employer)
         self.employee_transfer_actions.verify_received_requests_tab(Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.verify_received_requests_tab(Language.AR)
 
     @allure.title('Create Transfer Requests | Pagination and counters UI test')

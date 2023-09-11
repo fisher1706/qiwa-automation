@@ -4,7 +4,7 @@ from selene.support.shared.jquery_style import s
 from data.constants import Language
 
 
-class Languages:
+class Footer:
     lang_buttons = {
         Language.EN: '//button[contains(., "English")]',
         Language.AR: '//button[contains(., "العربية")]',
