@@ -7,7 +7,8 @@ import pytest
 import config
 import src
 from data.constants import HEADERS
-from data.dedicated.change_occupation import Service, User
+from data.dedicated.change_occupation import User
+from data.dedicated.services import Service
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody

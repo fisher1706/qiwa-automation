@@ -2,13 +2,9 @@ import allure
 import pytest
 
 from data.constants import Eligibility, EstablishmentStatus, Language, Occupation
-from data.dedicated.change_occupation import (
-    change_occupation,
-    employee,
-    employee_1,
-    lo_co_user,
-)
+from data.dedicated.change_occupation import employee, employee_1, lo_co_user
 from data.dedicated.enums import RequestStatus, SearchingType
+from data.dedicated.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa

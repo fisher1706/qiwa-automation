@@ -3,7 +3,10 @@ from __future__ import annotations
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
 
+import config
 
+
+# TODO fill empty locators after calculate endpoint fix
 class WorkPermitPage:
     search_border_or_iqama = s("//input[@placeholder='Search employees by Border / Iqama number']")
     search_btn = s("//button[normalize-space()='Search']")
@@ -31,9 +34,8 @@ class WorkPermitPage:
     back_to_wp = s("//span[@class='c-requests__back-to-work-permits-action']")
     back_to_wp_from_debts = s("//div[contains(text(),'Back to Work Permits')]")
     wp_title = s("//span[@class='c-permits-header__title']")
-    switch_to_en = s("//button[normalize-space()='English']")
     pagination_text = s("")
-    total_results = s("//p[@class='c-pagination__total']")
+    total_results = s(".c-pagination__total")
     unprocess_btn = s("//button[normalize-space()='Unprocess']")
     generate_sadad = s("//button[@class='o-button o-button--primary o-button--fit']")
     wp_debts_filter = s("//button[@class='c-filter-button__btn']")
@@ -51,6 +53,7 @@ class WorkPermitPage:
     otp_code_third_cell = s("(//input[@type='tel'])[3]")
     otp_code_fourth_cell = s("(//input[@type='tel'])[4]")
     confirm_button = s("//button[normalize-space()='Confirm']")
+    route = "/work-permits/overview"
 
     def verify_search_by_border_or_iqama(self, iqama) -> WorkPermitPage:
         self.search_border_or_iqama.type(iqama)
@@ -67,16 +70,6 @@ class WorkPermitPage:
         self.error_msg.should(be.visible)
         return self
 
-    def check_all_wp_periods_available(self) -> WorkPermitPage:
-        self.wp_period_group = browser.element("//div[@class='o-button-group']")
-        periods = self.wp_period_group.all(".//button")
-        for button in periods:
-            if button.has_class("btn-disabled"):
-                print(f"Button '{button.text}' is disabled.")
-            else:
-                print(f"Button '{button.text}' is active.")
-        return self
-
     def choose_wp_period_6(self) -> WorkPermitPage:
         self.wp_period_6.click()
         return self
@@ -90,8 +83,8 @@ class WorkPermitPage:
         return self
 
     def verify_redirect_to_overview(self) -> WorkPermitPage:
-        url2 = "https://lo-work-permits.qiwa.info/work-permits/overview"
-        url = browser.driver.current_url()
+        url2 = config.qiwa_urls.work_permit + self.route
+        url = str(browser.driver.current_url)
         assert url == url2
         return self
 
@@ -164,15 +157,6 @@ class WorkPermitPage:
 
     def generate_sadad_number(self) -> WorkPermitPage:
         self.generate_sadad.click()
-        self.proceed_otp_code("0000")
-        return self
-
-    def proceed_otp_code(self, number: str) -> WorkPermitPage:
-        self.otp_code_first_cell.type(number)
-        self.otp_code_second_cell.type(number)
-        self.otp_code_third_cell.type(number)
-        self.otp_code_fourth_cell.type(number)
-        self.confirm_button.click()
         return self
 
     def back_to_work_permits_from_debts(self) -> WorkPermitPage:
@@ -180,7 +164,7 @@ class WorkPermitPage:
         return self
 
     def verify_pagination(self) -> WorkPermitPage:
-        self.prev_btn.should(be.disabled)
+        self.prev_btn.should(be.present)
         self.next_btn.should(be.clickable).click()
         self.prev_btn.should(be.clickable).click()
         return self

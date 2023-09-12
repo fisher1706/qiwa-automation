@@ -7,6 +7,7 @@ from selene.support.shared import browser
 import config
 from data.constants import UserInfo
 from src.api.app import QiwaApi
+from src.ui.components.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.pages.admin_page import AdminPage
@@ -49,6 +50,7 @@ class Qiwa:
     # Components
     feedback = FeedbackPopup()
     footer = Footer()
+    email_popup = EmailConfirmationPopup()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> Qiwa:
