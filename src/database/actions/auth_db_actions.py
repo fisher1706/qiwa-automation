@@ -3,6 +3,7 @@ from src.database.sql_requests.accounts_emails import AccountsEmailsRequest
 from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
 from src.database.sql_requests.activities_request import ActivityRequest
 from src.database.sql_requests.logins import LoginRequest
+from src.database.sql_requests.oauth_applications import AppRequest
 
 
 def delete_account_data_from_db(personal_number: str, expat: bool = False):
@@ -24,6 +25,7 @@ def delete_account_data_from_db(personal_number: str, expat: bool = False):
     AccountRequests().delete_accounts_password_hashes(account_id=account_id)
     AccountRequests().delete_account_auth_audit_logs(account_id=account_id)
     AccountRequests().delete_account_active_session_key(account_id=account_id)
+    AppRequest().delete_oauth_grants_data_request(account_id=account_id)
     AccountRequests().delete_account_record(account_id=account_id)
 
 

@@ -40,3 +40,11 @@ class AppRequest:
         )
         oauth_grant_data.expires_in = expired_time
         self.session.commit()
+
+    def delete_oauth_grants_data_request(self, account_id: str):
+        oauth_grant_data = (
+            self.session.query(OauthGrants).filter(OauthGrants.account_id == account_id).all()
+        )
+        for oauth_grant in oauth_grant_data:
+            self.session.delete(oauth_grant)
+            self.session.commit()

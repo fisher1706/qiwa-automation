@@ -4,7 +4,7 @@ import pkce
 
 class HashingManager:
     @staticmethod
-    def hash_string_with_salt(string):
+    def hash_string_with_salt(string: str) -> str:
         byte_string = string.encode("utf-8")
         salt = bcrypt.gensalt(rounds=12)
         return str(bcrypt.hashpw(byte_string, salt)).strip("b'")

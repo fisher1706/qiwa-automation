@@ -86,7 +86,7 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def phone_verification(self, phone_number: str, expected_code=200):
+    def phone_verification(self, phone_number: str, expected_code: int = 200) -> AuthApiSSO:
         response = self.api.post(
             url=self.url,
             endpoint="/phones/init-verification",

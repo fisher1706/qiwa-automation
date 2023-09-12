@@ -3,6 +3,7 @@ import secrets
 import string
 from random import choice, choices, randint
 
+import config
 from data.constants import UserType
 
 
@@ -45,7 +46,7 @@ class RandomManager:
         return random.randrange(start_element, stop_element - 1)
 
     @classmethod
-    def random_eng_string(cls, letters_quantity):
+    def random_eng_string(cls, letters_quantity: int) -> str:
         return "".join(
             random.choice(string.ascii_lowercase) for x in range(letters_quantity)
         ).lower()
@@ -65,9 +66,8 @@ class RandomManager:
         return privileges
 
     @staticmethod
-    def generate_safe_url_string(str_len=10):
+    def generate_safe_url_string(str_len: int = 10) -> str:
         return secrets.token_urlsafe(str_len)
 
-    def generate_url(self, size=8, prefix="auto", host="auth.qiwa.tech", path=None):
-        _path = f"/{path}" if path else ""
-        return f"https://{prefix}-{self.random_alphanumeric(size)}-{host}{_path}"
+    def generate_url(self, size: int = 8, path: str = "") -> str:
+        return f"https://{'auto'}-{self.random_alphanumeric(size)}-{config.qiwa_urls.auth}{path}"

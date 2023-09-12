@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import allure
 
 from data.account import Account
@@ -25,10 +27,11 @@ class AuthApiSSOController(AuthApiSSO):
         self.register_user(account)
 
     @allure.step
-    def register_account_via_sso_api(self, account: Account) -> None:
+    def register_account_via_sso_api(self, account: Account) -> AuthApiSSOController:
         self.init_sso_hsm(account.personal_number)
         self.active_sso_hsm()
         self.create_account_via_laborer_sso_api(account)
+        return self
 
     @allure.step
     def pass_account_security(self, personal_number: str, password: str):
@@ -39,7 +42,7 @@ class AuthApiSSOController(AuthApiSSO):
         self.answer_security_question()
         self.logout()
 
-    @allure.step("Log out the user from Laborer SSO")
-    def logout(self):
+    @allure.step
+    def logout(self) -> None:
         self.get_session()
         self.logout_user()
