@@ -281,15 +281,3 @@ class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"
     WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
-
-
-@dataclass
-class ClientServiceId:
-    WORK_PERMIT = "4"
-    CHANGE_OCCUPATION = "3"
-
-
-@dataclass
-class SubServiceId:
-    WORK_PERMIT = "12"
-    CHANGE_OCCUPATION = "6"

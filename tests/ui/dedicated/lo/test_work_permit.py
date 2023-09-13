@@ -4,7 +4,14 @@ import pytest
 from data.constants import Language
 from data.dedicated.enums import SearchingType
 from data.dedicated.services import work_permit
-from data.dedicated.work_permit import UserIqama, lo_wp_user_1
+from data.dedicated.work_permit import (
+    lo_wp_iqama_1,
+    lo_wp_iqama_2,
+    lo_wp_iqama_3,
+    lo_wp_iqama_4,
+    lo_wp_iqama_5,
+    lo_wp_user_1,
+)
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa
@@ -31,7 +38,7 @@ def test_verify_search_functionality_with_iqama_and_border_number():
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_1)
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_1.personal_number)
 
 
 @allure.title('AS-274 Verify that user return the 12-months WP period option when iqama is expired for slighly'
@@ -47,7 +54,7 @@ def test_verify_wp_period_when_iqama_expired():
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_2) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_2.personal_number) \
         .check_available_periods()
 
 
@@ -63,7 +70,7 @@ def test_verify_laborer_with_unfit_job_returns_an_error():
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_3) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_3.personal_number) \
         .verify_unfit_job_error()
 
 
@@ -80,7 +87,7 @@ def test_verify_that_all_wp_returns_with_expired_iqama():
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_4.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active() \
@@ -99,11 +106,11 @@ def test_verify_that_selected_employees_tab_shows_only_the_selected_employees():
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_4.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
         .click_on_show_only_selected_employees_btn() \
-        .verify_selected_employees(UserIqama.iqama_4)
+        .verify_selected_employees(lo_wp_iqama_4.personal_number)
 
 
 @allure.title('AS-276 Verify that the selected employees all have WP Fees = (25 per each 3 months from selected '
@@ -119,7 +126,7 @@ def test_verify_that_the_selected_employees_all_have_wp_fees():
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_4.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active()
@@ -139,12 +146,12 @@ def test_selected_employees_moved_to_calculation_page():
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_4.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active() \
         # TODO: ADD AFTER FIX WITH CALCULATE ENDPOINT
-    #   .verify_selected_employees_on_calculation_page(UserIqama.iqama_4)
+    #   .verify_selected_employees_on_calculation_page(lo_wp_iqama_4.personal_number)
 
 
 @allure.title('AS-278 Verify that a penalty user will have fees > 0 in either (or both) of the "fees for late '
@@ -160,7 +167,7 @@ def test_verify_that_a_penalty_user_will_have_fees_less_than_null():
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.business_page.select_work_permit()
-    qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_5) \
+    qiwa.work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_5.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active() \

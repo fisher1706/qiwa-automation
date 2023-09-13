@@ -1,19 +1,4 @@
-from typing import Optional
-
-from pydantic import BaseModel
-
-
-class User(BaseModel):
-    personal_number: str
-
-    labor_office_id: str
-    sequence_number: str
-
-    establishment_name_ar: Optional[str]
-    establishment_number: Optional[str]
-    occupation: Optional[str]
-    employee_name: Optional[str]
-
+from data.dedicated.models.user import User
 
 lo_wp_user_1 = User(
     personal_number="1009428556",
@@ -26,10 +11,28 @@ lo_wp_user_2 = User(
     sequence_number="2000739",
 )
 
-
-class UserIqama:
-    iqama_1 = "2369026089"
-    iqama_2 = "2350756413"
-    iqama_3 = "2426490187"
-    iqama_4 = "2401631367"
-    iqama_5 = "2310334475"
+lo_wp_iqama_1 = User(
+    personal_number="2369026089",
+    labor_office_id="",
+    sequence_number="",
+)
+lo_wp_iqama_2 = User(
+    personal_number="2350756413",
+    labor_office_id="",
+    sequence_number="",
+)
+lo_wp_iqama_3 = User(
+    personal_number="2426490187",
+    labor_office_id="",
+    sequence_number="",
+)
+lo_wp_iqama_4 = User(
+    personal_number="2401631367",
+    labor_office_id="",
+    sequence_number="",
+)
+lo_wp_iqama_5 = User(
+    personal_number="2310334475",
+    labor_office_id="",
+    sequence_number="",
+)
