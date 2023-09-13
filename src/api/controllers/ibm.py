@@ -8,6 +8,7 @@ import config
 import src
 from data.constants import HEADERS
 from data.dedicated.change_occupation import User
+from data.dedicated.services import Service
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
@@ -100,7 +101,7 @@ class IBMApiController:
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
 
     @allure.step
-    def create_new_appointment(self, user: User) -> int:
+    def create_new_appointment(self, user: User, service: Service) -> int:
         header = Header(
             TransactionId="0",
             ChannelId="Qiwa",
@@ -117,7 +118,7 @@ class IBMApiController:
                 SequenceNumber=user.sequence_number,
             ),
             OfficeID="1413",
-            ClientServiceId="3",
+            ClientServiceId=service.client_service_id,
             RequesterDetails=RequesterDetails(
                 RequesterIdNo=user.personal_number,
                 RequesterName="",
@@ -127,7 +128,7 @@ class IBMApiController:
             Date=datetime.today().strftime("%Y-%m-%d"),
             RegionId="1",
             RequesterTypeId="2",
-            SubServiceId="6",
+            SubServiceId=service.sub_service_id,
             VisitReasonId="1",
         )
         payload = CreateNewAppointmentRqPayload(

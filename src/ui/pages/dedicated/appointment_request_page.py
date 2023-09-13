@@ -18,6 +18,7 @@ class AppointmentRequestPage:
     button_search = s('//button[@type="submit"]')
     button_proceed = s('//button[@class="btn btn--primary with-preloader"]')
     button_proceed_modal = s(".o-modal__otp-actions--single-action button")
+    button_next = s('//button[@class="btn btn--primary"]')
 
     @allure.step
     def visit(self) -> AppointmentRequestPage:

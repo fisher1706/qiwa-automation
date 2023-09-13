@@ -4,6 +4,7 @@ import pytest
 from data.constants import Eligibility, EstablishmentStatus, Language, Occupation
 from data.dedicated.change_occupation import employee, employee_1, lo_co_user
 from data.dedicated.enums import RequestStatus, SearchingType
+from data.dedicated.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa
@@ -22,7 +23,7 @@ def pre_test():
 @allure.title('Check if establishment and CR is active')
 @case_id(32946, 32947)
 def test_check_if_establishment_and_cr_is_active():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()
@@ -52,7 +53,7 @@ def test_check_if_excluded_activities_are_not_able_to_co():
 @allure.title('Check if labor is employed')
 @case_id(32950)
 def test_check_if_labor_is_employed():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user,  change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()
@@ -70,7 +71,7 @@ def test_check_if_labor_is_employed():
 
 @allure.title('Check CO request is moved to CO request section (extra case)')
 def test_check_co_request_is_moved_to_co_request_section():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()
@@ -91,7 +92,7 @@ def test_check_co_request_is_moved_to_co_request_section():
 
 @allure.title('Check if CO is submitted (extra case)')
 def test_check_if_co_is_submitted():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()
@@ -128,7 +129,7 @@ def test_check_if_co_submitted_while_there_is_st():
 @allure.title('Check if CO submitted while there is another CO')
 @case_id(32952)
 def test_check_if_co_submitted_while_there_is_another_co():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()
@@ -205,7 +206,7 @@ def test_check_error_messages_scenarios():
 @allure.title('Submit CO for multiple requests in one bulk')
 @case_id(32962)
 def test_submit_co_for_multiple_requests_in_one_bulk():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user)
+    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.workspace_page.select_lo_agent()

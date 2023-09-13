@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from selene import have, query
-from selene.support.shared.jquery_style import ss
+from selene.support.shared.jquery_style import s, ss
 
 
 class BusinessPage:
@@ -13,6 +13,7 @@ class BusinessPage:
 
     QIWA_SERVICES = ss(".service-item")
     CHANGE_OCCUPATION = QIWA_SERVICES.element_by(have.text("Change Occupation"))
+    WORK_PERMIT = QIWA_SERVICES.element_by(have.text("Work Permit"))
 
     def check_establishment_status(self, status: str) -> BusinessPage:
         self.ESTABLISHMENT_STATUS.should(have.exact_text(status))
@@ -24,4 +25,8 @@ class BusinessPage:
 
     def select_change_occupation(self) -> BusinessPage:
         self.CHANGE_OCCUPATION.s(".btn").click()
+        return self
+
+    def select_work_permit(self) -> BusinessPage:
+        self.WORK_PERMIT.s(".btn").click()
         return self

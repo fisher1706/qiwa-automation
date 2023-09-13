@@ -280,3 +280,4 @@ class Eligibility:
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"
+    WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
