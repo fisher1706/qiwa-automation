@@ -30,7 +30,7 @@ def test_verify_that_the_list_of_debts_is_available_for_the_user():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_wp_debts_service() \
         .verify_paid_debts() \
         .verify_unpaid_debts() \
@@ -49,7 +49,7 @@ def test_verify_that_the_user_can_generate_sadad_bill_only_for_debts_that_do_not
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_wp_debts_service() \
         .verify_unpaid_debts() \
         .generate_sadad_number()

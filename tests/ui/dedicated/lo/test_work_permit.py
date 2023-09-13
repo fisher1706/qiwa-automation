@@ -30,7 +30,7 @@ def test_verify_search_functionality_with_iqama_and_border_number():
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_1)
 
 
@@ -46,7 +46,7 @@ def test_verify_wp_period_when_iqama_expired():
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_2) \
         .check_available_periods()
 
@@ -62,7 +62,7 @@ def test_verify_laborer_with_unfit_job_returns_an_error():
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_3) \
         .verify_unfit_job_error()
 
@@ -79,7 +79,7 @@ def test_verify_that_all_wp_returns_with_expired_iqama():
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
     qiwa.visits_page.click_on_proceed_button()
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
         .check_available_periods() \
         .choose_wp_period_12() \
@@ -98,7 +98,7 @@ def test_verify_that_selected_employees_tab_shows_only_the_selected_employees():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
         .check_available_periods() \
         .choose_wp_period_12() \
@@ -118,7 +118,7 @@ def test_verify_that_the_selected_employees_all_have_wp_fees():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
         .check_available_periods() \
         .choose_wp_period_12() \
@@ -138,7 +138,7 @@ def test_selected_employees_moved_to_calculation_page():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_4) \
         .check_available_periods() \
         .choose_wp_period_12() \
@@ -159,7 +159,7 @@ def test_verify_that_a_penalty_user_will_have_fees_less_than_null():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_search_by_border_or_iqama(UserIqama.iqama_5) \
         .check_available_periods() \
         .choose_wp_period_12() \

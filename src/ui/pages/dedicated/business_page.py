@@ -13,7 +13,7 @@ class BusinessPage:
 
     QIWA_SERVICES = ss(".service-item")
     CHANGE_OCCUPATION = QIWA_SERVICES.element_by(have.text("Change Occupation"))
-    button_execute = s("//span[normalize-space()='Execute']")
+    WORK_PERMIT = QIWA_SERVICES.element_by(have.text("Work Permit"))
 
     def check_establishment_status(self, status: str) -> BusinessPage:
         self.ESTABLISHMENT_STATUS.should(have.exact_text(status))
@@ -27,6 +27,6 @@ class BusinessPage:
         self.CHANGE_OCCUPATION.s(".btn").click()
         return self
 
-    def execute(self) -> BusinessPage:
-        self.button_execute.click()
+    def select_work_permit(self) -> BusinessPage:
+        self.WORK_PERMIT.s(".btn").click()
         return self

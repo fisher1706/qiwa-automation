@@ -30,7 +30,7 @@ def test_dashboard():
         .search_visit()
     qiwa.visits_page.click_on_proceed_button()
     qiwa.footer.click_on_lang_button(Language.EN)
-    qiwa.business_page.execute()
+    qiwa.business_page.select_work_permit()
     qiwa.work_permit_page.verify_wp_dashboard_title(Titles.WORK_PERMIT) \
         .verify_wp_requests_service() \
         .click_on_back_to_wp() \
