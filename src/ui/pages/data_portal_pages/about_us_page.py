@@ -1,7 +1,7 @@
 from selene import have, query
 from selene.support.shared.jquery_style import browser, s, ss
 
-from data.dataportal.constants import Links
+from data.data_portal.constants import Links
 
 
 class AboutUsPage:

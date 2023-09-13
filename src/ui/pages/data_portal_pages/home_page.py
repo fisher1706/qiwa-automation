@@ -4,7 +4,7 @@ from selene import be, browser, query
 from selene.support.conditions import have
 from selene.support.shared.jquery_style import s, ss
 
-from data.dataportal.constants import Links, Variables
+from data.data_portal.constants import Links, Variables
 
 
 @dataclasses.dataclass
