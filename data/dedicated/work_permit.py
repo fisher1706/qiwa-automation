@@ -12,27 +12,17 @@ lo_wp_user_2 = User(
 )
 
 lo_wp_iqama_1 = User(
-    personal_number="2369026089",
-    labor_office_id="",
-    sequence_number="",
+    personal_number="2369026089"
 )
 lo_wp_iqama_2 = User(
-    personal_number="2350756413",
-    labor_office_id="",
-    sequence_number="",
+    personal_number="2350756413"
 )
 lo_wp_iqama_3 = User(
-    personal_number="2426490187",
-    labor_office_id="",
-    sequence_number="",
+    personal_number="2426490187"
 )
 lo_wp_iqama_4 = User(
-    personal_number="2401631367",
-    labor_office_id="",
-    sequence_number="",
+    personal_number="2401631367"
 )
 lo_wp_iqama_5 = User(
     personal_number="2310334475",
-    labor_office_id="",
-    sequence_number="",
 )
