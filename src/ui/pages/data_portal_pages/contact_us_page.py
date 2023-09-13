@@ -2,7 +2,7 @@ from selene import browser, query
 from selene.support.conditions import be, have
 from selene.support.shared.jquery_style import s, ss
 
-from data.dataportal.constants import Links, Variables
+from data.data_portal.constants import Links, Variables
 
 
 class ContactUsPage:

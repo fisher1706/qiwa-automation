@@ -1,7 +1,7 @@
 from selene import have, query
 from selene.support.shared.jquery_style import s, ss
 
-from data.dataportal.constants import Reports
+from data.data_portal.constants import Reports
 
 
 class ReportsPage:
