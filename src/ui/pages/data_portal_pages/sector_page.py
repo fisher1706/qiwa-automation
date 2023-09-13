@@ -3,7 +3,7 @@ import dataclasses
 from selene import have
 from selene.support.shared.jquery_style import s
 
-from data.dataportal.constants import EmployeesChart, EstablishmentsChart
+from data.data_portal.constants import EmployeesChart, EstablishmentsChart
 from src.ui.pages.data_portal_pages.market_overview_page import (
     EmployeesChartLocators,
     EstablishmentsChartLocators,

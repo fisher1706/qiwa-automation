@@ -1,16 +1,16 @@
-import time
-
 import allure
 import pytest
 
-from data.dataportal.dataset import MarketOverviewData, SectorData
-from src.api.dataportal.schemas.response_mapping import WorkForceStatistics
+from data.data_portal.dataset import SectorData
 from src.api.dataportal.workforcestatistics_api import workforce_api
-from src.ui.pages.data_portal_pages.sector_page import SectorPage
-from src.ui.qiwa import data_portal
+from src.ui.dataportal import data_portal
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check the displaying of data from the backend to the interface')
+@case_id(5907)
 @pytest.mark.skip('Need to adjust endpoint ids ')
 @pytest.mark.parametrize('sector_id', SectorData.economic_sector_ids_data)
 @pytest.mark.parametrize('locator, endpoint_id, filtered_data, response_filter, action', SectorData.sector_data,

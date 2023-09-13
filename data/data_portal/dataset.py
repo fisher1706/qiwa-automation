@@ -1,6 +1,6 @@
 import dataclasses
 
-from data.dataportal.constants import (
+from data.data_portal.constants import (
     AboutUs,
     AllSectors,
     ContactUs,

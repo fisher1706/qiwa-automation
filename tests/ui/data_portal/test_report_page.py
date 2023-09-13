@@ -1,9 +1,12 @@
 import allure
 import pytest
 
-from data.dataportal.constants import Localization
-from data.dataportal.dataset import ReportDataSet
-from src.ui.qiwa import data_portal
+from data.data_portal.constants import Localization
+from data.data_portal.dataset import ReportDataSet
+from src.ui.dataportal import data_portal
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check English translation for element on the page')

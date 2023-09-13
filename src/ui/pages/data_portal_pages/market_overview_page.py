@@ -3,7 +3,7 @@ import dataclasses
 from selene import be, have, query
 from selene.support.shared.jquery_style import s, ss
 
-from data.dataportal.constants import (
+from data.data_portal.constants import (
     CustomizeModal,
     EmployeesChart,
     EstablishmentsChart,

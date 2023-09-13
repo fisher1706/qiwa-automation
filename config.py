@@ -68,6 +68,7 @@ class QiwaUrls:
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
         self.agent_sys_url: str = f"{protocol}lo-agent-system.{domain}"
         self.work_permit: str = f"{protocol}lo-work-permits.{domain}"
+        self.data_portal_url: str = f"{protocol}data.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))

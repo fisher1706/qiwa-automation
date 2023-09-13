@@ -1,26 +1,32 @@
 import allure
 import pytest
 
-from data.dataportal.dataset import MarketOverviewData
+from data.data_portal.dataset import MarketOverviewData
 from src.api.dataportal.schemas.response_mapping import WorkForceStatistics
 from src.api.dataportal.workforcestatistics_api import workforce_api
+from src.ui.dataportal import data_portal
 from src.ui.pages.data_portal_pages.market_overview_page import MarketOverViewPage
-from src.ui.qiwa import data_portal
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Open Close Customize Modal')
+@case_id(5869)
 def test_open_close_customize_modal():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.open_close_customize_modal()
 
 
 @allure.title('Check Clear Customize Searching Field')
+@case_id(5880)
 def test_customize_clear_searching():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_clear_searching_field()
 
 
 @allure.title('Check Customize Searching Options')
+@case_id(5872)
 def test_customize_options_searching():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_options_searching()
@@ -33,42 +39,49 @@ def test_customize_no_result_searching():
 
 
 @allure.title('Check Customize Show All Sectors')
+@case_id(5874)
 def test_show_all_sectors():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_show_all_sectors()
 
 
 @allure.title('Check Customize Selected Options')
+@case_id(5873)
 def test_customize_selected_options():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_selected_options()
 
 
 @allure.title('Check Customize Select All Options')
+@case_id(5874)
 def test_customize_selected_all_options():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_selected_all_options()
 
 
 @allure.title('Check Customize Clear Selected Options')
+@case_id(5876)
 def test_customize_clear_selected_options():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_clear_each_selected_options()
 
 
 @allure.title('Check Customize Clear All Selected Options')
+@case_id(5876)
 def test_customize_clear_all_selected_options():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.check_clear_all_selected_options()
 
 
 @allure.title('Check Customize Apply Options')
+@case_id(5875)
 def test_customize_apply_option():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.apply_option()
 
 
 @allure.title('Add Customize Another Options')
+@case_id(5424)
 def test_customize_add_another_option():
     data_portal.open_market_overview_page()
     data_portal.market_overview_page.add_another_option()
@@ -100,6 +113,7 @@ def test_employee_calculation():
 
 
 @allure.title('Check the displaying workforce chart data from the backend to the interface')
+@case_id(5866)
 @pytest.mark.parametrize('locator, endpoint_id, filtered_data, response_filter, action',
                          MarketOverviewData.workforce_by_sector_data,
                          ids=['Top largest sector', 'All sectors'])
