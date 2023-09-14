@@ -25,6 +25,8 @@ from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
+from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
+from src.ui.pages.visa_pages.transitional_page import TransitionalPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from src.ui.pages.wp_page import WorkPermitPage
 
@@ -46,6 +48,8 @@ class Qiwa:
     delegation_dashboard_page = DelegationDashboardPage()
     admin_spaces_page = AdminSpacesPage()
     work_permit_page = WorkPermitPage()
+    transitional = TransitionalPage()
+    work_visa = PermWorkVisaPage()
 
     # Components
     feedback = FeedbackPopup()
@@ -96,6 +100,10 @@ class Qiwa:
     def open_delegation_dashboard_page(self) -> Qiwa:
         browser.open(config.qiwa_urls.delegation_service)
         return self
+
+    @allure.step
+    def open_visa_page(self):
+        browser.open(config.qiwa_urls.visa_web_url)
 
 
 qiwa = Qiwa()
