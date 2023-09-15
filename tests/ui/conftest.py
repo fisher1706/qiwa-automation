@@ -14,7 +14,7 @@ from src.ui.pages.login_page import LoginPage
 
 
 @pytest.fixture
-def go_to_auth_page():
+def go_to_auth_page():  # TODO: Remove usage
     login_page = LoginPage()
     login_page.visit()
     login_page.wait_page_to_load()
