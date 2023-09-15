@@ -7,8 +7,6 @@ from allure_commons.types import AttachmentType, LinkType
 from selene import support
 from selene.support.shared import browser
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 
 import config
 from data.constants import SupportedBrowser
@@ -32,9 +30,7 @@ def setup_driver():
     chrome_options = webdriver.ChromeOptions()
     if not config.settings.remote_url:
         chrome_options.headless = config.settings.headless
-        driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()), options=chrome_options
-        )
+        driver = webdriver.Chrome(options=chrome_options)
 
     else:
         if browser_name not in SupportedBrowser.version:
