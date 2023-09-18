@@ -21,7 +21,7 @@ stages:
   - notification
 
 .package:
-  image: takamol/ci-cd:package-latest
+  image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
   services:
     - name: docker:dind
   script:
