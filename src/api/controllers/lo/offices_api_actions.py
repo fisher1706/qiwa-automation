@@ -22,6 +22,7 @@ class OfficesApiActions(OfficesApi):
         longitude,
         is_electronic_office=False,
     ):
+        # pylint: disable=duplicate-code
         last_service_id = self.service_api.get_last_service_id()
         office_id = self.post_office(
             office_name=office_name,

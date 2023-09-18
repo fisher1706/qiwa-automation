@@ -1,3 +1,4 @@
+# pylint: disable=too-few-public-methods, too-many-instance-attributes
 from typing import Optional
 
 from data.lo.constants import (

@@ -19,6 +19,7 @@ class VisitsApiActions(VisitsApi):
         labor_office_id=None,
         sequence_number=None,
     ) -> Booking:
+        # pylint: disable=duplicate-code
         self.get_valid_date(timedelta)
         self.post_visit(
             office_id=office_id,
@@ -57,6 +58,7 @@ class VisitsApiActions(VisitsApi):
         sequence_number=None,
         timedelta=None,
     ) -> Booking:
+        # pylint: disable=duplicate-code
         self.get_active_appointment_id(user_id)
         self.get_valid_date(timedelta)
         self.put_edit_visit(
@@ -204,6 +206,7 @@ class VisitsApiActions(VisitsApi):
         type_id,
         service_type,
     ):
+        # pylint: disable=duplicate-code
         self.post_lo_otp_auth()
         self.post_appointment_process(self.appointment_id)
         self.post_otp_custom(self.appointment_id, service_type)

@@ -62,6 +62,7 @@ class OfficesApi:
         expect_code=201,
         expect_schema="offices_response.json",
     ):
+        # pylint: disable=duplicate-code
         json_body = Offices.offices_body(
             office_name=office_name,
             hourly_capacity=hourly_capacity,
