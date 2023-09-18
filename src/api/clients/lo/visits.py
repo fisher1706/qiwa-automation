@@ -13,6 +13,7 @@ from src.api.requests.visit import Visit
 
 
 class VisitsApi:
+    # pylint: disable=too-many-instance-attributes
     url = config.qiwa_urls.api
 
     def __init__(self, api):
@@ -104,6 +105,7 @@ class VisitsApi:
         expect_code=201,
         expect_schema="appointment_response.json",
     ):
+        # pylint: disable=duplicate-code
         json_body = Visit.visit_body(
             office_id=office_id,
             service_id=service_id,
@@ -143,6 +145,7 @@ class VisitsApi:
         expect_code=200,
         expect_schema="appointment_response.json",
     ):
+        # pylint: disable=duplicate-code
         json_body = Visit.visit_body_edit(
             office_id=office_id,
             service_id=service_id,
@@ -391,6 +394,7 @@ class VisitsApi:
         expect_code=200,
         expect_schema="lo_visa_response.json",
     ):
+        # pylint: disable=duplicate-code
         json_body = Visit.lo_visa_request_body(
             gender_id,
             occupation_id,
