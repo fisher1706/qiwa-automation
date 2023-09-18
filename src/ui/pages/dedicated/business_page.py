@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from selene import have, query
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import ss
 
 
 class BusinessPage:
