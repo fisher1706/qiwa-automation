@@ -68,7 +68,7 @@ class QiwaUrls:
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
         self.agent_sys_url: str = f"{protocol}lo-agent-system.{domain}"
-        self.work_permit: str = f"{protocol}lo-work-permits.{domain}"
+        self.lo_work_permit: str = f"{protocol}lo-work-permits.{domain}"
         self.data_portal_url: str = f"{protocol}data.{domain}"
         self.visa_web_url: str = f"{protocol}visa.{domain}"
 

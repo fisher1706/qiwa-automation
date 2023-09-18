@@ -28,7 +28,7 @@ from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
 from src.ui.pages.visa_pages.transitional_page import TransitionalPage
 from src.ui.pages.workspaces_page import WorkspacesPage
-from src.ui.pages.wp_page import WorkPermitPage
+from src.ui.pages.wp_page import LoWorkPermitPage
 
 
 class Qiwa:
@@ -47,7 +47,7 @@ class Qiwa:
     business_page = BusinessPage()
     delegation_dashboard_page = DelegationDashboardPage()
     admin_spaces_page = AdminSpacesPage()
-    work_permit_page = WorkPermitPage()
+    lo_work_permit_page = LoWorkPermitPage()
     transitional = TransitionalPage()
     work_visa = PermWorkVisaPage()
 
