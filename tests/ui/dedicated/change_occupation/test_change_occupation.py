@@ -1,10 +1,29 @@
 import allure
 import pytest
 
-from data.constants import Eligibility, EstablishmentStatus, Language, Occupation, EService
-from data.dedicated.change_occupation import employee, employee_1, lo_co_user, lo_co_ho_user, employee_ho, laborer, \
-    employee_po, lo_co_expired_user
-from data.dedicated.enums import RequestStatus, SearchingType, SubServiceErrors, SubServiceChangeOccupation
+from data.constants import (
+    Eligibility,
+    EService,
+    EstablishmentStatus,
+    Language,
+    Occupation,
+)
+from data.dedicated.change_occupation import (
+    employee,
+    employee_1,
+    employee_ho,
+    employee_po,
+    laborer,
+    lo_co_expired_user,
+    lo_co_ho_user,
+    lo_co_user,
+)
+from data.dedicated.enums import (
+    RequestStatus,
+    SearchingType,
+    SubServiceChangeOccupation,
+    SubServiceErrors,
+)
 from data.dedicated.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import EmployeeTransferApi

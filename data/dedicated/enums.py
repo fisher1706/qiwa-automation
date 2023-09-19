@@ -65,12 +65,14 @@ class VisitStatus(str, Enum):
 
 
 class SubServiceChangeOccupation(str, Enum):
-    SUBMIT_CHANGE_OCCUPATION = 'Submit Change Occupation'
+    SUBMIT_CHANGE_OCCUPATION = "Submit Change Occupation"
 
 
 class SubServiceErrors(str, Enum):
-    EXPIRED = "Sorry, the establishment’s commercial registration is not valid, to benefit from the service, " \
-              "please renew the commercial registration with the Ministry of Commerce."
+    EXPIRED = (
+        "Sorry, the establishment’s commercial registration is not valid, to benefit from the service, "
+        "please renew the commercial registration with the Ministry of Commerce."
+    )
 
 
 class ChangeOccupationWarning(str, Enum):

@@ -12,7 +12,7 @@ class WorkspacesPage:
     business_account_card = account_cards.element_by(have.text("Business Account"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
-    search = s('#search')
+    search = s("#search")
 
     @allure.step
     def should_have_workspace_list_appear(self):

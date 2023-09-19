@@ -12,8 +12,12 @@ from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.pages.admin_page import AdminPage
-from src.ui.pages.appointments.labor_office_appointments import LaborOfficeAppointmentsPage
-from src.ui.pages.appointments.labor_office_appointments_create import LaborOfficeAppointmentsCreatePage
+from src.ui.pages.appointments.labor_office_appointments import (
+    LaborOfficeAppointmentsPage,
+)
+from src.ui.pages.appointments.labor_office_appointments_create import (
+    LaborOfficeAppointmentsCreatePage,
+)
 from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
@@ -67,10 +71,10 @@ class Qiwa:
         self.login_page.open_login_page()
         (
             self.sso_auth_page.enter_user_id(login)
-                .enter_password(password)
-                .login()
-                .enter_otp_code("0")
-                .confirm_otp_code()
+            .enter_password(password)
+            .login()
+            .enter_otp_code("0")
+            .confirm_otp_code()
         )
         return self
 

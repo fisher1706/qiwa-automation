@@ -1,13 +1,7 @@
 from __future__ import annotations
 
-import time
-
-from selene import command, have, browser
+from selene import have
 from selene.support.shared.jquery_style import s, ss
-
-import config
-from data.constants import Label, Titles
-from src.ui.components.raw.table import Table
 
 
 class LaborOfficeAppointmentsCreatePage:
@@ -25,7 +19,9 @@ class LaborOfficeAppointmentsCreatePage:
         self.next_btn.click()
         return self
 
-    def select_service_and_sub_service(self, service: str, sub_service: str) -> LaborOfficeAppointmentsCreatePage:
+    def select_service_and_sub_service(
+        self, service: str, sub_service: str
+    ) -> LaborOfficeAppointmentsCreatePage:
         self.service.click()
         self.dropdown.element_by(have.exact_text(service)).click()
         self.sub_service.click()

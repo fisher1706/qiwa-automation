@@ -23,8 +23,11 @@ from src.api.payloads.ibm.createnewappointment import (
     RequesterDetails,
     UserInfo,
 )
-from src.api.payloads.ibm.getestablishmentinformation import EstablishmentInformation, GetEstablishmentInformationRq, \
-    GetEstablishmentInformationPayload
+from src.api.payloads.ibm.getestablishmentinformation import (
+    EstablishmentInformation,
+    GetEstablishmentInformationPayload,
+    GetEstablishmentInformationRq,
+)
 from utils.assertion import assert_status_code
 
 
@@ -36,7 +39,7 @@ class IBMApiController:
 
     @allure.step
     def get_work_permit_requests_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
+        self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
     ) -> IBMWorkPermitRequestList:
         payload = {
             IBMServicesRequest.GET_WORK_PERMIT_REQUESTS.value: {
@@ -52,7 +55,7 @@ class IBMApiController:
 
     @allure.step
     def get_saudization_certificate_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
     ) -> IBMResponseData[GetSaudiCertificateRsBody]:
         payload = {
             IBMServicesRequest.GET_SAUDI_CERTIFICATE.value: {
@@ -68,7 +71,7 @@ class IBMApiController:
 
     @allure.step
     def validate_establishment_saudization_in_ibm(
-            self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
     ) -> IBMResponseData:
         payload = {
             IBMServicesRequest.VALIDATE_EST_SAUDI_CERTIFICATE.value: {
@@ -84,7 +87,7 @@ class IBMApiController:
 
     @allure.step
     def get_change_occupation_requests_from_ibm(
-            self, body: Body
+        self, body: Body
     ) -> IBMResponseData[src.api.models.ibm.searchchangeoccupation.Body]:
         payload = {
             IBMServicesRequest.SEARCH_CHANGE_OCCUPATION.value: {
@@ -163,7 +166,7 @@ class IBMApiController:
         body = {
             "Body": EstablishmentInformation(
                 LaborOfficeId=user.labor_office_id,
-                EstablishmentSequenceNumber=user.sequence_number
+                EstablishmentSequenceNumber=user.sequence_number,
             )
         }
         payload = GetEstablishmentInformationPayload(
@@ -177,13 +180,13 @@ class IBMApiController:
             headers=HEADERS,
         )
         print(response)
-        return response.json()['EconomicActivityId']
+        return response.json()["EconomicActivityId"]
 
     @allure.step
-    def get_first_unrelated_occupation(self, user: User, economic_activity_id: str) -> int:
+    def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
         response = self.client.get(
             url=self.url,
             endpoint=self.route + f"/qiwa/v2/economic-activity/{economic_activity_id}/occupations",
             headers=HEADERS,
         )
-        return response.json()[0]['descriptionAr']
+        return response.json()[0]["descriptionAr"]

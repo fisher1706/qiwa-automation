@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-import time
-
-from selene import command, have, browser
-from selene.support.shared.jquery_style import s, ss
+from selene import browser
+from selene.support.shared.jquery_style import s
 
 import config
-from data.constants import Label, Titles
-from src.ui.components.raw.table import Table
 
 
 class LaborOfficeAppointmentsPage:
