@@ -260,7 +260,11 @@ class EstablishmentStatus:
 class Occupation:
     SUPERVISOR = "مشرف عمال"
     MANAGER_DIRECTOR = "مدير الادارة"
+    INFORMATION_TECHNOLOGY_OPERATIONS_TECHNICIAN = "فني عمليات تقنية معلومات"
     SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION = "أمين عام منظمة ذات اهتمامات خاصة"
+    PERSONAL_CARE_WORKER = "عامل عناية شخصية"
+    ACCOUNTANT = "محاسب قانوني"
+    GENERAL_DIRECTOR = "مدير عام"
 
 
 @dataclass
@@ -280,4 +284,5 @@ class Eligibility:
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"
+    LABOR_OFFICE_APPOINTMENTS = "Labor Office Appointments"
     WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
