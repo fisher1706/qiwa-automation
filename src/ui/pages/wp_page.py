@@ -48,6 +48,11 @@ class LoWorkPermitPage:
     prev_btn = s("//button[normalize-space()='< Prev']")
     next_btn = s("//button[normalize-space()='Next >']")
 
+    otp_code_first_cell = s("(//input[@type='tel'])[1]")
+    otp_code_second_cell = s("(//input[@type='tel'])[2]")
+    otp_code_third_cell = s("(//input[@type='tel'])[3]")
+    otp_code_fourth_cell = s("(//input[@type='tel'])[4]")
+    confirm_button = s("//button[normalize-space()='Confirm']")
     route = "/work-permits/overview"
 
     def verify_search_by_border_or_iqama(self, iqama) -> LoWorkPermitPage:
