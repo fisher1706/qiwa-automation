@@ -10,13 +10,16 @@ from src.api.app import QiwaApi
 from src.ui.components.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
+from src.ui.components.header import Header
 from src.ui.pages.admin_page import AdminPage
+from src.ui.pages.appointments.labor_office_appointments import LaborOfficeAppointmentsPage
+from src.ui.pages.appointments.labor_office_appointments_create import LaborOfficeAppointmentsCreatePage
 from src.ui.pages.dashboard_page import DashboardPage
-from src.ui.pages.dedicated.appointment_request_page import AppointmentRequestPage
-from src.ui.pages.dedicated.business_page import BusinessPage
-from src.ui.pages.dedicated.change_occupation_page import ChangeOccupationPage
-from src.ui.pages.dedicated.requests_page import RequestsPage
-from src.ui.pages.dedicated.visits_page import VisitsPage
+from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
+from src.ui.pages.dedicated_pages.business_page import BusinessPage
+from src.ui.pages.dedicated_pages.change_occupation_page import ChangeOccupationPage
+from src.ui.pages.dedicated_pages.requests_page import RequestsPage
+from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.delegation_dashboard_page import (
     DelegationDashboardPage,
 )
@@ -46,10 +49,13 @@ class Qiwa:
     delegation_dashboard_page = DelegationDashboardPage()
     admin_spaces_page = AdminSpacesPage()
     work_permit_page = WorkPermitPage()
+    labor_office_appointments_page = LaborOfficeAppointmentsPage()
+    labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
 
     # Components
-    feedback = FeedbackPopup()
+    header = Header()
     footer = Footer()
+    feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
 
     @allure.step
@@ -57,10 +63,10 @@ class Qiwa:
         self.login_page.open_login_page()
         (
             self.sso_auth_page.enter_user_id(login)
-            .enter_password(password)
-            .login()
-            .enter_otp_code("0")
-            .confirm_otp_code()
+                .enter_password(password)
+                .login()
+                .enter_otp_code("0")
+                .confirm_otp_code()
         )
         return self
 
