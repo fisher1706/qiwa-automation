@@ -62,3 +62,16 @@ class VisitStatus(str, Enum):
     DONE = "Done"
     CANCELED = "Cancelled"
     EXPIRED = "Expired"
+
+
+class SubServiceChangeOccupation(str, Enum):
+    SUBMIT_CHANGE_OCCUPATION = 'Submit Change Occupation'
+
+
+class SubServiceErrors(str, Enum):
+    EXPIRED = "Sorry, the establishment’s commercial registration is not valid, to benefit from the service, " \
+              "please renew the commercial registration with the Ministry of Commerce."
+
+
+class ChangeOccupationWarning(str, Enum):
+    NOT_ALLOWED = "Sorry, it is not allowed to change to the chosen occupation."

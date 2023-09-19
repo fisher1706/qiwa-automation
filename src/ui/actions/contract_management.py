@@ -7,7 +7,7 @@ from data.dedicated.contract_details import (
     EmployeeDetails,
     EstablishmentDetails,
 )
-from data.dedicated.users_types import Entity, Laborer
+from data.dedicated.models.laborer import Entity, Laborer
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer

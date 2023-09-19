@@ -33,7 +33,7 @@ def setup_driver():
     if not config.settings.remote_url:
         chrome_options.headless = config.settings.headless
         driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()), options=chrome_options
+            service=ChromeService(), options=chrome_options
         )
 
     else:
