@@ -86,6 +86,7 @@ def test_check_if_cr_is_expired():
 
 @allure.title('Check if excluded activities are not able to CO')
 @case_id(32949)
+@pytest.mark.skip('Skip due to API response 500 error')
 def test_check_if_excluded_activities_are_not_able_to_co():
     ibm = IBMApiController()
     economic_activity_id = ibm.get_economic_activity_id(employee)
