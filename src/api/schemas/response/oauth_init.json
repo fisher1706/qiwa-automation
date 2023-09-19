@@ -1,0 +1,30 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": [
+          "string",
+          "integer"
+        ]
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "redirect-uri": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

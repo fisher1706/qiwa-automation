@@ -10,6 +10,8 @@ variables:
   IMAGE: takamol/qiwa-automation:master-latest
   ALLURE_RESULTS_DIRECTORY: allure-results
   XML_REPORT: report.xml
+  TESTMO_URL: https://qiwa.testmo.net
+
 
 stages:
   - build
@@ -19,7 +21,7 @@ stages:
   - notification
 
 .package:
-  image: takamol/ci-cd:package-latest
+  image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
   services:
     - name: docker:dind
   script:
@@ -101,11 +103,17 @@ isort:
   allow_failure:
     exit_codes: 1
   stage: tests
+  timeout: 150 minutes
   tags:
     - shared
   script:
     - echo $TEST_SUITE
-    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - echo $TESTMO_URL
+    - echo $TESTMO_PROJECT_ID
+    - echo $ALLURE_PROJECT_ID
+    - testmo automation:resources:add-link --name "Allure report" --url "https://allure.qiwa.tech/allure-docker-service-ui/projects/$ALLURE_PROJECT_ID" --note "Allure contains more advanced reports of the test runs"
+    - testmo automation:resources:add-link --name "GitLab CICD pipeline" --url "https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/-/jobs/$CI_JOB_ID" --note "Link to Gitlab's CICD job logs"
+    - testmo automation:run:submit --instance "$TESTMO_URL" --project-id $TESTMO_PROJECT_ID --name "Pytest test run" --source "CICD" --results results/*.xml --debug --resources testmo-resources.json -- pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
@@ -121,43 +129,64 @@ ui_tests_sso:
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/sso
+    TESTMO_PROJECT_ID: 23
+    ALLURE_PROJECT_ID: sso-ui-daily
 
 ui_tests_um:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/um
+    TESTMO_PROJECT_ID: 26
+    ALLURE_PROJECT_ID: um-ui-daily
 
 ui_tests_shareable:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/shareable
-
+    TESTMO_PROJECT_ID: None
+    ALLURE_PROJECT_ID: None
 
 ui_tests_dedicated:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/dedicated
+    TESTMO_PROJECT_ID: None
+    ALLURE_PROJECT_ID: None
+
+ui_tests_visa:
+  <<: *testrun
+  variables:
+    ENV: demo
+    TEST_SUITE: tests/ui/visa
+    TESTMO_PROJECT_ID: 7
+    ALLURE_PROJECT_ID: visa-ui-tests
 
 api_tests_sso:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/api/sso
+    TESTMO_PROJECT_ID: 23
+    ALLURE_PROJECT_ID: sso-api-daily
 
 api_tests_um:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/um
+    TESTMO_PROJECT_ID: 26
+    ALLURE_PROJECT_ID: um-api-daily
 
 api_tests_shareable_demo:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/api/shareable
+    TESTMO_PROJECT_ID: None
+    ALLURE_PROJECT_ID: None
 
 api_tests_shareable_stage:
   <<: *testrun
@@ -165,6 +194,8 @@ api_tests_shareable_stage:
     ENV: stage
     TEST_SUITE: tests/api/shareable
     OPTIONS: "-m stage"
+    TESTMO_PROJECT_ID: None
+    ALLURE_PROJECT_ID: None
 
 .allure_results_template: &test_results
   rules:

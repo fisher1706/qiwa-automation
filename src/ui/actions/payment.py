@@ -7,7 +7,8 @@ from selene import be, browser, have
 class PaymentByCard:
     # alrajhibank payment page, used for work permits payment by card feature
     def __init__(self):
-        browser.should(have.tabs_number_greater_than(1)).switch_to_next_tab()
+        browser.should(have.tabs_number_greater_than(1))
+        browser.switch_to_next_tab()
 
     @allure.step
     def fill_payment_details(self) -> PaymentByCard:

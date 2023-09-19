@@ -1,0 +1,8 @@
+{
+  "data": {"type": "dict", "schema": {
+      "id": {"type": "string", "nullable": true},
+      "type": {"type": "string"},
+      "attributes": {"type": "dict","schema": {
+          "notification": {"type": "dict","schema": {
+             "last_phone_digits": {"type": "string"}}}}}}}}
+

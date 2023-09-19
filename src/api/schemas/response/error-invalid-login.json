@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "sign_in_login_or_password_incorrect": {
+        "type": "string"
+      }
+    }
+  }
+}

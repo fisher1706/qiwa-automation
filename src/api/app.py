@@ -15,6 +15,13 @@ from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.spaces import SpacesApi
 from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
+from src.api.controllers.lmi.dashboard_api_actions import DashboardApiAction
+from src.api.controllers.lmi.dimensions_api_actions import DimensionsApiAction
+from src.api.controllers.lmi.survey_questions_api_actions import (
+    SurveyQuestionsApiAction,
+)
+from src.api.controllers.lmi.survey_result_api_actions import SurveyResultApiAction
+from src.api.controllers.lmi.weq_api_actions import WeqApiAction
 from src.api.controllers.lo.offices_api_actions import OfficesApiActions
 from src.api.controllers.lo.services_api_actions import ServiceApiActions
 from src.api.controllers.lo.visits_api_actions import VisitsApiActions
@@ -46,6 +53,11 @@ class QiwaApi:
         # Controllers
         self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)
+        self.dashboard_api_actions = DashboardApiAction(self.client)
+        self.dimensions_api_actions = DimensionsApiAction(self.client)
+        self.survey_questions_api_actions = SurveyQuestionsApiAction(self.client)
+        self.survey_result_api_actions = SurveyResultApiAction(self.client)
+        self.weq_api_actions = WeqApiAction(self.client)
 
     @cached_property
     def change_occupation(self) -> ChangeOccupationApi:

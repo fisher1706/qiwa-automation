@@ -1,0 +1,92 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "survey_id": {
+            "type": "number"
+          },
+          "source": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          },
+          "question_pro_id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "viewable": {
+            "type": "boolean"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "responses_for_calculate": {
+            "type": "boolean"
+          },
+          "en_individual_button_label": {
+            "type": "string",
+            "nullable": true
+          },
+          "ar_individual_button_label": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_qiwa_individual_displayed": {
+            "type": "boolean"
+          },
+          "is_question_pro_deleted": {
+            "type": "boolean"
+          },
+          "favorite_survey": {
+            "type": "boolean"
+          },
+          "sectors": {
+            "type": "list"
+          },
+          "target_group": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "url_change": {
+            "type": "string"
+          },
+          "dimensions": {
+            "type": "list"
+          },
+          "total_responses": {
+            "type": "number"
+          },
+          "full_responses": {
+            "type": "number"
+          },
+          "partial_responses": {
+            "type": "number"
+          },
+          "survey_questions": {
+            "type": "list"
+          },
+          "public_link": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

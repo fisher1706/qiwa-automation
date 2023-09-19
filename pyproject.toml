@@ -11,11 +11,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.*"
-webdriver-manager = "3.9.0"
 pyyaml = "^6.0"
 requests = "^2.28.2"
 allure-pytest = "^2.13.1"
-selene = "2.0.0b17"
+selene = "2.0.0rc4"
 pytest = "^7.2.2"
 cerberus = "^1.3.4"
 pytest-rerunfailures = "^11.1.2"
@@ -28,7 +27,8 @@ pycryptodome = "^3.17"
 locust = "^2.15.1"
 jmespath = "^1.0.0"
 openpyxl = "3.1.2"
-
+python-dateutil = "^2.8.2"
+pytest-check = "2.1.5"
 
 [tool.poetry.group.dev.dependencies]
 pylint-gitlab = "^1.2.0"
@@ -66,12 +66,10 @@ ignore-patterns = 'test_(.)*\.py,conftest.py'
 disable = [
     'missing-docstring',
     'too-many-public-methods',
-    'fixme'
+    'fixme',
+    'too-many-locals'
 ]
 extension-pkg-whitelist = 'pydantic'
-
-[tool.pylint.similarities]
-ignore-imports = 'yes'
 
 [tool.pylint.format]
 # Length differ from Black's configuration
