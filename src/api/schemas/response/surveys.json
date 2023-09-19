@@ -1,0 +1,47 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string",
+        "nullable": true
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "favorite_surveys": {
+            "type": "list"
+          },
+          "surveys": {
+            "type": "list"
+          }
+        }
+      }
+    }
+  },
+  "meta": {
+    "type": "dict",
+    "schema": {
+      "current-page": {
+        "type": "number"
+      },
+      "next-page": {
+        "type": "number",
+        "nullable": true
+      },
+      "prev-page": {
+        "type": "number",
+        "nullable": true
+      },
+      "total-count": {
+        "type": "number"
+      },
+      "total-pages": {
+        "type": "number"
+      }
+    }
+  }
+}

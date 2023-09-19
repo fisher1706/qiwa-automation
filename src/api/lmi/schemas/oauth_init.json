@@ -1,0 +1,8 @@
+{
+	"data": {
+		"type": "oauth-init",
+		"attributes": {
+			"state": {}
+		}
+	}
+}

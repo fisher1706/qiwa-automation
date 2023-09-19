@@ -1,0 +1,15 @@
+{
+  "data": {
+    "id": null ,
+    "type": "user-account",
+    "attributes": {
+      "personal_number": "",
+      "email": "",
+      "password": "",
+      "password_confirmation": "",
+      "phone_number": "",
+      "language": "",
+      "confirmation_code": ""
+    }
+  }
+}

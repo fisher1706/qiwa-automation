@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "type": "dict",
+    "schema": {
+      "otp_code_wrong": {
+        "type": "string"
+      }
+    }
+  }
+}
