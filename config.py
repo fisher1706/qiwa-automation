@@ -71,6 +71,7 @@ class QiwaUrls:
         self.lo_work_permit: str = f"{protocol}lo-work-permits.{domain}"
         self.data_portal_url: str = f"{protocol}data.{domain}"
         self.visa_web_url: str = f"{protocol}visa.{domain}"
+        self.appointment_booking: str = f"{protocol}appointment-booking.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))
