@@ -1,0 +1,22 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "number",
+        "nullable": true
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

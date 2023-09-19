@@ -1,0 +1,9 @@
+{
+  "data": {
+    "type": "account",
+    "attributes": {
+      "login": "",
+      "password": ""
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+	"data": {
+		"type": "oauth-callback",
+		"attributes": {
+			"state": null,
+			"code": null
+		}
+	}
+}
