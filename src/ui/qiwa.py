@@ -32,6 +32,7 @@ from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
+from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
 from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
 from src.ui.pages.visa_pages.transitional_page import TransitionalPage
 from src.ui.pages.workspaces_page import WorkspacesPage
@@ -57,6 +58,7 @@ class Qiwa:
     lo_work_permit_page = LoWorkPermitPage()
     transitional = TransitionalPage()
     work_visa = PermWorkVisaPage()
+    issue_visa = IssueVisaPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
 

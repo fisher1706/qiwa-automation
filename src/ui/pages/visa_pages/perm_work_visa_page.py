@@ -25,7 +25,9 @@ class PermWorkVisaPage(BasePage):
     permanent_visas_section = s("#visaRequestsSection")
     permanent_visas_section_title = permanent_visas_section.s(".//div/p")
     other_visas_table = other_visas_section.s('//*[@data-testid="otherVisaRequestsTable"]')
-    permanent_visas_table = permanent_visas_section.s('//*[@data-testid="visaRequestsTable"]')
+    permanent_visas_table = permanent_visas_section.element(
+        './/*[@data-testid="visaRequestsTable"]'
+    )
     button = ".//button"
     no_results = './/*[@data-testid="tableNoResults"]'
     no_results_icon = './/*[name()="svg"]'
@@ -40,6 +42,7 @@ class PermWorkVisaPage(BasePage):
         'contains(@data-testid, "allowedQuotaSkeleton") or '
         'contains(@data-testid, "tableLoader")]'
     )
+    table_rows = './/*[@data-testid="tableContent"]'
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -91,3 +94,13 @@ class PermWorkVisaPage(BasePage):
         self.permanent_visas_table.s(self.no_results).s(self.no_results_icon).should(be.visible)
         self.permanent_visas_table.s(self.no_results).should(have.text(PERMANENT_VISAS_NO_RESULTS))
         self.permanent_visas_table.s(self.table).should(be.hidden)
+
+    @allure.step("Verify visa request exists on permanent work visa page")
+    def verify_perm_work_visa_request(self, request):
+        self.permanent_visas_tab.click()
+        self.permanent_visas_table.should(be.visible)
+        self.permanent_visas_table.ss(self.table_rows).by(have.text(request)).should(
+            have.size_greater_than(0)
+        )
+        self.other_visas_table.should(be.visible)
+        self.other_visas_table.ss(self.table_rows).by(have.text(request)).should(have.size(1))
