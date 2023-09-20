@@ -2,7 +2,7 @@ import time
 
 import allure
 from selene import be, have
-from selene.support.shared.jquery_style import ss
+from selene.support.shared.jquery_style import s, ss
 
 
 class WorkspacesPage:
@@ -12,6 +12,7 @@ class WorkspacesPage:
     business_account_card = account_cards.element_by(have.text("Business Account"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
+    search = s("#search")
 
     @allure.step
     def should_have_workspace_list_appear(self):
@@ -30,8 +31,6 @@ class WorkspacesPage:
 
     @allure.step
     def select_lo_agent(self):
-        # TODO investigate the possibility to remove time sleep
-        time.sleep(5)
         self.lo_agent_card.click()
         return self
 
@@ -54,4 +53,11 @@ class WorkspacesPage:
         self.business_account_list.element_by(have.text(str(sequence_number))).click()
         # TODO investigate the possibility to remove time sleep
         time.sleep(5)
+        return self
+
+    @allure.step
+    def select_company_account_by_name(self, name: str):
+        self.select_business_account()
+        self.search.type(name)
+        self.business_account_list.second.click()
         return self

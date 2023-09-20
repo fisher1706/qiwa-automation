@@ -1,4 +1,4 @@
-from data.dedicated.users_types import Entity, Laborer
+from data.dedicated.models.laborer import Entity, Laborer
 
 employer = Entity(
     login_id=1017462894,

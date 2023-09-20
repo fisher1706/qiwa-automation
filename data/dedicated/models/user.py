@@ -9,7 +9,8 @@ class User(BaseModel):
     labor_office_id: str
     sequence_number: str
 
+    office_id: Optional[str]
     establishment_name_ar: Optional[str]
     establishment_number: Optional[str]
     occupation: Optional[str]
-    employee_name: Optional[str]
+    name: Optional[str]

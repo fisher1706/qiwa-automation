@@ -12,7 +12,7 @@ from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
-from src.ui.components.profile_menu import UserProfileMenu
+from src.ui.qiwa import qiwa
 
 
 @allure.feature('Employee Transfer sheet 1')
@@ -242,8 +242,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.fill_field_rejection_reason()
         self.employee_transfer_actions.click_btn_reject_request()
         self.employee_transfer_actions.verify_message(ErrorMessage.ET_SPONSOR_REQUEST)
-        profile_menu = UserProfileMenu(browser.element(".profile-status"))
-        profile_menu.click_on_menu().click_on_logout()
+        qiwa.header.click_on_menu().click_on_logout()
         browser.close_current_tab()
         browser.switch_to_tab(0)
         browser.driver.delete_all_cookies()

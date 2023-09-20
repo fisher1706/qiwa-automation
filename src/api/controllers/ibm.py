@@ -23,6 +23,11 @@ from src.api.payloads.ibm.createnewappointment import (
     RequesterDetails,
     UserInfo,
 )
+from src.api.payloads.ibm.getestablishmentinformation import (
+    EstablishmentInformation,
+    GetEstablishmentInformationPayload,
+    GetEstablishmentInformationRq,
+)
 from utils.assertion import assert_status_code
 
 
@@ -117,7 +122,7 @@ class IBMApiController:
                 LaborOfficeId=user.labor_office_id,
                 SequenceNumber=user.sequence_number,
             ),
-            OfficeID="1413",
+            OfficeID=user.office_id,
             ClientServiceId=service.client_service_id,
             RequesterDetails=RequesterDetails(
                 RequesterIdNo=user.personal_number,
@@ -146,3 +151,42 @@ class IBMApiController:
         except KeyError:
             pytest.fail(reason=str(response))
         return 0
+
+    @allure.step
+    def get_economic_activity_id(self, user: User) -> str:
+        header = Header(
+            TransactionId="0",
+            ChannelId="Qiwa",
+            SessionId="0",
+            RequestTime="2023-08-03 09:00:00.555",
+            ServiceCode="CNA00001",
+            DebugFlag="1",
+            UserInfo=UserInfo(UserId=user.personal_number, IDNumber=user.personal_number),
+        )
+        body = {
+            "Body": EstablishmentInformation(
+                LaborOfficeId=user.labor_office_id,
+                EstablishmentSequenceNumber=user.sequence_number,
+            )
+        }
+        payload = GetEstablishmentInformationPayload(
+            GetEstablishmentInformationRq=GetEstablishmentInformationRq(Header=header, Body=body)
+        )
+        print(payload)
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwa/esb/getestablishmentinformation",
+            json=payload.dict(),
+            headers=HEADERS,
+        )
+        print(response)
+        return response.json()["EconomicActivityId"]
+
+    @allure.step
+    def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
+        response = self.client.get(
+            url=self.url,
+            endpoint=self.route + f"/qiwa/v2/economic-activity/{economic_activity_id}/occupations",
+            headers=HEADERS,
+        )
+        return response.json()[0]["descriptionAr"]
