@@ -35,3 +35,7 @@ def decrypt_saudization_certificate(encrypted_certificate: str) -> dict:
 
 def decode_authorization_token(jwt_token: str) -> dict:
     return jwt.decode(jwt_token, algorithms=["HS256"], options={"verify_signature": False})
+
+
+def code_um_cookie(decoded_cookie: dict) -> str:
+    return jwt.encode(decoded_cookie, "secret", algorithm="HS256")
