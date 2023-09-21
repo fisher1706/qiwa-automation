@@ -304,9 +304,10 @@ def test_verify_general_eligibility_errors_on_transitional_page(visa_mock):
     qiwa.transitional.verify_two_generic_error_and_two_perm_visa_errors_shown()
 
 
-@allure.title('Test verifies there is at least one visa request in permanent work visa page')
-def test_verify_perm_work_visa_request(visa_mock):
-    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+@pytest.mark.parametrize("visa_type", [VisaType.EXPANSION, VisaType.ESTABLISHMENT])
+@allure.title('Test verifies there is visa request (expansion, establishment) in permanent work visa page')
+def test_verify_perm_work_visa_request(visa_mock, visa_type):
+    visa_mock.setup_company(visa_type=visa_type)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.perm_work_visa_issue_visa.click()
     qiwa.issue_visa.verify_issue_visa_page_open()
