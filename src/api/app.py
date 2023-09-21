@@ -11,8 +11,10 @@ from src.api.assertions.work_permit import WorkPermitApiAssertions
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.clients.delegation import DelegationAPI
 from src.api.clients.lo.users import UsersApi
+from src.api.clients.payment import PaymentApi
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.spaces import SpacesApi
+from src.api.clients.user_management import UserManagementApi
 from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
 from src.api.controllers.lmi.dashboard_api_actions import DashboardApiAction
@@ -50,6 +52,8 @@ class QiwaApi:
         self.users_api = UsersApi(self.client)
         self.spaces_api = SpacesApi(self.client)
         self.delegation_api = DelegationAPI(self.client)
+        self.user_management_api = UserManagementApi(self.client)
+        self.payment = PaymentApi(self.client)
         # Controllers
         self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)

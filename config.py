@@ -55,8 +55,10 @@ class QiwaUrls:
         self.api: str = f"{protocol}api.{domain}"
         self.spa: str = f"{protocol}spa.{domain}"
         self.auth: str = f"{protocol}auth.{domain}"
-        self.user_management: str = f"{protocol}um.{domain}"
-        self.self_subscription: str = f"{protocol}self-subscription.{domain}"
+        self.api_user_management: str = (
+            f"{protocol}internal-um-subscription-managment-api.{domain}"
+        )
+        self.ui_user_management: str = f"{protocol}user-management.{domain}"
         self.certificates_validation: str = f"{protocol}certificates-validation.{domain}"
         self.qiwa_change_occupation: str = f"{protocol}api-change-occupation.{domain}"
         self.qiwa_ott_service: str = f"{protocol}internal-ott-service.{domain}"
@@ -67,6 +69,7 @@ class QiwaUrls:
         self.delegation_service_api: str = f"{protocol}api-proxy.{domain}"
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
+        self.payment: str = f"{protocol}internal-dynamic-gateway-api.{domain}"
         self.agent_sys_url: str = f"{protocol}lo-agent-system.{domain}"
         self.lo_work_permit: str = f"{protocol}lo-work-permits.{domain}"
         self.data_portal_url: str = f"{protocol}data.{domain}"

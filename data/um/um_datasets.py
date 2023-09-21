@@ -26,3 +26,13 @@ class ArabicTranslations:
     Extend_Subscription_Btn = "تمديد الاشتراك"
     How_To_Renew_Btn = "كيفية تجديد الاشتراك؟"
     Search = "بحث"
+
+
+@dataclasses.dataclass
+class PaymentHeaders:
+    Authorization = "Bearer a1671885-e44b-4a2d-bc5a-3a8756892847"
+
+
+@dataclasses.dataclass
+class SelfSubscriptionType:
+    subscription_type = ["new", "extend", "renew-expired", "renew-terminated"]
