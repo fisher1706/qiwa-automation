@@ -79,8 +79,8 @@ def test_check_if_cr_is_expired():
     qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()\
         .click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_establishment(lo_co_expired_user.establishment_name_ar)\
-        .select_service_and_sub_service(EService.CHANGE_OCCUPATION,
-                                        SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value)\
+        .select_service(EService.CHANGE_OCCUPATION)\
+        .select_sub_service(SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value)\
         .check_sub_service_error(SubServiceErrors.EXPIRED.value)
 
 

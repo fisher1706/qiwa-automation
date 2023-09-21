@@ -18,6 +18,9 @@ from src.ui.pages.appointments.labor_office_appointments import (
 from src.ui.pages.appointments.labor_office_appointments_create import (
     LaborOfficeAppointmentsCreatePage,
 )
+from src.ui.pages.appointments.labor_office_appointments_create_confirmation import (
+    LaborOfficeCreateConfirmationPage,
+)
 from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
@@ -63,6 +66,7 @@ class Qiwa:
     issue_visa = IssueVisaPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
+    labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
 
     # Components
     header = Header()

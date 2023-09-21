@@ -3,7 +3,7 @@ import jmespath
 
 import config
 from data.constants import HEADERS
-from data.dedicated.enums import VisitStatus
+from data.lo.constants import VisitStatus
 from src.api.http_client import HTTPClient
 from src.api.requests.visit import Visit
 
