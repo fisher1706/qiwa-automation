@@ -57,13 +57,6 @@ class SearchingType(str, Enum):
     ESTABLISHMENT_NUMBER = "Establishment Number"
 
 
-class VisitStatus(str, Enum):
-    ACTIVE = "Active"
-    DONE = "Done"
-    CANCELED = "Cancelled"
-    EXPIRED = "Expired"
-
-
 class SubServiceChangeOccupation(str, Enum):
     SUBMIT_CHANGE_OCCUPATION = "Submit Change Occupation"
 

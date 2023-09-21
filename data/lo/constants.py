@@ -70,6 +70,7 @@ class OfficesInfo:
     IS_ELECTRONIC_OFFICE = False
 
     OFFICES_NAME = random_name
+    OFFICE_NAME_VEUM_HANE = "Veum - Hane"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
     INVALID_OFFICE = "INVALID OFFICE"
@@ -96,6 +97,7 @@ class OfficesInfo:
 
     REGION_NAJRAN = "Najran"
     REGION_TABUK = "Tabuk"
+    REGION_MADINAH = "Madinah"
     REGION_HAIL_WITHOUT_OFFICES = "Hail"
 
     REGION_ITEM_EDITED = "Riyadh"
@@ -111,6 +113,8 @@ class ServicesInfo:
     SERVICE_RANDOM_NAME_AR = "اختبار الأتمتة" + f" {datetime.now().strftime('%Y.%m.%d %H.%M.%S')}"
     SERVICE_RANDOM_NAME_EN = random_name
 
+    SERVICE_NAME_INDIVIDUALS = "Individuals_10/08"
+    SUB_SERVICE_NAME_INDIVIDUALS = "subservices_10/08"
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
 

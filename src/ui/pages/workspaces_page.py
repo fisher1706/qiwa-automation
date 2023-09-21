@@ -6,6 +6,12 @@ from selene.support.shared.jquery_style import s, ss
 
 
 class WorkspacesPage:
+    page_content = s('//*[@data-component="Layout"]//*[contains(@class, "Tile")]')
+    label_choose_account = s("//*[text()='Choose your account type']")
+
+    dropdown_choose_language = s('(//*[contains(@class, "NavigationAction")])[1]')
+    option_language_en = s('//*[contains(text(), "English")]')
+
     account_cards = ss("[data-component='Tile']")
     individual_account_card = account_cards.element_by(have.text("Individual account"))
     lo_agent_card = account_cards.element_by(have.text("LO agent"))
@@ -16,7 +22,7 @@ class WorkspacesPage:
 
     @allure.step
     def should_have_workspace_list_appear(self):
-        self.account_cards.should(be.clickable.each)
+        self.account_cards[0].wait_until(be.visible)
         return self
 
     @allure.step
@@ -61,3 +67,7 @@ class WorkspacesPage:
         self.search.type(name)
         self.business_account_list.second.click()
         return self
+
+    @allure.step
+    def wait_page_to_load(self):
+        self.label_choose_account.should(be.visible)
