@@ -135,7 +135,6 @@ def test_register_user_with_invalid_otp_at_registration_step(invalid_otp):
         .register_user(account, expected_code=422)
 
 
-@case_id()
 def test_registration_with_registered_phone_number(clear_saudi_db_registration_data, clear_expat_account_activities):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_NATIONAL_ID)
@@ -152,7 +151,6 @@ def test_registration_with_registered_phone_number(clear_saudi_db_registration_d
         .phone_verification(second_account.phone_number, expected_code=422)
 
 
-@case_id()
 def test_registration_with_registered_email(clear_expat_db_registration_data, clear_saudi_account_activities):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.EXPAT_IQAMA_ID, birth_day=users_data.GREGORIAN_BIRTHDAY)
@@ -172,7 +170,6 @@ def test_registration_with_registered_email(clear_expat_db_registration_data, cl
         .register_user(second_account, expected_code=422)
 
 
-@case_id()
 def test_registration_with_registered_email_but_has_an_expired_period(clear_expat_db_registration_data,
                                                                       clear_saudi_db_registration_data):
     qiwa = QiwaApi()
@@ -193,7 +190,6 @@ def test_registration_with_registered_email_but_has_an_expired_period(clear_expa
         .register_user(second_account)
 
 
-@case_id()
 def test_registration_without_high_security_mode():
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.EXPAT_IQAMA_ID)
