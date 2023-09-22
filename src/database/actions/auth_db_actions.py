@@ -4,13 +4,14 @@ from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
 from src.database.sql_requests.activities_request import ActivityRequest
 from src.database.sql_requests.logins import LoginRequest
 from src.database.sql_requests.oauth_applications import AppRequest
+from src.database.sql_requests.security_question_request import SecurityQuestionsRequest
 
 
-def delete_account_data_from_db(personal_number: str, expat: bool = False):
-    if expat:
-        account_id = AccountRequests().get_account_iqama_id(iqama_id=personal_number)
-    else:
+def delete_account_data_from_db(personal_number: str):
+    if personal_number.startswith("1"):
         account_id = AccountRequests().get_account_national_id(national_id=personal_number)
+    else:
+        account_id = AccountRequests().get_account_iqama_id(iqama_id=personal_number)
     email_id = AccountsEmailsRequest().get_email_id(account_id=account_id)
     phone_id = AccountsPhonesRequest().get_phone_id(account_id=account_id)
     ActivityRequest().delete_activities_request(national_id=personal_number)
@@ -26,6 +27,7 @@ def delete_account_data_from_db(personal_number: str, expat: bool = False):
     AccountRequests().delete_account_auth_audit_logs(account_id=account_id)
     AccountRequests().delete_account_active_session_key(account_id=account_id)
     AppRequest().delete_oauth_grants_data_request(account_id=account_id)
+    SecurityQuestionsRequest().delete_security_question_request(account_id=account_id)
     AccountRequests().delete_account_record(account_id=account_id)
 
 

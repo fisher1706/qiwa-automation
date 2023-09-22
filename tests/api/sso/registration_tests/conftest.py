@@ -8,15 +8,15 @@ from src.database.actions.auth_db_actions import (
 
 
 @pytest.fixture
-def clear_db_registration_data_saudi():
+def clear_saudi_db_registration_data():
     yield
     delete_account_data_from_db(personal_number=users_data.SAUDI_NATIONAL_ID)
 
 
 @pytest.fixture
-def clear_db_registration_data_expat():
+def clear_expat_db_registration_data():
     yield
-    delete_account_data_from_db(personal_number=users_data.EXPAT_IQAMA_ID, expat=True)
+    delete_account_data_from_db(personal_number=users_data.EXPAT_IQAMA_ID)
 
 
 @pytest.fixture

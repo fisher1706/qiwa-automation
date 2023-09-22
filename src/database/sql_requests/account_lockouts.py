@@ -1,6 +1,6 @@
 import config
 from src.database.client.db_client import DBClient
-from src.database.models.db_tables_description import AccountLockouts
+from src.database.models.laborer_sso_tables_description import AccountLockouts
 
 
 class AccountLockoutsRequest:

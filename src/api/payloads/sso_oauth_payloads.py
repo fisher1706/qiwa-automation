@@ -3,6 +3,7 @@ from src.api.payloads.raw.sso_oauth import (
     Auth,
     CreateAccount,
     Hsm,
+    Logout,
     OauthInit,
     SecurityQuestion,
     VerifyEmail,
@@ -80,3 +81,8 @@ def oauth_init_payload() -> dict:
 def oauth_callback_payload(state: str, code: str) -> dict:
     attributes = OauthInit(state=state, code=code)
     return oauth_callback(attributes).dict(exclude_unset=True)
+
+
+def logout_payload(logout_token: str) -> dict:
+    attributes = Logout(logout_token=logout_token)
+    return session(attributes).dict(by_alias=True)

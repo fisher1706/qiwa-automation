@@ -3,7 +3,7 @@ from typing import Any
 
 import config
 from src.database.client.db_client import DBClient
-from src.database.models.db_tables_description import AccountsEmails, Emails
+from src.database.models.laborer_sso_tables_description import AccountsEmails, Emails
 
 
 class AccountsEmailsRequest:
@@ -39,15 +39,10 @@ class AccountsEmailsRequest:
         except AttributeError:
             return None
 
-    def update_email_date_request(
-        self, account_id: str, confirmation_token: str, created_at: datetime
-    ) -> None:
+    def update_email_date_request(self, account_id: str, created_at: datetime) -> None:
         email_data = (
             self.session.query(AccountsEmails)
-            .filter(
-                AccountsEmails.account_id == account_id,
-                AccountsEmails.confirmation_token == confirmation_token,
-            )
+            .filter(AccountsEmails.account_id == account_id)
             .first()
         )
         email_data.enabled_at = created_at

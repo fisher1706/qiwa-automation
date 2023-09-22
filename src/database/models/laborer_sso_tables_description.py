@@ -193,3 +193,17 @@ class Activities(Base):
     counter = Column("counter", Integer, nullable=False)
     at = Column("at", DateTime(timezone=False), nullable=False)
     name = Column("name", Text, nullable=False)
+
+
+class SecurityQuestions(Base):
+    __tablename__ = "security_questions"
+
+    id = Column("id", Integer, primary_key=True, nullable=False)
+    account_id = Column("account_id", Integer, nullable=False)
+    mother_dob = Column("mother_dob", Text)
+    mother_name = Column("mother_name", Text)
+    passport_number = Column("passport_number", Text)
+    school_graduation = Column("school_graduation", Text)
+    school_name = Column("school_name", Text)
+    created_at = Column("created_at", DateTime(timezone=False))
+    updated_at = Column("updated_at", DateTime(timezone=False))

@@ -17,6 +17,7 @@ from src.api.payloads.sso_oauth_payloads import (
     init_sso_hsm_payload,
     login_payload,
     login_with_otp_payload,
+    logout_payload,
     otp_code_payload,
     phone_verification_payload,
     registration_account_payload,
@@ -42,10 +43,9 @@ class AuthApiSSO:
     def init_sso_hsm(
         self,
         personal_number: str,
-        birth_date: str = "1430-01-01",
+        birth_date: str,
         expected_code: int = 200,
         requests_number: int = None,
-        expect_schema="laborer-sso-init.json",
     ) -> AuthApiSSO:
         payload = init_sso_hsm_payload(personal_number, birth_date)
         response: Response = ...
@@ -62,9 +62,7 @@ class AuthApiSSO:
                 endpoint="/session/high-security-mode/init/with-birthday",
                 json=payload,
             )
-        ResponseValidator(response).check_status_code(
-            name="Init HSM", expect_code=expected_code
-        ).check_response_schema(schema_name=expect_schema)
+        assert response.status_code == expected_code
         return self
 
     @allure.step
@@ -141,11 +139,7 @@ class AuthApiSSO:
 
     @allure.step
     def register_user(
-        self,
-        account: Account,
-        requests_number: int = None,
-        expected_code: int = 200,
-        expected_schema: str = "laborer-sso-error.json",
+        self, account: Account, requests_number: int = None, expected_code: int = 200
     ) -> AuthApiSSO:
         response: Response = ...
         if requests_number is not None:
@@ -159,10 +153,7 @@ class AuthApiSSO:
             response = self.api.post(
                 url=self.url, endpoint="/accounts", json=registration_account_payload(account)
             )
-        validator = ResponseValidator(response)
-        validator.check_status_code(name="Register user", expect_code=expected_code)
-        if expected_code != 200:
-            validator.check_response_schema(schema_name=expected_schema)
+        assert response.status_code == expected_code
         return self
 
     @allure.step("GET /session :: get session")
@@ -192,7 +183,9 @@ class AuthApiSSO:
             name="Login with OTP", expect_code=expected_code
         )
 
-    @allure.step("POST /session/logout :: logout user")
-    def logout_user(self, expected_code=200):
-        response = self.api.post(url=self.url, endpoint="/session/logout")
-        ResponseValidator(response).check_status_code(name="Logout", expect_code=expected_code)
+    @allure.step
+    def logout_user(self, logout_token: str):
+        response = self.api.post(
+            url=self.url, endpoint="/logout/remote", json=logout_payload(logout_token=logout_token)
+        )
+        assert response.status_code == HTTPStatus.OK

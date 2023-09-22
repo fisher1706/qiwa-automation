@@ -33,3 +33,17 @@ class OAuthApi:
         )
         assert response.status_code == HTTPStatus.OK
         return response
+
+    def delete_context(self):
+        self.client.get(self.url, endpoint="/context")
+        delete_context = self.client.delete(
+            self.url, endpoint="/context", headers={"Origin": f"{self.url}"}
+        )
+        assert delete_context.status_code == HTTPStatus.OK
+
+    def init_logout(self):
+        init = self.client.post(self.url, f"{self.route}/init", json=oauth_init_payload())
+        assert init.status_code == HTTPStatus.OK
+        logout_token = urlparse(init.json()["data"]["attributes"]["redirect-uri"])
+        logout_token = parse_qs(logout_token.query)["logout_token"][0]
+        return logout_token

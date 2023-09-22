@@ -46,7 +46,8 @@ class Qiwa:
 
     @allure.step
     def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> Qiwa:
-        QiwaApi().sso.pass_account_security(login, password)
+        QiwaApi().sso.login_user(login, password)
+        QiwaApi().sso.pass_account_security()
         self.login_as_user(login, password)
         self.feedback.close_feedback()
         return self
