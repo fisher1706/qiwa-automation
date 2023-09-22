@@ -1,0 +1,24 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "id": {
+            "type": "number"
+          },
+          "operation-date": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

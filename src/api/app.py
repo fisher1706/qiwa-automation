@@ -9,11 +9,26 @@ from data.constants import UserInfo
 from src.api.assertions.saudization_certificate import SaudizationApiAssertions
 from src.api.assertions.work_permit import WorkPermitApiAssertions
 from src.api.clients.change_occupation import ChangeOccupationApi
+from src.api.clients.delegation import DelegationAPI
+from src.api.clients.lo.users import UsersApi
+from src.api.clients.payment import PaymentApi
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.spaces import SpacesApi
+from src.api.clients.user_management import UserManagementApi
 from src.api.clients.wp_debts import WPDebtsApi
 from src.api.controllers.e_service import EServiceApiController
+from src.api.controllers.lmi.dashboard_api_actions import DashboardApiAction
+from src.api.controllers.lmi.dimensions_api_actions import DimensionsApiAction
+from src.api.controllers.lmi.survey_questions_api_actions import (
+    SurveyQuestionsApiAction,
+)
+from src.api.controllers.lmi.survey_result_api_actions import SurveyResultApiAction
+from src.api.controllers.lmi.weq_api_actions import WeqApiAction
+from src.api.controllers.lo.offices_api_actions import OfficesApiActions
+from src.api.controllers.lo.services_api_actions import ServiceApiActions
+from src.api.controllers.lo.visits_api_actions import VisitsApiActions
 from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.visits import VisitsApiController
 from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.raw.token import AuthorizationToken
@@ -31,9 +46,22 @@ class QiwaApi:
         self.saudi_api = SaudizationCertificateApi(self.client)
         self.wp_debts_api = WPDebtsApi(self.client)
         self.wp_request_api = WorkPermitApiAssertions(self.client)
+        self.offices_api_action = OfficesApiActions(self.client)
+        self.services_api_actions = ServiceApiActions(self.client)
+        self.visits_api_actions = VisitsApiActions(self.client)
+        self.users_api = UsersApi(self.client)
         self.spaces_api = SpacesApi(self.client)
+        self.delegation_api = DelegationAPI(self.client)
+        self.user_management_api = UserManagementApi(self.client)
+        self.payment = PaymentApi(self.client)
         # Controllers
+        self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)
+        self.dashboard_api_actions = DashboardApiAction(self.client)
+        self.dimensions_api_actions = DimensionsApiAction(self.client)
+        self.survey_questions_api_actions = SurveyQuestionsApiAction(self.client)
+        self.survey_result_api_actions = SurveyResultApiAction(self.client)
+        self.weq_api_actions = WeqApiAction(self.client)
 
     @cached_property
     def change_occupation(self) -> ChangeOccupationApi:

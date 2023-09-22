@@ -1,0 +1,36 @@
+{
+  "data": {
+    "type": "dict",
+    "schema": {
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": {
+        "type": "dict",
+        "schema": {
+          "surveys": {
+            "type": "dict"
+          },
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "ar_name": {
+            "type": "string"
+          },
+          "question_list": {
+            "type": "list"
+          }
+        }
+      }
+    }
+  }
+}

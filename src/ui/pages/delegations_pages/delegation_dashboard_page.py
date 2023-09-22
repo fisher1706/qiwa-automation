@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 from selene import be, have
-from selene.support.shared.jquery_style import s
+from selene.support.shared.jquery_style import s, ss
 
 import config
 from src.ui.components.raw.breadcrumb_navigation import BreadcrumbNavigation
@@ -9,25 +11,30 @@ from src.ui.components.raw.table import Table
 
 
 class DelegationDashboardPage:
-    localization_button = s("div.cwZIaz div.OcnFf:nth-child(2) button")
-    localization_state = s("div.cwZIaz div:nth-child(2) p.eHeBbx")
-    english_localization_button = s("div.fzbjKl a:first-child")
+    localization_button = ss('[data-component="MenuTrigger"] button')[1]
+    localization_state = localization_button.s('[data-component="Box"] p')
+    english_localization_button = s('div[data-component="Menu"] a:first-child')
     delegation_table = Table(s('[data-testid="SectionSharedComponent"] table'))
     active_breadcrumb = BreadcrumbNavigation().breadcrumb(1)
-    active_breadcrumb_text = BreadcrumbNavigation().breadcrumb(1).s("span.cLJfIR")
-    active_breadcrumb_link = BreadcrumbNavigation().breadcrumb(1).s("a.bUNLWM")
+    active_breadcrumb_link = BreadcrumbNavigation().breadcrumb(1).s("#BreadcrumbsItemServices")
     location_breadcrumb = BreadcrumbNavigation().breadcrumb(2)
-    location_breadcrumb_text = BreadcrumbNavigation().breadcrumb(2).s('p[aria-current="page"]')
-    page_title = s(".hAVbwT")
-    add_delegation_btn = s("div.iNfHrh p.bPryTV")
-    government_tab = s("div.fsqetJ")
-    title_on_delegations_table = s("p.kidPyR")
+    page_title = s("#DashboardTitle")
+    add_delegation_btn = s("#DashboardCreateDelegationBtn")
+    government_tab = s('[data-testid="LineTabGovernment"]')
+    title_on_delegations_table = s("#DashboardTableTitle")
     search_on_delegations_table = s('div[role="search"]')
-    sort_on_delegations_table = s("div.gUKAZH")
-    filter_on_delegations_table = s("#BaseFiltersButtonOpen div.duHkYx")
-    rows_per_page = s("div.fultmG")
+    sort_on_delegations_table = s('#BaseSortWrapper > [data-component="Select"]')
+    filter_on_delegations_table = s("#BaseFiltersButtonOpen")
+    number_of_items = s('[data-component="Pagination"] > p')
     pagination = s('nav[role="navigation"]')
-    number_of_items_text = s("div.cUpZhX p.kRtCwb")
+    rows_per_page = s("#PaginationBoxSelectLabel")
+    status_filter = 'label[for="{0}"]'
+    apply_filters_button = s("button#BaseFiltersButtonApply")
+    status_of_filtered_delegation = delegation_table.row(1).web_element.s('[role="status"]')
+    more_button = ss('button[aria-label="aria label"]').element(0)
+    actions_buttons = ss('[data-component="ActionsMenu"] > button')
+    start_date_on_delegation_table = delegation_table.row(1).cells.element(5)
+    expiry_date_on_delegation_table = delegation_table.row(1).cells.element(6)
 
     def wait_delegation_dashboard_page_to_load(self) -> DelegationDashboardPage:
         self.delegation_table.body.should(be.visible)
@@ -42,8 +49,7 @@ class DelegationDashboardPage:
     def should_active_breadcrumb_is_displayed_on_delegation_dashboard(
         self,
     ) -> DelegationDashboardPage:
-        self.active_breadcrumb.should(be.visible)
-        self.active_breadcrumb_text.should(have.exact_text("Services"))
+        self.active_breadcrumb.should(have.exact_text("Services"))
         self.active_breadcrumb_link.should(
             have.attribute(name="href", value=config.qiwa_urls.spa + "/company/e-services")
         )
@@ -52,8 +58,7 @@ class DelegationDashboardPage:
     def should_location_breadcrumb_is_displayed_on_delegation_dashboard(
         self,
     ) -> DelegationDashboardPage:
-        self.location_breadcrumb.should(be.visible)
-        self.location_breadcrumb_text.should(have.exact_text("Delegation to external entities"))
+        self.location_breadcrumb.should(have.exact_text("Delegation to external entities"))
         return self
 
     def should_page_title_has_correct_text_on_delegation_dashboard(
@@ -113,5 +118,71 @@ class DelegationDashboardPage:
 
     def should_pagination_is_displayed_on_delegation_dashboard(self) -> DelegationDashboardPage:
         self.pagination.should(be.visible)
-        self.number_of_items_text.should(have.text("1-10 of"))
+        self.number_of_items.should(have.text("1-10 of"))
+        return self
+
+    def filter_delegation_list_by_status(self, status) -> DelegationDashboardPage:
+        self.filter_on_delegations_table.click()
+        s(self.status_filter.format(status.upper())).click()
+        self.apply_filters_button.click()
+        return self
+
+    def should_status_text_of_filtered_delegation_be_correct(
+        self, status
+    ) -> DelegationDashboardPage:
+        self.status_of_filtered_delegation.should(have.exact_text(status))
+        return self
+
+    def should_background_color_of_filtered_delegation_be_correct(
+        self, color
+    ) -> DelegationDashboardPage:
+        self.status_of_filtered_delegation.should(
+            have.css_property(name="background-color", value=color)
+        )
+        return self
+
+    def click_more_button_of_filtered_delegation(self) -> DelegationDashboardPage:
+        self.more_button().click()
+        return self
+
+    def should_correct_actions_of_filtered_delegation_be_displayed(
+        self, action_titles
+    ) -> DelegationDashboardPage:
+        self.actions_buttons.should(have.exact_texts(action_titles))
+        return self
+
+    def should_number_of_delegations_be_correct(
+        self, number_of_delegations
+    ) -> DelegationDashboardPage:
+        self.number_of_items.should(have.text(number_of_delegations))
+        return self
+
+    def should_delegation_id_be_correct(self, delegation_id) -> DelegationDashboardPage:
+        self.delegation_table.row(1).cells.element(1).should(have.text(str(delegation_id)))
+        return self
+
+    def should_employee_name_be_correct(self, employee_name) -> DelegationDashboardPage:
+        self.delegation_table.row(1).cells.element(2).should(have.text(employee_name))
+        return self
+
+    def should_entity_name_be_correct(self, entity_name) -> DelegationDashboardPage:
+        self.delegation_table.row(1).cells.element(3).should(have.text(entity_name))
+        return self
+
+    def should_delegation_permission_be_correct(self, permission) -> DelegationDashboardPage:
+        self.delegation_table.row(1).cells.element(4).should(have.text(permission))
+        return self
+
+    def should_delegation_status_be_correct(self, status) -> DelegationDashboardPage:
+        self.delegation_table.row(1).cells.element(7).should(have.text(status.capitalize()))
+        return self
+
+    def should_delegation_dates_be_correct_on_dashboard(
+        self, status, timestamp, locator
+    ) -> DelegationDashboardPage:
+        if status in ["ACTIVE", "EXPIRED", "REVOKED"]:
+            date = datetime.fromtimestamp(timestamp).strftime("%d/%m/%Y")
+            locator.should(have.text(date))
+        else:
+            locator.should(have.text("-"))
         return self

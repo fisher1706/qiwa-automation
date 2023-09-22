@@ -1,0 +1,11 @@
+{
+    "survey_id": "",
+    "question": {
+        "tags": [""],
+        "text": "Autotest question",
+        "type": "YesNo",
+        "display_logic": {
+            "logics": []
+        }
+    }
+}

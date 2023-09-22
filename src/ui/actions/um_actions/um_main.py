@@ -1,6 +1,6 @@
 import allure
 
-from data.um.user_management import ArabicTranslations, Texts
+from data.um.um_datasets import ArabicTranslations, Texts
 from src.ui.actions.sign_in import LoginActions
 from src.ui.pages.um_pages.main_page import MainPage
 from src.ui.pages.um_pages.owner_flow_page import OwnerFLowPage

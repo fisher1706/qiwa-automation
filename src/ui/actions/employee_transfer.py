@@ -20,9 +20,9 @@ from data.validation_message import SuccessMessage
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
+from src.ui.components.footer import Footer
 from src.ui.pages.employee_transfer_page import EmployeeTransferPage
 from src.ui.pages.individual_page import IndividualPage
-from src.ui.pages.languages_page import Languages
 from src.ui.pages.workspaces_page import WorkspacesPage
 from utils.assertion import assert_that
 
@@ -35,7 +35,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
         self.individual_page = IndividualPage()
-        self.language = Languages()
+        self.footer = Footer()
         self.contract_management_actions = ContractManagementActions()
 
     def __switch_tab_with_timeout(self, tab_id: int = 1):
@@ -51,7 +51,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
     def navigate_to_et_service(self, entity: Entity):
         self.login_action.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
-        self.language.click_on_lang_button(Language.EN)
+        self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
         self.__switch_tab_with_timeout()
         time.sleep(3)

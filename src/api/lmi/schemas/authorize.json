@@ -1,0 +1,9 @@
+{
+  "client_id": null,
+  "response_type": "code",
+  "redirect_uri": null,
+  "state": null,
+  "code_challenge": null,
+  "code_challenge_method": null,
+  "scope": "openid email phone profile"
+}

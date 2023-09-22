@@ -7,8 +7,6 @@ from allure_commons.types import AttachmentType, LinkType
 from selene import support
 from selene.support.shared import browser
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 
 import config
 from data.constants import SupportedBrowser
@@ -16,7 +14,7 @@ from src.ui.pages.login_page import LoginPage
 
 
 @pytest.fixture
-def go_to_auth_page():
+def go_to_auth_page():  # TODO: Remove usage
     login_page = LoginPage()
     login_page.visit()
     login_page.wait_page_to_load()
@@ -32,9 +30,8 @@ def setup_driver():
     chrome_options = webdriver.ChromeOptions()
     if not config.settings.remote_url:
         chrome_options.headless = config.settings.headless
-        driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()), options=chrome_options
-        )
+        driver = webdriver.Chrome(options=chrome_options)
+
     else:
         if browser_name not in SupportedBrowser.version:
             raise NameError(f"Defined browser name '{browser_name}' is not supported")
@@ -49,6 +46,7 @@ def setup_driver():
                 "enableVNC": config.settings.remote_enableVNC,
                 "enableVideo": config.settings.remote_enableVideo,
                 "enableLog": config.settings.remote_enableLog,
+                "screenResolution": config.settings.screen_resolution,
             },
         )
         driver = webdriver.Remote(config.settings.remote_url, options=chrome_options)
@@ -59,12 +57,8 @@ def setup_driver():
             width=config.settings.window_width,
             height=config.settings.window_height,
         )
+    browser.config.hold_driver_at_exit = config.settings.hold_browser_open
     browser.config.driver = driver
-
-    yield
-
-    if not config.settings.hold_browser_open:
-        browser.quit()
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)

@@ -1,0 +1,18 @@
+{
+  "data": {
+    "type": "appointment",
+    "attributes": {
+      "office-id": "",
+      "service-id": "",
+      "time": "",
+      "date": "",
+      "region-id": "",
+      "id": "",
+      "labor-office-id": "",
+      "sequence-number": "",
+      "requester-type-id": "",
+      "sub-service-id": "",
+      "visit-reason-id": ""
+    }
+  }
+}

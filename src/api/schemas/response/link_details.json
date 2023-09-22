@@ -1,0 +1,57 @@
+{
+  "data": {
+    "type": "dict", "schema": {
+      "id": {
+        "type": "string",
+        "nullable": true
+      },
+      "type": {
+        "type": "string"
+      },
+      "attributes": { "type": "dict", "schema": {
+          "name": {
+            "type": "string"
+          },
+          "survey_id": {
+            "type": "number"
+          },
+          "number_of_numbers": {
+            "type": "number"
+          },
+          "send_datetime": {
+            "type": "string",
+            "nullable": true
+          },
+          "filename": {
+            "type": "string",
+            "nullable": true
+          },
+          "template_message": {
+            "type": "string",
+            "nullable": true
+          },
+          "number_of_clicks": {
+            "type": "number"
+          },
+          "type": {
+            "type": "dict",
+            "schema": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "ar_name": {
+                "type": "string"
+              }
+            }},
+          "link": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+

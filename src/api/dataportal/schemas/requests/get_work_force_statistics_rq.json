@@ -1,0 +1,25 @@
+{
+    "WFSRequest": {
+        "request": {
+            "dim": {
+                "id": "",
+                "key": "WFS",
+                "params": {
+                    "selections": {
+                        "items": [
+                            {
+                                "name": "NOOFEMOLOYEES",
+                                "seq": 1,
+                                "grouped": true,
+                                "func": "string"
+                            }
+                        ]
+                    },
+                    "filters": {
+                        "filter": ""
+                    }
+                }
+            }
+        }
+    }
+}

@@ -11,8 +11,8 @@ from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.actions.sign_in import LoginActions
-from src.ui.components.profile_menu import UserProfileMenu
-from src.ui.pages.languages_page import Languages
+from src.ui.components.footer import Footer
+from src.ui.qiwa import qiwa
 
 
 @allure.feature('Employee Transfer sheet 1')
@@ -25,7 +25,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.contract_management_actions = ContractManagementActions()
         self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
-        self.language = Languages()
+        self.footer = Footer()
 
     @pytest.fixture()
     def prepare_laborer_for_et_request(self, http_client):
@@ -163,7 +163,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.fill_verification_code()
         self.employee_transfer_actions.click_btn_verify()
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE, Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE, Language.AR)
 
@@ -200,7 +200,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.fill_field_rejection_reason()
         self.employee_transfer_actions.click_btn_reject_request()
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.EN)
-        self.language.click_on_lang_button(Language.AR)
+        self.footer.click_on_lang_button(Language.AR)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.AR)
 
@@ -242,8 +242,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.fill_field_rejection_reason()
         self.employee_transfer_actions.click_btn_reject_request()
         self.employee_transfer_actions.verify_message(ErrorMessage.ET_SPONSOR_REQUEST)
-        profile_menu = UserProfileMenu(browser.element(".profile-status"))
-        profile_menu.click_on_menu().click_on_logout()
+        qiwa.header.click_on_menu().click_on_logout()
         browser.close_current_tab()
         browser.switch_to_tab(0)
         browser.driver.delete_all_cookies()

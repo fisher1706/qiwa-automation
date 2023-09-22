@@ -7,13 +7,15 @@ from allure_commons.types import LinkType
 
 
 class TestmoProject(enum.Enum):
+    LMI = 15
     CHANGE_OCCUPATION = 3
     CONTRACT_MANAGEMENT = 4
     VISAS = 7
+    DELEGATION = 9
+    LABOR_OFFICE = 16
     USER_MANAGEMENT = 26
     WORK_PERMIT = 29
     QIWA_SSO = 23
-    DELEGATION = 9
 
 
 def project(project_id: TestmoProject) -> Callable:
