@@ -76,9 +76,9 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
     @classmethod
     @allure.step
     def login_as_user(
-            cls,
-            personal_number: str,
-            password: str = UserInfo.PASSWORD,
+        cls,
+        personal_number: str,
+        password: str = UserInfo.PASSWORD,
     ) -> QiwaApi:
         api = cls()
         api.sso.login_user(personal_number, password)
