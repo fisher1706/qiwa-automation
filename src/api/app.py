@@ -35,7 +35,7 @@ from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.crypto_manager import decode_authorization_token
 
 
-class QiwaApi:
+class QiwaApi:  # pylint: disable=too-many-instance-attributes
     saudi_api_assertions = SaudizationApiAssertions()
 
     def __init__(self) -> None:
@@ -76,9 +76,9 @@ class QiwaApi:
     @classmethod
     @allure.step
     def login_as_user(
-        cls,
-        personal_number: str,
-        password: str = UserInfo.PASSWORD,
+            cls,
+            personal_number: str,
+            password: str = UserInfo.PASSWORD,
     ) -> QiwaApi:
         api = cls()
         api.sso.login_user(personal_number, password)
