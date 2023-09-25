@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -24,7 +26,7 @@ class Header(BaseModel):
     RequestTime: str
     ServiceCode: str
     DebugFlag: int
-    UserInfo: UserInfo
+    UserInfo: Optional[UserInfo]
 
 
 class Body(BaseModel):
