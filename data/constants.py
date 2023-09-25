@@ -1,11 +1,5 @@
 from dataclasses import dataclass
 
-HEADERS = {
-    "X-IBM-Client-Id": "514c55d8eb39044a69c1e9ab434ff616",
-    "X-IBM-Client-Secret": "4e2b5e46d09fec6775177730e3b44aaf",
-    "Content-Type": "application/json",
-}
-
 
 @dataclass
 class Language:
@@ -104,24 +98,24 @@ class EmployeeTransfer:
     TERMS_POPUP_DESCRIPTION = [
         {
             Language.EN: "Acknowledge the possibility of the transfer application being rejected by the Ministry of "
-            "Interior for any reason.",
+                         "Interior for any reason.",
             Language.AR: "أقر بعلمي باحتمالية رفض وزارة الداخلية طلب النقل لأي سبب.",
         },
         {
             Language.EN: "I acknowledge and undertake to treat the transferred employee based on the Labor Law and "
-            "its Executive Regulation and the decrees issued in implementation thereof.",
+                         "its Executive Regulation and the decrees issued in implementation thereof.",
             Language.AR: "أتعهد بمعاملة الموظف المنقول وفقاً لنظام العمل ولائحته التنفيذية والقرارات الصادرة تنفيذاً "
-            "له. ",
+                         "له. ",
         },
         {
             Language.EN: "To benefit from the Freedom of transfer initiative, the establishment must be committed to "
-            "the following:"
-            "\n"
-            "1. Authenticating all non Saudi employees contracts in QIWA by 20% ("
-            "Contract Management Service)",
+                         "the following:"
+                         "\n"
+                         "1. Authenticating all non Saudi employees contracts in QIWA by 20% ("
+                         "Contract Management Service)",
             Language.AR: "يجب أن تكون المنشأة مقدمة الطلب ملتزمة بالتالي لتتمكن من طلب نقل الموظف:"
-            "\n"
-            "1- توثيق جميع عقود العاملين في المنشأة بنسبة ٪؜20 في منصة قوى (خدمة توثيق عقود الموظفين)",
+                         "\n"
+                         "1- توثيق جميع عقود العاملين في المنشأة بنسبة ٪؜20 في منصة قوى (خدمة توثيق عقود الموظفين)",
         },
     ]
     TERMS_POPUP_BTN_APPROVE = {Language.EN: "Approve", Language.AR: "موافق"}
@@ -206,11 +200,11 @@ class ContractManagement:
     TITLE = {Language.EN: "Contract Management", Language.AR: "إدارة العقود"}
     DESCRIPTION = {
         Language.EN: "A service provided to establishments on Qiwa platform to create and authenticate employee "
-        "contracts digitally. After the contract gets created and submitted, it will be sent to the "
-        "employee’s account on Qiwa for approval or rejection.",
+                     "contracts digitally. After the contract gets created and submitted, it will be sent to the "
+                     "employee’s account on Qiwa for approval or rejection.",
         Language.AR: "خدمة تتيح للمنشآت إنشاء وتوثيق وإنهاء عقود الموظفين إلكترونيًا، وبعد إنشاء العقد الوظيفي يمكن "
-        "للموظف الموافقة على العقد أو رفضه أو طلب تعديله عبر حسابه في قوى أفراد. وفي حال موافقة الطرفين "
-        "يعتبر العقد موثق من وزارة الموارد البشرية والتنمية الاجتماعية",
+                     "للموظف الموافقة على العقد أو رفضه أو طلب تعديله عبر حسابه في قوى أفراد. وفي حال موافقة الطرفين "
+                     "يعتبر العقد موثق من وزارة الموارد البشرية والتنمية الاجتماعية",
     }
     CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES = {
         Language.EN: "Contract Authentication Score for Saudi Employees",
@@ -235,7 +229,7 @@ class ContractManagement:
     }
     MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT = {
         Language.EN: "The contract has been sent successfully! Please inform the employee to login to Qiwa platform and"
-        " accept the contract.",
+                     " accept the contract.",
         Language.AR: "تم ارسال العقد بنجاح! الرجاء إبلاغ الموظف بالدخول على منصة قوى والموافقة على العقد.",
     }
     CONTRACT_TYPE = {Language.EN: "Contract Type", Language.AR: "نوع العقد"}
@@ -281,6 +275,7 @@ class Eligibility:
 
 
 @dataclass
+# TODO: Compare with services and adjust class Tittles
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"

@@ -2,8 +2,8 @@ import allure
 import jmespath
 
 import config
-from data.constants import HEADERS
 from data.lo.constants import VisitStatus
+from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.requests.visit import Visit
 
