@@ -8,7 +8,7 @@ import config
 import src
 from data.dedicated.change_occupation import User
 from data.dedicated.services import Service
-from src.api.constants.auth import HEADERS, CLIENT_ID, CLIENT_SECRET
+from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
@@ -55,7 +55,7 @@ class IBMApiController:
 
     @allure.step
     def get_work_permit_requests_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
+        self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
     ) -> IBMWorkPermitRequestList:
         payload = {
             IBMServicesRequest.GET_WORK_PERMIT_REQUESTS.value: {
@@ -71,7 +71,7 @@ class IBMApiController:
 
     @allure.step
     def get_saudization_certificate_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
     ) -> IBMResponseData[GetSaudiCertificateRsBody]:
         payload = {
             IBMServicesRequest.GET_SAUDI_CERTIFICATE.value: {
@@ -87,7 +87,7 @@ class IBMApiController:
 
     @allure.step
     def validate_establishment_saudization_in_ibm(
-            self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
     ) -> IBMResponseData:
         payload = {
             IBMServicesRequest.VALIDATE_EST_SAUDI_CERTIFICATE.value: {
@@ -103,7 +103,7 @@ class IBMApiController:
 
     @allure.step
     def get_change_occupation_requests_from_ibm(
-            self, body: Body
+        self, body: Body
     ) -> IBMResponseData[src.api.models.ibm.searchchangeoccupation.Body]:
         payload = {
             IBMServicesRequest.SEARCH_CHANGE_OCCUPATION.value: {
@@ -191,15 +191,17 @@ class IBMApiController:
             headers=HEADERS,
             json=payload.dict(),
         )
-        return response.json()['GetEstablishmentInformationRs']['Body']['EstablishmentDetails']["EconomicActivityId"]
+        return response.json()["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"][
+            "EconomicActivityId"
+        ]
 
     @allure.step
     def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
         headers = HEADERS
-        headers['Authorization'] = self._get_token()
+        headers["Authorization"] = self._get_token()
         response = self.client.get(
             url=self.url,
             endpoint=self.route + f"/qiwa/v2/economic-activity/{economic_activity_id}/occupations",
             headers=headers,
         )
-        return response.json()['occupationsList'][0]["descriptionAr"]
+        return response.json()["occupationsList"][0]["descriptionAr"]
