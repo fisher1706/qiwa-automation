@@ -4,7 +4,7 @@ from data.validation_message import ErrorMessage, SuccessMessage
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
-case_id = project(TestmoProject.QIWA_ADMIN)
+case_id = project(TestmoProject.QIWA_SSO)
 
 
 @case_id(54975)

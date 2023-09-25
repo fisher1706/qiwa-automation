@@ -31,6 +31,7 @@ class SSOAuthPage:
 
     @allure.step
     def enter_otp_code(self, number: str) -> SSOAuthPage:
+        # TODO: make as component to pass otp code modal windows
         self.otp_code_first_cell.type(number)
         self.otp_code_second_cell.type(number)
         self.otp_code_third_cell.type(number)

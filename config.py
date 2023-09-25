@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     env: Envs
     domain: Domains
     mock_mlsd_url: Optional[HttpUrl]
+    sso_auth_db_url: Optional[str]
     ibm_url: Optional[HttpUrl]
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
