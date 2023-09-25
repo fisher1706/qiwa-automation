@@ -167,7 +167,7 @@ ui_tests_visa:
 api_tests_sso:
   <<: *testrun
   variables:
-    ENV: demo
+    ENV: stage
     TEST_SUITE: tests/api/sso
     TESTMO_PROJECT_ID: 23
     ALLURE_PROJECT_ID: sso-api-daily
