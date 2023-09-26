@@ -31,5 +31,4 @@ def test_surveys_detail(survey_id):
 @pytest.mark.parametrize('attribute_json, group', SurveyDataSet.survey_attribute_json)
 def test_setup_survey_attribute(survey_id, attribute_json, group):
     qiwa = QiwaApi.login_as_user(UserInfo.LMI_ADMIN_LOGIN, UserInfo.DEFAULT_PASSWORD_API)
-    print(attribute_json)
     qiwa.dashboard_api_actions.setup_survey_attribute(survey_id, attribute_json, group)

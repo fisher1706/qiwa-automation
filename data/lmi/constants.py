@@ -7,7 +7,6 @@ class UserInfo:
     LMI_USER_LOGIN = "1095259030"
     DEFAULT_PASSWORD = "123456789aA@"
     DEFAULT_PASSWORD_API = "123456789aA@"
-    DEFAULT_OTP_CODE = "0000"
 
 
 @dataclass
@@ -32,7 +31,6 @@ class SurveysInfo:
 class DimensionsInfo:
     NAME_EN_TEXT = "AUTOMATION TEST"
     NAME_EN_TEXT_EDIT = "AUTOMATION TEST EDIT"
-    NAME_EN_TEXT_EXTRA = "AUTOMATION TEST EXTRA"
     NAME_EN_CODE = [65, 85, 84, 79, 77, 65, 84, 73, 79, 78, 32, 84, 69, 83, 84]
     NAME_EN_CODE_EDIT = [
         65,
@@ -56,33 +54,8 @@ class DimensionsInfo:
         73,
         84,
     ]
-    NAME_EN_CODE_EXTRA = [
-        65,
-        85,
-        84,
-        79,
-        77,
-        65,
-        84,
-        73,
-        79,
-        78,
-        32,
-        84,
-        69,
-        83,
-        84,
-        32,
-        69,
-        88,
-        84,
-        82,
-        65,
-    ]
     NAME_AR_TEXT = "اختبار الأتمتة"
     NAME_AR_TEXT_EDIT = "تحرير اختبار الأتمتة"
-    NAME_AR_TEXT_EXTRA = "اختبار الأتمتة الإضافي"
-
     CREATE_SUCCESS_MESSAGE = "Dimension was successfully created"
     EDIT_SUCCESS_MESSAGE = "Dimension was successfully updated"
     DELETE_SUCCESS_MESSAGE = "Dimension was successfully deleted"
@@ -96,6 +69,8 @@ class DimensionsInfo:
     UPDATE_WEIGHT_SUCCESS = "Weights were successfully updated"
     UPDATE_CODE_SUCCESS = "Question code was successfully updated"
     COPY_LINK_MESSAGE = "Link was copied to clipboard"
+    DIMENSION_MESSAGE_EN = "This Dimension name already exists"
+    DIMENSION_MESSAGE_AR = "اسم البُعد المدخل موجود مسبقاً"
 
 
 @dataclass
@@ -129,8 +104,6 @@ class Actions:
 class DimensionAction:
     CANCEL_DELETE = "Cancel delete dimension"
     CANCEL_EDIT = "Cancel edit dimension"
-    CREATE_INVALID = "Create dimension with invalid values"
-    EDIT_INVALID = "Edit dimension with invalid values"
 
 
 @dataclass
@@ -146,7 +119,5 @@ class QuestionActions:
     ANSWER_WEIGHT = "change_answer_weight"
     QUESTION_WEIGHT = "change_question_weight"
     RESET_WEIGHT = "reset_weight"
-
-    INVALID_QUESTION_VALUE = "invalid_question_value"
-    INVALID_ANSWER_SCORE = "invalid_answer_score"
-    INVALID_QUESTION_CODE = "invalid_question_code"
+    INVALID_QUESTION_VALUE = "Weight must be between 0 and 10"
+    INVALID_ANSWER_SCORE = "Weight must be between 1 and 11"

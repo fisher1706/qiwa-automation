@@ -164,6 +164,22 @@ ui_tests_visa:
     TESTMO_PROJECT_ID: 7
     ALLURE_PROJECT_ID: visa-ui-tests
 
+ui_tests_dataportal:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/dataportal
+    TESTMO_PROJECT_ID: 15
+    ALLURE_PROJECT_ID: dataportal-ui-daily
+
+ui_tests_lmi:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/lmi
+    TESTMO_PROJECT_ID: 15
+    ALLURE_PROJECT_ID: lmi-ui-daily
+
 api_tests_sso:
   <<: *testrun
   variables:
@@ -197,6 +213,14 @@ api_tests_shareable_stage:
     TESTMO_PROJECT_ID: None
     ALLURE_PROJECT_ID: None
 
+api_tests_lmi:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/api/lmi
+    TESTMO_PROJECT_ID: 15
+    ALLURE_PROJECT_ID: lmi-api-daily
+
 .allure_results_template: &test_results
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -227,6 +251,18 @@ allure-ui-et-results:
     ALLURE_PROJECT_ID: et-ui-daily
   needs: [ui_tests_dedicated]
 
+allure-ui-dataportal-results:
+  <<: *test_results
+  variables:
+    ALLURE_PROJECT_ID: dataportal-ui-daily
+  needs: [ui_tests_dataportal]
+
+allure-ui-lmi-results:
+  <<: *test_results
+  variables:
+    ALLURE_PROJECT_ID: lmi-ui-daily
+  needs: [ui_tests_lmi]
+
 allure-api-sso-results:
   <<: *test_results
   variables:
@@ -250,6 +286,12 @@ allure-api-ss-stage-results:
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
   needs: [api_tests_shareable_stage]
+
+allure-api-lmi-results:
+  <<: *test_results
+  variables:
+    ALLURE_PROJECT_ID: lmi-api-daily
+  needs: [api_tests_lmi]
 
 .discord_notification_template: &discord_notification
   rules:
