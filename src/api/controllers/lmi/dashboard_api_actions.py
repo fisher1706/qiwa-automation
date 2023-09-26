@@ -10,6 +10,7 @@ class DashboardApiAction(DashboardApi):
         self.get_surveys_detail(survey_id)
         if group:
             sector_ids = [item["id"] for item in self.survey["data"]["attributes"]["sectors"]]
+            sector_ids = "" if sector_ids == [] else sector_ids
             assert sector_ids == attribute_dict["sector_ids"]
         else:
             for key, value in self.survey["data"]["attributes"].items():
