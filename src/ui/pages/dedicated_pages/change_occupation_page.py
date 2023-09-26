@@ -32,14 +32,14 @@ class ChangeOccupationPage:
         return self
 
     def check_employee_eligibility(self, eligible: str) -> ChangeOccupationPage:
-        self.table_employee_list.row(1).cell(Label.ELIGIBILITY).s("div").should(
+        self.table_employee_list.cell(row=1, column=Label.ELIGIBILITY).s("div").should(
             have.exact_text(eligible)
         )
         return self
 
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
         time.sleep(1)
-        self.table_employee_list.row(1).cell(Label.ACTIONS).s("button").click()
+        self.table_employee_list.cell(row=1, column=Label.ACTIONS).s("button").click()
         return self
 
     def search_occupation(self, occupation: str) -> ChangeOccupationPage:
@@ -63,7 +63,7 @@ class ChangeOccupationPage:
         return self
 
     def check_request_is_exist(self, personal_number: str) -> ChangeOccupationPage:
-        self.change_occupation_requests.row(1).cell(Label.IQAMA_NUMBER).should(
+        self.change_occupation_requests.cell(row=1, column=Label.IQAMA_NUMBER).should(
             have.exact_text(personal_number)
         )
         return self

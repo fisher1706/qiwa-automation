@@ -20,7 +20,7 @@ class RequestsPage:
         return self
 
     def expand_details(self):
-        self.change_occupation_requests.row(1).cell("Actions").s("a").click()
+        self.change_occupation_requests.cell(row=1, column="Actions").s("a").click()
         return self
 
     def check_iqama_number(self, iqama_number: str):

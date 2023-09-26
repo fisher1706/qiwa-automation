@@ -33,7 +33,7 @@ class IndividualPage(IndividualLocators):
         s(self.FIELD_CONFIRMATION_CODE).type(code).press_enter()
 
     def select_first_view_request(self):
-        self.individual_table.row(1).cell("Action").click()  # pylint: disable=no-member
+        self.individual_table.cell(row=1, column="Action").click()  # pylint: disable=no-member
 
     def click_agree_checkbox(self):
         s(self.CHECKBOX_AGREE).click()
@@ -52,7 +52,7 @@ class IndividualPage(IndividualLocators):
 
     def verify_expected_status(self, status: dict, locale: str):
         cell_name = "Status" if locale == Language.EN else "الحالة"
-        self.individual_table.row(1).cell(cell_name).should(have.exact_text(status[locale]))
+        self.individual_table.cell(row=1, column=cell_name).should(have.exact_text(status[locale]))
 
     def select_rejection_reason(self, reason: str):
         s(self.DROPDOWN_MODAL_REJECT_REASON).should(be.visible).all("option").element_by(

@@ -30,11 +30,11 @@ class DelegationDashboardPage:
     rows_per_page = s("#PaginationBoxSelectLabel")
     status_filter = 'label[for="{0}"]'
     apply_filters_button = s("button#BaseFiltersButtonApply")
-    status_of_filtered_delegation = delegation_table.row(1).web_element.s('[role="status"]')
+    status_of_filtered_delegation = delegation_table.row(1).s('[role="status"]')
     more_button = ss('button[aria-label="aria label"]').element(0)
     actions_buttons = ss('[data-component="ActionsMenu"] > button')
-    start_date_on_delegation_table = delegation_table.row(1).cells.element(5)
-    expiry_date_on_delegation_table = delegation_table.row(1).cells.element(6)
+    start_date_on_delegation_table = delegation_table.cell(row=1, column=5)
+    expiry_date_on_delegation_table = delegation_table.cell(row=1, column=6)
 
     def wait_delegation_dashboard_page_to_load(self) -> DelegationDashboardPage:
         self.delegation_table.body.should(be.visible)
@@ -158,23 +158,23 @@ class DelegationDashboardPage:
         return self
 
     def should_delegation_id_be_correct(self, delegation_id) -> DelegationDashboardPage:
-        self.delegation_table.row(1).cells.element(1).should(have.text(str(delegation_id)))
+        self.delegation_table.cell(row=1, column=1).should(have.text(str(delegation_id)))
         return self
 
     def should_employee_name_be_correct(self, employee_name) -> DelegationDashboardPage:
-        self.delegation_table.row(1).cells.element(2).should(have.text(employee_name))
+        self.delegation_table.cell(row=1, column=2).should(have.text(employee_name))
         return self
 
     def should_entity_name_be_correct(self, entity_name) -> DelegationDashboardPage:
-        self.delegation_table.row(1).cells.element(3).should(have.text(entity_name))
+        self.delegation_table.cell(row=1, column=3).should(have.text(entity_name))
         return self
 
     def should_delegation_permission_be_correct(self, permission) -> DelegationDashboardPage:
-        self.delegation_table.row(1).cells.element(4).should(have.text(permission))
+        self.delegation_table.cell(row=1, column=4).should(have.text(permission))
         return self
 
     def should_delegation_status_be_correct(self, status) -> DelegationDashboardPage:
-        self.delegation_table.row(1).cells.element(7).should(have.text(status.capitalize()))
+        self.delegation_table.cell(row=1, column=7).should(have.text(status.capitalize()))
         return self
 
     def should_delegation_dates_be_correct_on_dashboard(
