@@ -30,6 +30,7 @@ from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.delegation_dashboard_page import (
     DelegationDashboardPage,
 )
+from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
@@ -58,6 +59,7 @@ class Qiwa:
     visits_page = VisitsPage()
     business_page = BusinessPage()
     delegation_dashboard_page = DelegationDashboardPage()
+    delegation_details_page = DelegationDetailsPage()
     admin_spaces_page = AdminSpacesPage()
     lo_work_permit_page = LoWorkPermitPage()
     main_page = MainPage()
@@ -118,6 +120,13 @@ class Qiwa:
     @allure.step
     def open_delegation_dashboard_page(self) -> Qiwa:
         browser.open(config.qiwa_urls.delegation_service)
+        return self
+
+    @allure.step
+    def open_delegation_details_page(self, delegation_id: int | str) -> Qiwa:
+        browser.open(
+            "https://delegationservice.qiwa.info/delegation-details/" + str(delegation_id)
+        )
         return self
 
     @allure.step
