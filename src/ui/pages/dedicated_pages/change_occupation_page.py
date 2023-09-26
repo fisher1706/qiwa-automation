@@ -38,7 +38,8 @@ class ChangeOccupationPage:
         return self
 
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
-        time.sleep(1)
+        # TODO: Find the possibility of avoiding sleep
+        time.sleep(3)
         self.table_employee_list.row(1).cell(Label.ACTIONS).s("button").click()
         return self
 
