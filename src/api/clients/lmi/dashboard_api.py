@@ -4,6 +4,7 @@ import allure
 import jmespath
 
 import config
+from data.lmi.constants import SurveysInfo
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.lmi.requests.surveys import Surveys
 
@@ -28,8 +29,10 @@ class DashboardApi:
         self.json_params_quest_pro = {"apiKey": "c33cc2fa-5cee-463d-8388-8e11c01ee08d"}
 
     @allure.step("POST /surveys :: post survey to sparrow")
-    def create_sparrow_survey(self, environment, survey_name, expect_code=200):
-        json_body = Surveys.create_sparrow_survey_body(survey_name, environment)
+    def create_sparrow_survey(self, expect_code=200):
+        json_body = Surveys.create_sparrow_survey_body(
+            SurveysInfo.SURVEY_NAME, SurveysInfo.STAGE_ENV_SPARROW
+        )
         response = self.api.post(
             url="https://api.surveysparrow.com/v3",
             endpoint="/surveys",
@@ -61,8 +64,12 @@ class DashboardApi:
         self.surveys = response.json()
 
     @allure.step("GET /lmi-admin/surveys/surveys_id/detail :: get surveys details")
-    def get_surveys_detail(self, surveys_id, expect_code=200, expect_schema="surveys_detail.json"):
-        response = self.api.get(url=self.url, endpoint=f"/lmi-admin/surveys/{surveys_id}/detail")
+    def get_surveys_detail(
+        self, surveys_id, cookies=None, expect_code=200, expect_schema="surveys_detail.json"
+    ):
+        response = self.api.get(
+            url=self.url, endpoint=f"/lmi-admin/surveys/{surveys_id}/detail", cookies=cookies
+        )
         validator = ResponseValidator(response)
         validator.check_status_code(
             name="GET /lmi-admin/surveys/surveys_id/detail", expect_code=expect_code
@@ -97,11 +104,13 @@ class DashboardApi:
         assert response.text == "success"
 
     @allure.step("POST /surveys :: post survey to question pro")
-    def create_question_pro_survey(self, environment, user_id, survey_name, expect_code=200):
-        json_body = Surveys.create_question_pro_survey_body(survey_name, environment)
+    def create_question_pro_survey(self, expect_code=200):
+        json_body = Surveys.create_question_pro_survey_body(
+            SurveysInfo.SURVEY_NAME, SurveysInfo.STAGE_ENV_QPRO
+        )
         response = self.api.post(
             url="https://api.questionpro.com/a/api/v2",
-            endpoint=f"/users/{user_id}/surveys",
+            endpoint=f"/users/{SurveysInfo.USER_ID_QPRO}/surveys",
             json=json_body,
             params=self.json_params_quest_pro,
         )
@@ -121,14 +130,14 @@ class DashboardApi:
         )
         validator = ResponseValidator(response)
         validator.check_status_code(
-            name="GET /lmi-admin/surveys/surveys_id", expect_code=expect_code
+            name="PUT /lmi-admin/surveys/surveys_idd", expect_code=expect_code
         )
         assert response.text == "success"
 
     @allure.step("POST /surveys :: post add question to sparrow survey")
-    def add_question_to_sparrow_survey(self, survey_id, expect_code=200):
+    def add_question_to_sparrow_survey(self, expect_code=200):
         tag = f"s{self.tag}"
-        json_body = Surveys.add_question_to_sparrow_survey_body(survey_id, tag)
+        json_body = Surveys.add_question_to_sparrow_survey_body(self.survey_id, tag)
         response = self.api.post(
             url="https://api.surveysparrow.com/v3",
             endpoint="/questions",

@@ -9,9 +9,7 @@ from data.lmi.constants import (
     SurveysInfo,
     TargetGroups,
 )
-from data.lmi.ui_errors import DimensionErrors, QuestionErrors
 from src.api.lmi.requests.surveys import Surveys
-from src.ui.pages.lmi.locators import BasePageLocators
 
 
 @dataclass
@@ -47,52 +45,37 @@ class DimensionDataSet:
         (DimensionAction.CANCEL_DELETE, DimensionsInfo.NAME_EN_TEXT),
     )
 
-    dimension_negative_action = (DimensionAction.CREATE_INVALID, DimensionAction.EDIT_INVALID)
-
     invalid_dimension_names_value = (
-        (" ", " ", None),
-        (" ", DimensionsInfo.NAME_AR_TEXT, None),
-        (DimensionsInfo.NAME_EN_TEXT, " ", None),
-        (" ", DimensionsInfo.NAME_AR_TEXT, None),
-        (DimensionsInfo.NAME_EN_TEXT, " ", None),
-        (DimensionsInfo.NAME_EN_TEXT, "t1", None),
-        ("2t", DimensionsInfo.NAME_AR_TEXT, None),
-        ("te", "st", None),
-        (DimensionsInfo.NAME_EN_TEXT, DimensionsInfo.NAME_EN_TEXT, None),
-        (DimensionsInfo.NAME_AR_TEXT, DimensionsInfo.NAME_AR_TEXT, None),
-        (DimensionsInfo.NAME_AR_TEXT, DimensionsInfo.NAME_EN_TEXT, None),
+        (" ", " "),
+        (" ", DimensionsInfo.NAME_AR_TEXT),
+        (DimensionsInfo.NAME_EN_TEXT, " "),
+        (" ", DimensionsInfo.NAME_AR_TEXT),
+        (DimensionsInfo.NAME_EN_TEXT, " "),
+        (DimensionsInfo.NAME_EN_TEXT, "t1"),
+        ("2t", DimensionsInfo.NAME_AR_TEXT),
+        ("te", "st"),
+        (DimensionsInfo.NAME_EN_TEXT, DimensionsInfo.NAME_EN_TEXT),
+        (DimensionsInfo.NAME_AR_TEXT, DimensionsInfo.NAME_AR_TEXT),
+        (DimensionsInfo.NAME_AR_TEXT, DimensionsInfo.NAME_EN_TEXT),
+    )
+
+    dimension_created_names_value = (
         (
             DimensionsInfo.NAME_EN_TEXT,
             DimensionsInfo.NAME_AR_TEXT_EDIT,
-            DimensionErrors.required_en_name,
+            DimensionsInfo.DIMENSION_MESSAGE_EN,
         ),
         (
             DimensionsInfo.NAME_EN_TEXT_EDIT,
             DimensionsInfo.NAME_AR_TEXT,
-            DimensionErrors.required_ar_name,
+            DimensionsInfo.DIMENSION_MESSAGE_AR,
         ),
     )
 
 
+@dataclass
 class SurveyDataSet:
-    @staticmethod
-    def define_variables(survey_type):
-        survey_id = (
-            SurveysInfo.SURVEYS_SS_ID
-            if survey_type == BasePageLocators.SURVEY_SS_DETAILS_BUTTON
-            else SurveysInfo.SURVEYS_QPRO_ID
-        )
-        survey_name = (
-            SurveysInfo.SURVEY_SS_NAME
-            if survey_type == BasePageLocators.SURVEY_SS_DETAILS_BUTTON
-            else SurveysInfo.SURVEY_QPRO_NAME
-        )
-        return survey_id, survey_name
-
-    survey_option_data = (
-        BasePageLocators.SURVEY_SS_DETAILS_BUTTON,
-        BasePageLocators.SURVEY_QPRO_DETAILS_BUTTON,
-    )
+    survey_ids_data = (SurveysInfo.SURVEYS_SS_ID, SurveysInfo.SURVEYS_QPRO_ID)
 
     survey_data = (
         (SurveysInfo.SURVEYS_SS_ID, SurveyResultFile.SS_RESULT_XLS, TargetGroups.RETAIL_MULTI),
@@ -105,25 +88,11 @@ class SurveyDataSet:
         # Committed due to affect third part QA team
         # (Surveys.individual_displayed_body(True), None),
         # (Surveys.individual_displayed_body(False), None),
-        # (Surveys.favorite_survey_body(False), None),
-        # (Surveys.favorite_survey_body(True), False),
+        (Surveys.favorite_survey_body(False), False),
+        (Surveys.favorite_survey_body(True), False),
         (Surveys.setup_target_group_body(TargetGroups.ALL), True),
         (Surveys.setup_target_group_body(TargetGroups.RETAIL), True),
         (Surveys.setup_target_group_body(TargetGroups.RETAIL_MULTI), True),
-    )
-
-    sync_survey_data = (
-        (
-            SurveysInfo.STAGE_ENV_SPARROW,
-            SurveysInfo.SURVEY_NAME,
-            SurveysInfo.SURVEY_SPARROW_OPTION,
-        ),
-        (
-            SurveysInfo.STAGE_ENV_QPRO,
-            SurveysInfo.USER_ID_QPRO,
-            SurveysInfo.SURVEY_NAME,
-            SurveysInfo.SURVEY_QPRO_OPTION,
-        ),
     )
 
 
@@ -167,14 +136,11 @@ class QuestionDataSet:
         ),
     )
 
-    setup_action_negative_data = (
-        (QuestionActions.INVALID_QUESTION_VALUE, 10.1, QuestionErrors.invalid_question_weight),
-        (QuestionActions.INVALID_ANSWER_SCORE, 0.9, QuestionErrors.invalid_answer_score),
-        (QuestionActions.INVALID_ANSWER_SCORE, -1, QuestionErrors.invalid_answer_score),
-        (QuestionActions.INVALID_ANSWER_SCORE, 11.1, QuestionErrors.invalid_answer_score),
-        (QuestionActions.INVALID_QUESTION_CODE, "test"),
-        (QuestionActions.INVALID_QUESTION_CODE, " "),
-    )
+    invalid_question_data = (10.1, ".", "")
+
+    invalid_answer_data = (0, 0.9, 11.1, ".", "")
+
+    invalid_code_data = ("", " ")
 
 
 @dataclass
@@ -188,11 +154,6 @@ class ResultDataSet:
         ),
         (Actions.DELETE, DimensionsInfo.NAME_EN_TEXT, DimensionsInfo.DELETE_LINK_SUCCESS_MESSAGE),
         (Actions.COUNTER, DimensionsInfo.COPY_LINK_MESSAGE),
-    )
-
-    survey_data = (
-        (SurveysInfo.SURVEYS_SS_ID, BasePageLocators.SURVEY_SS_DETAILS_BUTTON),
-        (SurveysInfo.SURVEYS_QPRO_ID, BasePageLocators.SURVEY_QPRO_DETAILS_BUTTON),
     )
 
 

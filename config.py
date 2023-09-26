@@ -76,6 +76,8 @@ class QiwaUrls:
         self.data_portal_url: str = f"{protocol}data.{domain}"
         self.visa_web_url: str = f"{protocol}visa.{domain}"
         self.appointment_booking: str = f"{protocol}appointment-booking.{domain}"
+        self.lmi_url: str = f"{protocol}lmi-dashboard.{domain}"
+        self.lmi_landing_url: str = f"{protocol}lmi.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))

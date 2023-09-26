@@ -26,9 +26,9 @@ class DimensionsApi:
         assert response.text == "success"
 
     @allure.step("GET /lmi-admin/dimension :: get last dimension id")
-    def get_last_dimension_id(self, expect_code=200):
+    def get_last_dimension_id(self, cookies=None, expect_code=200):
         dimensions_id = []
-        response = self.api.get(url=self.url, endpoint="/lmi-admin/dimension")
+        response = self.api.get(url=self.url, endpoint="/lmi-admin/dimension", cookies=cookies)
         validator = ResponseValidator(response)
         validator.check_status_code(name="GET /lmi-admin/dimension", expect_code=expect_code)
         dimensions = response.json()
@@ -42,10 +42,13 @@ class DimensionsApi:
         self,
         dimension_id,
         surveys_id=None,
+        cookies=None,
         expect_code=200,
         expect_schema="dimension_details.json",
     ):
-        response = self.api.get(url=self.url, endpoint=f"/lmi-admin/dimension/{dimension_id}")
+        response = self.api.get(
+            url=self.url, endpoint=f"/lmi-admin/dimension/{dimension_id}", cookies=cookies
+        )
         validator = ResponseValidator(response)
         validator.check_status_code(
             name="GET /lmi-admin/dimension/dimension_id", expect_code=expect_code
@@ -107,12 +110,13 @@ class DimensionsApi:
     @allure.step(
         "PUT /lmi-admin/dimension/dimension_id/attach-question :: attach question to dimension"
     )
-    def put_attach_question(self, dimension_id, survey_question_id, expect_code=200):
+    def put_attach_question(self, dimension_id, survey_question_id, cookies=None, expect_code=200):
         json_body = Dimensions.attach_detach_question_body(survey_question_id)
         response = self.api.put(
             url=self.url,
             endpoint=f"/lmi-admin/dimension/{dimension_id}" f"/attach-question",
             json=json_body,
+            cookies=cookies,
         )
         validator = ResponseValidator(response)
         validator.check_status_code(

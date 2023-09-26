@@ -22,10 +22,20 @@ class SurveyResultApi:
         self.xlsx_file = Path(__file__).parent.parent.parent.parent.parent.joinpath("data/files")
 
     @allure.step("POST /lmi-tracking/tracking-details :: create link")
-    def post_link(self, survey_id, link_name, expect_code=200, expect_schema="link_details.json"):
+    def post_link(
+        self,
+        survey_id,
+        link_name,
+        cookies=None,
+        expect_code=200,
+        expect_schema="link_details.json",
+    ):
         json_body = Surveys.create_link_body(survey_id, link_name)
         response = self.api.post(
-            url=self.url, endpoint="/lmi-tracking/tracking-details", json=json_body
+            url=self.url,
+            endpoint="/lmi-tracking/tracking-details",
+            json=json_body,
+            cookies=cookies,
         )
         validator = ResponseValidator(response)
         validator.check_status_code(
