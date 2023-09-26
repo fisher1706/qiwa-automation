@@ -8,9 +8,7 @@ from utils.selene import index_of_element_by
 class Table:
     def __init__(self, web_element: Element | str = "table"):
         self.web_element = (
-            browser.element(web_element)
-            if isinstance(web_element, str)
-            else web_element
+            browser.element(web_element) if isinstance(web_element, str) else web_element
         )
         self.header = self.web_element.element("thead")
         self.body = self.web_element.element("tbody")
@@ -21,12 +19,8 @@ class Table:
         return self.rows.element(number - 1)
 
     def cells(self, *, row: int | Condition[Element]) -> Collection:
-        _row = (
-            self.row(row)
-            if isinstance(row, int)
-            else self.rows.element_by(row)
-        )
-        return _row.all('td').from_(1)
+        _row = self.row(row) if isinstance(row, int) else self.rows.element_by(row)
+        return _row.all("td").from_(1)
 
     def cell(self, *, row: int | Condition[Element], column: int | str) -> Element:
         column_index = (
