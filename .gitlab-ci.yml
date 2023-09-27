@@ -218,137 +218,137 @@ api_tests_lmi:
       --debug
       --resources testmo-resources.json
 
-testmo-ui-sso-results:
+testmo-ui-sso-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
     ALLURE_PROJECT_ID: sso-ui-daily
   needs: [ui_tests_sso]
 
-testmo-ui-um-results:
+testmo-ui-um-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
     ALLURE_PROJECT_ID: um-ui-daily
   needs: [ui_tests_um]
 
-testmo-ui-co-results:
+testmo-ui-co-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 3
     ALLURE_PROJECT_ID: co-ui-daily
   needs: [ui_tests_dedicated_co]
 
-testmo-ui-visa-results:
+testmo-ui-visa-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 7
     ALLURE_PROJECT_ID: visa-ui-tests
   needs: [ui_tests_visa]
 
-testmo-ui-dataportal-results:
+testmo-ui-dataportal-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: dataportal-ui-daily
   needs: [ui_tests_dataportal]
 
-testmo-ui-lmi-results:
+testmo-ui-lmi-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: lmi-ui-daily
   needs: [ui_tests_lmi]
 
-testmo-api-sso-results:
+testmo-api-sso-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
     ALLURE_PROJECT_ID: sso-api-daily
   needs: [api_tests_sso]
 
-testmo-api-um-results:
+testmo-api-um-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
     ALLURE_PROJECT_ID: um-api-daily
   needs: [api_tests_um]
 
-testmo-api-lmi-results:
+testmo-api-lmi-report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: lmi-api-daily
   needs: [api_tests_lmi]
 
-.allure_results_template: &test_results
+.allure_report_template: &allure_report
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   extends: .generate_allure_report
   stage: allure-report
 
-allure-ui-sso-results:
-  <<: *test_results
+allure-ui-sso-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
   needs: [ui_tests_sso]
 
-allure-ui-um-results:
-  <<: *test_results
+allure-ui-um-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
   needs: [ui_tests_um]
 
-allure-ss-ui-wp-results:
-  <<: *test_results
+allure-ss-ui-wp-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
   needs: [ui_tests_shareable]
 
-allure-ui-co-results:
-  <<: *test_results
+allure-ui-co-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: co-ui-daily
   needs: [ui_tests_dedicated_co]
 
-allure-ui-dataportal-results:
-  <<: *test_results
+allure-ui-dataportal-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: dataportal-ui-daily
   needs: [ui_tests_dataportal]
 
-allure-ui-lmi-results:
-  <<: *test_results
+allure-ui-lmi-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-ui-daily
   needs: [ui_tests_lmi]
 
-allure-api-sso-results:
-  <<: *test_results
+allure-api-sso-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
   needs: [api_tests_sso]
 
-allure-api-um-results:
-  <<: *test_results
+allure-api-um-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-api-daily
   needs: [api_tests_um]
 
-allure-api-wp-results:
-  <<: *test_results
+allure-api-wp-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
   needs: [api_tests_shareable_demo]
 
-allure-api-ss-stage-results:
-  <<: *test_results
+allure-api-ss-stage-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
   needs: [api_tests_shareable_stage]
 
-allure-api-lmi-results:
-  <<: *test_results
+allure-api-lmi-report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-api-daily
   needs: [api_tests_lmi]
