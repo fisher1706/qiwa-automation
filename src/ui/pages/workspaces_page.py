@@ -19,6 +19,7 @@ class WorkspacesPage:
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
     search = s("#search")
+    lmi_admin_card = ss("[data-component='Tile'] p").element_by(have.text("LMI Admin"))
 
     @allure.step
     def should_have_workspace_list_appear(self):
@@ -71,3 +72,8 @@ class WorkspacesPage:
     @allure.step
     def wait_page_to_load(self):
         self.label_choose_account.should(be.visible)
+
+    @allure.step
+    def select_lmi_admin(self):
+        self.lmi_admin_card.click()
+        return self

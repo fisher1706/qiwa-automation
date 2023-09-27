@@ -32,11 +32,11 @@ class DimensionsApiAction(DimensionsApi):
         assert self.dimension["data"]["attributes"]["ar_name"] == name_ar_edited
 
     @allure.step("I attach question to dimension")
-    def attach_questions(self, surveys_id):
-        self.get_last_dimension_id()
-        self.dashboard_api.get_surveys_detail(surveys_id)
-        self.put_attach_question(self.last_dimension_id, self.dashboard_api.question_id)
-        self.get_dimension(self.last_dimension_id, surveys_id)
+    def attach_questions(self, surveys_id, cookies=None):
+        self.get_last_dimension_id(cookies)
+        self.dashboard_api.get_surveys_detail(surveys_id, cookies)
+        self.put_attach_question(self.last_dimension_id, self.dashboard_api.question_id, cookies)
+        self.get_dimension(self.last_dimension_id, surveys_id, cookies)
         assert self.dashboard_api.question_id in self.dimension_questions_id
 
     @allure.step("I detach question from dimension")

@@ -2,6 +2,7 @@ from http import HTTPStatus
 from urllib.parse import parse_qs, urlparse
 
 from requests import Response
+from requests.cookies import RequestsCookieJar
 
 import config
 from src.api.http_client import HTTPClient
@@ -33,6 +34,14 @@ class OAuthApi:
         )
         assert response.status_code == HTTPStatus.OK
         return response
+
+    def get_context(self) -> RequestsCookieJar:
+        response = self.client.get(
+            url=self.url,
+            endpoint="/context",
+        )
+        assert response.status_code == HTTPStatus.OK
+        return response.cookies
 
     def delete_context(self):
         self.client.get(self.url, endpoint="/context")

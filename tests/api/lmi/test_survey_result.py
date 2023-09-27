@@ -14,10 +14,10 @@ def test_download_xlsx_result(values):
 
 
 @allure.title('Check link actions: Create/Edit/Delete/Counter')
-@pytest.mark.parametrize('survey', ResultDataSet.survey_data)
+@pytest.mark.parametrize('survey_id', SurveyDataSet.survey_ids_data)
 @pytest.mark.parametrize('values', ResultDataSet.result_action_data)
-def test_link_action(survey, values):
+def test_link_action(survey_id, values):
     qiwa = QiwaApi.login_as_user(personal_number=UserInfo.LMI_ADMIN_LOGIN)
-    qiwa.survey_result_api_actions.delete_all_links(survey[0])
-    qiwa.survey_result_api_actions.create_new_link(survey[0], values[0])
-    qiwa.survey_result_api_actions.define_action(values[0], survey[0], values[1])
+    qiwa.survey_result_api_actions.delete_all_links(survey_id)
+    qiwa.survey_result_api_actions.create_new_link(survey_id, values[0])
+    qiwa.survey_result_api_actions.define_action(values[0], survey_id, values[1])

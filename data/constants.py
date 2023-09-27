@@ -1,11 +1,5 @@
 from dataclasses import dataclass
 
-HEADERS = {
-    "X-IBM-Client-Id": "514c55d8eb39044a69c1e9ab434ff616",
-    "X-IBM-Client-Secret": "4e2b5e46d09fec6775177730e3b44aaf",
-    "Content-Type": "application/json",
-}
-
 
 @dataclass
 class Language:
@@ -281,6 +275,7 @@ class Eligibility:
 
 
 @dataclass
+# TODO: Compare with services and adjust class Tittles
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"

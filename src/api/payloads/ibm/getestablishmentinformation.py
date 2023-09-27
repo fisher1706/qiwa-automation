@@ -3,7 +3,8 @@ from pydantic.main import BaseModel
 
 class EstablishmentInformation(BaseModel):
     LaborOfficeId: str
-    EstablishmentSequenceNumber: str
+    # TODO: Correct after fix
+    EstablishmentSequanceNumber: str
 
 
 class GetEstablishmentInformationRq(BaseModel):

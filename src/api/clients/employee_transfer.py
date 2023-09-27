@@ -3,9 +3,9 @@ import json
 import allure
 from requests import Response
 
-from data.constants import HEADERS
 from data.dedicated.employee_transfer import employer, laborer
 from src.api.assertions.response_validator import ResponseValidator
+from src.api.constants.auth import HEADERS
 from utils.schema_parser import load_json_schema
 
 
@@ -16,7 +16,7 @@ class EmployeeTransferApi:
         self.url_create_new_contract = "https://gw-apic.qiwa.info"
         self.url_prepare_laborer_for_et_request = "http://192.168.168.29:5000"
 
-    def __check_status_response(
+    def _check_status_response(
         self, response: Response, name: str, expected_status: str = "SUCCESS"
     ):
         response = response.json()["CreateNewContractRs"]["Header"]
@@ -55,7 +55,7 @@ class EmployeeTransferApi:
         ResponseValidator(response).check_status_code(
             name="Prepare laborer for et request", expect_code=expect_code
         )
-        self.__check_status_response(response, name="Prepare laborer for et request")
+        self._check_status_response(response, name="Prepare laborer for et request")
 
     @allure.step("POST prepare laborer for et request")
     def post_prepare_laborer_for_et_request(
