@@ -8,7 +8,6 @@ import config
 from data.delegation.constants import DelegationStatus
 from src.ui.components.raw.breadcrumb_navigation import BreadcrumbNavigation
 from src.ui.components.raw.table import Table
-from utils.helpers import convert_timestamp_into_dates
 
 
 class DelegationDashboardPage:
@@ -35,8 +34,12 @@ class DelegationDashboardPage:
     more_button = ss('button[aria-label="aria label"]').element(0)
     actions_buttons = ss('[data-component="ActionsMenu"] > button')
     id_on_delegation_table = delegation_table.cell(row=1, column=1)
+    delegate_name_on_delegation_table = delegation_table.cell(row=1, column=2)
+    external_entity_on_delegation_table = delegation_table.cell(row=1, column=3)
+    permissions_on_delegation_table = delegation_table.cell(row=1, column=4)
     start_date_on_delegation_table = delegation_table.cell(row=1, column=5)
     expiry_date_on_delegation_table = delegation_table.cell(row=1, column=6)
+    status_on_delegation_table = delegation_table.cell(row=1, column=7)
 
     @allure.step
     def wait_delegation_dashboard_page_to_load(self) -> DelegationDashboardPage:
@@ -186,35 +189,34 @@ class DelegationDashboardPage:
 
     @allure.step
     def should_delegation_id_be_correct(self, delegation_id: int | str) -> DelegationDashboardPage:
-        self.delegation_table.cell(row=1, column=1).should(have.text(str(delegation_id)))
+        self.id_on_delegation_table.should(have.text(str(delegation_id)))
         return self
 
     @allure.step
     def should_employee_name_be_correct(self, employee_name: str) -> DelegationDashboardPage:
-        self.delegation_table.cell(row=1, column=2).should(have.text(employee_name))
+        self.delegate_name_on_delegation_table.should(have.text(employee_name))
         return self
 
     @allure.step
     def should_entity_name_be_correct(self, entity_name: str) -> DelegationDashboardPage:
-        self.delegation_table.cell(row=1, column=3).should(have.text(entity_name))
+        self.external_entity_on_delegation_table.should(have.text(entity_name))
         return self
 
     @allure.step
     def should_delegation_permission_be_correct(self, permission: str) -> DelegationDashboardPage:
-        self.delegation_table.cell(row=1, column=4).should(have.text(permission))
+        self.permissions_on_delegation_table.should(have.text(permission))
         return self
 
     @allure.step
     def should_delegation_status_be_correct(self, status: str) -> DelegationDashboardPage:
-        self.delegation_table.cell(row=1, column=7).should(have.text(status.capitalize()))
+        self.status_on_delegation_table.should(have.text(status.capitalize()))
         return self
 
     @allure.step
     def should_delegation_dates_be_correct_on_dashboard(
-        self, status: str, timestamp: float, locator: Element
+        self, status: str, date: str, locator: Element
     ) -> DelegationDashboardPage:
         if status in [DelegationStatus.ACTIVE, DelegationStatus.EXPIRED, DelegationStatus.REVOKED]:
-            date = convert_timestamp_into_dates(timestamp)
             locator.should(have.text(date))
         else:
             locator.should(have.text("-"))
