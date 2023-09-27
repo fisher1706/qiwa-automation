@@ -1,5 +1,5 @@
 import allure
-from selene.api import be, have, s, ss
+from selene.api import be, command, have, s, ss
 
 from data.visa.constants import (
     FILTERS,
@@ -11,13 +11,10 @@ from data.visa.constants import (
 )
 from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.soft_assertions import soft_assert_text
+from utils.pdf_parser import get_downloaded_filename, verify_text_in_pdf
 
 
 class PermWorkVisaPage(BasePage):
-    work_visa_page_navigation_chain = s("//nav")
-    work_visa_page_title = ss(
-        '//div[@data-component="Layout"]/div[@data-component="Box"]//p'
-    ).first
     other_visas_tab = s('//*[@data-testid="nav-Other visas"]')
     permanent_visas_tab = s('//*[@data-testid="nav-Permanent work visas requests"]')
     other_visas_section = s("#otherVisaRequestsSection")
@@ -43,15 +40,19 @@ class PermWorkVisaPage(BasePage):
         'contains(@data-testid, "tableLoader")]'
     )
     table_rows = './/*[@data-testid="tableContent"]'
+    request_action_button = './/*[@data-testid="baseTableActions"]'
+    print_action = s('//button/p[contains(text(), "Print request details")]')
+    view_action = s('//button/p[contains(text(), "View details")]')
+    establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
         self.all_loaders.wait_until(have.size_greater_than(0))
         self.all_loaders.wait_until(have.size(0))
-        self.work_visa_page_navigation_chain.should(be.visible)
-        self.work_visa_page_navigation_chain.should(have.text(WORK_VISA_PAGE_TITLE_TEXT))
-        self.work_visa_page_title.should(be.visible)
-        self.work_visa_page_title.should(have.text(WORK_VISA_PAGE_TITLE_TEXT))
+        self.page_navigation_chain.should(be.visible)
+        self.page_navigation_chain.should(have.text(WORK_VISA_PAGE_TITLE_TEXT))
+        self.page_title.should(be.visible)
+        self.page_title.should(have.text(WORK_VISA_PAGE_TITLE_TEXT))
 
     @allure.step("Verify other visas table on work visa page is empty")
     def verify_other_visas_table_empty(self):
@@ -104,3 +105,14 @@ class PermWorkVisaPage(BasePage):
         )
         self.other_visas_table.should(be.visible)
         self.other_visas_table.ss(self.table_rows).by(have.text(request)).should(have.size(1))
+
+    @allure.step("Verify visa request (pdf) permanent work visa page")
+    def verify_perm_work_visa_request_pdf(self, request):
+        self.permanent_visas_tab.click()
+        command.js.scroll_into_view(self.establishment_fund_section)
+        self.permanent_visas_table.ss(self.table_rows).by(have.text(request)).first.s(
+            self.request_action_button
+        ).click()
+        self.print_action.click()
+        filename = get_downloaded_filename(timeout=20)
+        verify_text_in_pdf(filename, request)

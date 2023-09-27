@@ -313,3 +313,15 @@ def test_verify_perm_work_visa_request(visa_mock, visa_type):
     qiwa.issue_visa.verify_issue_visa_page_open()
     ref_number = qiwa.issue_visa.create_perm_visa_request()
     qiwa.work_visa.verify_perm_work_visa_request(ref_number)
+
+@allure.title('Test verifies permanent work visa request (pdf) in establishing phase')
+def test_verify_perm_work_visa_request_pdf(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_issue_visa.click()
+    qiwa.issue_visa.verify_issue_visa_page_open()
+    ref_number = qiwa.issue_visa.create_perm_visa_request()
+    qiwa.work_visa.verify_perm_work_visa_request_pdf(ref_number)
+    qiwa.work_visa.view_action.click()
+    qiwa.visa_request.verify_visa_request_page_open()
+    qiwa.visa_request.verify_details_in_pdf(ref_number)
