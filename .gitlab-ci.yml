@@ -113,7 +113,15 @@ isort:
     - echo $ALLURE_PROJECT_ID
     - testmo automation:resources:add-link --name "Allure report" --url "https://allure.qiwa.tech/allure-docker-service-ui/projects/$ALLURE_PROJECT_ID" --note "Allure contains more advanced reports of the test runs"
     - testmo automation:resources:add-link --name "GitLab CICD pipeline" --url "https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/-/jobs/$CI_JOB_ID" --note "Link to Gitlab's CICD job logs"
-    - testmo automation:run:submit --instance "$TESTMO_URL" --project-id $TESTMO_PROJECT_ID --name "Pytest test run" --source "CICD" --results results/*.xml --debug --resources testmo-resources.json -- pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - testmo automation:run:submit 
+      --instance "$TESTMO_URL"
+      --project-id $TESTMO_PROJECT_ID
+      --name "Pytest test run"
+      --source "CICD"
+      --results results/*.xml
+      --debug
+      --resources testmo-resources.json
+      -- pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
