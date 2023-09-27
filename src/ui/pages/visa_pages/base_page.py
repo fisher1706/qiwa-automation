@@ -1,4 +1,4 @@
-from selene.api import be, s
+from selene.api import be, s, ss
 from selene.support.shared import browser
 
 from data.visa.constants import Languages
@@ -19,6 +19,8 @@ class BasePage:
     quiz_popup_close_button = s('//div[contains(@class, "demo__shutter")]')
     quiz_popup_window = s('//div[contains(@class,"animation-content")]')
     quiz_popup = s('[title="iframe"]')
+    page_navigation_chain = s("//nav")
+    page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
 
     def refresh_page(self):
         browser.driver.refresh()

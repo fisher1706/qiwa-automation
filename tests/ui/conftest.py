@@ -28,10 +28,12 @@ def setup_driver():
     )
     browser_name = config.settings.browser_name
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option(
+        "prefs", {"download.default_directory": config.settings.download_dir}
+    )
     if not config.settings.remote_url:
         chrome_options.headless = config.settings.headless
         driver = webdriver.Chrome(options=chrome_options)
-
     else:
         if browser_name not in SupportedBrowser.version:
             raise NameError(f"Defined browser name '{browser_name}' is not supported")
