@@ -123,7 +123,7 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_delegation_details_page(self, delegation_id: int | str) -> Qiwa:
+    def open_delegation_details_page(self, delegation_id: int | str) -> QiwaUiClient:
         browser.open(
             "https://delegationservice.qiwa.info/delegation-details/" + str(delegation_id)
         )
