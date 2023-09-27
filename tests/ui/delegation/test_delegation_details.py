@@ -49,7 +49,7 @@ def test_action_buttons_for_active_delegation_on_delegation_details():
 
 
 @allure.title("Verify action button for Rejected status")
-@case_id(25375, 25376)
+@case_id(25375, 26636)
 def test_action_buttons_for_rejected_delegation_on_delegation_details():
     delegation_list = login_and_open_delegation_details_page_by_status(
         personal_number=establishment_owner_with_two_partners.personal_number,

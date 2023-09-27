@@ -124,9 +124,7 @@ class Qiwa:
 
     @allure.step
     def open_delegation_details_page(self, delegation_id: int | str) -> Qiwa:
-        browser.open(
-            "https://delegationservice.qiwa.info/delegation-details/" + str(delegation_id)
-        )
+        browser.open(f"{config.qiwa_urls.delegation_service}/delegation-details/{delegation_id}")
         return self
 
     @allure.step
