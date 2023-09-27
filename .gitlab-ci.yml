@@ -16,10 +16,10 @@ variables:
 stages:
   - build
   - linting
-  - tests
+  - test-run
   - testmo-report
-  - send-test-reports
-  - notification
+  - allure-report
+  - discord-notification
 
 .package:
   image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
@@ -103,7 +103,7 @@ isort:
   image: $IMAGE
   allow_failure:
     exit_codes: 1
-  stage: tests
+  stage: test-run
   timeout: 150 minutes
   tags:
     - shared
@@ -285,7 +285,7 @@ testmo-api-lmi-results:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   extends: .generate_allure_report
-  stage: send-test-reports
+  stage: allure-report
 
 allure-ui-sso-results:
   <<: *test_results
@@ -356,7 +356,7 @@ allure-api-lmi-results:
 .discord_notification_template: &discord_notification
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
-  stage: notification
+  stage: discord-notification
   image: $IMAGE
   script:
     - python utils/discord_notify.py $XML_REPORT $WEBHOOK
