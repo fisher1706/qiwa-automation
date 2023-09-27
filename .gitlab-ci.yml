@@ -120,74 +120,74 @@ isort:
   only:
     - master
 
-ui_tests_sso:
+sso_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/sso
 
-ui_tests_um:
+um_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/um
 
-ui_tests_shareable:
+shareable_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/shareable
 
-ui_tests_dedicated_co:
+dedicated_co_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/change_occupation
 
-ui_tests_visa:
+visa_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/visa
 
-ui_tests_dataportal:
+dataportal_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dataportal
 
-ui_tests_lmi:
+lmi_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/lmi
 
-api_tests_sso:
+sso_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/sso
 
-api_tests_um:
+um_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/um
 
-api_tests_shareable_demo:
+shareable_demo_api_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/api/shareable
 
-api_tests_shareable_stage:
+shareable_stage_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/shareable
     OPTIONS: "-m stage"
 
-api_tests_lmi:
+lmi_api_tests:
   <<: *testrun
   variables:
     ENV: stage
@@ -218,68 +218,68 @@ api_tests_lmi:
       --debug
       --resources testmo-resources.json
 
-testmo-ui-sso-report:
+sso_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
     ALLURE_PROJECT_ID: sso-ui-daily
-  needs: [ui_tests_sso]
+  needs: [sso_ui_tests]
 
-testmo-ui-um-report:
+um_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
     ALLURE_PROJECT_ID: um-ui-daily
-  needs: [ui_tests_um]
+  needs: [um_ui_tests]
 
-testmo-ui-co-report:
+dedicated_co_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 3
     ALLURE_PROJECT_ID: co-ui-daily
-  needs: [ui_tests_dedicated_co]
+  needs: [dedicated_co_ui_tests]
 
-testmo-ui-visa-report:
+visa_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 7
     ALLURE_PROJECT_ID: visa-ui-tests
-  needs: [ui_tests_visa]
+  needs: [visa_ui_tests]
 
-testmo-ui-dataportal-report:
+dataportal_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: dataportal-ui-daily
-  needs: [ui_tests_dataportal]
+  needs: [dataportal_ui_tests]
 
-testmo-ui-lmi-report:
+lmi_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: lmi-ui-daily
-  needs: [ui_tests_lmi]
+  needs: [lmi_ui_tests]
 
-testmo-api-sso-report:
+sso_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
     ALLURE_PROJECT_ID: sso-api-daily
-  needs: [api_tests_sso]
+  needs: [sso_api_tests]
 
-testmo-api-um-report:
+um_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
     ALLURE_PROJECT_ID: um-api-daily
-  needs: [api_tests_um]
+  needs: [um_api_tests]
 
-testmo-api-lmi-report:
+lmi_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: lmi-api-daily
-  needs: [api_tests_lmi]
+  needs: [lmi_api_tests]
 
 .allure_report_template: &allure_report
   rules:
@@ -287,71 +287,71 @@ testmo-api-lmi-report:
   extends: .generate_allure_report
   stage: allure-report
 
-allure-ui-sso-report:
+sso_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
-  needs: [ui_tests_sso]
+  needs: [sso_ui_tests]
 
-allure-ui-um-report:
+um_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
-  needs: [ui_tests_um]
+  needs: [um_ui_tests]
 
-allure-ss-ui-wp-report:
+shareable_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
-  needs: [ui_tests_shareable]
+  needs: [shareable_ui_tests]
 
-allure-ui-co-report:
+dedicated_co_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: co-ui-daily
-  needs: [ui_tests_dedicated_co]
+  needs: [dedicated_co_ui_tests]
 
-allure-ui-dataportal-report:
+dataportal_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: dataportal-ui-daily
-  needs: [ui_tests_dataportal]
+  needs: [dataportal_ui_tests]
 
-allure-ui-lmi-report:
+lmi_ui_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-ui-daily
-  needs: [ui_tests_lmi]
+  needs: [lmi_ui_tests]
 
-allure-api-sso-report:
+sso_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
-  needs: [api_tests_sso]
+  needs: [sso_api_tests]
 
-allure-api-um-report:
+um_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-api-daily
-  needs: [api_tests_um]
+  needs: [um_api_tests]
 
-allure-api-wp-report:
+shareable_demo_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
-  needs: [api_tests_shareable_demo]
+  needs: [shareable_demo_api_tests]
 
-allure-api-ss-stage-report:
+shareable_stage_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-  needs: [api_tests_shareable_stage]
+  needs: [shareable_stage_api_tests]
 
-allure-api-lmi-report:
+lmi_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-api-daily
-  needs: [api_tests_lmi]
+  needs: [lmi_api_tests]
 
 .discord_notification_template: &discord_notification
   rules:
@@ -361,32 +361,32 @@ allure-api-lmi-report:
   script:
     - python utils/discord_notify.py $XML_REPORT $WEBHOOK
 
-discord_um_ui_notification:
+um_ui_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $UM_UI_DAILY
-  needs: [ui_tests_um]
+  needs: [um_ui_tests]
 
-discord_ss_ui_notification:
+shareable_ui_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_UI_WP_DAILY
-  needs: [ui_tests_shareable]
+  needs: [shareable_ui_tests]
 
-discord_um_api_notification:
+um_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $UM_API_DAILY
-  needs: [api_tests_um]
+  needs: [um_api_tests]
 
-discord_ss_api_demo_notification:
+shareable_demo_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_API_WP_DAILY
-  needs: [api_tests_shareable_demo]
+  needs: [shareable_demo_api_tests]
 
-discord_ss_api_stage_notification:
+shareable_stage_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_API_WP_DAILY
-  needs: [api_tests_shareable_stage]
+  needs: [shareable_stage_api_tests]
