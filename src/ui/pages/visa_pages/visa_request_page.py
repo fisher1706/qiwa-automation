@@ -34,7 +34,7 @@ class VisaRequestPage(BasePage):
         check_data.append(self.visa_request_id.get(query.text))
         check_data.append(VisaUser.ESTABLISHMENT_ID)
         check_data.append(
-            self.visa_request_table.row(1).cells[7].s(self.visa_request_statuses).get(query.text)
+            self.visa_request_table.cell(row=1, column=7).s(self.visa_request_statuses).get(query.text)
         )
         browser.driver.execute_script("window.scrollTo(0, 0);")
         self.visa_request_print_button.click()
