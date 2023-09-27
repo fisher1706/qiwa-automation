@@ -153,7 +153,7 @@ class EmployeeTransferPage:
         s(self.spinner).should(be.not_.visible)
 
     def verify_expected_status(self, status: dict, locale: str):
-        self.table_body.row(1).cells.element_by_its(
+        self.table_body.cells(row=1).element_by_its(
             self.table_row_status, have.text(status[locale])
         )
 
@@ -226,10 +226,10 @@ class EmployeeTransferPage:
         self.list_of_statuses.should(have.exact_texts(RequestStatus.get_list_of_variable_values()))
 
     def select_first_row(self):
-        self.table_body.row(1).web_element.s("img").click()
+        self.table_body.row(1).s("img").click()
 
     def verify_expected_dates(self):
-        self.table_body.row(2).web_element.ss("li p + p").should(
+        self.table_body.row(2).ss("li p + p").should(
             have.exact_texts(EmployeeTransfer.EXPECTED_DATE)
         )
 
@@ -243,7 +243,7 @@ class EmployeeTransferPage:
         s(self.pagination_text).should(have.text(amount))
 
     def get_first_row(self) -> list:
-        return [value.get(query.text) for value in self.table_body.row(1).cells]
+        return [value.get(query.text) for value in self.table_body.cells(row=1)]
 
     def get_rows_per_page(self):
         return int(s(self.rows_per_page).get(query.text))
@@ -256,7 +256,7 @@ class EmployeeTransferPage:
 
     def verify_first_row_on_focus(self):
         self.select_first_row()
-        self.table_body.row(2).web_element.s("div p").should(
+        self.table_body.row(2).s("div p").should(
             have.exact_text(EmployeeTransfer.REQUEST_SUBMITTED[Language.EN])
         )
 
@@ -363,7 +363,7 @@ class EmployeeTransferPage:
         self.filter_iqama_number.perform(command.js.set_value("")).type(number)
 
     def select_employee(self):
-        self.table_body.row(1).web_element.s("input").click()
+        self.table_body.row(1).s("input").click()
 
     def fill_field_iqama_number(self, number: int):
         s(self.field_iqama_number).perform(command.js.set_value("")).type(number)
