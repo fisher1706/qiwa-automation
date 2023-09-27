@@ -16,9 +16,10 @@ variables:
 stages:
   - build
   - linting
-  - tests
-  - send-test-reports
-  - notification
+  - test-run
+  - testmo-report
+  - allure-report
+  - discord-notification
 
 .package:
   image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
@@ -102,18 +103,13 @@ isort:
   image: $IMAGE
   allow_failure:
     exit_codes: 1
-  stage: tests
+  stage: test-run
   timeout: 150 minutes
   tags:
     - shared
   script:
     - echo $TEST_SUITE
-    - echo $TESTMO_URL
-    - echo $TESTMO_PROJECT_ID
-    - echo $ALLURE_PROJECT_ID
-    - testmo automation:resources:add-link --name "Allure report" --url "https://allure.qiwa.tech/allure-docker-service-ui/projects/$ALLURE_PROJECT_ID" --note "Allure contains more advanced reports of the test runs"
-    - testmo automation:resources:add-link --name "GitLab CICD pipeline" --url "https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/-/jobs/$CI_JOB_ID" --note "Link to Gitlab's CICD job logs"
-    - testmo automation:run:submit --instance "$TESTMO_URL" --project-id $TESTMO_PROJECT_ID --name "Pytest test run" --source "CICD" --results results/*.xml --debug --resources testmo-resources.json -- pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
@@ -124,209 +120,273 @@ isort:
   only:
     - master
 
-ui_tests_sso:
+sso_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/sso
-    TESTMO_PROJECT_ID: 23
-    ALLURE_PROJECT_ID: sso-ui-daily
 
-ui_tests_um:
+um_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/um
-    TESTMO_PROJECT_ID: 26
-    ALLURE_PROJECT_ID: um-ui-daily
 
-ui_tests_shareable:
+shareable_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/shareable
-    TESTMO_PROJECT_ID: None
-    ALLURE_PROJECT_ID: None
 
-ui_tests_dedicated_co:
+dedicated_co_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/change_occupation
-    TESTMO_PROJECT_ID: 3
-    ALLURE_PROJECT_ID: co-ui-daily
 
-ui_tests_visa:
+visa_ui_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/visa
-    TESTMO_PROJECT_ID: 7
-    ALLURE_PROJECT_ID: visa-ui-tests
 
-ui_tests_dataportal:
+dataportal_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dataportal
-    TESTMO_PROJECT_ID: 15
-    ALLURE_PROJECT_ID: dataportal-ui-daily
 
-ui_tests_lmi:
+lmi_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/lmi
-    TESTMO_PROJECT_ID: 15
-    ALLURE_PROJECT_ID: lmi-ui-daily
 
-api_tests_sso:
+sso_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/sso
-    TESTMO_PROJECT_ID: 23
-    ALLURE_PROJECT_ID: sso-api-daily
 
-api_tests_um:
+um_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/um
-    TESTMO_PROJECT_ID: 26
-    ALLURE_PROJECT_ID: um-api-daily
 
-api_tests_shareable_demo:
+shareable_demo_api_tests:
   <<: *testrun
   variables:
     ENV: demo
     TEST_SUITE: tests/api/shareable
-    TESTMO_PROJECT_ID: None
-    ALLURE_PROJECT_ID: None
 
-api_tests_shareable_stage:
+shareable_stage_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/shareable
     OPTIONS: "-m stage"
-    TESTMO_PROJECT_ID: None
-    ALLURE_PROJECT_ID: None
 
-api_tests_lmi:
+lmi_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/lmi
+
+.testmo_report_template: &testmo_report
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  stage: testmo-report
+  image: $IMAGE
+  script:
+    - echo $TESTMO_PROJECT_ID
+    - echo $ALLURE_PROJECT_ID
+    - testmo automation:resources:add-link
+      --name "Allure report"
+      --url "https://allure.qiwa.tech/allure-docker-service-ui/projects/$ALLURE_PROJECT_ID"
+      --note "Allure contains more advanced reports of the test runs"
+    - testmo automation:resources:add-link
+      --name "GitLab CI/CD pipeline"
+      --url "https://gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/-/jobs/$CI_JOB_ID"
+      --note "Link to GitLab's CI/CD job logs"
+    - testmo automation:run:submit
+      --instance $TESTMO_URL
+      --project-id $TESTMO_PROJECT_ID
+      --name "Pytest test run"
+      --source "CI/CD"
+      --results $XML_REPORT
+      --debug
+      --resources testmo-resources.json
+
+sso_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 23
+    ALLURE_PROJECT_ID: sso-ui-daily
+  needs: [sso_ui_tests]
+
+um_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 26
+    ALLURE_PROJECT_ID: um-ui-daily
+  needs: [um_ui_tests]
+
+dedicated_co_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 3
+    ALLURE_PROJECT_ID: co-ui-daily
+  needs: [dedicated_co_ui_tests]
+
+visa_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 7
+    ALLURE_PROJECT_ID: visa-ui-tests
+  needs: [visa_ui_tests]
+
+dataportal_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 15
+    ALLURE_PROJECT_ID: dataportal-ui-daily
+  needs: [dataportal_ui_tests]
+
+lmi_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 15
+    ALLURE_PROJECT_ID: lmi-ui-daily
+  needs: [lmi_ui_tests]
+
+sso_api_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 23
+    ALLURE_PROJECT_ID: sso-api-daily
+  needs: [sso_api_tests]
+
+um_api_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 26
+    ALLURE_PROJECT_ID: um-api-daily
+  needs: [um_api_tests]
+
+lmi_api_testmo_report:
+  <<: *testmo_report
+  variables:
     TESTMO_PROJECT_ID: 15
     ALLURE_PROJECT_ID: lmi-api-daily
+  needs: [lmi_api_tests]
 
-.allure_results_template: &test_results
+.allure_report_template: &allure_report
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   extends: .generate_allure_report
-  stage: send-test-reports
+  stage: allure-report
 
-allure-ui-sso-results:
-  <<: *test_results
+sso_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-ui-daily
-  needs: [ui_tests_sso]
+  needs: [sso_ui_tests]
 
-allure-ui-um-results:
-  <<: *test_results
+um_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-ui-daily
-  needs: [ui_tests_um]
+  needs: [um_ui_tests]
 
-allure-ss-ui-wp-results:
-  <<: *test_results
+shareable_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-ui-wp-daily
-  needs: [ui_tests_shareable]
+  needs: [shareable_ui_tests]
 
-allure-ui-co-results:
-  <<: *test_results
+dedicated_co_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: co-ui-daily
-  needs: [ui_tests_dedicated_co]
+  needs: [dedicated_co_ui_tests]
 
-allure-ui-dataportal-results:
-  <<: *test_results
+dataportal_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: dataportal-ui-daily
-  needs: [ui_tests_dataportal]
+  needs: [dataportal_ui_tests]
 
-allure-ui-lmi-results:
-  <<: *test_results
+lmi_ui_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-ui-daily
-  needs: [ui_tests_lmi]
+  needs: [lmi_ui_tests]
 
-allure-api-sso-results:
-  <<: *test_results
+sso_api_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: v1-sso-api-daily
-  needs: [api_tests_sso]
+  needs: [sso_api_tests]
 
-allure-api-um-results:
-  <<: *test_results
+um_api_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: um-api-daily
-  needs: [api_tests_um]
+  needs: [um_api_tests]
 
-allure-api-wp-results:
-  <<: *test_results
+shareable_demo_api_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-wp-daily
-  needs: [api_tests_shareable_demo]
+  needs: [shareable_demo_api_tests]
 
-allure-api-ss-stage-results:
-  <<: *test_results
+shareable_stage_api_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-  needs: [api_tests_shareable_stage]
+  needs: [shareable_stage_api_tests]
 
-allure-api-lmi-results:
-  <<: *test_results
+lmi_api_allure_report:
+  <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lmi-api-daily
-  needs: [api_tests_lmi]
+  needs: [lmi_api_tests]
 
 .discord_notification_template: &discord_notification
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
-  stage: notification
+  stage: discord-notification
   image: $IMAGE
   script:
     - python utils/discord_notify.py $XML_REPORT $WEBHOOK
 
-discord_um_ui_notification:
+um_ui_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $UM_UI_DAILY
-  needs: [ui_tests_um]
+  needs: [um_ui_tests]
 
-discord_ss_ui_notification:
+shareable_ui_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_UI_WP_DAILY
-  needs: [ui_tests_shareable]
+  needs: [shareable_ui_tests]
 
-discord_um_api_notification:
+um_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $UM_API_DAILY
-  needs: [api_tests_um]
+  needs: [um_api_tests]
 
-discord_ss_api_demo_notification:
+shareable_demo_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_API_WP_DAILY
-  needs: [api_tests_shareable_demo]
+  needs: [shareable_demo_api_tests]
 
-discord_ss_api_stage_notification:
+shareable_stage_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $SS_API_WP_DAILY
-  needs: [api_tests_shareable_stage]
+  needs: [shareable_stage_api_tests]
