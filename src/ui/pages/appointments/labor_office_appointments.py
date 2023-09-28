@@ -30,6 +30,7 @@ class LaborOfficeAppointmentsPage:
 
     def navigate_to_labor_office_appointments_page(self) -> LaborOfficeAppointmentsPage:
         browser.open(config.qiwa_urls.appointment_booking)
+        self.wait_page_to_load()
         return self
 
     @allure.step("Wait Appointments page to load")
@@ -44,7 +45,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Cancel active appointment if exists")
     def cancel_active_appointment(self) -> LaborOfficeAppointmentsPage:
-        if self.upcoming_appointment_row.matching(be.visible):
+        if self.upcoming_appointment_row.wait_until(be.visible):
             self.upcoming_appointments_actions.click()
             self.button_action_cancel_upcoming_appointment.click()
             self.button_cancel_upcoming_appointment_confirmation.click()
