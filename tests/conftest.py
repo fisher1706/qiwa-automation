@@ -1,5 +1,6 @@
 import pytest
 
+import config
 from data.account import Account
 from data.constants import UserInfo
 from src.api.app import QiwaApi
@@ -69,3 +70,8 @@ def super_user() -> Account:
 @pytest.fixture
 def clean_up_session(http_client):
     http_client.session.cookies.clear()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def log_env_config(record_testsuite_property):
+    record_testsuite_property("ENV", config.settings.env)
