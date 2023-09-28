@@ -17,8 +17,12 @@ def test_book_establishment_appointment():
     qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
-    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS)
-    qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS)
+    qiwa.labor_office_appointments_create_page.select_service(
+        ServicesInfo.SERVICE_NAME_INDIVIDUALS
+    )
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS
+    )
     qiwa.labor_office_appointments_create_page.click_next_step_button()
     qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_MADINAH)
     qiwa.labor_office_appointments_create_page.select_office(OfficesInfo.OFFICE_NAME_VEUM_HANE)

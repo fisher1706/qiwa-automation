@@ -81,7 +81,7 @@ pylint:
       codequality: codeclimate.json
     when: always
   only:
-      - merge_requests
+    - merge_requests
 
 black:
   image: $IMAGE
@@ -193,6 +193,18 @@ lmi_api_tests:
     ENV: stage
     TEST_SUITE: tests/api/lmi
 
+lo_api_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/api/lo
+
+lo_ui_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/lo
+
 .testmo_report_template: &testmo_report
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -281,6 +293,13 @@ lmi_api_testmo_report:
     ALLURE_PROJECT_ID: lmi-api-daily
   needs: [lmi_api_tests]
 
+lo_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 16
+    ALLURE_PROJECT_ID: lo-ui-daily
+  needs: [lo_ui_tests]
+
 .allure_report_template: &allure_report
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -352,6 +371,18 @@ lmi_api_allure_report:
   variables:
     ALLURE_PROJECT_ID: lmi-api-daily
   needs: [lmi_api_tests]
+
+lo_api_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: lo-api-daily
+  needs: [lo_ui_tests]
+
+lo_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: lo-ui-daily
+  needs: [lo_ui_tests]
 
 .discord_notification_template: &discord_notification
   rules:
