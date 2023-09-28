@@ -213,7 +213,7 @@ lmi_api_tests:
       --instance $TESTMO_URL
       --project-id $TESTMO_PROJECT_ID
       --name "Pytest test run"
-      --source "CI/CD"
+      --source "CI-CD"
       --results $XML_REPORT
       --debug
       --resources testmo-resources.json
