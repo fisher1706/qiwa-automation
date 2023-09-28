@@ -4,7 +4,6 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
     def message_template(
         env: str, total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
     ) -> str:
-
         return (
             f":earth_africa: Environment: {env}\n"
             f":purple_circle: Total: {total}\n"
