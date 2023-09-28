@@ -2,12 +2,11 @@
 # To execute from a commandline
 def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
     def message_template(
-        total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
+        env: str, total: int, passed: int, failed: int, errors: int, skipped: int, duration: str
     ) -> str:
-        import os
 
         return (
-            f":earth_africa: Environment: {os.getenv('ENV') or 'local'}\n"
+            f":earth_africa: Environment: {env}\n"
             f":purple_circle: Total: {total}\n"
             f":green_circle: Passed: {passed}\n"
             f":red_circle: Failed: {failed}\n"
@@ -23,6 +22,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
         tree = ET.parse(xml_report)
         root = tree.getroot()[0]
         name = root.get("name")
+        env = root[0][0].get("value")
         total = int(root.get("tests"))
         failed = int(root.get("failures"))
         errors = int(root.get("errors"))
@@ -31,7 +31,7 @@ def notify_to_discord(junitxml_report: str, webhook_url: str) -> None:
         time: str = root.get("time")
         duration = str(datetime.timedelta(seconds=round(float(time))))
 
-        return name, message_template(total, passed, failed, errors, skipped, duration)
+        return name, message_template(env, total, passed, failed, errors, skipped, duration)
 
     from discord import SyncWebhook
 
