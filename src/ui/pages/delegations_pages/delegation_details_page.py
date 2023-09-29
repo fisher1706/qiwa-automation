@@ -4,9 +4,9 @@ import allure
 from selene import Element, be, browser, have
 from selene.support.shared.jquery_style import s, ss
 
+import config
 from data.delegation.constants import DelegationDetailsData, DelegationStatus
 from src.ui.components.raw.table import Table
-from utils.helpers import convert_timestamp_into_dates
 
 
 class DelegationDetailsPage:
@@ -73,7 +73,7 @@ class DelegationDetailsPage:
     @allure.step
     def check_redirect_to_delegation_details(self, delegation_id: str):
         browser.should(
-            have.url("https://delegationservice.qiwa.info/delegation-details/" + delegation_id)
+            have.url(f"{config.qiwa_urls.delegation_service}/delegation-details/{delegation_id}")
         )
         return self
 
@@ -112,10 +112,9 @@ class DelegationDetailsPage:
 
     @allure.step
     def should_dates_be_correct_on_delegation_details(
-        self, status: str, timestamp: float, locator: Element
+        self, status: str, date: str, locator: Element
     ) -> DelegationDetailsPage:
         if status in [DelegationStatus.ACTIVE, DelegationStatus.EXPIRED, DelegationStatus.REVOKED]:
-            date = convert_timestamp_into_dates(timestamp)
             locator.should(have.text(date))
         else:
             locator.should(have.text("-"))

@@ -28,6 +28,10 @@ class LaborOfficeAppointmentsCreatePage:
     dropdown_select_time = Dropdown(
         s('(//div[@id="details"]//*[@data-component="Select"])[3]'), dropdown_element_locator
     )
+    dropdown_select_year = Dropdown(
+        s('(//div[@data-component="DatePicker"]//div[contains(@class, "Select")])[2]'),
+        dropdown_element_locator,
+    )
 
     # inputs
     input_service = s('//input[@id="service"]')
@@ -77,9 +81,13 @@ class LaborOfficeAppointmentsCreatePage:
         return self
 
     @allure.step("Select date")
-    def select_date(self, first_available=True) -> LaborOfficeAppointmentsCreatePage:
+    def select_date(
+        self, first_available=True, next_year=True
+    ) -> LaborOfficeAppointmentsCreatePage:
         self.input_office.wait_until(be.clickable)
         self.date_picker.click()
+        if next_year:
+            self.dropdown_select_year.select_by_index(1)
         if first_available:
             self.available_dates[0].click()
 
