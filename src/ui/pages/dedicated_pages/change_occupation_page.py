@@ -32,9 +32,7 @@ class ChangeOccupationPage:
         return self
 
     def check_employee_eligibility(self, eligible: str) -> ChangeOccupationPage:
-        self.table_employee_list.cell(row=1, column=3).should(
-            have.exact_text(eligible)
-        )
+        self.table_employee_list.cell(row=1, column=3).should(have.exact_text(eligible))
         return self
 
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
