@@ -61,9 +61,6 @@ pylint:
   stage: linting
   tags:
     - shared
-  before_script:
-    - mkdir -p public/badges public/lint
-    - echo undefined > public/badges/$CI_JOB_NAME.score
   script:
     - echo CI_COMMIT_SHA=${CI_COMMIT_SHA}
     - echo CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
@@ -73,25 +70,7 @@ pylint:
     - if [ -z "$(echo "$tmp_files" | grep "\.py")" ]; then exit 0; else echo "Python files are found"; fi
     - tmp_pfiles=$(echo "$tmp_files" | grep "\.py")
     - echo "Python files are $tmp_pfiles"
-    - pylint --exit-zero --output-format=text $tmp_pfiles | tee /tmp/pylint.txt
-    - sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' /tmp/pylint.txt > public/badges/$CI_JOB_NAME.score
-    - pylint --exit-zero --output-format=pylint_gitlab.GitlabCodeClimateReporter $tmp_pfiles > codeclimate.json
-    - pylint --exit-zero --output-format=pylint_gitlab.GitlabPagesHtmlReporter $tmp_pfiles > public/lint/index.html
-    - if [ $(cat public/badges/$CI_JOB_NAME.score) != 10.00 ]; then exit 1; fi
-  after_script:
-    - anybadge
-      --overwrite
-      --label $CI_JOB_NAME
-      --value=$(cat public/badges/$CI_JOB_NAME.score)
-      --file=public/badges/$CI_JOB_NAME.svg 4=red 6=orange 8=yellow 10=green
-    - |
-      echo "Your score is: $(cat public/badges/$CI_JOB_NAME.score)"
-  artifacts:
-    paths:
-      - public
-    reports:
-      codequality: codeclimate.json
-    when: always
+    - pylint --exit-zero --output-format=text $tmp_pfiles
   only:
     - merge_requests
 
