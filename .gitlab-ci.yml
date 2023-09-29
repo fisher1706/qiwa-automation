@@ -112,8 +112,8 @@ isort:
     - merge_requests
 
 .testrun_template: &testrun
-#  rules:
-#    - if: $CI_PIPELINE_SOURCE == "schedule"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   image: $IMAGE
   allow_failure:
     exit_codes: 1
@@ -131,7 +131,7 @@ isort:
       - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
   only:
-    - merge_requests
+    - master
   when: always
 
 sso_ui_tests:
@@ -160,9 +160,6 @@ dedicated_co_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/change_occupation
-  needs:
-    - job: shareable_ui_tests
-      artifacts: false
 
 visa_ui_tests:
   <<: *testrun
@@ -170,7 +167,7 @@ visa_ui_tests:
     ENV: demo
     TEST_SUITE: tests/ui/visa
   needs:
-    - job: shareable_ui_tests
+    - job: dedicated_co_ui_tests
       artifacts: false
 
 dataportal_ui_tests:
