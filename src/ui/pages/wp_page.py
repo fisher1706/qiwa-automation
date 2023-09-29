@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from datetime import timedelta, datetime
-
 import time
+from datetime import datetime, timedelta
 
 from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s
@@ -11,7 +10,6 @@ import config
 from src.ui.components.raw.table import Table
 
 
-# TODO fill empty locators after calculate endpoint fix
 class LoWorkPermitPage:
     search_border_or_iqama = s("//input[@placeholder='Search employees by Border / Iqama number']")
     search_btn = s("//button[normalize-space()='Search']")
@@ -36,9 +34,15 @@ class LoWorkPermitPage:
     work_permit_extra_fees = s("//td[@data-label='Extra fees']")
     late_years_no_extra = s("//td[@data-label='Late Years (No Extra Fees)']")
     late_years_extra_fees_exceeding = s("//td[@data-label='Late Years (Extra Fees - Exceeding*)']")
-    late_years_extra_fees_equivalent = s("//td[@data-label='Late Years (Extra Fees - Exceeding*)']")
-    extra_fees_for_late_year_exceeding = s("//td[@data-label='Extra Fees for Late Years (Exceeding*)']")
-    extra_fees_for_late_year_equivalent = s("//td[@data-label='Extra Fees for Late Years (Equivalent**)']")
+    late_years_extra_fees_equivalent = s(
+        "//td[@data-label='Late Years (Extra Fees - Exceeding*)']"
+    )
+    extra_fees_for_late_year_exceeding = s(
+        "//td[@data-label='Extra Fees for Late Years (Exceeding*)']"
+    )
+    extra_fees_for_late_year_equivalent = s(
+        "//td[@data-label='Extra Fees for Late Years (Equivalent**)']"
+    )
     view_wp_request = s("//div[normalize-space()='View work permit requests']")
     view_wp_debts = s("//div[normalize-space()='View work permit debts']")
     back_to_wp = s("//span[@class='c-requests__back-to-work-permits-action']")
@@ -206,14 +210,11 @@ class LoWorkPermitPage:
         return self
 
     def click_on_confirm_and_finish_btn(self) -> LoWorkPermitPage:
-        time.sleep(5)
         self.confirm_and_finish_btn.click()
         return self
 
     def click_on_confirm_and_send_email_btn(self) -> LoWorkPermitPage:
-        time.sleep(5)
         self.confirm_and_send_email_to_client_btn.click()
-        time.sleep(10)
         return self
 
     def get_bill_number(self) -> str:
@@ -230,21 +231,17 @@ class LoWorkPermitPage:
         return self
 
     def check_pending_status(self, bill_number, status) -> LoWorkPermitPage:
-        self.table_body.row(2).web_element.s("//td[@data-label='SADAD number']").should(
+        self.table_body.row(2).s("//td[@data-label='SADAD number']").should(
             have.exact_text(bill_number)
         )
-        self.table_body.row(2).web_element.s("td[data-label='Status']").should(
-            have.exact_text(status)
-        )
+        self.table_body.row(2).s("td[data-label='Status']").should(have.exact_text(status))
         return self
 
     def check_canceled_status(self, bill_number, status) -> LoWorkPermitPage:
-        self.table_body.row(0).cell('SADAD number').should(
+        self.table_body.row(0).s("//td[@data-label='SADAD number']").should(
             have.exact_text(bill_number)
         )
-        self.table_body.row(0).cell('Status').should(
-            have.exact_text(status)
-        )
+        self.table_body.row(0).s("td[data-label='Status']").should(have.exact_text(status))
         return self
 
     def click_on_cancel_sadad_number_btn(self) -> LoWorkPermitPage:
