@@ -38,7 +38,7 @@ class ChangeOccupationPage:
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
         # TODO: Find the possibility of avoiding sleep
         time.sleep(3)
-        self.table_employee_list.cell(row=1, column=Label.ACTIONS).s("button").click()
+        self.table_employee_list.cell(row=1, column=4).s("button").click()
         return self
 
     def search_occupation(self, occupation: str) -> ChangeOccupationPage:
