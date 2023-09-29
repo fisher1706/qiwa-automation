@@ -57,10 +57,13 @@ build_test_allure:
   only:
     - add_allure_cleaner
 
-pylint:
+.linting_template: &lint
   stage: linting
-  tags:
-    - shared
+  only:
+    - merge_requests
+
+pylint:
+  <<: *lint
   script:
     - echo CI_COMMIT_SHA=${CI_COMMIT_SHA}
     - echo CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
@@ -71,22 +74,16 @@ pylint:
     - tmp_pfiles=$(echo "$tmp_files" | grep "\.py")
     - echo "Python files are \n$tmp_pfiles"
     - pylint --exit-zero --output-format=text $tmp_pfiles
-  only:
-    - merge_requests
 
 black:
-  stage: linting
+  <<: *lint
   script:
     - black . --check --diff --color
-  only:
-    - merge_requests
 
 isort:
-  stage: linting
+  <<: *lint
   script:
     - isort . --check --diff
-  only:
-    - merge_requests
 
 .testrun_template: &testrun
   rules:
