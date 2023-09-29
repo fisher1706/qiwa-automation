@@ -7,11 +7,12 @@ include:
     file: '/common-jobs/.allure-report.yml'
 
 variables:
-  IMAGE: takamol/qiwa-automation:master-latest
   ALLURE_RESULTS_DIRECTORY: allure-results
   XML_REPORT: report.xml
   TESTMO_URL: https://qiwa.testmo.net
 
+default:
+  image: takamol/qiwa-automation:master-latest
 
 stages:
   - build
@@ -57,7 +58,6 @@ build_test_allure:
     - add_allure_cleaner
 
 pylint:
-  image: $IMAGE
   stage: linting
   tags:
     - shared
@@ -75,7 +75,6 @@ pylint:
     - merge_requests
 
 black:
-  image: $IMAGE
   stage: linting
   script:
     - black . --check --diff --color
@@ -83,7 +82,6 @@ black:
     - merge_requests
 
 isort:
-  image: $IMAGE
   stage: linting
   script:
     - isort . --check --diff
@@ -93,7 +91,6 @@ isort:
 .testrun_template: &testrun
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
-  image: $IMAGE
   allow_failure:
     exit_codes: 1
   stage: test-run
@@ -209,7 +206,6 @@ lo_ui_tests:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   stage: testmo-report
-  image: $IMAGE
   script:
     - echo $TESTMO_PROJECT_ID
     - echo $ALLURE_PROJECT_ID
@@ -388,7 +384,6 @@ lo_ui_allure_report:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   stage: discord-notification
-  image: $IMAGE
   script:
     - python utils/discord_notify.py $XML_REPORT $WEBHOOK
 
