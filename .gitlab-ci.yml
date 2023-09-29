@@ -130,9 +130,9 @@ isort:
       - $XML_REPORT
       - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
-    when: always
   only:
     - master
+  when: always
 
 sso_ui_tests:
   <<: *testrun
@@ -145,6 +145,9 @@ um_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/um
+  needs:
+    - job: sso_ui_tests
+      artifacts: false
 
 shareable_ui_tests:
   <<: *testrun
@@ -163,6 +166,9 @@ visa_ui_tests:
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/visa
+  needs:
+    - job: shareable_ui_tests
+      artifacts: false
 
 dataportal_ui_tests:
   <<: *testrun
@@ -175,6 +181,9 @@ lmi_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/lmi
+  needs:
+    - job: dataportal_ui_tests
+      artifacts: false
 
 sso_api_tests:
   <<: *testrun
