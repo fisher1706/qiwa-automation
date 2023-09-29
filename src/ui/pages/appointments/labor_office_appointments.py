@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import allure
 from selene import be, browser
 from selene.support.shared.jquery_style import s
@@ -45,7 +47,9 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Cancel active appointment if exists")
     def cancel_active_appointment(self) -> LaborOfficeAppointmentsPage:
-        if self.upcoming_appointment_row.wait_until(be.visible):
+        # investigate possibility to remove this sleep
+        time.sleep(1)
+        if self.upcoming_appointment_row.matching(be.visible):
             self.upcoming_appointments_actions.click()
             self.button_action_cancel_upcoming_appointment.click()
             self.button_cancel_upcoming_appointment_confirmation.click()
