@@ -21,11 +21,11 @@ class RequesterDetails(BaseModel):
 
 class Header(BaseModel):
     TransactionId: str
-    ChannelId: str
-    SessionId: str
+    ChannelId: Optional[str]
+    SessionId: Optional[str]
     RequestTime: str
     ServiceCode: str
-    DebugFlag: int
+    DebugFlag: Optional[int]
     UserInfo: Optional[UserInfo]
 
 

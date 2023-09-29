@@ -9,6 +9,7 @@ import src
 from data.dedicated.change_occupation import User
 from data.dedicated.services import Service
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
+from src.api.constants.change_occupation import NonEligibilityReasons
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
 from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
@@ -23,6 +24,8 @@ from src.api.payloads.ibm.createnewappointment import (
     RequesterDetails,
     UserInfo,
 )
+from src.api.payloads.ibm.getchangeoccupationlaborerslist import GetChangeOccupationLaborersListBody, \
+    GetChangeOccupationLaborersListRq, GetChangeOccupationLaborersListRqPayload
 from src.api.payloads.ibm.getestablishmentinformation import (
     EstablishmentInformation,
     GetEstablishmentInformationPayload,
@@ -55,7 +58,7 @@ class IBMApiController:
 
     @allure.step
     def get_work_permit_requests_from_ibm(
-        self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
+            self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
     ) -> IBMWorkPermitRequestList:
         payload = {
             IBMServicesRequest.GET_WORK_PERMIT_REQUESTS.value: {
@@ -71,7 +74,7 @@ class IBMApiController:
 
     @allure.step
     def get_saudization_certificate_from_ibm(
-        self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
+            self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
     ) -> IBMResponseData[GetSaudiCertificateRsBody]:
         payload = {
             IBMServicesRequest.GET_SAUDI_CERTIFICATE.value: {
@@ -87,7 +90,7 @@ class IBMApiController:
 
     @allure.step
     def validate_establishment_saudization_in_ibm(
-        self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
+            self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
     ) -> IBMResponseData:
         payload = {
             IBMServicesRequest.VALIDATE_EST_SAUDI_CERTIFICATE.value: {
@@ -103,7 +106,7 @@ class IBMApiController:
 
     @allure.step
     def get_change_occupation_requests_from_ibm(
-        self, body: Body
+            self, body: Body
     ) -> IBMResponseData[src.api.models.ibm.searchchangeoccupation.Body]:
         payload = {
             IBMServicesRequest.SEARCH_CHANGE_OCCUPATION.value: {
@@ -159,8 +162,9 @@ class IBMApiController:
             url=self.url,
             endpoint=self.route + "/qiwalo/createnewappointment",
             headers=HEADERS,
-            json=payload.dict(),
+            json=payload.dict(exclude_none=True),
         )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         response = response.json()
         try:
             return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
@@ -191,6 +195,7 @@ class IBMApiController:
             headers=HEADERS,
             json=payload.dict(),
         )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"][
             "EconomicActivityId"
         ]
@@ -204,4 +209,33 @@ class IBMApiController:
             endpoint=self.route + f"/qiwa/v2/economic-activity/{economic_activity_id}/occupations",
             headers=headers,
         )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()["occupationsList"][0]["descriptionAr"]
+
+    @allure.step
+    def get_first_expected_employee(self, user: User) -> str:
+        header = Header(
+            TransactionId="0",
+            RequestTime="2019-10-10 00:00:00.555",
+            ServiceCode="GCOLL001",
+        ).dict(exclude_none=True)
+        body = GetChangeOccupationLaborersListBody(
+            LaborOfficeId=user.labor_office_id,
+            SequenceNumber=user.sequence_number,
+            PageSize=5,
+            PageIndex=1,
+        )
+        payload = GetChangeOccupationLaborersListRqPayload(
+            GetChangeOccupationLaborersListRq=GetChangeOccupationLaborersListRq(Header=header, Body=body)
+        )
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/chgoccupation/getchangeoccupationlaborerslist",
+            headers=HEADERS,
+            json=payload.dict(),
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        laborers_list_details = response.json()["GetChangeOccupationLaborersListRs"]["Body"]["LaborersList"]["LaborersListDetails"]
+        for laborer in laborers_list_details:
+            if laborer["NonEligibilityReasons"]["EnDescription"] == NonEligibilityReasons.NOT_ALLOWED.value:
+                return laborer["LaborerIdNo"]
