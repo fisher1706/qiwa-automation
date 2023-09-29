@@ -4,9 +4,13 @@ import pytest
 from data.lmi.constants import DimensionsInfo
 from data.lmi.data_set import SurveyDataSet
 from src.ui.lmi import lmi
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check attach question')
+@case_id(12007, 12008)
 @pytest.mark.parametrize('survey_id', SurveyDataSet.survey_ids_data)
 def test_attach_question(login_lmi_user, survey_id):
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT,

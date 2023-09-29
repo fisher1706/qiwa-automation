@@ -4,9 +4,13 @@ import pytest
 from data.lmi.constants import Actions, DimensionsInfo, UserInfo
 from data.lmi.data_set import DimensionDataSet, SurveyDataSet
 from src.api.app import QiwaApi
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check dimension actions: Create/Edit/Delete')
+@case_id(11901)
 @pytest.mark.parametrize('values', DimensionDataSet.dimension_action_data[:-2])
 def test_dimension_action(values):
     qiwa = QiwaApi.login_as_user(personal_number=UserInfo.LMI_ADMIN_LOGIN)
