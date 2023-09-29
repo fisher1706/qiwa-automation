@@ -161,6 +161,7 @@ lmi_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/lmi
+  needs: [lmi_api_tests]
 
 sso_api_tests:
   <<: *testrun
