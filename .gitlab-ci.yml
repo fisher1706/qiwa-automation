@@ -155,6 +155,8 @@ lmi_ui_tests:
   needs:
     - job: dataportal_ui_tests
       artifacts: false
+    - job: lmi_api_tests
+      artifacts: false
 
 sso_api_tests:
   <<: *testrun
