@@ -112,6 +112,8 @@ isort:
     - merge_requests
 
 .testrun_template: &testrun
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   image: $IMAGE
   allow_failure:
     exit_codes: 1
