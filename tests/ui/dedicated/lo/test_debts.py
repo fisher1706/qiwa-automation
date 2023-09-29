@@ -53,6 +53,5 @@ def test_verify_that_the_user_can_generate_sadad_bill_only_for_debts_that_do_not
     qiwa.lo_work_permit_page.verify_wp_debts_service() \
         .verify_unpaid_debts() \
         .generate_sadad_number()
-    qiwa.email_popup.proceed_otp_code("0000")
-
-    # TODO ADD METHOD FOR DELETE SADAD NUMBER
+    qiwa.email_popup.proceed_otp_code("0000") \
+        .click_on_confirm_btn()
