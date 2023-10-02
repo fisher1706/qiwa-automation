@@ -63,18 +63,14 @@ class LoWorkPermitPage:
     route = "/work-permits/overview"
     confirm_and_finish_btn = s(".c-overview__button.o-button.o-button--primary")
     confirm_and_send_email_to_client_btn = s(
-        "//button[normalize-space()='Confirm and send email to the client']"
+        "//button[contains(text(),'Confirm and send email to the client')]"
     )
     bill_number = s("h2.c-summary__info-bill > span:last-child")
     back_to_establishment_page = s(".back-link")
     go_to_establishment_page = s("//button[normalize-space()='Go to Establishment page']")
     table_body = Table(s(".c-requests__table"))
-
-    cancel_sadad_number_btn = s(".o-button.o-button--primary.c-requests__cancel-button")
-    confirm_cancel_sadad_number_btn = s(
-        "(//button[contains(text(),'Confirm and send email to the client')])[10]"
-    )
     otp = s("(//input[@type='tel'])[37]")
+    cancel_sadad_number_btn = s(".o-button.o-button--primary.c-requests__cancel-button")
     proceed_btn = s("button[class='o-button o-button--full-width o-button--primary']")
     total_amount = s(".c-fees-amounts__value.c-fees-amounts__value--primary")
     final_total_amount = s("h3[class='c-summary__info-total'] span:nth-child(2)")
@@ -86,6 +82,8 @@ class LoWorkPermitPage:
     last_page = browser.all(".content__page")[-1]
     view_details = s("//span[@class='c-requests__table-view']")
     wp_period_requested = s("td[data-label='Work permit period requested']")
+    sadad = "//td[@data-label='SADAD number']"
+    status = "td[data-label='Status']"
 
     def verify_search_by_border_or_iqama(self, iqama) -> LoWorkPermitPage:
         self.search_border_or_iqama.type(iqama)
@@ -231,22 +229,17 @@ class LoWorkPermitPage:
         return self
 
     def check_pending_status(self, bill_number, status) -> LoWorkPermitPage:
-        self.table_body.row(2).s("//td[@data-label='SADAD number']").should(
-            have.exact_text(bill_number)
-        )
-        self.table_body.row(2).s("td[data-label='Status']").should(have.exact_text(status))
+        self.table_body.row(2).s(self.sadad).should(have.exact_text(bill_number))
+        self.table_body.row(2).s(self.status).should(have.exact_text(status))
         return self
 
     def check_canceled_status(self, bill_number, status) -> LoWorkPermitPage:
-        self.table_body.row(0).s("//td[@data-label='SADAD number']").should(
-            have.exact_text(bill_number)
-        )
-        self.table_body.row(0).s("td[data-label='Status']").should(have.exact_text(status))
+        self.table_body.row(0).s(self.sadad).should(have.exact_text(bill_number))
+        self.table_body.row(0).s(self.status).should(have.exact_text(status))
         return self
 
     def click_on_cancel_sadad_number_btn(self) -> LoWorkPermitPage:
         self.cancel_sadad_number_btn.click()
-        self.confirm_cancel_sadad_number_btn.click()
         return self
 
     def enter_otp(self) -> LoWorkPermitPage:

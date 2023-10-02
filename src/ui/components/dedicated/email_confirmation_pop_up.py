@@ -14,7 +14,7 @@ class EmailConfirmationPopup:
     confirm_button = s("//button[normalize-space()='Confirm']")
     confirm_and_proceed_button = s("//button[normalize-space()='Confirm and proceed to summary']")
 
-    def proceed_otp_code(self, number: str) -> EmailConfirmationPopup:
+    def proceed_otp_code(self, number: str = "0000") -> EmailConfirmationPopup:
         self.otp_first_cell.type(number)
         self.otp_second_cell.type(number)
         self.otp_third_cell.type(number)
