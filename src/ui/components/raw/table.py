@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import be, browser, have
 from selene.core.condition import Condition
 from selene.core.entity import Collection, Element
 
@@ -20,7 +20,7 @@ class Table:
 
     def cells(self, *, row: int | Condition[Element]) -> Collection:
         _row = self.row(row) if isinstance(row, int) else self.rows.element_by(row)
-        return _row.all("td").from_(1)
+        return _row.all("td").by(be.visible)
 
     def cell(self, *, row: int | Condition[Element], column: int | str) -> Element:
         column_index = (
