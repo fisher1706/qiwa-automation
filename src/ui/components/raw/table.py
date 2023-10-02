@@ -1,4 +1,4 @@
-from selene import browser, have, be
+from selene import be, browser, have
 from selene.core.condition import Condition
 from selene.core.entity import Collection, Element
 
