@@ -14,14 +14,14 @@ from data.constants import (
     Language,
     UserInfo,
 )
-from data.dedicated.employee_transfer import Entity, Laborer, employer
+from data.dedicated.employee_transfer import Entity, Laborer, employer_old
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
-from src.ui.pages.employee_transfer_page import EmployeeTransferPage
+from src.ui.pages.dedicated_pages.employee_transfer_page import EmployeeTransferPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from utils.assertion import assert_that
@@ -120,7 +120,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
     def confirm_creation_of_contract(
         self,
         entity_laborer: Laborer,
-        entity: Entity = employer,
+        entity: Entity = employer_old,
         transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
         is_get_balance_value: bool = False,
         is_verify_popup: bool = False,
@@ -148,10 +148,10 @@ class EmployeeTransferActions(EmployeeTransferPage):
         self.verify_description(EmployeeTransfer.DESCRIPTION, locale)
         self.verify_establishment_id_label(EmployeeTransfer.ESTABLISHMENT_ID_LABEL, locale)
         self.verify_establishment_id_value(
-            f"{employer.labor_office_id}-{employer.sequence_number}"
+            f"{employer_old.labor_office_id}-{employer_old.sequence_number}"
         )
         self.verify_establishment_name_label(EmployeeTransfer.ESTABLISHMENT_NAME_LABEL, locale)
-        self.verify_establishment_name_value(employer.establishment_name_ar)
+        self.verify_establishment_name_value(employer_old.establishment_name_ar)
         self.btn_request_employee_transfer_should_be_enabled()
 
     def verify_terms_conditions_popup(self, locale: str):

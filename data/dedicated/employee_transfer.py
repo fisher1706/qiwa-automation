@@ -1,6 +1,14 @@
 from data.dedicated.models.laborer import Entity, Laborer
+from data.dedicated.models.user import User
 
-employer = Entity(
+employer = User(
+    personal_number="1016316828",
+    labor_office_id="9",
+    sequence_number="3212",
+    establishment_name_ar="مؤسسة دائره العلاقات عبداللة زكريا عبداللة المولد تجربة",
+    establishment_number="1828954",
+)
+employer_old = Entity(
     login_id=1016316828,
     labor_office_id=9,
     sequence_number=3212,

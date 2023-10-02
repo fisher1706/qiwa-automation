@@ -3,7 +3,7 @@ import pytest
 from selene import browser
 
 from data.constants import ContractManagement, EmployeeTransfer, Language
-from data.dedicated.employee_transfer import current_sponsor, employer, laborer
+from data.dedicated.employee_transfer import current_sponsor, employer_old, laborer
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
@@ -48,22 +48,22 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
 
     @allure.title('Verify Sent Employee Transfer Requests are shown in Home Page of ET Service')
     def test_sent_employee_transfer_requests_are_shown_in_home_page_of_et_service(self):
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         amount = self.employee_transfer_actions.get_general_number_of_requests_in_sent_requests_tab()
         self.employee_transfer_actions.verify_pagination_per_page(amount)
 
     @allure.title('Verify Received Employee Transfer Requests are shown in Home Page of ET Service')
     def test_received_employee_transfer_requests_are_shown_in_home_page_of_et_service(self):
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.click_received_requests_tab()
         amount = self.employee_transfer_actions.get_general_number_of_requests_in_received_requests_tab()
         self.employee_transfer_actions.verify_pagination_per_page(amount)
 
     @allure.title('Redirection from ET service to CM service in case no contract were created for the Laborer before')
     def test_navigate_to_redirection_popup(self):
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.request_new_contract(transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
-                                                            establishment_number=employer.establishment_number,
+                                                            establishment_number=employer_old.establishment_number,
                                                             entity_laborer=laborer)
         self.employee_transfer_actions.click_btn_next()
         self.employee_transfer_actions.click_btn_create_contract()
@@ -71,9 +71,9 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
 
     @allure.title('Verify user able to submit ET request')
     def test_user_able_to_submit_et_request(self, prepare_laborer_for_et_request):
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.request_new_contract(transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
-                                                            establishment_number=employer.establishment_number,
+                                                            establishment_number=employer_old.establishment_number,
                                                             entity_laborer=laborer)
         self.employee_transfer_actions.click_btn_next()
         self.employee_transfer_actions.click_btn_create_contract()
@@ -221,7 +221,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
         self.login_action.visit()
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
         self.employee_transfer_actions.click_check_balance()
         self.employee_transfer_actions.verify_balance_value(is_decreased=False)
@@ -247,7 +247,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         browser.switch_to_tab(0)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
         self.employee_transfer_actions.click_check_balance()
         self.employee_transfer_actions.verify_balance_value(is_decreased=False)

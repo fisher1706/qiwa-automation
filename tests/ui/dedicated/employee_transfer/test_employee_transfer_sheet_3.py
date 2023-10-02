@@ -4,7 +4,7 @@ from selene import browser
 
 from data.constants import EmployeeTransfer, Language
 from data.dedicated.employee_transfer import (
-    employer,
+    employer_old,
     employer_between_my_establishments,
     laborer_between_my_establishments,
 )
@@ -108,7 +108,7 @@ class TestEmployeeTransferSheet3:  # pylint: disable=unused-argument
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
         self.login_action.visit()
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
         self.employee_transfer_actions.click_check_balance()
         self.employee_transfer_actions.verify_balance_value(is_decreased=False)
