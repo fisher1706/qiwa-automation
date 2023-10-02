@@ -5,9 +5,13 @@ from data.lmi.constants import SurveysInfo, TargetGroups
 from data.lmi.data_set import SurveyDataSet
 from src.api.lmi.requests.surveys import Surveys
 from src.ui.lmi import lmi
+from utils.allure import TestmoProject, project
+
+case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check Synchronization with SurveySparrow')
+@case_id(11942, 17287, 17289, 17290, 17323)
 def test_sync_with_survey_sparrow_service(login_lmi_user):
     lmi.qiwa_api.dashboard_api_actions.create_sparrow_survey()
     lmi.qiwa_api.dashboard_api_actions.add_question_to_sparrow_survey()
@@ -16,6 +20,7 @@ def test_sync_with_survey_sparrow_service(login_lmi_user):
 
 
 @allure.title('Check Synchronization with QuestionPro')
+@case_id(11942, 17287, 17289, 17290, 17323)
 def test_sync_with_question_pro_service(login_lmi_user):
     lmi.qiwa_api.dashboard_api_actions.create_question_pro_survey()
     lmi.dashboard_survey.perform_sync_survey(SurveysInfo.SURVEY_QPRO_OPTION)
@@ -31,6 +36,7 @@ def test_add_survey_to_favorite_option(login_lmi_user, survey_id):
 
 
 @allure.title('Remove survey form Favorite option')
+@case_id(11909, 11910, 11911, 11912)
 @pytest.mark.parametrize('survey_id', SurveyDataSet.survey_ids_data)
 def test_remove_survey_from_favorite_option(login_lmi_user, survey_id):
     lmi.qiwa_api.dashboard_api_actions.put_survey_attribute(survey_id, Surveys.favorite_survey_body(True), lmi.cookie)
@@ -39,6 +45,7 @@ def test_remove_survey_from_favorite_option(login_lmi_user, survey_id):
 
 
 @allure.title('Add survey to Target group')
+@case_id(17281)
 @pytest.mark.skip('Skipped due to absence UI functional')
 @pytest.mark.parametrize('survey_id', SurveyDataSet.survey_ids_data)
 def test_add_survey_to_target_group(login_lmi_user, survey_id):

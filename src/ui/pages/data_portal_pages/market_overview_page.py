@@ -80,6 +80,7 @@ class MarketOverViewPage:
     EMPLOYEE = s('(//span[@class="num-02"])[1]')
     EMPLOYEE_5_YEARS = s('(//span[@class="num-02"])[2]')
     ESTABLISHMENTS = s('(//span[@class="num-02"])[3]')
+    SEARCH_RESULT = s('//div[@class="customize-wrapper"]//p[2]')
 
     def __init__(self):
         super().__init__()
@@ -191,6 +192,7 @@ class MarketOverViewPage:
         self.get_options(pick_option=False)
         self.SEARCH_FIELD.set_value(CustomizeModal.INVALID_CRITERIA)
         self.SHOW_ALL_SECTORS_BUTTON.click()
+        self.APPLY_BUTTON.wait_until(be.clickable)
         self.inspect_all_options_criteria(self.options_list)
 
     def check_selected_options(self):
@@ -203,6 +205,7 @@ class MarketOverViewPage:
     def check_selected_all_options(self):
         self.open_customize_modal()
         self.check_checkbox_option(CustomizeModal.SELECT_ALL_OPTION)
+        self.APPLY_BUTTON.wait_until(be.clickable)
         self.get_options(pick_option=False)
         self.get_selected_option()
         self.inspect_all_options_criteria(
@@ -212,6 +215,7 @@ class MarketOverViewPage:
     def check_clear_each_selected_options(self):
         self.open_customize_modal()
         self.SEARCH_FIELD.set_value(CustomizeModal.CRITERIA)
+        self.SEARCH_RESULT.should(be.visible)
         self.get_options(pick_option=True)
         self.clear_options()
         self.get_selected_option()

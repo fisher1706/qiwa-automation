@@ -12,3 +12,4 @@ config/*.local.yml
 poetry.lock
 .env.local
 .vscode
+/allure_report

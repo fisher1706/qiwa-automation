@@ -61,6 +61,9 @@ def setup_driver():
         )
     browser.config.hold_driver_at_exit = config.settings.hold_browser_open
     browser.config.driver = driver
+    yield
+    if not config.settings.hold_browser_open:
+        browser.quit()
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
