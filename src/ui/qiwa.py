@@ -130,8 +130,13 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_visa_page(self):
+    def open_visa_page(self) -> None:
         browser.open(config.qiwa_urls.visa_web_url)
+
+    @allure.step
+    def open_labor_office_appointments_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.appointment_booking)
+        return self
 
 
 qiwa = QiwaUiClient()

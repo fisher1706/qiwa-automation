@@ -14,7 +14,7 @@ def test_book_establishment_appointment():
     qiwa.login_as_user(login="1006586984")
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
-    qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()
+    qiwa.open_labor_office_appointments_page()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_service(

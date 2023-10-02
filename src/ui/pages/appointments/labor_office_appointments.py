@@ -30,11 +30,6 @@ class LaborOfficeAppointmentsPage:
     button_back_to_appointments = s("(//button)[1]")
     button_print = s("(//button)[2]")
 
-    def navigate_to_labor_office_appointments_page(self) -> LaborOfficeAppointmentsPage:
-        browser.open(config.qiwa_urls.appointment_booking)
-        self.wait_page_to_load()
-        return self
-
     @allure.step("Wait Appointments page to load")
     def wait_page_to_load(self) -> LaborOfficeAppointmentsPage:
         self.appointments.wait_until(be.visible)
