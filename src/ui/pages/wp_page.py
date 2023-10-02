@@ -69,6 +69,7 @@ class LoWorkPermitPage:
     back_to_establishment_page = s(".back-link")
     go_to_establishment_page = s("//button[normalize-space()='Go to Establishment page']")
     table_body = Table(s(".c-requests__table"))
+    # TODO INVESTIGATE WITH FE OTP LOCATOR
     otp = s("(//input[@type='tel'])[37]")
     cancel_sadad_number_btn = s(".o-button.o-button--primary.c-requests__cancel-button")
     proceed_btn = s("button[class='o-button o-button--full-width o-button--primary']")
