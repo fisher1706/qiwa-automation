@@ -138,5 +138,10 @@ class QiwaUiClient:
         browser.open(config.qiwa_urls.appointment_booking)
         return self
 
+    @allure.step
+    def open_employee_transfer_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.employee_transfer)
+        return self
+
 
 qiwa = QiwaUiClient()

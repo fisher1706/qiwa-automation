@@ -79,6 +79,7 @@ class QiwaUrls:
         self.appointment_booking: str = f"{protocol}appointment-booking.{domain}"
         self.lmi_url: str = f"{protocol}lmi-dashboard.{domain}"
         self.lmi_landing_url: str = f"{protocol}lmi.{domain}"
+        self.employee_transfer: str = f"{protocol}employee-transfer-v2.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))
