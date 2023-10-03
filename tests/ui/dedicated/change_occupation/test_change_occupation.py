@@ -76,11 +76,11 @@ def test_check_if_cr_is_expired():
     qiwa.login_as_user(lo_co_expired_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_expired_user.personal_number).change_local(Language.EN)
     qiwa.workspace_page.select_company_account_by_name(lo_co_expired_user.establishment_name_ar)
-    qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()\
+    qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page() \
         .click_book_appointment_btn()
-    qiwa.labor_office_appointments_create_page.select_establishment(lo_co_expired_user.establishment_name_ar)\
-        .select_service(EService.CHANGE_OCCUPATION)\
-        .select_sub_service(SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value)\
+    qiwa.labor_office_appointments_create_page.select_establishment(lo_co_expired_user.establishment_name_ar) \
+        .select_service(EService.CHANGE_OCCUPATION) \
+        .select_sub_service(SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value) \
         .check_sub_service_error(SubServiceErrors.EXPIRED.value)
 
 
@@ -232,9 +232,10 @@ def test_check_if_co_submitted_to_not_allowed_occupations(navigate_to_co):
 
 @allure.title('AS-292 Check if CO submitted over occupation not allowed to transfer from')
 @case_id(32957)
-@pytest.mark.skip('Todo')
-def test_check_if_co_submitted_over_occupation_not_allowed_to_transfer_from():
-    pass
+def test_check_if_co_submitted_over_occupation_not_allowed_to_transfer_from(navigate_to_co):
+    employee_personal_number = IBMApiController().get_first_expected_employee(lo_co_user)
+    qiwa.change_occupation_page.find_expected_employee(employee_personal_number) \
+        .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)
 
 
 @allure.title('AS-293 Check Error messages scenarios')

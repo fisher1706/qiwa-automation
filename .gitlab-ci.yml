@@ -7,11 +7,12 @@ include:
     file: '/common-jobs/.allure-report.yml'
 
 variables:
-  IMAGE: takamol/qiwa-automation:master-latest
   ALLURE_RESULTS_DIRECTORY: allure-results
   XML_REPORT: report.xml
   TESTMO_URL: https://qiwa.testmo.net
 
+default:
+  image: takamol/qiwa-automation:master-latest
 
 stages:
   - build
@@ -56,51 +57,37 @@ build_test_allure:
   only:
     - add_allure_cleaner
 
-pylint:
-  image: $IMAGE
+.linting_template: &lint
   stage: linting
-  tags:
-    - shared
-  before_script:
-    - mkdir -p public/badges public/lint
-    - echo undefined > public/badges/$CI_JOB_NAME.score
-  script:
-    - pylint --exit-zero --output-format=text $(find -type f -name "*.py" ! -path "**/.venv/**") | tee /tmp/pylint.txt
-    - sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' /tmp/pylint.txt > public/badges/$CI_JOB_NAME.score
-    - pylint --exit-zero --output-format=pylint_gitlab.GitlabCodeClimateReporter $(find -type f -name "*.py" ! -path "**/.venv/**") > codeclimate.json
-    - pylint --exit-zero --output-format=pylint_gitlab.GitlabPagesHtmlReporter $(find -type f -name "*.py" ! -path "**/.venv/**") > public/lint/index.html
-    - if [ $(cat public/badges/$CI_JOB_NAME.score) != 10.00 ]; then exit 1; fi
-  after_script:
-    - anybadge --overwrite --label $CI_JOB_NAME --value=$(cat public/badges/$CI_JOB_NAME.score) --file=public/badges/$CI_JOB_NAME.svg 4=red 6=orange 8=yellow 10=green
-    - |
-      echo "Your score is: $(cat public/badges/$CI_JOB_NAME.score)"
-  artifacts:
-    paths:
-      - public
-    reports:
-      codequality: codeclimate.json
-    when: always
   only:
     - merge_requests
+
+pylint:
+  <<: *lint
+  script:
+    - echo CI_COMMIT_SHA=${CI_COMMIT_SHA}
+    - echo CI_MERGE_REQUEST_TARGET_BRANCH_NAME=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+    - git fetch origin ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+    - tmp_files=$(git diff --name-only --diff-filter=d ${CI_COMMIT_SHA} origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME})
+    - echo "Changed files are \n$tmp_files"
+    - if [ -z "$(echo "$tmp_files" | grep "\.py")" ]; then exit 0; else echo "Python files are found"; fi
+    - tmp_pfiles=$(echo "$tmp_files" | grep "\.py")
+    - echo "Python files are \n$tmp_pfiles"
+    - pylint --exit-zero --output-format=text $tmp_pfiles
 
 black:
-  image: $IMAGE
-  stage: linting
+  <<: *lint
   script:
     - black . --check --diff --color
-  only:
-    - merge_requests
 
 isort:
-  image: $IMAGE
-  stage: linting
+  <<: *lint
   script:
     - isort . --check --diff
-  only:
-    - merge_requests
 
 .testrun_template: &testrun
-  image: $IMAGE
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   allow_failure:
     exit_codes: 1
   stage: test-run
@@ -109,16 +96,14 @@ isort:
     - shared
   script:
     - echo $TEST_SUITE
-    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT --reruns 2 -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
     - exit $EXIT_CODE
   artifacts:
     paths:
       - $XML_REPORT
       - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
-    when: always
-  only:
-    - master
+  when: always
 
 sso_ui_tests:
   <<: *testrun
@@ -131,6 +116,9 @@ um_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/um
+  needs:
+    - job: sso_ui_tests
+      artifacts: false
 
 shareable_ui_tests:
   <<: *testrun
@@ -149,6 +137,9 @@ visa_ui_tests:
   variables:
     ENV: demo
     TEST_SUITE: tests/ui/visa
+  needs:
+    - job: dedicated_co_ui_tests
+      artifacts: false
 
 dataportal_ui_tests:
   <<: *testrun
@@ -161,7 +152,11 @@ lmi_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/lmi
-  needs: [lmi_api_tests]
+  needs:
+    - job: dataportal_ui_tests
+      artifacts: false
+    - job: lmi_api_tests
+      artifacts: false
 
 sso_api_tests:
   <<: *testrun
@@ -210,7 +205,6 @@ lo_ui_tests:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   stage: testmo-report
-  image: $IMAGE
   script:
     - echo $TESTMO_PROJECT_ID
     - echo $ALLURE_PROJECT_ID
@@ -389,7 +383,6 @@ lo_ui_allure_report:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   stage: discord-notification
-  image: $IMAGE
   script:
     - python utils/discord_notify.py $XML_REPORT $WEBHOOK
 
