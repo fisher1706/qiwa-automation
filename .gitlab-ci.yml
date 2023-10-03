@@ -66,9 +66,9 @@ pytest:
   <<: *lint
   script:
     - export ENV=stage
-      pytest --collect-only -qq
+    - pytest --collect-only -qq
     - export ENV=demo
-      pytest --collect-only -qq
+    - pytest --collect-only -qq
 
 pylint:
   <<: *lint
