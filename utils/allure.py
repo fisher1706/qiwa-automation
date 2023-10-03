@@ -7,6 +7,7 @@ from allure_commons.types import LinkType
 
 
 class TestmoProject(enum.Enum):
+    __test__ = False
     LMI = 15
     CHANGE_OCCUPATION = 3
     CONTRACT_MANAGEMENT = 4
