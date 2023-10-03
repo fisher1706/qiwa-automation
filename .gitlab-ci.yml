@@ -65,7 +65,10 @@ build_test_allure:
 pytest:
   <<: *lint
   script:
-    - pytest --collect-only -qq
+    - export ENV=stage
+      pytest --collect-only -qq
+    - export ENV=demo
+      pytest --collect-only -qq
 
 pylint:
   <<: *lint
