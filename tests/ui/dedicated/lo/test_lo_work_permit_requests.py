@@ -77,7 +77,7 @@ def test_verify_that_only_the_sadad_bills_with_status_pending_payment_are_cancel
 @allure.title('AS-302 Verify that the details of the newly issued WP request contains only the employees used in its'
               ' flow and with the correctly selected periods')
 @case_id(32974)
-def test_verify_that_wp_request_contains_only_the_employees_used_in_its_flow_and_with_the_correctly_selected_periods(navigate_to_wp):
+def test_verify_that_wp_request_have_employees_with_correct_periods(navigate_to_wp):
     qiwa.lo_work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_7.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
@@ -101,7 +101,7 @@ def test_verify_that_wp_request_contains_only_the_employees_used_in_its_flow_and
 @allure.title('AS-303 Verify that the total amount in the sadad bill is equal to the total amount mentioned in the '
               'calculation page during issue/renew flow')
 @case_id(32975)
-def test_verify_that_the_total_amount_in_the_sadad_bill_is_equal_to_the_total_amount_mentioned_in_the_calculation_page_during_issue_renew_flow(navigate_to_wp):
+def test_verify_that_the_total_amount_in_the_sadad_bill_and_calculation_page_during_issue_renew_flow(navigate_to_wp):
     qiwa.lo_work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_9.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
