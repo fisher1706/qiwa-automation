@@ -1,7 +1,7 @@
 import allure
 
 from data.constants import Language
-from data.lo.constants import OfficesInfo, ServicesInfo
+from data.lo.constants import AppointmentsHistoryStatus, OfficesInfo, ServicesInfo
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -31,7 +31,7 @@ def test_book_establishment_appointment():
     qiwa.labor_office_appointments_create_page.click_next_step_button()
     qiwa.labor_office_appointments_create_page.click_next_step_button()
     qiwa.labor_office_appointments_create_confirmation_page.should_success_book_message_be_visible()
-    qiwa.labor_office_appointments_create_confirmation_page.should_print_button_be_displayed()
+    qiwa.labor_office_appointments_create_confirmation_page.should_print_button_be_visible()
     qiwa.labor_office_appointments_create_confirmation_page.should_confirmation_service_name_be(
         ServicesInfo.SERVICE_NAME_INDIVIDUALS
     )
@@ -43,3 +43,40 @@ def test_book_establishment_appointment():
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+
+@allure.title("Appointments: View appointments list")
+@case_id(22142)
+def test_view_appointments_list():
+    qiwa.login_as_user(login="1006586984")
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.should_upcoming_appointments_section_be_visible()
+    qiwa.labor_office_appointments_page.should_appointments_history_section_be_visible()
+    qiwa.labor_office_appointments_page.navigate_to_appointments_history()
+    qiwa.labor_office_appointments_page.should_search_history_be_visible()
+    qiwa.labor_office_appointments_page.should_status_filter_be_visible()
+    qiwa.labor_office_appointments_page.should_history_table_headers_have_correct_titles()
+    qiwa.labor_office_appointments_page.search_appointments('34132')
+    qiwa.labor_office_appointments_page.should_history_search_results_have(by_index=2, value='34132')
+    qiwa.labor_office_appointments_page.click_clear_search()
+    qiwa.labor_office_appointments_page.search_appointments('0000000000')
+    qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+    qiwa.labor_office_appointments_page.click_clear_search()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(AppointmentsHistoryStatus.Expired)
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.Expired.name
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(AppointmentsHistoryStatus.Cancelled)
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.Cancelled.name
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(AppointmentsHistoryStatus.Attended)
+    qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(AppointmentsHistoryStatus.Done)
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.Done.name
+    )
+    qiwa.labor_office_appointments_page.navigate_to_knowledge_center()
+    qiwa.labor_office_appointments_page.should_new_tab_knowledge_center_be_opened()

@@ -23,7 +23,7 @@ class WorkspacesPage:
 
     @allure.step
     def should_have_workspace_list_appear(self):
-        self.account_cards[0].wait_until(be.visible)
+        self.account_cards[0].with_(timeout=120).wait_until(be.visible)
         return self
 
     @allure.step

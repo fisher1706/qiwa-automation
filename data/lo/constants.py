@@ -58,6 +58,13 @@ class LOSysAdmin:
     SEQUENCE_NUMBER_EDIT = 1049676
 
 
+class AppointmentsHistoryStatus(Enum):
+    Expired = 1
+    Cancelled = 2
+    Attended = 3
+    Done = 4
+
+
 @dataclass
 class OfficesInfo:
     HOURLY_CAPACITY = 500
