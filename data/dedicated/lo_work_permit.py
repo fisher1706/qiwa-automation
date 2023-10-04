@@ -11,3 +11,7 @@ lo_wp_iqama_2 = User(personal_number="2350756413", labor_office_id="9", sequence
 lo_wp_iqama_3 = User(personal_number="2426490187", labor_office_id="9", sequence_number="8800")
 lo_wp_iqama_4 = User(personal_number="2401631367", labor_office_id="9", sequence_number="8800")
 lo_wp_iqama_5 = User(personal_number="2310334475", labor_office_id="9", sequence_number="8800")
+lo_wp_iqama_6 = User(personal_number="2412549897", labor_office_id="9", sequence_number="8800")
+lo_wp_iqama_7 = User(personal_number="2416619001", labor_office_id="9", sequence_number="8800")
+lo_wp_iqama_8 = User(personal_number="2416623409", labor_office_id="9", sequence_number="8800")
+lo_wp_iqama_9 = User(personal_number="2308992110", labor_office_id="9", sequence_number="8800")

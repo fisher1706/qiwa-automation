@@ -19,7 +19,7 @@ def pre_test():
     api.visits_api.cancel_active_visit(lo_wp_user_1.personal_number)
 
 
-@allure.title("Test dashboard")
+@allure.title('AS-269 Dashboard')
 @case_id(32963)
 def test_dashboard():
     appointment_id = IBMApiController().create_new_appointment(lo_wp_user_1, lo_work_permit)
@@ -38,4 +38,4 @@ def test_dashboard():
         .back_to_work_permits_from_debts() \
         .verify_show_employee_btns() \
         .verify_total_results() \
-        .verify_pagination()
+        .verify_page_pagination()

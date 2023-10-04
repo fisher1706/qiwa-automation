@@ -70,3 +70,8 @@ class SubServiceErrors(str, Enum):
 
 class ChangeOccupationWarning(str, Enum):
     NOT_ALLOWED = "Sorry, it is not allowed to change to the chosen occupation."
+
+
+class WorkPermitRequestStatus(str, Enum):
+    PENDING_PAYMENT = "Pending payment"
+    CANCELED = "Canceled"
