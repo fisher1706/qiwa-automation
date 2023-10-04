@@ -1,5 +1,3 @@
-import time
-
 import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
@@ -27,6 +25,10 @@ class WorkspacesPage:
         return self
 
     @allure.step
+    def wait_page_to_load(self):
+        self.label_choose_account.should(be.visible)
+
+    @allure.step
     def select_admin_account(self):
         self.admin_account_card.click()
         return self
@@ -43,8 +45,6 @@ class WorkspacesPage:
 
     @allure.step
     def select_business_account(self):
-        # TODO investigate the possibility to remove time sleep
-        time.sleep(10)
         self.business_account_card.click()
         return self
 
@@ -58,8 +58,6 @@ class WorkspacesPage:
     def select_company_account_with_sequence_number(self, sequence_number: int | str):
         self.select_business_account()
         self.business_account_list.element_by(have.text(str(sequence_number))).click()
-        # TODO investigate the possibility to remove time sleep
-        time.sleep(5)
         return self
 
     @allure.step
@@ -68,10 +66,6 @@ class WorkspacesPage:
         self.search.type(name)
         self.business_account_list.second.click()
         return self
-
-    @allure.step
-    def wait_page_to_load(self):
-        self.label_choose_account.should(be.visible)
 
     @allure.step
     def select_lmi_admin(self):
