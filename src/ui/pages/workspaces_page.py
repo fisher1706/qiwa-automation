@@ -26,7 +26,7 @@ class WorkspacesPage:
 
     @allure.step
     def wait_page_to_load(self):
-        self.label_choose_account.should(be.visible)
+        self.label_choose_account.with_(timeout=30).should(be.visible)
 
     @allure.step
     def select_admin_account(self):
