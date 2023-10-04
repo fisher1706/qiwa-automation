@@ -17,7 +17,7 @@ from data.constants import (
 from data.dedicated.employee_transfer import Entity, Laborer, employer_old
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.contract_management import OldContractManagementActions
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
@@ -36,7 +36,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         self.e_services_action = EServiceActions()
         self.individual_page = IndividualPage()
         self.footer = Footer()
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
 
     def __switch_tab_with_timeout(self, tab_id: int = 1):
         attempts = 5

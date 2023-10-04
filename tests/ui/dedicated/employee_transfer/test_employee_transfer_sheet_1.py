@@ -7,7 +7,7 @@ from data.dedicated.employee_transfer import current_sponsor, employer_old, labo
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.contract_management import OldContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.actions.sign_in import LoginActions
@@ -22,7 +22,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
     @pytest.fixture(autouse=True)
     def pre_test(self):
         self.employee_transfer_actions = EmployeeTransferActions()
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
         self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
         self.footer = Footer()

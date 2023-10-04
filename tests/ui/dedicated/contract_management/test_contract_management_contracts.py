@@ -9,7 +9,7 @@ from data.dedicated.contract_management import (
     laborer_saudi,
     laborer_saudi_not_in_the_establishment,
 )
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
 
 
@@ -19,7 +19,7 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self):
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
         self.footer = Footer()
 
     @allure.title('Create a new contract for Saudi Laborer in the Establishment')
