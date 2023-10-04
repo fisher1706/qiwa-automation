@@ -12,7 +12,7 @@ class SSOAuthPage:
     otp_code_second_cell = s("input[id='test-1']")
     otp_code_third_cell = s("input[id='test-2']")
     otp_code_fourth_cell = s("input[id='test-3']")
-    confirm_otp_button = s("#submit")
+    confirm_otp_button = s("[data-component='Modal'] #submit")
 
     @allure.step
     def enter_user_id(self, user_id: str) -> SSOAuthPage:
