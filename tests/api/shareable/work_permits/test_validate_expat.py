@@ -3,7 +3,6 @@ from http import HTTPStatus
 import pytest
 
 from src.api import models
-from src.api.app import QiwaApi
 from src.api.assertions.model import validate_model
 from utils.assertion import assert_status_code, assert_that
 
@@ -11,11 +10,10 @@ pytestmark = [pytest.mark.stage]
 
 
 @pytest.mark.parametrize("is_regular", [True, False])
-def test_validation(user, is_regular):
-    qiwa = QiwaApi.login_as_user(user).select_company()
+def test_validation(api, is_regular):
     expat_number = "2358625925"
 
-    response = qiwa.wp_request_api.validate_expat(
+    response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=is_regular
     )
@@ -26,11 +24,10 @@ def test_validation(user, is_regular):
     assert_that(json).has("expat_number")(expat_number)
 
 
-def test_validation_with_invalid_expat_number(user):
-    qiwa = QiwaApi.login_as_user(user).select_company()
+def test_validation_with_invalid_expat_number(api):
     expat_number = "0000000000"
 
-    response = qiwa.wp_request_api.validate_expat(
+    response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
@@ -46,11 +43,10 @@ def test_validation_with_invalid_expat_number(user):
         .has("message_ar")("عفوا، لا يمكن إصدار/تجديد رخصة عمل حيث أن رقم الإقامة/رقم الحدود للعامل غير صحيح")
 
 
-def test_validation_for_expat_with_created_request(user):
-    qiwa = QiwaApi.login_as_user(user).select_company()
+def test_validation_for_expat_with_created_request(api):
     expat_number = "2218400451"
 
-    response = qiwa.wp_request_api.validate_expat(
+    response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
@@ -66,11 +62,10 @@ def test_validation_for_expat_with_created_request(user):
         .has("message_ar")("عفوا، العامل لديه رخصة عمل قيد السداد")
 
 
-def test_validation_for_expat_from_another_establishment(user):
-    qiwa = QiwaApi.login_as_user(user).select_company()
+def test_validation_for_expat_from_another_establishment(api):
     expat_number = "2393440215"
 
-    response = qiwa.wp_request_api.validate_expat(
+    response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )

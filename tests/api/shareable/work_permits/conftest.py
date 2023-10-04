@@ -20,21 +20,19 @@ def establishment() -> Establishment:
 
 
 @pytest.fixture(scope="module")
-def user(request) -> str:
+def api(request) -> QiwaApi:
     marks = [mark.name for mark in request.node.own_markers]
+    user = "1470547124"
     if "stage" in marks:
-        return "1015671413"
+        user = "1015671413"
     elif request.node.name == "test_work_permit_debts.py":
-        return "1154755065"
-    else:
-        return "1470547124"
+        user = "1154755065"
+    return QiwaApi.login_as_user(user).select_company()
 
 
 @pytest.fixture
-def pending_payment_sadad_number(user) -> str:
-    qiwa = QiwaApi.login_as_user(user).select_company()
-
-    response = qiwa.wp_request_api.get_wp_transactions(
+def pending_payment_sadad_number(api) -> str:
+    response = api.wp_request_api.get_wp_transactions(
         status=WorkPermitStatus.PENDING_PAYMENT, expect_code=HTTPStatus.OK
     )
 
@@ -45,10 +43,8 @@ def pending_payment_sadad_number(user) -> str:
 
 
 @pytest.fixture
-def canceled_sadad_number(user) -> str:
-    qiwa = QiwaApi.login_as_user(user).select_company()
-
-    response = qiwa.wp_request_api.get_wp_transactions(
+def canceled_sadad_number(api) -> str:
+    response = api.wp_request_api.get_wp_transactions(
         status=WorkPermitStatus.CANCELED, expect_code=HTTPStatus.OK
     )
 
