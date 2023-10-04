@@ -62,6 +62,14 @@ build_test_allure:
   only:
     - merge_requests
 
+pytest:
+  <<: *lint
+  script:
+    - export ENV=stage
+    - pytest --collect-only -qq
+    - export ENV=demo
+    - pytest --collect-only -qq
+
 pylint:
   <<: *lint
   script:
