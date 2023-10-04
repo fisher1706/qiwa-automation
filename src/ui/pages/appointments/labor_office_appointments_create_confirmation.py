@@ -24,8 +24,8 @@ class LaborOfficeCreateConfirmationPage:
         self.success_book_message.should(be.visible)
         return self
 
-    @allure.step("Verify print button should be displayed")
-    def should_print_button_be_displayed(self) -> LaborOfficeCreateConfirmationPage:
+    @allure.step("Verify print button should be visible")
+    def should_print_button_be_visible(self) -> LaborOfficeCreateConfirmationPage:
         self.button_print.should(be.visible)
         return self
 
