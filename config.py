@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     screen_resolution: str = "1024x720x24"
     visa_mock_mlsd_url: Optional[HttpUrl]
     download_dir: str = str(Path(__file__).parent)
+    visa_db_url: Optional[str]
 
     @classmethod
     def for_env(cls, env: Optional[Envs]) -> Settings:

@@ -40,6 +40,14 @@ class Languages:  # pylint: disable=R0903
     ARABIC = "عر"
 
 
+class PayCardSuccess:  # pylint: disable=R0903
+    HOLDER = "John Doe"
+    NUMBER = "4111111111111111"
+    MONTH = "05"
+    YEAR = "24"
+    CVV2 = "123"
+
+
 ERROR_CODE = "ODM0024"
 WORK_VISA_CARD_ZERO_QUOTA_ERROR = "You cannot issue Work Visas because your Allowed quota is 0."
 PERM_WORK_VISA_TITLE = "Permanent work visas"
@@ -84,3 +92,6 @@ INCREASE_RECRUITMENT_QUOTA_TEXT = "Increase recruitment quota"
 ISSUE_VISA_TEXT = "Issue Visa"
 ISSUE_VISA_REQUEST_TITLE = "Issue visa"
 VISA_REQUEST_PAGE_TITLE_TEXT = "Visa request details"
+BALANCE_REQUESTS_WAITING_STATUS = "waiting_for_payment"
+BALANCE_REQUESTS_SUBMIT_FAILED_STATUS = "submit_failed"
+TRANSACTIONID = "transactionId"

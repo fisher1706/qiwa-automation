@@ -44,6 +44,8 @@ class PermWorkVisaPage(BasePage):
     print_action = s('//button/p[contains(text(), "Print request details")]')
     view_action = s('//button/p[contains(text(), "View details")]')
     establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
+    increase_quota_button = s('//*[@data-testid="establishmentPhase"]//button')
+    nav_link_to_transitional_page = ss("//nav//li").second
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -116,3 +118,7 @@ class PermWorkVisaPage(BasePage):
         self.print_action.click()
         filename = get_downloaded_filename(timeout=20)
         verify_text_in_pdf(filename, request)
+
+    @allure.step("Return to transitional page")
+    def return_to_transitional_page(self):
+        self.nav_link_to_transitional_page.click()
