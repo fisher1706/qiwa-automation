@@ -37,6 +37,7 @@ from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
 from src.ui.pages.um_pages.main_page import MainPage
+from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
 from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
 from src.ui.pages.visa_pages.transitional_page import TransitionalPage
@@ -68,6 +69,7 @@ class QiwaUiClient:
     work_visa = PermWorkVisaPage()
     visa_request = VisaRequestPage()
     issue_visa = IssueVisaPage()
+    increse_quota = IncreaseQuotaPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()

@@ -274,6 +274,7 @@ def test_verify_allowed_quota_tier_in_establishment_shown(visa_mock):
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_allowed_quota_tier_shown()
 
+
 @case_id(25571)
 @allure.title('Test verifies general eligibility errors on the transitional page')
 def test_verify_general_eligibility_errors_on_transitional_page(visa_mock):
@@ -314,6 +315,7 @@ def test_verify_perm_work_visa_request(visa_mock, visa_type):
     ref_number = qiwa.issue_visa.create_perm_visa_request()
     qiwa.work_visa.verify_perm_work_visa_request(ref_number)
 
+
 @allure.title('Test verifies permanent work visa request (pdf) in establishing phase')
 def test_verify_perm_work_visa_request_pdf(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
@@ -325,3 +327,16 @@ def test_verify_perm_work_visa_request_pdf(visa_mock):
     qiwa.work_visa.view_action.click()
     qiwa.visa_request.verify_visa_request_page_open()
     qiwa.visa_request.verify_details_in_pdf(ref_number)
+
+@case_id(25571)
+@allure.title("Test verifies permanent work visa work visa card's errors appearance (internal error) [establishment]")
+def test_verify_perm_work_visa_card_internal_error(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_button.click()
+    ref_number = qiwa.increse_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
+    visa_mock.change_balance_request(ref_number, Numbers.ONE, Numbers.ONE)
+    visa_mock.change_visa_quantity(Numbers.FOUR, Numbers.ZERO)
+    qiwa.work_visa.return_to_transitional_page()
+    qiwa.transitional.verify_perm_work_visa_error_shown()
