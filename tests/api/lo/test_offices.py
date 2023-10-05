@@ -1,10 +1,7 @@
 import allure
-import pytest
 
 from data.lo.constants import LOSysAdmin, OfficesInfo
 from src.api.app import QiwaApi
-
-pytestmark = [pytest.mark.lo_offices, pytest.mark.lo, pytest.mark.lo_api]
 
 
 @allure.title('Get all offices')

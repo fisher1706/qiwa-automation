@@ -4,8 +4,6 @@ import pytest
 from data.lo.data_set import VisitsDataSet
 from src.api.app import QiwaApi
 
-pytestmark = [pytest.mark.lo_visits, pytest.mark.lo, pytest.mark.lo_api]
-
 
 @allure.title('Book & Cancel visits')
 @pytest.mark.parametrize(
