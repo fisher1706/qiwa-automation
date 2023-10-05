@@ -111,7 +111,7 @@ isort:
       - $XML_REPORT
       - $ALLURE_RESULTS_DIRECTORY
     expire_in: 1 day
-  when: always
+    when: always
 
 sso_ui_tests:
   <<: *testrun
