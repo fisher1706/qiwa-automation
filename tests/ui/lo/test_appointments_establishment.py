@@ -1,7 +1,12 @@
 import allure
 
 from data.constants import Language
-from data.lo.constants import AppointmentsHistoryStatus, OfficesInfo, ServicesInfo
+from data.lo.constants import (
+    AppointmentsHistoryStatus,
+    AppointmentsUser,
+    OfficesInfo,
+    ServicesInfo,
+)
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -11,7 +16,7 @@ case_id = project(TestmoProject.LABOR_OFFICE)
 @allure.title("Appointments: Book with visit type Establishment")
 @case_id(22132)
 def test_book_establishment_appointment():
-    qiwa.login_as_user(login="1006586984")
+    qiwa.login_as_user(login=AppointmentsUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
     qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()
@@ -48,7 +53,7 @@ def test_book_establishment_appointment():
 @allure.title("Appointments: View appointments list")
 @case_id(22142)
 def test_view_appointments_list():
-    qiwa.login_as_user(login="1006586984")
+    qiwa.login_as_user(login=AppointmentsUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
     qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page()
@@ -58,10 +63,12 @@ def test_view_appointments_list():
     qiwa.labor_office_appointments_page.should_search_history_be_visible()
     qiwa.labor_office_appointments_page.should_status_filter_be_visible()
     qiwa.labor_office_appointments_page.should_history_table_headers_have_correct_titles()
-    qiwa.labor_office_appointments_page.search_appointments('34132')
-    qiwa.labor_office_appointments_page.should_history_search_results_have(by_index=2, value='34132')
+    qiwa.labor_office_appointments_page.search_appointments(AppointmentsUser.APPOINTMENT_TO_SEARCH_IN_HISTORY)
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=AppointmentsUser.APPOINTMENT_TO_SEARCH_IN_HISTORY
+    )
     qiwa.labor_office_appointments_page.click_clear_search()
-    qiwa.labor_office_appointments_page.search_appointments('0000000000')
+    qiwa.labor_office_appointments_page.search_appointments(AppointmentsUser.NON_EXISTING_APPOINTMENT)
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.click_clear_search()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(AppointmentsHistoryStatus.Expired)
