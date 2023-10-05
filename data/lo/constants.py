@@ -26,6 +26,13 @@ class LOAdmin:
 
 
 @dataclass
+class AppointmentsUser:
+    ID = "1006586984"
+    APPOINTMENT_TO_SEARCH_IN_HISTORY = "34132"
+    NON_EXISTING_APPOINTMENT = "0000000000"
+
+
+@dataclass
 class LOUser:
     ID = "1039682974"
     LO_SYS_ADMIN_ROLE_ID = 2
