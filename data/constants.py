@@ -242,7 +242,7 @@ class ContractManagement:
 
 @dataclass
 class SupportedBrowser:
-    version = {"chrome": "102.0", "firefox": "93.0", "opera": "80.0"}
+    version = {"chrome": "114.0", "firefox": "93.0"}
 
 
 @dataclass
