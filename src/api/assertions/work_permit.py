@@ -1,10 +1,13 @@
 import allure
 
+from data.shareable.expected import work_permits
+from src.api.assertions.diff import assert_difference
 from src.api.clients.work_permit import WorkPermitApi
 from src.api.models.ibm.getworkpermitrequests import (
     IBMWorkPermitRequest,
     IBMWorkPermitRequestList,
 )
+from src.api.models.qiwa import work_permit as work_permit_models
 from utils.assertion import assert_that
 
 
@@ -52,3 +55,10 @@ class WorkPermitApiAssertions(WorkPermitApi):
                 print(f'{item.BillNumber} not in {response["data"]}')
                 raise error
             self.assert_transaction(actual, item)
+
+
+def assert_cancel_sadad_ibm_error(response_json: dict) -> None:
+    model = work_permit_models.cancel_sadad_ibm_error.parse_obj(response_json)
+    expected = work_permits.cancel_sadad_number.transaction_already_canceled()
+    actual = model.data.attributes.dict(include=set(expected.keys()))
+    assert_difference(expected, actual)
