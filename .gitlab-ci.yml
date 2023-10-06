@@ -140,6 +140,12 @@ dedicated_co_ui_tests:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/change_occupation
 
+delegation_ui_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/delegation
+
 visa_ui_tests:
   <<: *testrun
   variables:
@@ -303,6 +309,13 @@ lo_ui_testmo_report:
     ALLURE_PROJECT_ID: lo-ui-daily
   needs: [lo_ui_tests]
 
+delegation_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 9
+    ALLURE_PROJECT_ID: delegation-daily
+  needs: [delegation_ui_tests]
+
 .allure_report_template: &allure_report
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -338,6 +351,12 @@ dataportal_ui_allure_report:
   variables:
     ALLURE_PROJECT_ID: dataportal-ui-daily
   needs: [dataportal_ui_tests]
+
+delegation_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: delegation-daily
+  needs: [delegation_ui_tests]
 
 lmi_ui_allure_report:
   <<: *allure_report
@@ -405,6 +424,12 @@ shareable_ui_discord_notification:
   variables:
     WEBHOOK: $SS_UI_WP_DAILY
   needs: [shareable_ui_tests]
+
+delegation_ui_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $DELEGATION_UI_WEBHOOK
+  needs: [delegation_ui_tests]
 
 um_api_discord_notification:
   <<: *discord_notification

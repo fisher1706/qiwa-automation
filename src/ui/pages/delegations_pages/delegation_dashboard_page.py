@@ -1,19 +1,19 @@
 from __future__ import annotations
 
 import allure
-from selene import Element, be, have, query
+from selene import Element, be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation.constants import DelegationStatus
+from data.delegation import general_data
 from src.ui.components.raw.breadcrumb_navigation import BreadcrumbNavigation
 from src.ui.components.raw.table import Table
 
 
 class DelegationDashboardPage:
-    localization_button = ss('[data-component="MenuTrigger"] button')[1]
+    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
     localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization_button = s('div[data-component="Menu"] a:first-child')
+    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     delegation_table = Table(s('[data-testid="SectionSharedComponent"] table'))
     active_breadcrumb = BreadcrumbNavigation().breadcrumb(1)
     active_breadcrumb_link = BreadcrumbNavigation().breadcrumb(1).s("#BreadcrumbsItemServices")
@@ -49,8 +49,13 @@ class DelegationDashboardPage:
     @allure.step
     def select_english_localization_on_delegation_dashboard(self) -> DelegationDashboardPage:
         self.localization_button.click()
-        self.english_localization_button.click()
-        self.localization_state.wait_until(have.exact_text("EN"))
+        self.english_localization.click()
+        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
+        return self
+
+    @allure.step
+    def check_redirect_to_delegation_dashboard(self):
+        browser.should(have.url(f"{config.qiwa_urls.delegation_service}/"))
         return self
 
     @allure.step
@@ -80,6 +85,11 @@ class DelegationDashboardPage:
     @allure.step
     def should_add_delegation_button_has_correct_text(self) -> DelegationDashboardPage:
         self.add_delegation_btn.should(have.exact_text("Add delegation"))
+        return self
+
+    @allure.step
+    def click_add_delegation_button(self) -> DelegationDashboardPage:
+        self.add_delegation_btn.click()
         return self
 
     @allure.step
@@ -216,7 +226,7 @@ class DelegationDashboardPage:
     def should_delegation_dates_be_correct_on_dashboard(
         self, status: str, date: str, locator: Element
     ) -> DelegationDashboardPage:
-        if status in [DelegationStatus.ACTIVE, DelegationStatus.EXPIRED, DelegationStatus.REVOKED]:
+        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
             locator.should(have.text(date))
         else:
             locator.should(have.text("-"))
