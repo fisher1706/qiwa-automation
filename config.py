@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     remote_enableVideo: bool = True
     remote_enableLog: bool = True
     remote_acceptInsecureCerts: bool = True
-    screen_resolution: str = "1024x720x24"
+    screen_resolution: str = "1440x900x24"
     visa_mock_mlsd_url: Optional[HttpUrl]
     download_dir: str = str(Path(__file__).parent)
     visa_db_url: Optional[str]
