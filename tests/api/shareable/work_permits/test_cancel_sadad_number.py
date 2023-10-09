@@ -1,14 +1,15 @@
 from http import HTTPStatus
-from json import dumps
-from pprint import pprint
 
 import pytest
 
+from data.shareable.expected_json.work_permits.cancel_sadad_number import (
+    already_canceled_transaction_error,
+    successfully_canceled_transaction, incorrect_transaction_error,
+)
 from src.api.assertions.diff import assert_difference
-from src.api.assertions.model import validate_model
 from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
 from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
-from utils.assertion import assert_status_code, assert_that
+from utils.assertion import assert_status_code
 
 pytestmark = [pytest.mark.stage]
 
@@ -19,36 +20,24 @@ def test_cancelling_pending_payment_request(api, pending_payment_sadad_number):
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
-    json = response.json()
+    response_json = SuccessfulCancelling.parse_obj(response.json())
+    expected_json_values = successfully_canceled_transaction(pending_payment_sadad_number)
+    actual_json_values = response_json.dict()
 
-    model = SuccessfulCancelling.parse_obj(json)
-
-    expected_json = {
-        "message_en": f"SADAD bill {pending_payment_sadad_number} has been canceled successfully",
-        "message_ar": f"تم إلغاء معاملة سداد رقم {pending_payment_sadad_number} بنجاح"
-    }
-
-    assert_difference(expected_json, )
+    assert_difference(expected_json_values, actual_json_values)
 
 
-
-
-    validate_model(json, model=SuccessfulCancelling)
-    assert_that(json["message"]) \
-        .has("message_en")(f"SADAD bill {pending_payment_sadad_number} has been canceled successfully") \
-        .has("message_ar")(f"تم إلغاء معاملة سداد رقم {pending_payment_sadad_number} بنجاح")
-
-
-
-
-
-def test_cancelling_canceled_request(api, canceled_sadad_number):
+def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
     response = api.wp_request_api.cancel_sadad_number(
         sadad_number=canceled_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    assert_cancel_sadad_ibm_error(response.json())
+    response_json = cancel_sadad_ibm_error.parse_obj(response.json())
+    expected_json_values = already_canceled_transaction_error()
+    actual_json_values = response_json.data.attributes.dict(include=set(expected_json_values.keys()))
+
+    assert_difference(expected_json_values, actual_json_values)
 
 
 def test_cancelling_incorrect_sadad_number(api):
@@ -59,9 +48,8 @@ def test_cancelling_incorrect_sadad_number(api):
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = response.json()
-    validate_model(json, model=cancel_sadad_ibm_error)
-    assert_that(json["data"]["attributes"]) \
-        .has("code")("MOF00008") \
-        .has("english-msg")("Cannot be canceled, payment entry is incorrect") \
-        .has("arabic-msg")("لا يمكن الإلغاء، معاملة سداد المدخلة غير صحيحة")
+    response_json = cancel_sadad_ibm_error.parse_obj(response.json())
+    expected_json_values = incorrect_transaction_error()
+    actual_json_values = response_json.data.attributes.dict(include=set(expected_json_values.keys()))
+
+    assert_difference(expected_json_values, actual_json_values)

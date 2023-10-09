@@ -1,10 +1,9 @@
-from typing import Type, Literal
+from typing import Literal, Type
 
 from src.api.models.qiwa import data
 from src.api.models.qiwa.raw import work_permit
 from src.api.models.qiwa.raw.root import Root
 from src.api.models.qiwa.raw.work_permit import validate_expat
-
 
 work_permit_requests_list = Root[
     list[data.work_permit_request], Type[None], work_permit.transaction.Meta

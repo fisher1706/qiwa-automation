@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Optional
+from typing import Generic, Optional, TypeVar
 
 from pydantic import BaseModel, validator
 from pydantic.generics import GenericModel
