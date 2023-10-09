@@ -1,12 +1,13 @@
-from typing import Generic, Literal, TypeVar
+from typing import Generic, TypeVar, Optional
 
 from pydantic import BaseModel, validator
 from pydantic.generics import GenericModel
 
 ErrorT = TypeVar("ErrorT")
+ResultT = TypeVar("ResultT")
 
 
-class _ValidationResult(BaseModel):
+class ValidationResult(BaseModel):
     valid_twelve_months: bool
     valid_nine_months: bool
     valid_six_months: bool
@@ -26,10 +27,10 @@ class _ValidationResult(BaseModel):
         return value
 
 
-class ValidateExpat(GenericModel, Generic[ErrorT]):
+class ValidateExpat(GenericModel, Generic[ResultT, ErrorT]):
     expat_number: str
-    validation_result: _ValidationResult | Literal[False]
-    errors: ErrorT
+    validation_result: ResultT
+    errors: Optional[ErrorT]
 
 
 class Error(BaseModel):
