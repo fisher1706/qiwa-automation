@@ -12,6 +12,9 @@ from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.pages.admin_page import AdminPage
+from src.ui.pages.appointments.labor_office_appointment_view import (
+    LaborOfficeAppointmentsViewPage,
+)
 from src.ui.pages.appointments.labor_office_appointments import (
     LaborOfficeAppointmentsPage,
 )
@@ -71,6 +74,7 @@ class QiwaUiClient:
     issue_visa = IssueVisaPage()
     increse_quota = IncreaseQuotaPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
+    labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
 

@@ -28,6 +28,7 @@ class LaborOfficeAppointmentsPage:
     confirmation_office_name = '(//tr)[3]//p[contains(text(), "{}")]'
     button_book_appointment = s('//*[@href="/create"]')
     button_next_step = s('//button[@type="submit"]')
+    button_action_view_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//a[1]')
     button_action_cancel_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//button')
     button_cancel_upcoming_appointment_confirmation = s(
         '(//*[@data-component="ButtonGroup"]//button)[1]'
@@ -54,6 +55,10 @@ class LaborOfficeAppointmentsPage:
 
     by_appointments_history_search_no_results = '//*[contains(text(), "No data was found")]'
 
+    view_appointment_details_from_history_last = s(
+        "//*[@id='archieved']/div/div[2]/div/table/tbody/tr[1]/td[8]/a"
+    )
+
     def navigate_to_labor_office_appointments_page(self) -> LaborOfficeAppointmentsPage:
         browser.open(config.qiwa_urls.appointment_booking)
         self.wait_page_to_load()
@@ -61,7 +66,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Wait Appointments page to load")
     def wait_page_to_load(self) -> LaborOfficeAppointmentsPage:
-        self.appointments.with_(timeout=60).wait_until(be.visible)
+        self.appointments.wait_until(be.visible)
         return self
 
     @allure.step("Click on book appointment button")
@@ -76,13 +81,31 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Cancel active appointment if exists")
     def cancel_active_appointment(self) -> LaborOfficeAppointmentsPage:
-        # investigate possibility to remove this sleep
+        # todo: investigate possibility to remove this sleep
         time.sleep(1)
         if self.upcoming_appointment_row.matching(be.visible):
             self.upcoming_appointments_actions.click()
             self.button_action_cancel_upcoming_appointment.click()
             self.button_cancel_upcoming_appointment_confirmation.click()
             self.button_close_modal.click()
+
+        return self
+
+    @allure.step("View active appointment")
+    def view_active_appointment(self) -> LaborOfficeAppointmentsPage:
+        # todo: investigate possibility to remove this sleep
+        time.sleep(1)
+        if self.upcoming_appointment_row.matching(be.visible):
+            self.upcoming_appointments_actions.click()
+            self.button_action_view_upcoming_appointment.click()
+
+        return self
+
+    @allure.step("View appointment from history")
+    def view_appointment_from_history_last(self) -> LaborOfficeAppointmentsPage:
+        # todo: investigate possibility to remove this sleep
+        time.sleep(1)
+        self.view_appointment_details_from_history_last.click()
 
         return self
 
@@ -119,7 +142,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Verify search")
     def should_history_search_results_have(self, by_index, value):
-        time.sleep(1.5)  # investigate possibility to remove this sleep
+        time.sleep(1.5)  # todo: investigate possibility to remove this sleep
         for i, _ in enumerate(self.table_history.rows, start=1):
             self.table_history.cell(row=i, column=by_index).should(have.text(value))
         return self
