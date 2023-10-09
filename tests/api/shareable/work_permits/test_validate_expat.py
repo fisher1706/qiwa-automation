@@ -56,7 +56,7 @@ def test_validation_for_expat_with_created_request(api):
     validate_model(json, model=models.qiwa.work_permit.expat_validation_error)
     assert_that(json).has("expat_number")(expat_number)
     assert_that(json["errors"]) \
-        .has("code")("WP-010") \
+        .has("code")("WP-009") \
         .has("message_en")("Sorry, we cannot renew working permit "
                            "since the laborer working permit is under processing ") \
         .has("message_ar")("عفوا، العامل لديه رخصة عمل قيد السداد")
