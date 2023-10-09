@@ -4,7 +4,8 @@ import pytest
 
 from data.shareable.expected_json.work_permits.cancel_sadad_number import (
     already_canceled_transaction_error,
-    successfully_canceled_transaction, incorrect_transaction_error,
+    incorrect_transaction_error,
+    successfully_canceled_transaction,
 )
 from src.api.assertions.diff import assert_difference
 from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
