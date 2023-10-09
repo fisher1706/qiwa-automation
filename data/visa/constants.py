@@ -14,12 +14,14 @@ class DateFormats:  # pylint: disable=R0903
 
 class Numbers:  # pylint: disable=R0903
     TEN_THOUSAND = 10000
+    ONE_THOUSAND = 1000
     ONE_HUNDRED = 100
     NINTY_NINE = 99
     TWO = 2
     ONE = 1
     ZERO = 0
     FOUR = 4
+    THREE = 3
 
 
 class VisaUser:  # pylint: disable=R0903

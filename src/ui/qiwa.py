@@ -71,7 +71,7 @@ class QiwaUiClient:
     work_visa = PermWorkVisaPage()
     visa_request = VisaRequestPage()
     issue_visa = IssueVisaPage()
-    increse_quota = IncreaseQuotaPage()
+    increase_quota = IncreaseQuotaPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
