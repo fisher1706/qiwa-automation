@@ -13,7 +13,7 @@ class WorkPermitStatus(str, Enum):
 
 class WorkPermitStatusArabic(str, Enum):
     PRINTED = "تمت الطباعة"
-    EXPIRED = "منتهي"
+    EXPIRED = "منتهي الصلاحية"
     PAID = "مدفوع"
     PENDING_PAYMENT = "قيد السداد"
     REJECTED = "مرفوض"
