@@ -40,7 +40,7 @@ from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_auth_page import SSOAuthPage
-from src.ui.pages.um_pages.main_page import MainPage
+from src.ui.pages.user_management_pages.main_page import MainPage
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
 from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
@@ -145,6 +145,11 @@ class QiwaUiClient:
     @allure.step
     def open_visa_page(self):
         browser.open(config.qiwa_urls.visa_web_url)
+
+    @allure.step
+    def open_user_management_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.ui_user_management)
+        return self
 
 
 qiwa = QiwaUiClient()

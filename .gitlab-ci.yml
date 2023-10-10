@@ -123,7 +123,7 @@ um_ui_tests:
   <<: *testrun
   variables:
     ENV: stage
-    TEST_SUITE: tests/ui/um
+    TEST_SUITE: tests/ui/user_management
   needs:
     - job: sso_ui_tests
       artifacts: false
@@ -182,7 +182,7 @@ um_api_tests:
   <<: *testrun
   variables:
     ENV: stage
-    TEST_SUITE: tests/api/um
+    TEST_SUITE: tests/api/user_management
 
 shareable_demo_api_tests:
   <<: *testrun
