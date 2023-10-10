@@ -7,11 +7,10 @@ from data.delegation.users import (
     establishment_owner_without_partners,
 )
 from src.ui.qiwa import qiwa
-from tests.ui.delegation.conftest import (
+from tests.ui.delegation.add_new_delegation_tests.conftest import (
     get_months_list,
-    get_partners_data,
+    get_partners_data_for_add_delegation,
     get_random_employee,
-    login_and_open_add_delegation_page,
     login_and_open_delegation_dashboard_page,
 )
 from utils.allure import TestmoProject, project
@@ -35,12 +34,14 @@ def test_open_add_new_delegation_flow():
 @allure.title("Verify the default value of the Entity type")
 @case_id(46603)
 def test_the_default_value_for_entity_type():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     entity_types = qiwa_api.delegation_api.get_entity_type(headers)
-    qiwa.add_delegation_page.should_government_entity_type_be_selected(entity_types[1]["nameEn"])\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .should_government_entity_type_be_selected(entity_types[1]["nameEn"])\
         .should_financial_entity_type_be_disabled(entity_types[0]["nameEn"])\
         .should_telecom_entity_type_be_disabled(entity_types[2]["nameEn"])
 
@@ -48,13 +49,15 @@ def test_the_default_value_for_entity_type():
 @allure.title("Verify the ability to select the Entity name")
 @case_id(46604, 46605)
 def test_select_entity_name():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     entity_types = qiwa_api.delegation_api.get_entity_type(headers)
     entity_name = qiwa_api.delegation_api.get_entity_name(headers)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(entity_name)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name)\
         .should_entity_name_be_selected(entity_name)\
         .click_next_button_on_add_delegation_page().should_step_be_completed(
         step_id=add_delegation_data.FIRST_STEP_ID)\
@@ -66,15 +69,17 @@ def test_select_entity_name():
 @allure.title("Verify the possibility to select permission")
 @case_id(46652, 46655)
 def test_select_permission():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     permission = qiwa_api.delegation_api.get_entity_permission(headers)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(
         entity_name=add_delegation_data.ENTITY_NAME)\
-        .click_next_button_on_add_delegation_page().select_permission_on_add_delegation_page(
-        permission=permission)\
+        .click_next_button_on_add_delegation_page()\
+        .select_permission_on_add_delegation_page(permission=permission)\
         .should_permission_be_selected(permission=permission)\
         .click_next_button_on_add_delegation_page()\
         .should_step_be_completed(step_id=add_delegation_data.SECOND_STEP_ID)\
@@ -86,11 +91,12 @@ def test_select_permission():
 @allure.title("Verify the possibility to remove permission")
 @case_id(46654)
 def test_remove_permission():
-    login_and_open_add_delegation_page(
+    login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(
-        entity_name=add_delegation_data.ENTITY_NAME)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
         .click_next_button_on_add_delegation_page()\
         .select_permission_on_add_delegation_page(permission=add_delegation_data.PERMISSION)\
         .should_permission_be_selected(permission=add_delegation_data.PERMISSION)\
@@ -100,13 +106,15 @@ def test_remove_permission():
 @allure.title("Verify the possibility to select delegation duration")
 @case_id(57390, 57414, 57388)
 def test_select_delegation_duration():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     max_months = qiwa_api.delegation_api.get_max_months(headers)
     months_list = get_months_list(max_months)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
         .click_next_button_on_add_delegation_page()\
         .select_permission_on_add_delegation_page(permission=add_delegation_data.PERMISSION)\
         .click_next_button_on_add_delegation_page()\
@@ -125,14 +133,15 @@ def test_select_delegation_duration():
 @allure.title("Verify the possibility to select delegate")
 @case_id(55018, 78114)
 def test_select_delegate():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     employees = qiwa_api.delegation_api.get_employees_list(headers)
     employee_data = get_random_employee(employee_list=employees)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(
-        entity_name=add_delegation_data.ENTITY_NAME)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
         .click_next_button_on_add_delegation_page()\
         .select_permission_on_add_delegation_page(permission=add_delegation_data.PERMISSION)\
         .click_next_button_on_add_delegation_page()\
@@ -152,11 +161,12 @@ def test_select_delegate():
 @allure.title("Verify selecting by one Employee")
 @case_id(55002)
 def test_ability_to_select_one_employee():
-    login_and_open_add_delegation_page(
+    login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_one_partner.personal_number,
         sequence_number=establishment_owner_with_one_partner.sequence_number)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(
-        entity_name=add_delegation_data.ENTITY_NAME)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
         .click_next_button_on_add_delegation_page()\
         .select_permission_on_add_delegation_page(permission=add_delegation_data.PERMISSION)\
         .click_next_button_on_add_delegation_page()\
@@ -177,13 +187,14 @@ def test_ability_to_select_one_employee():
 @allure.title("Verify step if Establishment doesn't have Partners")
 @case_id(57503)
 def test_create_delegation_in_establishment_without_partners():
-    login_and_open_add_delegation_page(
+    login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_without_partners.personal_number,
         sequence_number=establishment_owner_without_partners.sequence_number)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(
-        entity_name=add_delegation_data.ENTITY_NAME)\
-        .click_next_button_on_add_delegation_page().select_permission_on_add_delegation_page(
-        permission=add_delegation_data.PERMISSION)\
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(entity_name=add_delegation_data.ENTITY_NAME)\
+        .click_next_button_on_add_delegation_page()\
+        .select_permission_on_add_delegation_page(permission=add_delegation_data.PERMISSION)\
         .click_next_button_on_add_delegation_page()\
         .select_duration_month(month_number=add_delegation_data.TEN_MONTHS_DURATION)\
         .click_next_button_on_add_delegation_page()\
@@ -202,14 +213,16 @@ def test_create_delegation_in_establishment_without_partners():
 @allure.title("Verify step if Establishment has Partner(s) with a valid phone number")
 @case_id(57504)
 def test_create_delegation_in_establishment_with_partners():
-    qiwa_api = login_and_open_add_delegation_page(
+    qiwa_api = login_and_open_delegation_dashboard_page(
         personal_number=establishment_owner_with_two_partners.personal_number,
         sequence_number=establishment_owner_with_two_partners.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     partners_list = qiwa_api.delegation_api.get_partners(headers)
     partners_number = len(partners_list)
-    partners = get_partners_data(partners_list)
-    qiwa.add_delegation_page.select_entity_name_on_add_delegation_page(add_delegation_data.ENTITY_NAME)\
+    partners = get_partners_data_for_add_delegation(partners_list)
+    qiwa.open_add_new_delegation_page()
+    qiwa.add_delegation_page.wait_add_new_delegation_page_to_load()\
+        .select_entity_name_on_add_delegation_page(add_delegation_data.ENTITY_NAME)\
         .click_next_button_on_add_delegation_page()\
         .select_permission_on_add_delegation_page(add_delegation_data.PERMISSION)\
         .click_next_button_on_add_delegation_page().select_duration_month(add_delegation_data.TEN_MONTHS_DURATION)\

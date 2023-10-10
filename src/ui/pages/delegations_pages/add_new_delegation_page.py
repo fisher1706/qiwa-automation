@@ -25,7 +25,7 @@ class AddDelegationPage:
     telecom_entity_type = s("#TELECOM")
     telecom_entity_type_text = s("#TELECOM-label")
     entity_name_input = s("#ExternalEntitySelect")
-    input_option = s('li[role="option"]:nth-child(1)')
+    input_option = s('li[role="option"]')
     entity_message = s(
         'div[data-testid="StepsWrapperExternalEntityStep"] [data-component="Message"]'
     )
@@ -36,10 +36,15 @@ class AddDelegationPage:
     duration_input = s("#DurationSelect")
     duration_months_list = ss('ul[role="listbox"] li[role="option"]')
     duration_message = s('div[data-testid="StepsWrapperDurationStep"] [data-component="Message"]')
-    data_on_completed_step = '[data-testid="{0}"] p.gtnWDv'
-    entity_data_on_completed_step = ss('[data-testid="StepsWrapperExternalEntityStep"] p.gtnWDv')
-    permission_on_completed_step = s('[data-testid="StepsWrapperPermissionsStep"] p.gtnWDv')
-    duration_on_completed_step = s('[data-testid="StepsWrapperDurationStep"] p.gtnWDv')
+    entity_data_on_completed_step = ss(
+        '[data-testid="StepsWrapperExternalEntityStep"] p[data-testid="CompletedViewValue"]'
+    )
+    permission_on_completed_step = s(
+        '[data-testid="StepsWrapperPermissionsStep"] p[data-testid="CompletedViewValue"]'
+    )
+    duration_on_completed_step = s(
+        '[data-testid="StepsWrapperDurationStep"] p[data-testid="CompletedViewValue"]'
+    )
     number_of_employees = s('div[data-component="Pagination"] > p')
     employees_input = s("#SearchBoxSearchField")
     employees_table = Table("#DelegateTableWrapper table")
@@ -59,9 +64,11 @@ class AddDelegationPage:
     title_on_successful_modal = s('p[role="heading"]')
     text_on_successful_modal = s('[data-testid="CreateDelegationResultDescription"]')
     button_on_successful_modal = successful_modal.s("button")
-    partners_message = s('div[data-testid="StepsWrapperSummaryStep"] [data-component="Message"]')
-    partners_table = Table('[data-testid="StepsWrapperSummaryStep"] table')
-    table_description = s("p.fpxrla")
+    partners_message = s(
+        'div[data-testid="StepsWrapperSummaryStep"] div[data-component="Message"]'
+    )
+    partners_table = Table('div[data-testid="StepsWrapperSummaryStep"] table')
+    table_description = s('p[data-testid="SummaryTableTitle"]')
 
     @allure.step
     def wait_add_new_delegation_page_to_load(self) -> AddDelegationPage:
@@ -218,7 +225,6 @@ class AddDelegationPage:
     def should_employee_data_be_displayed_on_completed_step(
         self, employee_data: dict
     ) -> AddDelegationPage:
-        self.permission_on_completed_step.perform(command.js.scroll_into_view)
         self.selected_employee_data.should(
             have.exact_texts(
                 employee_data["name"],
