@@ -1,30 +1,26 @@
 import allure
 
-from data.um.um_datasets import ArabicTranslations, Texts
-from src.ui.actions.sign_in import LoginActions
-from src.ui.pages.um_pages.main_page import MainPage
-from src.ui.pages.um_pages.owner_flow_page import OwnerFLowPage
-from src.ui.pages.um_pages.user_detail_page import UserDetailsPage
-from src.ui.pages.workspaces_page import WorkspacesPage
+from data.user_management.user_management_datasets import ArabicTranslations, Texts
+from src.ui.pages.user_management_pages.main_page import MainPage
+from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
+from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
+from src.ui.qiwa import qiwa
 
 
-class MainPageActions(
+class UserManagementActions(
     MainPage, UserDetailsPage, OwnerFLowPage
 ):  # pylint: disable=too-many-ancestors
-    def __init__(self):
-        super().__init__()
-        self.login_action = LoginActions()
-        self.workspace_actions = WorkspacesPage()
-
     @allure.step
-    def log_in_and_navigate_to_um(self, user):
-        self.login_action.complete_login(user.account)
-        self.workspace_actions.select_first_company_account()
-        MainPage.navigate_to_user_management()
+    def log_in_and_navigate_to_um(self, user, sequence_number):
+        qiwa.login_as_user(login=user)
+        qiwa.workspace_page.select_company_account_with_sequence_number(
+            sequence_number=sequence_number
+        )
+        qiwa.open_user_management_page()
 
     @allure.step
     def check_texts_on_main_page(self):
-        self.check_subscription_text_is_present(Texts.SUBSCRIPTION_INFO)
+        self.check_subscription_text_is_present(Texts.subscription_info)
 
     @allure.step
     def check_search_main_page(self, user_info):
@@ -51,26 +47,24 @@ class MainPageActions(
         self.wait_until_page_is_loaded()
         self.click_view_details_in_table()
         self.navigate_to_view_details()
-        self.check_user_details_title(Texts.Workspace_User_Details)
+        self.check_user_details_title(Texts.establishment_user_details)
 
     @allure.title
     def navigate_to_owner_flow(self):
         self.wait_until_page_is_loaded()
         self.click_subscribe_btn()
-        self.check_title(Texts.Establishment_And_User_Details)
+        self.check_title(Texts.establishment_and_user_details)
         self.click_proceed_with_subscription_btn()
-        self.check_title(Texts.Add_New_Workspace_User)
+        self.check_title(Texts.add_new_workspace_user)
 
     @allure.step
     def check_localization(self):
+        self.change_language_to_arabic()
         self.check_translation(
-            ArabicTranslations.User_Management_Title,
-            ArabicTranslations.Add_New_User_Btn,
-            ArabicTranslations.Your_Subscription_Title,
-            ArabicTranslations.User_Role,
-            ArabicTranslations.Subscription_Valid_Until,
-            ArabicTranslations.SUBSCRIPTION_Info_Text,
-            ArabicTranslations.Extend_Subscription_Btn,
-            ArabicTranslations.How_To_Renew_Btn,
-            ArabicTranslations.Search,
+            ArabicTranslations.user_management_title,
+            ArabicTranslations.add_new_user_btn,
+            ArabicTranslations.user_role,
+            ArabicTranslations.subscription_valid_until,
+            ArabicTranslations.renew_info,
+            ArabicTranslations.how_to_renew_btn,
         )

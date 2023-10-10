@@ -1,27 +1,25 @@
 import dataclasses
 
 import allure
-from selene import be, command, have, query
-from selene.support.shared import browser
+from selene import be, have, query
 from selene.support.shared.jquery_style import s, ss
 
 
 @dataclasses.dataclass
 class MainPageLocators:
+    # todo: Move locators to the page class and rename string variables to element s, ss accordingly
     ADD_NEW_USER_BTN = "button[data-testid='add-user-btn'] p"
     USER_MANAGEMENT_TITLE = "//div[contains(@data-testid, 'page-title')]/div/div/p"
 
     YOUR_SUBSCRIPTION_TITLE = "//div[contains(@data-testid, 'your-subscription')]/p"
     USERS_ROLE = "//div[contains(@data-testid, 'owner-role')]//p"
     SUBSCRIPTION_VALID_UNTIL_TEXT = (
-        "//div[contains(@data-testid, 'your-subscription')]//tbody/tr[2]/td/div/p"
+        "//div[contains(@data-testid, 'your-subscription')]//tbody/tr[3]/td/div/p"
     )
-    SUBSCRIPTION_INFO_TEXT = "//*/table/tbody/tr[2]/td/div[2]/div[1]/p"
+    SUBSCRIPTION_INFO_TEXT = "//*/table/tbody/tr[3]/td/div[2]/div[1]/p"
     SUBSCRIPTION_INFO_USER_NAME = "//*/table[contains(@class,'kVWEpi')]/tbody/tr[1]/td/div/p"
-    EXTEND_SUBSCRIPTION_BTN = "//div[contains(@data-testid, 'your-subscription')]//div[1]/a/span"
     HOW_TO_RENEW_BTN = "//div[contains(@data-testid, 'your-subscription')]//td/div/a/span"
 
-    SEARCH_TITLE = "//label[contains(@for, 'search')]"
     SEARCH_FIELD = "#search"
     COUNT_OF_USERS_IN_SELECTED_TAB_USERS_TABLE = (
         "//button[contains(@aria-selected,'true')]/div/div/p"
@@ -31,24 +29,29 @@ class MainPageLocators:
     USERS_PERSONAL_NUMBER_IN_USERS_TABLE = ".hfRNGV:nth-child(2)"
     USER_NAME_IN_USERS_TABLE = ".hfRNGV:nth-child(1)"
     USER_STATUS_IN_USERS_TABLE = "div[data-testid='row-status-action'] div[role='status']"
-    USERS_IN_COMPANY_TABLE = "//div[contains(@id, 'tabpanel-:r0:-0')]/div/div/div/table/tbody"
+    USERS_IN_COMPANY_TABLE = "//div[contains(@id, 'tabpanel-:r3:-0')]/div/div/div/table/tbody"
+    USERS_IN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-0')]/div/div/div/table/tbody"
     TITLE_IN_USERS_IN_COMPANY_TAB = "//button[contains(@id, 'tab-:r0:-0')]/div/p"
-    TABLE_TRS = "tr.UZQRQ"
+    TABLE_TRS = "tr.iaVuuG"
+    USERS_TABLE = "table.kJwdzn"
     USERS_IN_UN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-1')]/div/div/div/table/tbody"
-    ACTION_BTN_TABLE = "td div[data-testid='row-actions'] button"
-    USER_ROLE_IN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-0')]//tbody/tr[1]/td[3]"
+    ACTION_BTN_TABLE = "td button[data-testid='row-actions']"
+    USER_ROLE_IN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-0')]//tbody/tr[1]/td[4]"
     VIEW_DETAILS_BTN = "button[data-testid='view-action']"
     RENEW_SUBSCRIPTION_BTN = "button[data-testid='renew-action']"
 
-    NEXT_BTN_PAGINATION = "//a/span[contains(text(), 'Next')]"
-    PREVIOUS_BTN_PAGINATION = "//a/span[contains(text(), 'Previous')]"
-    FIRST_PAGE_BTN = "//a[contains(@aria-label, 'Page 1')]"
-    SECOND_PAGE_BTN = "//a[contains(@aria-label, 'Page 2')]"
+    NEXT_BTN_PAGINATION = "//button/span[contains(text(), 'Next')]"
+    PREVIOUS_BTN_PAGINATION = "//button/span[contains(text(), 'Previous')]"
+    FIRST_PAGE_BTN = "//button[contains(@aria-label, 'Page 1')]"
+    SECOND_PAGE_BTN = "//button[contains(@aria-label, 'Page 2')]"
 
     CHANGE_LANGUAGE_ICON = (
         "//div[2]/div/button[contains(@class,'MenuTrigger__Trigger-ds__sc-4nl56o-0')]"
     )
-    ARABIC_LANGUAGE = "//div[contains(@class,'tippy-content')]//button[2]"
+    ARABIC_LANGUAGE = (
+        "//div[contains(@data-component,'Menu')]/div/div/div/div[contains(@data-component,"
+        "'NavigationGroup')]/a[2]"
+    )
 
 
 class MainPage(MainPageLocators):
@@ -56,18 +59,15 @@ class MainPage(MainPageLocators):
         super().__init__()
         self.users_count = None
 
-    @staticmethod
-    def navigate_to_user_management():
-        browser.open("https://user-management.qiwa.info/")
-
     def wait_until_page_is_loaded(self):
-        s(self.USERS_IN_COMPANY_TABLE).wait.until(be.visible.each)
+        s(self.USERS_IN_COMPANY_TABLE).wait_until(be.visible)
 
     def click_subscribe_btn(self):
         s(self.ADD_NEW_USER_BTN).click()
 
     def check_subscription_text_is_present(self, subscription_info_text: str):
-        s(self.SUBSCRIPTION_INFO_TEXT).should(be.visible).should(have.text(subscription_info_text))
+        s(self.SUBSCRIPTION_INFO_TEXT).wait_until(be.visible)
+        s(self.SUBSCRIPTION_INFO_TEXT).should(have.text(subscription_info_text))
 
     def input_user_name_or_id(self, user_info: str):
         s(self.SEARCH_FIELD).clear().type(user_info)
@@ -76,6 +76,9 @@ class MainPage(MainPageLocators):
         user_personal_number = s(self.USERS_PERSONAL_NUMBER_IN_USERS_TABLE)
         user_personal_number.wait_until(be.visible)
         user_personal_number.should(have.text(personal_number))
+
+    def select_users_in_establishment_tab(self):
+        s(self.UNSELECTED_TAB_USERS_TABLE_BTN).click()
 
     def check_user_name(self, user_name: str):
         user_name_tr = s(self.USERS_IN_COMPANY_TABLE)
@@ -92,16 +95,12 @@ class MainPage(MainPageLocators):
 
     def get_number_of_subscribed_user_in_company(self, selected: bool = True):
         if selected is False:
-            s(self.UNSELECTED_TAB_USERS_TABLE_BTN).click()
+            self.select_users_in_establishment_tab()
         self.users_count = s(self.COUNT_OF_USERS_IN_SELECTED_TAB_USERS_TABLE).get(query.text)
         return self.users_count
 
     def get_users_in_table(self):
-        return (
-            s(self.USERS_IN_COMPANY_TABLE)
-            .ss(self.TABLE_TRS)
-            .should(have.size(int(self.users_count)))
-        )
+        return s(self.USERS_IN_TABLE).ss(self.TABLE_TRS).should(have.size(int(self.users_count)))
 
     def get_all_users_in_table(self):
         table = s(self.USERS_IN_UN_TABLE)
@@ -117,7 +116,6 @@ class MainPage(MainPageLocators):
         return len(all_users_list)
 
     def click_view_details_in_table(self):
-        ss(self.ACTION_BTN_TABLE).first.perform(command.js.scroll_into_view)
         ss(self.ACTION_BTN_TABLE).first.should(be.visible).click()
 
     def navigate_to_view_details(self):
@@ -127,7 +125,7 @@ class MainPage(MainPageLocators):
         table = s(self.USERS_IN_COMPANY_TABLE)
         table.wait_until(be.visible)
         if selected is False:
-            s(self.UNSELECTED_TAB_USERS_TABLE_BTN).should(be.clickable).click()
+            self.select_users_in_establishment_tab()
             table = s(self.USERS_IN_UN_TABLE)
         for row in table.ss(self.TABLE_TRS):
             if row.s(self.USER_STATUS_IN_USERS_TABLE).matching(have.text("Active")):
@@ -141,7 +139,7 @@ class MainPage(MainPageLocators):
 
     @allure.step
     def check_pagination_btns(self):
-        s(self.UNSELECTED_TAB_USERS_TABLE_BTN).should(be.clickable).click()
+        self.select_users_in_establishment_tab()
         s(self.SECOND_PAGE_BTN).should(be.clickable).click()
         s(self.PREVIOUS_BTN_PAGINATION).matching(be.visible)
         s(self.NEXT_BTN_PAGINATION).matching(be.not_.visible)
@@ -161,16 +159,16 @@ class MainPage(MainPageLocators):
 
     @allure.step
     def check_translation(
-        self, text1, text2, text3, text4, text5, text6, text7, text8, text9: str
+        self, text1: str, text2: str, text4: str, text5: str, text6: str, text7: str
     ):
-        s(self.CHANGE_LANGUAGE_ICON).should(be.visible).click()
-        s(self.ARABIC_LANGUAGE).should(be.visible).click()
+        self.wait_until_page_is_loaded()
         s(self.USER_MANAGEMENT_TITLE).should(be.visible).should(have.text(text1))
         s(self.ADD_NEW_USER_BTN).should(be.visible).should(have.text(text2))
-        s(self.YOUR_SUBSCRIPTION_TITLE).should(be.visible).should(have.text(text3))
         s(self.USERS_ROLE).should(be.visible).should(have.text(text4))
         s(self.SUBSCRIPTION_VALID_UNTIL_TEXT).should(be.visible).should(have.text(text5))
         s(self.SUBSCRIPTION_INFO_TEXT).should(be.visible).should(have.text(text6))
-        s(self.EXTEND_SUBSCRIPTION_BTN).should(be.visible).should(have.text(text7))
-        s(self.HOW_TO_RENEW_BTN).should(be.visible).should(have.text(text8))
-        ss(self.SEARCH_TITLE).should(be.visible.each).should(have.text(text9).each)
+        s(self.HOW_TO_RENEW_BTN).should(be.visible).should(have.text(text7))
+
+    @allure.step
+    def confirm_that_action_btn_is_missed(self):
+        ss(self.ACTION_BTN_TABLE).first.should(be.absent)
