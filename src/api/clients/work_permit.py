@@ -21,16 +21,12 @@ class WorkPermitApi:
         page: int = 1,
         per_page: int = 100,
         status: Optional[WorkPermitStatus] = None,
-        expect_code: HTTPStatus = HTTPStatus.OK,
     ) -> Response:
         payload = {"page": page, "per": per_page}
         if status:
             payload["q[status][eq]"] = status.value
 
         response = self.api.get(self.url, endpoint="/work-permit-transactions", params=payload)
-        ResponseValidator(response).check_status_code(
-            name="GET /working-permit-request/work-permit-transactions", expect_code=expect_code
-        )
         return response
 
     @allure.step("GET /working-permit-request/employees")
