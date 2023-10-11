@@ -317,7 +317,7 @@ def test_verify_perm_work_visa_request(visa_mock, visa_type):
 
 
 @allure.title('Test verifies permanent work visa request (pdf) in establishing phase')
-def test_verify_perm_work_visa_request_pdf(visa_mock):
+def test_verify_perm_work_visa_request_establishment_pdf(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.perm_work_visa_issue_visa.click()
@@ -373,3 +373,16 @@ def test_verify_perm_work_visa_card_expiration_balance(visa_mock, visa_db):
     visa_mock.change_balance_request(ref_num, Numbers.FOUR, Numbers.FOUR)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_no_balance_expiration_date_perm_visa_card()
+
+
+@allure.title('Test verifies permanent work visa request (pdf) in expansion phase')
+def test_verify_perm_work_visa_request_expansion_pdf(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_expansion_button.click()
+    ref_num = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
+    qiwa.work_visa.verify_perm_work_visa_request_pdf(ref_num, VisaType.EXPANSION)
+    qiwa.work_visa.view_action.click()
+    qiwa.balnce_request.verify_page_is_open()
+    qiwa.balnce_request.verify_pdf_is_downloaded()
