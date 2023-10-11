@@ -9,7 +9,7 @@ from data.dedicated.contract_management import (
     laborer_saudi,
     laborer_saudi_not_in_the_establishment,
 )
-from src.ui.actions.contract_management import OldContractManagementActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
 
 

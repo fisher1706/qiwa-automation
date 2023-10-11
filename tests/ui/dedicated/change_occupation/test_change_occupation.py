@@ -24,7 +24,7 @@ from data.dedicated.enums import (
     SubServiceChangeOccupation,
     SubServiceErrors,
 )
-from data.dedicated.services import change_occupation
+from data.dedicated.models.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.api.controllers.ibm import IBMApiController

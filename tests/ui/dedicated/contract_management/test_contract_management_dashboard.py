@@ -3,7 +3,7 @@ import pytest
 
 from data.constants import ContractManagement, Language
 from data.dedicated.contract_management import employer
-from src.ui.actions.contract_management import OldContractManagementActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
 
 
