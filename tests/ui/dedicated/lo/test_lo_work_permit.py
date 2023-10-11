@@ -11,7 +11,7 @@ from data.dedicated.lo_work_permit import (
     lo_wp_iqama_5,
     lo_wp_user_1,
 )
-from data.dedicated.services import lo_work_permit
+from data.dedicated.models.services import lo_work_permit
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa
