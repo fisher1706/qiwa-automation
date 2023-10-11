@@ -3,10 +3,8 @@ from __future__ import annotations
 import time
 
 import allure
-from selene import be, browser
+from selene import be
 from selene.support.shared.jquery_style import s
-
-import config
 
 
 class LaborOfficeAppointmentsPage:

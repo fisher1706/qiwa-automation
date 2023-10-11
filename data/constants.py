@@ -16,18 +16,6 @@ class UserType:  # pylint: disable=too-few-public-methods
 
 
 @dataclass
-class EmailConst:  # pylint: disable=too-few-public-methods
-    INBOX_FOLDER = '"Inbox"'
-    UNSEEN_EMAILS = "UNSEEN"
-    IMAP_SESSION_ACTIVE = "SELECTED"
-    EMAIL_FORMAT = "(RFC822)"
-    IMAP_DOMAIN = "imap.gmail.com"
-    STATUS_OK = "OK"
-    FLAG_SEEN = r"\Seen"
-    ADD_FLAG = "+FLAGS"
-
-
-@dataclass
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
@@ -197,6 +185,7 @@ class EmployeeTransfer:
 @dataclass
 class ContractManagement:
     VERIFICATION_CODE = {Language.EN: "Verification Code", Language.AR: "رمز التحقق"}
+    MOBILE_VERIFICATION = {Language.EN: "Mobile verification", Language.AR: "رمز التحقق"}
     TITLE = {Language.EN: "Contract Management", Language.AR: "إدارة العقود"}
     DESCRIPTION = {
         Language.EN: "A service provided to establishments on Qiwa platform to create and authenticate employee "
