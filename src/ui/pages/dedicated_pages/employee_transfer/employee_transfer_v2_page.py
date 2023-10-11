@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from selene.support.shared.jquery_style import s, ss
 
+from src.ui.pages.dedicated_pages.employee_transfer.summary_page import SummaryPage
 from src.ui.pages.dedicated_pages.employee_transfer.transfer_between_my_establishments_page import (
     TransferBetweenMyEstablishmentsPage,
 )
@@ -10,7 +11,7 @@ from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_compa
 )
 
 
-class EmployeeTransferV2Page(TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage):
+class EmployeeTransferV2Page(TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage, SummaryPage):
     btn_transfer_employee = s("//button[.='Transfer employee']")
 
     tiles = ss('[data-testid="tile-desktop"] button')
