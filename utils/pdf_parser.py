@@ -35,10 +35,7 @@ def get_downloaded_filename(timeout=20):
 
 
 def verify_text_in_pdf(filename, text: Union[str, list], expected=True) -> None:
-    pdf_reader = PdfReader(filename)
-    doc_text = ""
-    for page in pdf_reader.pages:
-        doc_text += page.extract_text()
+    doc_text = __read_pdf_file(filename)
     if isinstance(text, list):
         for item in text:
             text_found = doc_text.find(item) >= 0
@@ -52,3 +49,16 @@ def verify_text_in_pdf(filename, text: Union[str, list], expected=True) -> None:
             text_found == expected,
             error_message=f"Text '{text} could not be found within pdf file {filename}",
         )
+
+
+def __read_pdf_file(filename):
+    pdf_reader = PdfReader(filename)
+    doc_text = ""
+    for page in pdf_reader.pages:
+        doc_text += page.extract_text()
+    return doc_text
+
+
+def file_is_valid_pdf(filename):
+    doc_text = __read_pdf_file(filename)
+    return doc_text is not None
