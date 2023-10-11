@@ -4,8 +4,8 @@ from selene import browser
 
 from data.constants import EmployeeTransfer, Language
 from data.dedicated.employee_transfer import (
-    employer_old,
     employer_between_my_establishments,
+    employer_old,
     laborer_between_my_establishments,
 )
 from data.dedicated.enums import TransferType
