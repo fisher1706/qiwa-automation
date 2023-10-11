@@ -127,32 +127,19 @@ class DelegationDetailsPage:
         return self
 
     @allure.step
-    def should_partner_name_be_correct(self, partner_list: list) -> DelegationDetailsPage:
-        partner_names = []
-        for partner in partner_list:
-            partner_names.append(partner["partnerName"])
+    def should_partner_name_be_correct(self, partner_names: list) -> DelegationDetailsPage:
         self.partner_names.should(have.texts(partner_names))
         return self
 
     @allure.step
-    def should_partner_phone_be_correct(self, partner_list: list) -> DelegationDetailsPage:
-        partner_phones = []
-        for partner in partner_list:
-            partner_phones.append(partner["partnerPhoneNumber"])
-        self.partner_phone_numbers.should(have.texts(partner_phones))
+    def should_partner_phone_be_correct(self, partner_numbers: list) -> DelegationDetailsPage:
+        self.partner_phone_numbers.should(have.texts(partner_numbers))
         return self
 
     @allure.step
     def should_partner_request_status_be_correct(
-        self, partner_list: list
+        self, partner_request_statuses: list
     ) -> DelegationDetailsPage:
-        partner_request_statuses = []
-        for partner in partner_list:
-            if partner["status"] == general_data.PENDING:
-                expected_status = general_data.PENDING_REQUEST
-            else:
-                expected_status = partner["status"].capitalize()
-            partner_request_statuses.append(expected_status)
         self.partner_request_status.should(have.texts(partner_request_statuses))
         return self
 

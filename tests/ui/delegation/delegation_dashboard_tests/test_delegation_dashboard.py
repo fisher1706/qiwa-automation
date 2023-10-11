@@ -7,7 +7,9 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
     DelegationDashboardPage,
 )
 from src.ui.qiwa import qiwa
-from tests.ui.delegation.conftest import login_and_open_delegation_dashboard_page
+from tests.ui.delegation.delegation_dashboard_tests.conftest import (
+    login_and_open_delegation_dashboard_page,
+)
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.DELEGATION)

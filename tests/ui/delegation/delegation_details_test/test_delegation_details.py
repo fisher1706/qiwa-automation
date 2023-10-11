@@ -9,7 +9,10 @@ from data.delegation.users import (
 )
 from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
 from src.ui.qiwa import qiwa
-from tests.ui.delegation.conftest import (
+from tests.ui.delegation.delegation_details_test.conftest import (
+    get_partners_names_for_delegation_details,
+    get_partners_phone_numbers_for_delegation_details,
+    get_partners_request_status_for_delegation_details,
     login_and_open_delegation_dashboard_page,
     login_and_open_delegation_details_page,
     login_and_open_delegation_details_page_by_status,
@@ -89,10 +92,13 @@ def test_partners_information_on_delegation_details():
     delegation_details = login_and_open_delegation_details_page(
         personal_number=establishment_owner_with_two_partners.personal_number,
         sequence_number=establishment_owner_with_two_partners.sequence_number)
+    partner_names = get_partners_names_for_delegation_details(delegation_details.partner_list)
+    partner_numbers = get_partners_phone_numbers_for_delegation_details(delegation_details.partner_list)
+    partner_request_statuses = get_partners_request_status_for_delegation_details(delegation_details.partner_list)
     qiwa.delegation_details_page.should_partners_approval_block_be_displayed()\
-        .should_partner_name_be_correct(delegation_details.partner_list)\
-        .should_partner_phone_be_correct(delegation_details.partner_list)\
-        .should_partner_request_status_be_correct(delegation_details.partner_list)
+        .should_partner_name_be_correct(partner_names)\
+        .should_partner_phone_be_correct(partner_numbers)\
+        .should_partner_request_status_be_correct(partner_request_statuses)
 
 
 @allure.title("Verify the absence Partners approval block for establishment without partners"

@@ -18,7 +18,7 @@ MESSAGE_ON_THIRD_STEP: str = (
     "all partners confirm the delegation request."
 )
 ONE_MONTH_DURATION: str = "1 month"
-TEN_MONTHS_DURATION: str = "1 month"
+TEN_MONTHS_DURATION: str = "10 months"
 FOURTH_STEP_ID: str = "StepsWrapperDelegateDetailsStep"
 FOURTH_STEP_TITLE: str = "Delegate details"
 FOURTH_STEP_NUMBER: str = "4"
