@@ -35,6 +35,6 @@ class ContractManagementActions(ContractManagementPage):
         self.fill_field_job_title_en(contract_details.job_title_en)
         self.fill_field_job_title_ar(contract_details.job_title_ar)
         self.fill_field_employee_number(contract_details.employee_number)
-        self.fill_field_contract_period(contract_details.contract_period[0])
+        self.fill_field_contract_period()
         self.fill_field_basic_salary(contract_details.basic_salary)
         return self
