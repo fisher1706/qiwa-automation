@@ -11,7 +11,7 @@ pytestmark = [pytest.mark.stage]
 
 @pytest.mark.parametrize("is_regular", [True, False])
 def test_validation(api, is_regular):
-    expat_number = "2358625925"
+    expat_number = "2191542147"
 
     response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
@@ -44,7 +44,7 @@ def test_validation_with_invalid_expat_number(api):
 
 
 def test_validation_for_expat_with_created_request(api):
-    expat_number = "2218400451"
+    expat_number = "2392007080"
 
     response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
