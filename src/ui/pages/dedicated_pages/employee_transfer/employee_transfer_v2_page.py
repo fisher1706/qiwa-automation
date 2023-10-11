@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from selene.support.shared.jquery_style import s, ss
 
-from src.ui.pages.dedicated_pages.employee_transfer.transfer_between_my_establishments import \
-    TransferBetweenMyEstablishmentsPage
-from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_company_page import \
-    TransferFromExternalCompanyPage
+from src.ui.pages.dedicated_pages.employee_transfer.transfer_between_my_establishments_page import (
+    TransferBetweenMyEstablishmentsPage,
+)
+from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_company_page import (
+    TransferFromExternalCompanyPage,
+)
 
 
 class EmployeeTransferV2Page(TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage):

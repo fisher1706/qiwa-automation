@@ -1,7 +1,7 @@
 import re
 import time
 
-from selene import be, browser, by, command, have, query
+from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config

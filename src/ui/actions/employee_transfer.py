@@ -17,11 +17,13 @@ from data.constants import (
 from data.dedicated.employee_transfer import Entity, Laborer, employer_old
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
-from src.ui.actions.contract_management import OldContractManagementActions
 from src.ui.actions.e_services import EServiceActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
-from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import EmployeeTransferPage
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
+    EmployeeTransferPage,
+)
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from utils.assertion import assert_that
