@@ -1,8 +1,9 @@
 from http import HTTPStatus
 
 import pytest
+
 from src.api import models
-from src.api.assertions.diff import assert_difference
+from src.api.assertions.diff import assert_not_difference
 from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.stage]
@@ -18,7 +19,7 @@ def test_get_employee_by_personal_number(api, employee):
 
     expected_employee_data = employee.dict(exclude={"id"})
     actual_employee_data = response_json.data[0].attributes.dict(exclude={"id"})
-    assert_difference(expected_employee_data, actual_employee_data)
+    assert_not_difference(expected_employee_data, actual_employee_data)
 
 
 def test_get_employee_by_wrong_personal_number(api):

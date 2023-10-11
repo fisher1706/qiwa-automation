@@ -1,10 +1,10 @@
 from json import dumps
 
 import allure
-from deepdiff import DeepDiff, Delta
+from deepdiff import DeepDiff
 
 
-def assert_difference(entity1: dict, entity2: dict) -> None:
+def assert_not_difference(entity1: dict, entity2: dict) -> None:
     difference = DeepDiff(entity1, entity2)
     if difference:
         allure.attach(
