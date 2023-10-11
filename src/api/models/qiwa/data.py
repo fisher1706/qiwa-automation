@@ -2,6 +2,7 @@ from typing import Any, List, Literal, Type, Union
 
 from pydantic import BaseModel
 
+from src.api.constants.work_permit import WorkPermitStatusArabic, WorkPermitStatus
 from src.api.models.qiwa import raw
 from src.api.models.qiwa.raw.data import Data
 from src.api.models.qiwa.raw.relationships import Relationships
@@ -36,8 +37,22 @@ change_occupation_request = Data[
 ]
 request = Data[str, Literal["request"], raw.change_occupation.Request, Type[None]]
 work_permit_request = Data[
-    str, Literal["work-permit-request"], raw.work_permit.transaction.WorkPermitRequest, Type[None]
+    str,
+    Literal["work-permit-request"],
+    raw.work_permit.transaction.WorkPermitRequest[WorkPermitStatusArabic, WorkPermitStatus],
+    Type[None],
 ]
+
+
+def work_permit_request_with_status(status: Type[Literal], status_id: Type[Literal]):
+    return Data[
+        str,
+        Literal["work-permit-request"],
+        raw.work_permit.transaction.WorkPermitRequest[status, status_id],
+        Type[None],
+    ]
+
+
 work_permit_employees = Data[
     str, Literal["work_permit_employees"], raw.work_permit.employees.Employee, Type[None]
 ]
