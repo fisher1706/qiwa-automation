@@ -25,7 +25,10 @@ from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
 from src.ui.pages.dedicated_pages.change_occupation_page import ChangeOccupationPage
-from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page import EmployeeTransferV2Page
+from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page import (
+    EmployeeTransferV2Page,
+)
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.delegation_dashboard_page import (
@@ -73,6 +76,7 @@ class QiwaUiClient:
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
     employee_transfer_page = EmployeeTransferV2Page()
+    contract_management_page = ContractManagementPage()
 
     # Components
     header = Header()
