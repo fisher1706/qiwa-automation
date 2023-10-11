@@ -38,6 +38,9 @@ request = Data[str, Literal["request"], raw.change_occupation.Request, Type[None
 work_permit_request = Data[
     str, Literal["work-permit-request"], raw.work_permit.transaction.WorkPermitRequest, Type[None]
 ]
+work_permit_employees = Data[
+    str, Literal["work_permit_employees"], raw.work_permit.employees.Employee, Type[None]
+]
 
 
 def ibm_error(attributes: Type[BaseModel]) -> Type[Data]:

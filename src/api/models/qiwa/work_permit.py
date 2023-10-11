@@ -14,3 +14,4 @@ cancel_sadad_ibm_error = Root[
 ]
 expat_validation = validate_expat.ValidateExpat[validate_expat.ValidationResult, Type[None]]
 expat_validation_error = validate_expat.ValidateExpat[Literal[False], validate_expat.Error]
+employees_data = Root[list[data.work_permit_employees], Type[None], work_permit.transaction.Meta]
