@@ -11,6 +11,7 @@ from src.ui.components.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
+from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.appointments.labor_office_appointments import (
     LaborOfficeAppointmentsPage,
@@ -83,6 +84,7 @@ class QiwaUiClient:
     footer = Footer()
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
+    meet_qiwa_popup = MeetQiwaPopup()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
