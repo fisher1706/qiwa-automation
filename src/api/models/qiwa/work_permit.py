@@ -19,5 +19,7 @@ employees_data = Root[list[data.work_permit_employees], Type[None], work_permit.
 def transactions_data_with_status(status: Type[WorkPermitStatus]):
     status, status_id = WorkPermitStatusLiterals[status.name].value
     return Root[
-        list[data.work_permit_request_with_status(status, status_id)], Type[None], work_permit.transaction.Meta
+        list[data.work_permit_request_with_status(status, status_id)],
+        Type[None],
+        work_permit.transaction.Meta,
     ]
