@@ -1,7 +1,6 @@
 import json
 
 import allure
-from requests import Response
 
 import config
 from data.dedicated.employee_transfer import employer_old, laborer
@@ -19,11 +18,11 @@ class EmployeeTransferApi:
 
     @allure.step
     def post_create_new_contract(
-            self,
-            laborer_id_no: int = laborer.login_id,
-            labor_office_id: str = employer_old.labor_office_id,
-            sequence_number: str = employer_old.establishment_number,
-            expect_code=200,
+        self,
+        laborer_id_no: int = laborer.login_id,
+        labor_office_id: str = employer_old.labor_office_id,
+        sequence_number: str = employer_old.establishment_number,
+        expect_code=200,
     ):
         json_body = load_json_schema("create_contract.json")
         json_body["CreateNewContractRq"]["Body"]["LaborerDetails"]["LaborerIdNo"] = laborer_id_no
@@ -45,13 +44,13 @@ class EmployeeTransferApi:
 
     @allure.step
     def post_prepare_laborer_for_et_request(
-            self, laborer_id: int = laborer.login_id, expect_code=200
+        self, laborer_id: int = laborer.login_id, expect_code=200
     ):
-        params = {"laborerId": laborer_id}
+        payload = {"laborerId": laborer_id}
         response = self.api.post(
             url=self.url_prepare_laborer_for_et_request,
             endpoint="/employeeTransfer/prepareLaborerForETrequest",
-            params=params,
+            json=payload,
             headers={},
         )
         ResponseValidator(response).check_status_code(
