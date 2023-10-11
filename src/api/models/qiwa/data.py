@@ -1,4 +1,4 @@
-from typing import Any, List, Literal, Type, Union
+from typing import Any, List, Literal, Type, Union, TypeVar
 
 from pydantic import BaseModel
 
@@ -6,6 +6,11 @@ from src.api.constants.work_permit import WorkPermitStatusArabic, WorkPermitStat
 from src.api.models.qiwa import raw
 from src.api.models.qiwa.raw.data import Data
 from src.api.models.qiwa.raw.relationships import Relationships
+
+
+StatusLiteralT = TypeVar("StatusLiteralT", bound=WorkPermitStatus)
+StatusIdLiteralT = TypeVar("StatusIdLiteralT", bound=WorkPermitStatusArabic)
+
 
 group = Data[str, Literal["group"], raw.e_service.Group, Relationships]
 service_group = Data[int, Literal["service-group"], raw.e_service.ServiceGroup, Relationships]
@@ -44,7 +49,7 @@ work_permit_request = Data[
 ]
 
 
-def work_permit_request_with_status(status: Type[Literal], status_id: Type[Literal]):
+def work_permit_request_with_status(status: StatusLiteralT, status_id: StatusIdLiteralT):
     return Data[
         str,
         Literal["work-permit-request"],
