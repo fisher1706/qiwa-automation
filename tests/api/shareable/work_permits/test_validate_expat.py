@@ -2,80 +2,64 @@ from http import HTTPStatus
 
 import pytest
 
+from data.shareable.expected_json.work_permits.validate_expat import invalid_expat_number_error, \
+    processing_work_permit_error, not_your_establishment_laborer_error
 from src.api import models
-from src.api.assertions.model import validate_model
+from src.api.assertions.diff import assert_not_difference
 from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.stage]
 
 
 @pytest.mark.parametrize("is_regular", [True, False])
-def test_validation(api, is_regular):
-    expat_number = "2191542147"
-
+def test_validation_result(api, employee_to_validate, is_regular):
     response = api.wp_request_api.validate_expat(
-        expat_number=expat_number,
+        expat_number=employee_to_validate.personal_number,
         regular=is_regular
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
-    json = response.json()
-    validate_model(json, model=models.qiwa.work_permit.expat_validation)
-    assert_that(json).has("expat_number")(expat_number)
+    json = models.qiwa.work_permit.expat_validation.parse_obj(response.json())
+    assert_that(json.expat_number).equals_to(employee_to_validate.personal_number)
 
 
 def test_validation_with_invalid_expat_number(api):
     expat_number = "0000000000"
-
     response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
-
-    json = response.json()
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    validate_model(json, model=models.qiwa.work_permit.expat_validation_error)
-    assert_that(json).has("expat_number")(expat_number)
-    assert_that(json["errors"]) \
-        .has("code")("WP-003") \
-        .has("message_en")("Sorry, we cannot issue- renew working permit "
-                           "because the border ID or border number is invalid ") \
-        .has("message_ar")("عفوا، لا يمكن إصدار/تجديد رخصة عمل حيث أن رقم الإقامة/رقم الحدود للعامل غير صحيح")
+
+    json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
+    expected_json_values = invalid_expat_number_error(expat_number)
+    actual_json_values = json.dict()
+    assert_not_difference(expected_json_values, actual_json_values)
 
 
 def test_validation_for_expat_with_created_request(api):
     expat_number = "2392007080"
-
     response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
-
-    json = response.json()
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    validate_model(json, model=models.qiwa.work_permit.expat_validation_error)
-    assert_that(json).has("expat_number")(expat_number)
-    assert_that(json["errors"]) \
-        .has("code")("WP-010") \
-        .has("message_en")("Sorry, we cannot renew working permit "
-                           "since the laborer working permit is under processing ") \
-        .has("message_ar")("عفوا، العامل لديه رخصة عمل قيد السداد")
+
+    json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
+    expected_json_values = processing_work_permit_error(expat_number)
+    actual_json_values = json.dict()
+    assert_not_difference(expected_json_values, actual_json_values)
 
 
 def test_validation_for_expat_from_another_establishment(api):
     expat_number = "2393440215"
-
     response = api.wp_request_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
-
-    json = response.json()
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    validate_model(json, model=models.qiwa.work_permit.expat_validation_error)
-    assert_that(json).has("expat_number")(expat_number)
-    assert_that(json["errors"]) \
-        .has("code")("WP-004") \
-        .has("message_en")("Sorry, we cannot issue- renew working permit "
-                           "because the laborer is not listed in your establishment ") \
-        .has("message_ar")("عفوا، لا يمكن إصدار/تجديد رخصة عمل حيث أن العامل غير مدرج ضمن عمالة منشأتك ")
+
+    json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
+    expected_json_values = not_your_establishment_laborer_error(expat_number)
+    actual_json_values = json.dict()
+    assert_not_difference(expected_json_values, actual_json_values)
