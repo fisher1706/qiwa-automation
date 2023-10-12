@@ -19,11 +19,11 @@ from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions
-from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
 from src.ui.pages.employee_transfer_page import EmployeeTransferPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
+from src.ui.qiwa import qiwa
 from utils.assertion import assert_that
 
 
@@ -31,7 +31,6 @@ class EmployeeTransferActions(EmployeeTransferPage):
     def __init__(self):
         super().__init__()
         self.balance_value = None
-        self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
         self.individual_page = IndividualPage()
@@ -49,7 +48,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         return self
 
     def navigate_to_et_service(self, entity: Entity):
-        self.login_action.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
@@ -62,8 +61,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         browser.switch_to_tab(0)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
-        self.login_action.login_user(user_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.open_login_page().login_as_user(user_id, UserInfo.PASSWORD)
         self.workspace_actions.select_individual_account()
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):

@@ -116,7 +116,7 @@ isort:
 sso_ui_tests:
   <<: *testrun
   variables:
-    ENV: demo
+    ENV: stage
     TEST_SUITE: tests/ui/sso
 
 um_ui_tests:

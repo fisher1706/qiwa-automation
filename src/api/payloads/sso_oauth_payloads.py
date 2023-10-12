@@ -24,7 +24,7 @@ from src.api.payloads.sso.sso_attributes_data import (
 
 def registration_account_payload(account: Account) -> dict:
     attributes = CreateAccount(
-        otp=account.confirmation_code,
+        otp=account.otp_confirmation_code,
         birth_date=account.birth_day,
         email=account.email,
         password=account.password,

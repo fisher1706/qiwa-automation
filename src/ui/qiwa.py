@@ -37,9 +37,11 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
 from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
-from src.ui.pages.login_page import LoginPage
 from src.ui.pages.spaces_page import AdminSpacesPage
-from src.ui.pages.sso_auth_page import SSOAuthPage
+from src.ui.pages.sso_pages.add_birthday_page import AddBirthdayPage
+from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPage
+from src.ui.pages.sso_pages.login_page import LoginPage
+from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
 from src.ui.pages.user_management_pages.main_page import MainPage
 from src.ui.pages.visa_pages.balance_request import BalanceRequest
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
@@ -54,7 +56,9 @@ from src.ui.pages.wp_page import LoWorkPermitPage
 class QiwaUiClient:
     # Pages
     login_page = LoginPage()
-    sso_auth_page = SSOAuthPage()
+    add_birth_day_page = AddBirthdayPage()
+    change_phone_number_page = ChangePhoneNumberPage()
+    secure_account_page = SecureAccountPage()
     workspace_page = WorkspacesPage()
     dashboard_page = DashboardPage()
     e_services_page = EServicesPage()
@@ -90,14 +94,9 @@ class QiwaUiClient:
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        self.login_page.open_login_page()
-        (
-            self.sso_auth_page.enter_user_id(login)
-            .enter_password(password)
-            .login()
-            .enter_otp_code("0")
-            .confirm_otp_code()
-        )
+        self.open_login_page()
+        (self.login_page.enter_login(login).enter_password(password).click_login_button())
+        (self.login_page.otp_pop_up.fill_in_code(code="0000").click_confirm_button())
         return self
 
     @allure.step
@@ -112,6 +111,11 @@ class QiwaUiClient:
     def login_as_admin(self) -> QiwaUiClient:
         self.login_as_user("1215113732")
         self.workspace_page.should_have_workspace_list_appear().select_admin_account()
+        return self
+
+    @allure.step
+    def open_login_page(self):
+        browser.open(config.qiwa_urls.laborer_sso_auth)
         return self
 
     @allure.step

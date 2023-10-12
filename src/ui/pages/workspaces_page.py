@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import time
 
 import allure
@@ -70,8 +72,9 @@ class WorkspacesPage:
         return self
 
     @allure.step
-    def wait_page_to_load(self):
+    def wait_page_to_load(self) -> WorkspacesPage:
         self.label_choose_account.should(be.visible)
+        return self
 
     @allure.step
     def select_lmi_admin(self):
