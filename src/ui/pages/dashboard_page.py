@@ -13,9 +13,10 @@ class DashboardPage:
         s(self.switch_account_link).should(be.clickable).click()
         return self
 
-    def select_e_services_menu_item(self):
+    def select_e_services_menu_item(self) -> DashboardPage:
         s(self.e_services_menu).click()
         return self
 
     def wait_dashboard_page_to_load(self) -> DashboardPage:
-        self.nitaqat_level.should(be.visible)
+        self.nitaqat_level.should(be.present)
+        return self
