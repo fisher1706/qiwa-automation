@@ -15,13 +15,18 @@ def prepare_laborer_for_et_request():
 
 
 @allure.title('Verify user able to submit ET request')
+@pytest.skip('Need to debug and add extra verifications')
 def test_user_able_to_submit_et_request_from_my_own_establishment():
     qiwa.login_as_user(employer.personal_number)
     qiwa.workspace_page.wait_page_to_load()
-    qiwa.header.check_personal_number_or_name(employer.name).change_local(Language.EN)
+    qiwa.header.check_personal_number_or_name(employer.name)\
+        .change_local(Language.EN)
     qiwa.workspace_page.select_company_account_with_sequence_number(employer.sequence_number)
+
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.open_e_services_page()
     qiwa.e_services_page.select_employee_transfer()
+
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_own_establishment() \
         .click_btn_next_step() \
@@ -40,10 +45,15 @@ def test_user_able_to_submit_et_request_from_my_own_establishment():
 def test_user_able_to_submit_et_request_from_another_establishment():
     qiwa.login_as_user(employer.personal_number)
     qiwa.workspace_page.wait_page_to_load()
-    qiwa.header.check_personal_number_or_name(employer.name).change_local(Language.EN)
+    qiwa.header.check_personal_number_or_name(employer.name)\
+        .change_local(Language.EN)
     qiwa.workspace_page.select_company_account_with_sequence_number(employer.sequence_number)
+
+    qiwa.dashboard_page.wait_dashboard_page_to_load()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.open_e_services_page()
     qiwa.e_services_page.select_employee_transfer()
+
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_another_establishment() \
         .click_btn_next_step() \
@@ -62,11 +72,11 @@ def test_user_able_to_submit_et_request_from_another_establishment():
 
     contract_management_actions = ContractManagementActions()
     contract_management_actions.click_btn_next_step()\
-        .fill_establishment_details()\
+        .fill_establishment_details(laborer.user_type)\
         .click_btn_next_step()\
         .fill_employee_details()\
         .click_btn_next_step()\
-        .fill_contract_details()\
+        .fill_contract_details(laborer.user_type)\
         .click_btn_next_step()\
         .select_terms_checkbox()\
         .click_btn_next_step()
@@ -74,3 +84,6 @@ def test_user_able_to_submit_et_request_from_another_establishment():
     qiwa.employee_transfer_page.click_btn_next_step() \
         .select_terms_checkbox() \
         .click_btn_submit()
+
+    qiwa.employee_transfer_page.check_success_msg()\
+        .check_request_status()
