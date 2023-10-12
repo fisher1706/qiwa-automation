@@ -3,27 +3,19 @@ from __future__ import annotations
 import allure
 from selene import be
 from selene.support.shared import browser
-from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
-from src.ui.pages.appointments.labor_office_appointment_view import (
-    LaborOfficeAppointmentsViewPage,
-)
-from src.ui.pages.delegations_pages.add_new_delegation_page import AddDelegationPage
-from src.ui.pages.sso_pages.add_birthday_page import AddBirthdayPage
-from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPage
-from src.ui.pages.sso_pages.login_page import LoginPage
-from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
-from src.ui.pages.user_management_pages.main_page import MainPage
-from src.ui.pages.visa_pages.balance_request import BalanceRequest
-from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 
 import config
 from data.constants import UserInfo
 from src.api.app import QiwaApi
+from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.pages.admin_page import AdminPage
+from src.ui.pages.appointments.labor_office_appointment_view import (
+    LaborOfficeAppointmentsViewPage,
+)
 from src.ui.pages.appointments.labor_office_appointments import (
     LaborOfficeAppointmentsPage,
 )
@@ -43,6 +35,7 @@ from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page im
 )
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
+from src.ui.pages.delegations_pages.add_new_delegation_page import AddDelegationPage
 from src.ui.pages.delegations_pages.delegation_dashboard_page import (
     DelegationDashboardPage,
 )
@@ -50,6 +43,13 @@ from src.ui.pages.delegations_pages.delegation_details_page import DelegationDet
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.spaces_page import AdminSpacesPage
+from src.ui.pages.sso_pages.add_birthday_page import AddBirthdayPage
+from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPage
+from src.ui.pages.sso_pages.login_page import LoginPage
+from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
+from src.ui.pages.user_management_pages.main_page import MainPage
+from src.ui.pages.visa_pages.balance_request import BalanceRequest
+from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
 from src.ui.pages.visa_pages.perm_work_visa_page import PermWorkVisaPage
 from src.ui.pages.visa_pages.transitional_page import TransitionalPage

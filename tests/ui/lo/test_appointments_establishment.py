@@ -113,26 +113,26 @@ def test_view_appointments_list():
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.click_clear_search()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.Expired
+        AppointmentsHistoryStatus.EXPIRED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.Expired.name
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED.name
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.Cancelled
+        AppointmentsHistoryStatus.CANCELLED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.Cancelled.name
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED.name
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.Attended
+        AppointmentsHistoryStatus.ATTENDED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.Done
+        AppointmentsHistoryStatus.DONE
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.Done.name
+        by_index=6, value=AppointmentsHistoryStatus.DONE.name
     )
     qiwa.labor_office_appointments_page.navigate_to_knowledge_center()
     qiwa.labor_office_appointments_page.should_new_tab_knowledge_center_be_opened()

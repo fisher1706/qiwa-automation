@@ -1,6 +1,5 @@
 import time
 
-import allure
 import pytest
 from selene import be, browser, have
 from selene.core.exceptions import TimeoutException
@@ -19,7 +18,6 @@ from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.old_contract_management import OldContractManagementActions
-from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
 from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
     EmployeeTransferPage,

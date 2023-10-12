@@ -15,7 +15,7 @@ def prepare_laborer_for_et_request():
 
 
 @allure.title('Verify user able to submit ET request')
-@pytest.skip('Need to debug and add extra verifications')
+@pytest.mark.skip('Need to debug and add extra verifications')
 def test_user_able_to_submit_et_request_from_my_own_establishment():
     qiwa.login_as_user(employer.personal_number)
     qiwa.workspace_page.wait_page_to_load()
