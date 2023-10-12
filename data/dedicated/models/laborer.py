@@ -7,6 +7,8 @@ class Laborer(BaseModel):
     login_id: int
     birthdate: str
 
+    user_type: Optional[str]
+
 
 class Entity(BaseModel):
     login_id: Optional[int]
