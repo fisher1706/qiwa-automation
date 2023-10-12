@@ -1,5 +1,6 @@
 import random
 from http import HTTPStatus
+
 import pytest
 
 from data.mock_mlsd.establishment import Establishment

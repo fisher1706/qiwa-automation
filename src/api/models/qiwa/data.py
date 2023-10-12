@@ -1,12 +1,11 @@
-from typing import Any, List, Literal, Type, Union, TypeVar
+from typing import Any, List, Literal, Type, TypeVar, Union
 
 from pydantic import BaseModel
 
-from src.api.constants.work_permit import WorkPermitStatusArabic, WorkPermitStatus
+from src.api.constants.work_permit import WorkPermitStatus, WorkPermitStatusArabic
 from src.api.models.qiwa import raw
 from src.api.models.qiwa.raw.data import Data
 from src.api.models.qiwa.raw.relationships import Relationships
-
 
 StatusLiteralT = TypeVar("StatusLiteralT", bound=WorkPermitStatus)
 StatusIdLiteralT = TypeVar("StatusIdLiteralT", bound=WorkPermitStatusArabic)

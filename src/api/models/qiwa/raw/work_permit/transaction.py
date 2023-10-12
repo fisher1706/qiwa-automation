@@ -1,5 +1,5 @@
 from datetime import date
-from typing import TypeVar, Generic
+from typing import Generic, TypeVar
 
 from src.api.models.qiwa.base import QiwaBaseModel
 

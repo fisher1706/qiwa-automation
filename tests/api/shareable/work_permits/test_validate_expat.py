@@ -2,8 +2,11 @@ from http import HTTPStatus
 
 import pytest
 
-from data.shareable.expected_json.work_permits.validate_expat import invalid_expat_number_error, \
-    processing_work_permit_error, not_your_establishment_laborer_error
+from data.shareable.expected_json.work_permits.validate_expat import (
+    invalid_expat_number_error,
+    not_your_establishment_laborer_error,
+    processing_work_permit_error,
+)
 from src.api import models
 from src.api.assertions.diff import assert_not_difference
 from utils.assertion import assert_status_code, assert_that
