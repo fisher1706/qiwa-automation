@@ -1,3 +1,4 @@
+from data.constants import UserType
 from data.dedicated.models.laborer import Entity, Laborer
 from data.dedicated.models.user import User
 
@@ -24,7 +25,7 @@ employer_between_my_establishments = Entity(
     establishment_number="16-2148",
 )
 
-laborer = Laborer(login_id=2289438844, birthdate="20-10-1976")
+laborer = Laborer(login_id=2449079728, birthdate="11-07-1993", user_type=UserType.EXPAT)
 laborer_type_12 = Laborer(login_id=2493081331, birthdate="03-01-1990")
 laborer_type_9 = Laborer(login_id=2021014218, birthdate="18-10-1982")
 laborer_type_4_freedom_transfer = Laborer(login_id=2283737795, birthdate="25-12-1986")
