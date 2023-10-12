@@ -70,7 +70,6 @@ def test_reset_changes(create_e_service_via_api, delete_e_service_via_api):
 
 
 @allure.title("View created e-service")
-@pytest.mark.slow
 @case_id(6319)
 def test_view_created_e_service(create_e_service_via_api, delete_e_service_via_api):
     e_service_title = create_e_service_via_api

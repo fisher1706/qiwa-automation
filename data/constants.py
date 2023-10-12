@@ -31,7 +31,6 @@ class EmailConst:  # pylint: disable=too-few-public-methods
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
-    INVALID_PASSWORD = "Invalid"
     EXPIRED_DATE = "2023-05-10"
 
 

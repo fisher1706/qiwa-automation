@@ -10,7 +10,6 @@ from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
-from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
 from src.ui.qiwa import qiwa
 
@@ -23,7 +22,6 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
     def pre_test(self):
         self.employee_transfer_actions = EmployeeTransferActions()
         self.contract_management_actions = ContractManagementActions()
-        self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
         self.footer = Footer()
 
@@ -137,7 +135,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(current_sponsor)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.click_btn_accept()
@@ -155,7 +153,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(current_sponsor)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.click_btn_accept()
@@ -176,7 +174,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(current_sponsor)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.click_btn_reject()
@@ -193,7 +191,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(current_sponsor)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.click_btn_reject()
@@ -220,7 +218,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(ErrorMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(employer)
         self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
         self.employee_transfer_actions.click_check_balance()
@@ -235,7 +233,7 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_et_service(current_sponsor)
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.click_btn_reject()

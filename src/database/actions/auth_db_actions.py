@@ -1,3 +1,4 @@
+from src.database.sql_requests.account_lockouts import AccountLockoutsRequest
 from src.database.sql_requests.account_request import AccountRequests
 from src.database.sql_requests.accounts_emails import AccountsEmailsRequest
 from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
@@ -18,7 +19,7 @@ def delete_account_data_from_db(personal_number: str):
     AccountsEmailsRequest().delete_account_email_data(email_id=email_id)
     if email_id is not None:
         AccountsEmailsRequest().delete_email_record(email_id=email_id)
-    AccountsPhonesRequest().delete_account_phone_date(account_id=account_id)
+    AccountsPhonesRequest().delete_account_phone_data(phone_id=phone_id, account_id=account_id)
     if phone_id is not None:
         AccountsPhonesRequest().delete_phone(phone_id=phone_id)
     LoginRequest().delete_login_data_request(account_id=account_id)
@@ -27,6 +28,8 @@ def delete_account_data_from_db(personal_number: str):
     AccountRequests().delete_account_auth_audit_logs(account_id=account_id)
     AccountRequests().delete_account_active_session_key(account_id=account_id)
     AppRequest().delete_oauth_grants_data_request(account_id=account_id)
+    AccountLockoutsRequest().delete_login_failure(account_id=account_id)
+    AccountLockoutsRequest().delete_unlock_key_data(account_id=account_id)
     SecurityQuestionsRequest().delete_security_question_request(account_id=account_id)
     AccountRequests().delete_account_record(account_id=account_id)
 

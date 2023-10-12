@@ -153,7 +153,7 @@ class AuthApiSSO:
             response = self.api.post(
                 url=self.url, endpoint="/accounts", json=registration_account_payload(account)
             )
-        assert response.status_code == expected_code
+        assert response.status_code == expected_code, f"{response.status_code}, {response.json()}"
         return self
 
     @allure.step("GET /session :: get session")

@@ -16,7 +16,7 @@ from data.validation_message import SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
-from src.ui.actions.sign_in import LoginActions
+from src.ui.qiwa import qiwa
 
 
 @allure.feature('Employee Transfer sheet 2')
@@ -26,7 +26,6 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
         self.employee_transfer_actions = EmployeeTransferActions()
-        self.login_action = LoginActions()
         self.individual_actions = IndividualActions()
         self.employee_transfer_api = EmployeeTransferApi(http_client)
 
@@ -42,7 +41,7 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.login_id)
         self.individual_actions.select_service(ServicesAndTools.HOME_WORKER_TRANSFER.value)
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE, Language.EN)
@@ -61,7 +60,7 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
+        qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.login_id)
         self.individual_actions.select_service(ServicesAndTools.HOME_WORKER_TRANSFER.value)
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.EN)

@@ -75,3 +75,16 @@ class AccountRequests:
             for active_session in account_active_session_record:
                 self.session.delete(active_session)
                 self.session.commit()
+
+    def delete_account_hijri_birth_date(self, national_id: str) -> None:
+        account_data = (
+            self.session.query(Accounts).filter(Accounts.national_id == national_id).first()
+        )
+        account_data.hijri_birth_date = None
+        self.session.commit()
+
+    def get_account_hijri_birth_date(self, national_id: str) -> str:
+        account_data = (
+            self.session.query(Accounts).filter(Accounts.national_id == national_id).first()
+        )
+        return account_data.hijri_birth_date[0]

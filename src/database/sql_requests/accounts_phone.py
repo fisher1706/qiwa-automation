@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Any
 
+from sqlalchemy import or_
+
 import config
 from src.database.client.db_client import DBClient
 from src.database.models.laborer_sso_tables_description import AccountsPhone, Phones
@@ -9,7 +11,7 @@ from src.database.models.laborer_sso_tables_description import AccountsPhone, Ph
 class AccountsPhonesRequest:
     session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
 
-    def update_phone_time(self, new_time: datetime, account_id: str) -> None:
+    def update_phone_enabled_time(self, account_id: str, new_time: datetime) -> None:
         phone_record = (
             self.session.query(AccountsPhone)
             .filter(AccountsPhone.account_id == account_id)
@@ -54,13 +56,10 @@ class AccountsPhonesRequest:
         phone_record.disabled_at = disabled_time
         self.session.commit()
 
-    def delete_account_phone_date(self, account_id: str) -> None:
-        phone_records = (
-            self.session.query(AccountsPhone).filter(AccountsPhone.account_id == account_id).all()
-        )
-        for phone_record in phone_records:
-            self.session.delete(phone_record)
-            self.session.commit()
+    def delete_account_phone_data(self, phone_id: str, account_id: str) -> None:
+        self.session.query(AccountsPhone).filter(
+            or_(AccountsPhone.phone_id == phone_id, AccountsPhone.account_id == account_id)
+        ).delete()
 
     def delete_phone(self, phone_id: str) -> None:
         phone_records = self.session.query(Phones).filter(Phones.id == phone_id).all()
