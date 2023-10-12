@@ -26,6 +26,7 @@ from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page impor
 )
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
+from src.ui.qiwa import qiwa
 from utils.assertion import assert_that
 
 
@@ -33,7 +34,6 @@ class EmployeeTransferActions(EmployeeTransferPage):
     def __init__(self):
         super().__init__()
         self.balance_value = None
-        self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
         self.individual_page = IndividualPage()
@@ -51,7 +51,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         return self
 
     def navigate_to_et_service(self, entity: Entity):
-        self.login_action.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
@@ -64,8 +64,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         browser.switch_to_tab(0)
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
-        self.login_action.visit()
-        self.login_action.login_user(user_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.open_login_page().login_as_user(user_id, UserInfo.PASSWORD)
         self.workspace_actions.select_individual_account()
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
@@ -210,7 +209,6 @@ class EmployeeTransferActions(EmployeeTransferPage):
             if int(amount) > int(rows_per_page):
                 self.verify_next_arrow_is_clickable()
 
-    @allure.step("Verify validation message")
     def verify_message(self, expected_message):
         try:
             message_element = s(self.MESSAGE_LOCATOR[expected_message["type"]])

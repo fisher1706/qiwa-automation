@@ -6,8 +6,6 @@ from src.api.assertions.response_validator import ResponseValidator
 from utils.assertion import assert_that
 from utils.json_search import search_in_json
 
-pytestmark = [pytest.mark.lo_users, pytest.mark.lo, pytest.mark.lo_api]
-
 
 def test_get_user():
     qiwa = QiwaApi.login_as_user(LOAdmin.ID)

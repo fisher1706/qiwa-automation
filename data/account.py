@@ -10,7 +10,8 @@ class Account:
     password: str = UserInfo.PASSWORD
     email: str = ""
     phone_number: str = field(default_factory=RandomManager().random_phone_number)
-    confirmation_code: str = "0000"
+    otp_confirmation_code: str = "0000"
+    absher_confirmation_code: str = "000000"
     language: str = "en"
     birth_day: str = "1430-01-01"
 

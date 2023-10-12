@@ -5,44 +5,45 @@ from selene import Element, be, browser, have
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation.constants import DelegationDetailsData, DelegationStatus
+from data.delegation import general_data
 from src.ui.components.raw.table import Table
 
 
 class DelegationDetailsPage:
-    localization_button = ss('[data-component="MenuTrigger"] button')[1]
+    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
     localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization_button = s('div[data-component="Menu"] a:first-child')
+    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     action_buttons_block = s('div[data-component="ButtonGroup"]')
     action_buttons = action_buttons_block.ss("button")
-    delegation_details_block = ss('div[data-testid="SectionSharedComponent"]')
-    general_information_block = delegation_details_block.element_by(
-        have.text("General information")
-    )
+    general_information_block = s("#DelegationDetailsSection1")
     general_information_table = Table(general_information_block.element("table"))
     delegation_status = general_information_table.row(1).s('[role="status"]')
-    delegation_id = general_information_table.row(2).s(".hQzqOf")
-    entity_name = general_information_table.row(3).s(".hQzqOf")
-    permissions = general_information_table.row(4).s(".hQzqOf")
-    start_date_on_delegation_details = general_information_table.row(5).s(".hQzqOf")
-    expiry_date_on_delegation_details = general_information_table.row(6).s(".hQzqOf")
-    partners_approval_block = delegation_details_block.element_by(have.text("Partners approval"))
+    delegation_id = general_information_table.row(2).s('[data-testid="tableCellValue"]')
+    entity_name = general_information_table.row(3).s('[data-testid="tableCellValue"]')
+    permissions = general_information_table.row(4).s('[data-testid="tableCellValue"]')
+    start_date_on_delegation_details = general_information_table.row(5).s(
+        '[data-testid="tableCellValue"]'
+    )
+    expiry_date_on_delegation_details = general_information_table.row(6).s(
+        '[data-testid="tableCellValue"]'
+    )
+    partners_approval_block = s("#DelegationDetailsSection2")
     partner_approval_table = Table(partners_approval_block.element("table"))
-    partner_names = partner_approval_table.rows.all(".yjILx")
-    partner_phone_numbers = partner_approval_table.rows.all(".kFZsWB")
+    partner_names = partner_approval_table.rows.all('[data-testid="partnerName"]')
+    partner_phone_numbers = partner_approval_table.rows.all('[data-testid="partnerPhoneNumber"]')
     partner_request_status = partner_approval_table.rows.all('[role="status"]')
-    delegate_block = delegation_details_block.element_by(have.text("Delegate"))
+    delegate_block = s("#DelegationDetailsSection3")
     delegate_table = Table(delegate_block.element("table"))
-    delegate_name = delegate_table.row(1).s(".hQzqOf")
-    delegate_nid = delegate_table.row(2).s(".hQzqOf")
-    delegate_nationality = delegate_table.row(3).s(".hQzqOf")
-    delegate_occupation = delegate_table.row(4).s(".hQzqOf")
+    delegate_name = delegate_table.row(1).s('[data-testid="tableCellValue"]')
+    delegate_nid = delegate_table.row(2).s('[data-testid="tableCellValue"]')
+    delegate_nationality = delegate_table.row(3).s('[data-testid="tableCellValue"]')
+    delegate_occupation = delegate_table.row(4).s('[data-testid="tableCellValue"]')
 
     @allure.step
     def select_english_localization_on_delegation_details(self) -> DelegationDetailsPage:
         self.localization_button.click()
-        self.english_localization_button.click()
-        self.localization_state.wait_until(have.exact_text("EN"))
+        self.english_localization.click()
+        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
         return self
 
     @allure.step
@@ -65,7 +66,7 @@ class DelegationDetailsPage:
         self, available_for_resending: bool
     ) -> DelegationDetailsPage:
         if available_for_resending:
-            self.should_action_buttons_be_correct(DelegationDetailsData.RESEND_ACTION)
+            self.should_action_buttons_be_correct([general_data.RESEND_ACTION])
         else:
             self.should_action_buttons_be_hidden()
         return self
@@ -114,7 +115,7 @@ class DelegationDetailsPage:
     def should_dates_be_correct_on_delegation_details(
         self, status: str, date: str, locator: Element
     ) -> DelegationDetailsPage:
-        if status in [DelegationStatus.ACTIVE, DelegationStatus.EXPIRED, DelegationStatus.REVOKED]:
+        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
             locator.should(have.text(date))
         else:
             locator.should(have.text("-"))
@@ -126,32 +127,19 @@ class DelegationDetailsPage:
         return self
 
     @allure.step
-    def should_partner_name_be_correct(self, partner_list: list) -> DelegationDetailsPage:
-        partner_names = []
-        for partner in partner_list:
-            partner_names.append(partner["partnerName"])
+    def should_partner_name_be_correct(self, partner_names: list) -> DelegationDetailsPage:
         self.partner_names.should(have.texts(partner_names))
         return self
 
     @allure.step
-    def should_partner_phone_be_correct(self, partner_list: list) -> DelegationDetailsPage:
-        partner_phones = []
-        for partner in partner_list:
-            partner_phones.append(partner["partnerPhoneNumber"])
-        self.partner_phone_numbers.should(have.texts(partner_phones))
+    def should_partner_phone_be_correct(self, partner_numbers: list) -> DelegationDetailsPage:
+        self.partner_phone_numbers.should(have.texts(partner_numbers))
         return self
 
     @allure.step
     def should_partner_request_status_be_correct(
-        self, partner_list: list
+        self, partner_request_statuses: list
     ) -> DelegationDetailsPage:
-        partner_request_statuses = []
-        for partner in partner_list:
-            if partner["status"] == DelegationStatus.PENDING:
-                expected_status = DelegationDetailsData.PENDING_REQUEST
-            else:
-                expected_status = partner["status"].capitalize()
-            partner_request_statuses.append(expected_status)
         self.partner_request_status.should(have.texts(partner_request_statuses))
         return self
 

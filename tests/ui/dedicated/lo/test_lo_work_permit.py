@@ -129,8 +129,11 @@ def test_verify_that_the_selected_employees_all_have_wp_fees():
     qiwa.lo_work_permit_page.verify_search_by_border_or_iqama(lo_wp_iqama_4.personal_number) \
         .check_available_periods() \
         .choose_wp_period_12() \
-        .verify_continue_with_wp_request_btn_active()
-    # TODO: ADD AFTER FIX WITH CALCULATE ENDPOINT
+        .verify_continue_with_wp_request_btn_active() \
+        .verify_total_amount_is_displayed() \
+        .verify_wp_fees_is_displayed() \
+        .verify_extra_fees_is_displayed() \
+        .verify_late_years_extra_fees()
 
 
 @allure.title('AS-277 Verify that only the selected employees (with no error in validation step) are moved to the'
@@ -150,8 +153,7 @@ def test_selected_employees_moved_to_calculation_page():
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active() \
-        # TODO: ADD AFTER FIX WITH CALCULATE ENDPOINT
-    #   .verify_selected_employees_on_calculation_page(lo_wp_iqama_4.personal_number)
+        .verify_iqama_is_displayed()
 
 
 @allure.title('AS-278 Verify that a penalty user will have fees > 0 in either (or both) of the "fees for late '
@@ -171,5 +173,7 @@ def test_verify_that_a_penalty_user_will_have_fees_less_than_null():
         .check_available_periods() \
         .choose_wp_period_12() \
         .verify_continue_with_wp_request_btn_active() \
-        # TODO: ADD AFTER FIX WITH CALCULATE ENDPOINT
-    #    .verify_late_years_extra_fees()
+        .verify_total_amount_is_displayed() \
+        .verify_wp_fees_is_displayed() \
+        .verify_extra_fees_is_displayed() \
+        .verify_late_years_extra_fees()

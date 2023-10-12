@@ -1,18 +1,21 @@
 from datetime import date
+from typing import Generic, TypeVar
 
-from src.api.constants.work_permit import WorkPermitStatus, WorkPermitStatusArabic
 from src.api.models.qiwa.base import QiwaBaseModel
 
+StatusT = TypeVar("StatusT")
+BillStatusT = TypeVar("BillStatusT")
 
-class WorkPermitRequest(QiwaBaseModel):
+
+class WorkPermitRequest(QiwaBaseModel, Generic[StatusT, BillStatusT]):
     id: int
-    status: WorkPermitStatusArabic
+    status: StatusT
     transaction_fees: str
     bill_number: str | None = ...
     number_of_expats: str
     submit_date: date
     remaining_days: str | None = ...
-    bill_status: WorkPermitStatus
+    bill_status: BillStatusT
 
 
 class Meta(QiwaBaseModel):

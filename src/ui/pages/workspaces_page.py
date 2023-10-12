@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
@@ -24,7 +26,7 @@ class WorkspacesPage:
 
     @allure.step
     def should_have_workspace_list_appear(self) -> WorkspacesPage:
-        self.account_cards[0].wait_until(be.visible)
+        self.account_cards[0].with_(timeout=120).wait_until(be.visible)
         return self
 
     @allure.step

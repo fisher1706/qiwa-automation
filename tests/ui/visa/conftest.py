@@ -4,6 +4,7 @@ import pytest
 
 from data.visa.constants import Languages, VisaUser
 from src.api.controllers.visa_mock_api import VisaMockApi
+from src.database.sql_requests.visa_balance_requests import VisaBalanceRequests
 from src.ui.qiwa import qiwa
 
 
@@ -25,3 +26,10 @@ def pre_test():
     qiwa.transitional.select_language(Languages.ENGLISH)
     qiwa.workspace_page.select_company_account_with_sequence_number(VisaUser.ESTABLISHMENT_ID)
     qiwa.open_visa_page()
+
+
+@pytest.fixture
+def visa_db():
+    db = VisaBalanceRequests()
+    yield db
+    db.remove_blocking_status_record()

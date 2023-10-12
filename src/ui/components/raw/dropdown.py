@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from selene import have
+from selene import be, have
 from selene.core.entity import Collection, Element
 
 
@@ -36,6 +36,7 @@ class Dropdown:
         return self
 
     def select_by_index(self, index: int) -> Dropdown:
+        self.element.wait_until(be.visible)
         self.element.click()
         self.options[index].click()
         return self

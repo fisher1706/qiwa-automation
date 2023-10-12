@@ -207,3 +207,10 @@ class SecurityQuestions(Base):
     school_name = Column("school_name", Text)
     created_at = Column("created_at", DateTime(timezone=False))
     updated_at = Column("updated_at", DateTime(timezone=False))
+
+
+class AccountLoginFailures(Base):
+    __tablename__ = "account_login_failures"
+
+    id = Column("id", BigInteger, primary_key=True, nullable=False)
+    number = Column("number", Integer, nullable=False)

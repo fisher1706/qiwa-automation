@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import have
+from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Language
@@ -19,6 +19,7 @@ class Header:
 
     @allure.step
     def change_local(self, lang_value) -> Header:
+        self.lang_dropdown.wait_until(be.visible)
         self.lang_dropdown.click()
         local = self.lang_links[lang_value]
         if not local.matching(have.attribute("[data-component='Icon']")):

@@ -4,7 +4,7 @@ from requests import Response
 
 import config
 from src.api.http_client import HTTPClient
-from src.api.payloads.raw.um.payment import Payment
+from src.api.payloads.raw.user_management.payment import Payment
 from utils.assertion import assert_status_code
 
 
