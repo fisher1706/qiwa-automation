@@ -1,7 +1,7 @@
-from pydantic import BaseModel  # pylint: disable = no-name-in-module
+from pydantic.generics import GenericModel  # pylint: disable = no-name-in-module
 
 
-class QiwaBaseModel(BaseModel):
+class QiwaBaseModel(GenericModel):
     class Config:
         allow_population_by_field_name = True
 

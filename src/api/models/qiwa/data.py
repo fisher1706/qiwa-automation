@@ -1,10 +1,15 @@
-from typing import Any, List, Literal, Type, Union
+from typing import Any, List, Literal, Type, TypeVar, Union
 
 from pydantic import BaseModel
 
+from src.api.constants.work_permit import WorkPermitStatus, WorkPermitStatusArabic
 from src.api.models.qiwa import raw
 from src.api.models.qiwa.raw.data import Data
 from src.api.models.qiwa.raw.relationships import Relationships
+
+StatusLiteralT = TypeVar("StatusLiteralT", bound=WorkPermitStatus)
+StatusIdLiteralT = TypeVar("StatusIdLiteralT", bound=WorkPermitStatusArabic)
+
 
 group = Data[str, Literal["group"], raw.e_service.Group, Relationships]
 service_group = Data[int, Literal["service-group"], raw.e_service.ServiceGroup, Relationships]
@@ -36,7 +41,24 @@ change_occupation_request = Data[
 ]
 request = Data[str, Literal["request"], raw.change_occupation.Request, Type[None]]
 work_permit_request = Data[
-    str, Literal["work-permit-request"], raw.work_permit.transaction.WorkPermitRequest, Type[None]
+    str,
+    Literal["work-permit-request"],
+    raw.work_permit.transaction.WorkPermitRequest[WorkPermitStatusArabic, WorkPermitStatus],
+    Type[None],
+]
+
+
+def work_permit_request_with_status(status: StatusLiteralT, status_id: StatusIdLiteralT):
+    return Data[
+        str,
+        Literal["work-permit-request"],
+        raw.work_permit.transaction.WorkPermitRequest[status, status_id],
+        Type[None],
+    ]
+
+
+work_permit_employees = Data[
+    str, Literal["work_permit_employees"], raw.work_permit.employees.Employee, Type[None]
 ]
 
 
