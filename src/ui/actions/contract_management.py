@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from data.constants import UserType
 from data.dedicated.contract_details import (
     ContractDetails,
@@ -8,12 +10,15 @@ from src.ui.pages.dedicated_pages.contract_management_page import ContractManage
 
 
 class ContractManagementActions(ContractManagementPage):
-    def fill_establishment_details(self):
+    def fill_establishment_details(self, user_type: str) -> ContractManagementActions:
         establishment_details = EstablishmentDetails()
+        if user_type == UserType.EXPAT:
+            self.fill_field_role(establishment_details.role)
+            self.fill_field_email(establishment_details.company_email)
         self.fill_field_work_location(establishment_details.work_location)
         return self
 
-    def fill_employee_details(self):
+    def fill_employee_details(self) -> ContractManagementActions:
         employee_details = EmployeeDetails()
         contract_details = ContractDetails()
 
@@ -24,7 +29,7 @@ class ContractManagementActions(ContractManagementPage):
         self.fill_field_email(employee_details.email)
         return self
 
-    def fill_contract_details(self, user_type: UserType = None):
+    def fill_contract_details(self, user_type: str = None) -> ContractManagementActions:
         contract_details = ContractDetails()
 
         if user_type == UserType.EXPAT:
