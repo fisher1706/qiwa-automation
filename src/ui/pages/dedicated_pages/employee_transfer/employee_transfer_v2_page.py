@@ -11,7 +11,9 @@ from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_compa
 )
 
 
-class EmployeeTransferV2Page(TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage, SummaryPage):
+class EmployeeTransferV2Page(
+    TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage, SummaryPage
+):
     btn_transfer_employee = s("//button[.='Transfer employee']")
 
     tiles = ss('[data-testid="tile-desktop"] button')

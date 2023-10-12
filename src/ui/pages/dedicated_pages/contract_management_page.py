@@ -60,7 +60,9 @@ class ContractManagementPage:
     # Summary
     terms_checkbox = s("#terms + span")
 
-    def wait_until_title_verification_code_appears(self, text: dict, locale: str) -> ContractManagementPage:
+    def wait_until_title_verification_code_appears(
+        self, text: dict, locale: str
+    ) -> ContractManagementPage:
         locator = self.title_verification_code
         locator.wait_until(be.visible)
         locator.should(have.exact_text(text[locale]))
@@ -219,7 +221,9 @@ class ContractManagementPage:
         ).click()
         return self
 
-    def select_dropdown_transportation_allowance_frequency(self, data: str) -> ContractManagementPage:
+    def select_dropdown_transportation_allowance_frequency(
+        self, data: str
+    ) -> ContractManagementPage:
         self.dropdown_transportation_allowance_frequency.should(be.visible).all(
             "option"
         ).element_by(have.text(data)).click()

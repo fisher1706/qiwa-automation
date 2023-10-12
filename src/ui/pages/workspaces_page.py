@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be, have, browser
+from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.common import NoSuchElementException
 
@@ -64,7 +64,9 @@ class WorkspacesPage:
         return self
 
     @allure.step
-    def select_company_account_with_sequence_number(self, sequence_number: int | str) -> WorkspacesPage:
+    def select_company_account_with_sequence_number(
+        self, sequence_number: int | str
+    ) -> WorkspacesPage:
         self.select_business_account()
         self.business_account_list.element_by(have.text(str(sequence_number))).click()
         return self
