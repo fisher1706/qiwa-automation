@@ -73,7 +73,7 @@ class OldContractManagementActions(OldContractManagementPage):
         self.fill_contract_details(user_type)
 
     def navigate_to_cm_service(self, entity: Entity):
-        qiwa.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.CONTRACT_MANAGEMENT)
