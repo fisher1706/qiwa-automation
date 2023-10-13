@@ -23,3 +23,11 @@ owner_for_self = User(
     sequence_number=1378802,
     unified_number_id=2099251,
 )
+
+terminated_owner = User(
+    personal_number="1050705357",
+    user_id=1872092,
+    labor_office_id=1,
+    sequence_number=59989,
+    unified_number_id=121173,
+)

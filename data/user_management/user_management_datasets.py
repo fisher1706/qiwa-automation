@@ -31,7 +31,7 @@ class PaymentHeaders:
 
 @dataclasses.dataclass
 class SelfSubscriptionType:
-    subscription_type = ["new", "extend", "renew-expired", "renew-terminated"]
+    subscription_type = ["extend", "renew-expired", "renew-terminated"]
 
 
 @dataclasses.dataclass
