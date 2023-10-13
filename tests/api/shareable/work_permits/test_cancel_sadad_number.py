@@ -14,7 +14,7 @@ from utils.assertion import assert_status_code
 
 
 def test_cancelling_pending_payment_request(api, pending_payment_sadad_number):
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=pending_payment_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
@@ -27,7 +27,7 @@ def test_cancelling_pending_payment_request(api, pending_payment_sadad_number):
 
 
 def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=canceled_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
@@ -42,7 +42,7 @@ def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
 def test_cancelling_incorrect_sadad_number(api):
     incorrect_sadad_number = "123456789"
 
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=incorrect_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)

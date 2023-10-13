@@ -8,7 +8,7 @@ from utils.assertion import assert_status_code, assert_that
 
 
 def test_get_transactions(api):
-    response = api.wp_request_api.get_wp_transactions(per_page=1000)
+    response = api.work_permits_api.get_wp_transactions(per_page=1000)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
@@ -17,7 +17,7 @@ def test_get_transactions(api):
 
 @pytest.mark.parametrize("status", WorkPermitStatus, ids=lambda param: param.name)
 def test_get_transactions_by_status(api, status):
-    response = api.wp_request_api.get_wp_transactions(per_page=1000, status=status)
+    response = api.work_permits_api.get_wp_transactions(per_page=1000, status=status)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = models.qiwa.work_permit.transactions_data_with_status(status).parse_obj(response.json())

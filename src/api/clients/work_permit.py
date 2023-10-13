@@ -8,7 +8,7 @@ from src.api.constants.work_permit import WorkPermitStatus
 from src.api.http_client import HTTPClient
 
 
-class WorkPermitApi:
+class WorkPermitsApi:
     def __init__(self, api: HTTPClient):
         self.api = api
         self.url = config.qiwa_urls.api + "/working-permit-request"

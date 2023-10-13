@@ -14,7 +14,7 @@ from utils.assertion import assert_status_code, assert_that
 
 @pytest.mark.parametrize("is_regular", [True, False])
 def test_validation_result(api, employee_to_validate, is_regular):
-    response = api.wp_request_api.validate_expat(
+    response = api.work_permits_api.validate_expat(
         expat_number=employee_to_validate.personal_number,
         regular=is_regular
     )
@@ -26,7 +26,7 @@ def test_validation_result(api, employee_to_validate, is_regular):
 
 def test_validation_with_invalid_expat_number(api):
     expat_number = "0000000000"
-    response = api.wp_request_api.validate_expat(
+    response = api.work_permits_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
@@ -41,7 +41,7 @@ def test_validation_with_invalid_expat_number(api):
 
 def test_validation_for_expat_with_created_request(api):
     expat_number = "2392007080"
-    response = api.wp_request_api.validate_expat(
+    response = api.work_permits_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )
@@ -56,7 +56,7 @@ def test_validation_for_expat_with_created_request(api):
 
 def test_validation_for_expat_from_another_establishment(api):
     expat_number = "2393440215"
-    response = api.wp_request_api.validate_expat(
+    response = api.work_permits_api.validate_expat(
         expat_number=expat_number,
         regular=True
     )

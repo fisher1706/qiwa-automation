@@ -36,7 +36,7 @@ def api(request) -> QiwaApi:
 
 @pytest.fixture
 def pending_payment_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(status=WorkPermitStatus.PENDING_PAYMENT)
+    response = api.work_permits_api.get_wp_transactions(status=WorkPermitStatus.PENDING_PAYMENT)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return next(
@@ -46,7 +46,7 @@ def pending_payment_sadad_number(api) -> str:
 
 @pytest.fixture
 def canceled_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(status=WorkPermitStatus.CANCELED)
+    response = api.work_permits_api.get_wp_transactions(status=WorkPermitStatus.CANCELED)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return requests_list.data[0].attributes.bill_number
@@ -54,7 +54,7 @@ def canceled_sadad_number(api) -> str:
 
 @pytest.fixture
 def employee(api) -> Employee:
-    response = api.wp_request_api.get_employees()
+    response = api.work_permits_api.get_employees()
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     response_json = models.qiwa.work_permit.employees_data.parse_obj(response.json())
     return Employee.parse_obj(random.choice(response_json.data).attributes)
@@ -62,7 +62,7 @@ def employee(api) -> Employee:
 
 @pytest.fixture
 def employee_to_validate(api) -> Employee:
-    response = api.wp_request_api.get_employees(per_page=100)
+    response = api.work_permits_api.get_employees(per_page=100)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     expression = "data[?attributes.wp_status_id==`3`].attributes | [0]"
     employee = search_by_data(expression, response.json())
