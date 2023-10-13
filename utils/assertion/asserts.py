@@ -1,8 +1,22 @@
 import json
-from typing import Any
+from typing import TypeVar, Any
 
 import allure
 from deepdiff import DeepDiff
+
+from utils.assertion.assertion_mixin import AssertionMixin
+
+T = TypeVar("T")
+
+
+def assert_that(actual: T) -> AssertionMixin:
+    assertion = AssertionMixin(actual=actual)
+    return assertion
+
+
+def assert_status_code(code: int) -> AssertionMixin:
+    assertion = AssertionMixin(actual=code)
+    return assertion.as_("status code")
 
 
 @allure.step

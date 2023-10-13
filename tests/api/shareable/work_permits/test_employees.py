@@ -3,7 +3,7 @@ from http import HTTPStatus
 import pytest
 
 from src.api import models
-from src.api.assertions.diff import assert_data
+from utils.assertion.asserts import assert_data
 from utils.assertion import assert_status_code, assert_that
 
 

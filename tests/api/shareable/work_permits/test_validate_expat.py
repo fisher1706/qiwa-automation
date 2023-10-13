@@ -8,7 +8,7 @@ from data.shareable.expected_json.work_permits.validate_expat import (
     processing_work_permit_error,
 )
 from src.api import models
-from src.api.assertions.diff import assert_data
+from utils.assertion.asserts import assert_data
 from utils.assertion import assert_status_code, assert_that
 
 
