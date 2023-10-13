@@ -1,11 +1,12 @@
 import json
+from typing import Any
 
 import allure
 from deepdiff import DeepDiff
 
 
 @allure.step
-def assert_not_difference(expected: dict, actual: dict) -> None:
+def assert_data(*, expected: Any, actual: Any) -> None:
     class SetEncoder(json.JSONEncoder):
         def default(self, obj):
             return list(obj)

@@ -8,7 +8,7 @@ from data.shareable.expected_json.work_permits.validate_expat import (
     processing_work_permit_error,
 )
 from src.api import models
-from src.api.assertions.diff import assert_not_difference
+from src.api.assertions.diff import assert_data
 from utils.assertion import assert_status_code, assert_that
 
 pytestmark = [pytest.mark.stage]
@@ -35,9 +35,10 @@ def test_validation_with_invalid_expat_number(api):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
-    expected_json_values = invalid_expat_number_error(expat_number)
-    actual_json_values = json.dict()
-    assert_not_difference(expected_json_values, actual_json_values)
+    assert_data(
+        expected=invalid_expat_number_error(expat_number),
+        actual=json.dict()
+    )
 
 
 def test_validation_for_expat_with_created_request(api):
@@ -49,9 +50,10 @@ def test_validation_for_expat_with_created_request(api):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
-    expected_json_values = processing_work_permit_error(expat_number)
-    actual_json_values = json.dict()
-    assert_not_difference(expected_json_values, actual_json_values)
+    assert_data(
+        expected=processing_work_permit_error(expat_number),
+        actual=json.dict()
+    )
 
 
 def test_validation_for_expat_from_another_establishment(api):
@@ -63,6 +65,7 @@ def test_validation_for_expat_from_another_establishment(api):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = models.qiwa.work_permit.expat_validation_error.parse_obj(response.json())
-    expected_json_values = not_your_establishment_laborer_error(expat_number)
-    actual_json_values = json.dict()
-    assert_not_difference(expected_json_values, actual_json_values)
+    assert_data(
+        expected=not_your_establishment_laborer_error(expat_number),
+        actual=json.dict()
+    )
