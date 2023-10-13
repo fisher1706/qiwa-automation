@@ -7,50 +7,48 @@ from data.shareable.expected_json.work_permits.cancel_sadad_number import (
     incorrect_transaction_error,
     successfully_canceled_transaction,
 )
-from src.api.assertions.diff import assert_not_difference
 from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
 from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
 from utils.assertion import assert_status_code
-
-pytestmark = [pytest.mark.stage]
+from utils.assertion.asserts import assert_data
 
 
 def test_cancelling_pending_payment_request(api, pending_payment_sadad_number):
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=pending_payment_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
-    response_json = SuccessfulCancelling.parse_obj(response.json())
-    expected_json_values = successfully_canceled_transaction(pending_payment_sadad_number)
-    actual_json_values = response_json.dict()
-
-    assert_not_difference(expected_json_values, actual_json_values)
+    json = SuccessfulCancelling.parse_obj(response.json())
+    assert_data(
+        expected=successfully_canceled_transaction(pending_payment_sadad_number),
+        actual=json.dict()
+    )
 
 
 def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=canceled_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    response_json = cancel_sadad_ibm_error.parse_obj(response.json())
-    expected_json_values = already_canceled_transaction_error()
-    actual_json_values = response_json.data.attributes.dict(include=set(expected_json_values.keys()))
-
-    assert_not_difference(expected_json_values, actual_json_values)
+    json = cancel_sadad_ibm_error.parse_obj(response.json())
+    assert_data(
+        expected=already_canceled_transaction_error(),
+        actual=json.data.attributes.dict(include=set(already_canceled_transaction_error().keys()))
+    )
 
 
 def test_cancelling_incorrect_sadad_number(api):
     incorrect_sadad_number = "123456789"
 
-    response = api.wp_request_api.cancel_sadad_number(
+    response = api.work_permits_api.cancel_sadad_number(
         sadad_number=incorrect_sadad_number
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    response_json = cancel_sadad_ibm_error.parse_obj(response.json())
-    expected_json_values = incorrect_transaction_error()
-    actual_json_values = response_json.data.attributes.dict(include=set(expected_json_values.keys()))
-
-    assert_not_difference(expected_json_values, actual_json_values)
+    json = cancel_sadad_ibm_error.parse_obj(response.json())
+    assert_data(
+        expected=incorrect_transaction_error(),
+        actual=json.data.attributes.dict(include=set(incorrect_transaction_error().keys()))
+    )

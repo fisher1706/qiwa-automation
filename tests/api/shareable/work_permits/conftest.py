@@ -24,21 +24,14 @@ def establishment() -> Establishment:
 
 
 @pytest.fixture(scope="module")
-def api(request) -> QiwaApi:
-    marks = [mark.name for mark in request.node.own_markers]
-    user = "1470547124"
-    if "stage" in marks:
-        user = "1015671413"
-    elif request.node.name == "test_work_permit_debts.py":
-        user = "1154755065"
-    return QiwaApi.login_as_user(user).select_company()
+def api() -> QiwaApi:
+    return QiwaApi.login_as_user("1015671413").select_company()
 
 
 @pytest.fixture
 def pending_payment_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(
-        status=WorkPermitStatus.PENDING_PAYMENT, expect_code=HTTPStatus.OK
-    )
+    response = api.work_permits_api.get_wp_transactions(status=WorkPermitStatus.PENDING_PAYMENT)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return next(
         data.attributes.bill_number for data in requests_list.data if data.attributes.bill_number
@@ -47,16 +40,15 @@ def pending_payment_sadad_number(api) -> str:
 
 @pytest.fixture
 def canceled_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(
-        status=WorkPermitStatus.CANCELED, expect_code=HTTPStatus.OK
-    )
+    response = api.work_permits_api.get_wp_transactions(status=WorkPermitStatus.CANCELED)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return requests_list.data[0].attributes.bill_number
 
 
 @pytest.fixture
 def employee(api) -> Employee:
-    response = api.wp_request_api.get_employees()
+    response = api.work_permits_api.get_employees()
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     response_json = models.qiwa.work_permit.employees_data.parse_obj(response.json())
     return Employee.parse_obj(random.choice(response_json.data).attributes)
@@ -64,7 +56,7 @@ def employee(api) -> Employee:
 
 @pytest.fixture
 def employee_to_validate(api) -> Employee:
-    response = api.wp_request_api.get_employees(per_page=100)
+    response = api.work_permits_api.get_employees(per_page=100)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     expression = "data[?attributes.wp_status_id==`3`].attributes | [0]"
     employee = search_by_data(expression, response.json())
