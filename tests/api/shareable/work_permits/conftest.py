@@ -36,9 +36,8 @@ def api(request) -> QiwaApi:
 
 @pytest.fixture
 def pending_payment_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(
-        status=WorkPermitStatus.PENDING_PAYMENT, expect_code=HTTPStatus.OK
-    )
+    response = api.wp_request_api.get_wp_transactions(status=WorkPermitStatus.PENDING_PAYMENT)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return next(
         data.attributes.bill_number for data in requests_list.data if data.attributes.bill_number
@@ -47,9 +46,8 @@ def pending_payment_sadad_number(api) -> str:
 
 @pytest.fixture
 def canceled_sadad_number(api) -> str:
-    response = api.wp_request_api.get_wp_transactions(
-        status=WorkPermitStatus.CANCELED, expect_code=HTTPStatus.OK
-    )
+    response = api.wp_request_api.get_wp_transactions(status=WorkPermitStatus.CANCELED)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     requests_list = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
     return requests_list.data[0].attributes.bill_number
 
