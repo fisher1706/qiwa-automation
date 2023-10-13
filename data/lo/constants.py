@@ -68,10 +68,10 @@ class LOSysAdmin:
 
 
 class AppointmentsHistoryStatus(Enum):
-    Expired = 1
-    Cancelled = 2
-    Attended = 3
-    Done = 4
+    EXPIRED = 1
+    CANCELLED = 2
+    ATTENDED = 3
+    DONE = 4
 
 
 @dataclass

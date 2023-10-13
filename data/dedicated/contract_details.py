@@ -66,7 +66,7 @@ class ContractDetails(BaseModel):
     annual_vacations_days: str = "21"
 
     notice_period: str = "30"
-    iban_number: str = "SA2980000528608010105925"
+    iban_number: str = "2980000528608010105925"
 
     basic_salary: str = "1500"
     type_for_basic_salary: str = "SAR"

@@ -6,7 +6,6 @@ import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
 
-import config
 from src.ui.components.raw.dropdown import Dropdown
 from src.ui.components.raw.table import Table
 from src.ui.pages.appointments.labor_office_appointments_create import (
@@ -58,11 +57,6 @@ class LaborOfficeAppointmentsPage:
     view_appointment_details_from_history_last = s(
         "//*[@id='archieved']/div/div[2]/div/table/tbody/tr[1]/td[8]/a"
     )
-
-    def navigate_to_labor_office_appointments_page(self) -> LaborOfficeAppointmentsPage:
-        browser.open(config.qiwa_urls.appointment_booking)
-        self.wait_page_to_load()
-        return self
 
     @allure.step("Wait Appointments page to load")
     def wait_page_to_load(self) -> LaborOfficeAppointmentsPage:

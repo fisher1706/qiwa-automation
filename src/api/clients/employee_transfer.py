@@ -1,41 +1,27 @@
 import json
 
 import allure
-from requests import Response
 
-from data.dedicated.employee_transfer import employer, laborer
+import config
+from data.dedicated.employee_transfer import employer_old, laborer
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.constants.auth import HEADERS
+from src.api.http_client import HTTPClient
 from utils.schema_parser import load_json_schema
 
 
 class EmployeeTransferApi:
-    # TODO: Need to update after when project structure will be applied
-    def __init__(self, api):
+    def __init__(self, api=HTTPClient()):
         self.api = api
-        self.url_create_new_contract = "https://gw-apic.qiwa.info"
+        self.url = config.settings.ibm_url
         self.url_prepare_laborer_for_et_request = "http://192.168.168.29:5000"
 
-    def _check_status_response(
-        self, response: Response, name: str, expected_status: str = "SUCCESS"
-    ):
-        response = response.json()["CreateNewContractRs"]["Header"]
-        actual_status = response["ResponseStatus"]["Status"]
-        assert actual_status == expected_status, (
-            f"Request for {name} failed.\n"
-            f"Request URL: {response.request.url}\n"
-            f"Request body: {response.request.body}\n"
-            f"Expected status: {expected_status}\n"
-            f"Actual status: {actual_status}\n"
-            f"Reason: {response['ResponseStatus']['EnglishMsg']}\n"
-        )
-
-    @allure.step("POST create new contract")
+    @allure.step
     def post_create_new_contract(
         self,
         laborer_id_no: int = laborer.login_id,
-        labor_office_id: str = employer.labor_office_id,
-        sequence_number: str = employer.establishment_number,
+        labor_office_id: str = employer_old.labor_office_id,
+        sequence_number: str = employer_old.establishment_number,
         expect_code=200,
     ):
         json_body = load_json_schema("create_contract.json")
@@ -47,25 +33,24 @@ class EmployeeTransferApi:
             "SequenceNumber"
         ] = sequence_number
         response = self.api.post(
-            url=self.url_create_new_contract,
-            endpoint="/takamol/staging/contractmanagement/createnewcontract",
-            body=json.dumps(json_body),
+            url=self.url,
+            endpoint="/takamol/staging/contractmanagement/v2/createnewcontract",
+            data=json.dumps(json_body),
             headers=HEADERS,
         )
         ResponseValidator(response).check_status_code(
-            name="Prepare laborer for et request", expect_code=expect_code
+            name="Create new contract", expect_code=expect_code
         )
-        self._check_status_response(response, name="Prepare laborer for et request")
 
-    @allure.step("POST prepare laborer for et request")
+    @allure.step
     def post_prepare_laborer_for_et_request(
         self, laborer_id: int = laborer.login_id, expect_code=200
     ):
-        params = {"laborerId": laborer_id}
+        payload = {"laborerId": laborer_id}
         response = self.api.post(
             url=self.url_prepare_laborer_for_et_request,
             endpoint="/employeeTransfer/prepareLaborerForETrequest",
-            params=params,
+            json=payload,
             headers={},
         )
         ResponseValidator(response).check_status_code(

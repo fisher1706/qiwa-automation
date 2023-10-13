@@ -11,6 +11,7 @@ from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmat
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
+from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.appointments.labor_office_appointment_view import (
     LaborOfficeAppointmentsViewPage,
@@ -28,6 +29,10 @@ from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
 from src.ui.pages.dedicated_pages.change_occupation_page import ChangeOccupationPage
+from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page import (
+    EmployeeTransferV2Page,
+)
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.add_new_delegation_page import AddDelegationPage
@@ -85,12 +90,15 @@ class QiwaUiClient:
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
+    employee_transfer_page = EmployeeTransferV2Page()
+    contract_management_page = ContractManagementPage()
 
     # Components
     header = Header()
     footer = Footer()
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
+    meet_qiwa_popup = MeetQiwaPopup()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
@@ -114,7 +122,7 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_login_page(self):
+    def open_login_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.laborer_sso_auth)
         return self
 
@@ -149,12 +157,28 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_visa_page(self):
+    def open_visa_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.visa_web_url)
+        return self
 
     @allure.step
     def open_user_management_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.ui_user_management)
+        return self
+
+    @allure.step
+    def open_labor_office_appointments_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.appointment_booking)
+        return self
+
+    @allure.step
+    def open_employee_transfer_v2_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.employee_transfer_v2)
+        return self
+
+    @allure.step
+    def open_e_services_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.e_services)
         return self
 
 

@@ -1,6 +1,5 @@
 import time
 
-import allure
 import pytest
 from selene import be, browser, have
 from selene.core.exceptions import TimeoutException
@@ -14,13 +13,15 @@ from data.constants import (
     Language,
     UserInfo,
 )
-from data.dedicated.employee_transfer import Entity, Laborer, employer
+from data.dedicated.employee_transfer import Entity, Laborer, employer_old
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
-from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.e_services import EServiceActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
-from src.ui.pages.employee_transfer_page import EmployeeTransferPage
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
+    EmployeeTransferPage,
+)
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from src.ui.qiwa import qiwa
@@ -35,7 +36,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
         self.e_services_action = EServiceActions()
         self.individual_page = IndividualPage()
         self.footer = Footer()
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
 
     def __switch_tab_with_timeout(self, tab_id: int = 1):
         attempts = 5
@@ -118,7 +119,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
     def confirm_creation_of_contract(
         self,
         entity_laborer: Laborer,
-        entity: Entity = employer,
+        entity: Entity = employer_old,
         transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
         is_get_balance_value: bool = False,
         is_verify_popup: bool = False,
@@ -146,10 +147,10 @@ class EmployeeTransferActions(EmployeeTransferPage):
         self.verify_description(EmployeeTransfer.DESCRIPTION, locale)
         self.verify_establishment_id_label(EmployeeTransfer.ESTABLISHMENT_ID_LABEL, locale)
         self.verify_establishment_id_value(
-            f"{employer.labor_office_id}-{employer.sequence_number}"
+            f"{employer_old.labor_office_id}-{employer_old.sequence_number}"
         )
         self.verify_establishment_name_label(EmployeeTransfer.ESTABLISHMENT_NAME_LABEL, locale)
-        self.verify_establishment_name_value(employer.establishment_name_ar)
+        self.verify_establishment_name_value(employer_old.establishment_name_ar)
         self.btn_request_employee_transfer_should_be_enabled()
 
     def verify_terms_conditions_popup(self, locale: str):
@@ -206,7 +207,6 @@ class EmployeeTransferActions(EmployeeTransferPage):
             if int(amount) > int(rows_per_page):
                 self.verify_next_arrow_is_clickable()
 
-    @allure.step("Verify validation message")
     def verify_message(self, expected_message):
         try:
             message_element = s(self.MESSAGE_LOCATOR[expected_message["type"]])

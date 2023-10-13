@@ -61,6 +61,7 @@ class EServicesPage:
         "active": ".eServices-page__active-eservices div h2",
         "forbidden": ".eServices-page__forbidden-eservices div h2",
     }
+    EMPLOYEE_TRANSFER_CARD = s("//p[.='Employee Transfer']")
 
     def __init__(self):
         super().__init__()
@@ -121,3 +122,6 @@ class EServicesPage:
     def click_delete_e_service(self) -> EServicesPage:
         s(self.DELETE_E_SERVICE_BUTTON).with_(timeout=1).should(be.clickable).click()
         return self
+
+    def select_employee_transfer(self):
+        self.EMPLOYEE_TRANSFER_CARD.click()
