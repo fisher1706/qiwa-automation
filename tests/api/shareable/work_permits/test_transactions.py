@@ -6,8 +6,6 @@ from src.api import models
 from src.api.constants.work_permit import WorkPermitStatus
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.stage]
-
 
 def test_get_transactions(api):
     response = api.wp_request_api.get_wp_transactions(per_page=1000)

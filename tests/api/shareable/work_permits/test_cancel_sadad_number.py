@@ -12,8 +12,6 @@ from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancellin
 from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
 from utils.assertion import assert_status_code
 
-pytestmark = [pytest.mark.stage]
-
 
 def test_cancelling_pending_payment_request(api, pending_payment_sadad_number):
     response = api.wp_request_api.cancel_sadad_number(

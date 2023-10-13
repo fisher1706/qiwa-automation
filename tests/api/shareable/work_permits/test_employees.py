@@ -6,8 +6,6 @@ from src.api import models
 from src.api.assertions.diff import assert_data
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.stage]
-
 
 def test_get_employee_by_personal_number(api, employee):
     response = api.wp_request_api.get_employee_by_personal_number(employee.personal_number)

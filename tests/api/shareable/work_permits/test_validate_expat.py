@@ -11,8 +11,6 @@ from src.api import models
 from src.api.assertions.diff import assert_data
 from utils.assertion import assert_status_code, assert_that
 
-pytestmark = [pytest.mark.stage]
-
 
 @pytest.mark.parametrize("is_regular", [True, False])
 def test_validation_result(api, employee_to_validate, is_regular):
