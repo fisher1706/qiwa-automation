@@ -1,5 +1,5 @@
 import json
-from typing import TypeVar, Any
+from typing import Any, TypeVar
 
 import allure
 from deepdiff import DeepDiff

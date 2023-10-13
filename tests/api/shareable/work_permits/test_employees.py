@@ -3,8 +3,8 @@ from http import HTTPStatus
 import pytest
 
 from src.api import models
-from utils.assertion.asserts import assert_data
 from utils.assertion import assert_status_code, assert_that
+from utils.assertion.asserts import assert_data
 
 
 def test_get_employee_by_personal_number(api, employee):
