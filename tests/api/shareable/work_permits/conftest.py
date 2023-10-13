@@ -24,14 +24,8 @@ def establishment() -> Establishment:
 
 
 @pytest.fixture(scope="module")
-def api(request) -> QiwaApi:
-    marks = [mark.name for mark in request.node.own_markers]
-    user = "1470547124"
-    if "stage" in marks:
-        user = "1015671413"
-    elif request.node.name == "test_work_permit_debts.py":
-        user = "1154755065"
-    return QiwaApi.login_as_user(user).select_company()
+def api() -> QiwaApi:
+    return QiwaApi.login_as_user("1015671413").select_company()
 
 
 @pytest.fixture
