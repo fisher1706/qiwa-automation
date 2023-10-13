@@ -178,18 +178,11 @@ um_api_tests:
     ENV: stage
     TEST_SUITE: tests/api/um
 
-shareable_demo_api_tests:
-  <<: *testrun
-  variables:
-    ENV: demo
-    TEST_SUITE: tests/api/shareable
-
-shareable_stage_api_tests:
+shareable_api_tests:
   <<: *testrun
   variables:
     ENV: stage
     TEST_SUITE: tests/api/shareable
-    OPTIONS: "-m stage"
 
 lmi_api_tests:
   <<: *testrun
@@ -321,12 +314,6 @@ um_ui_allure_report:
     ALLURE_PROJECT_ID: um-ui-daily
   needs: [um_ui_tests]
 
-shareable_ui_allure_report:
-  <<: *allure_report
-  variables:
-    ALLURE_PROJECT_ID: ss-ui-wp-daily
-  needs: [shareable_ui_tests]
-
 dedicated_co_ui_allure_report:
   <<: *allure_report
   variables:
@@ -357,17 +344,11 @@ um_api_allure_report:
     ALLURE_PROJECT_ID: um-api-daily
   needs: [um_api_tests]
 
-shareable_demo_api_allure_report:
-  <<: *allure_report
-  variables:
-    ALLURE_PROJECT_ID: ss-api-wp-daily
-  needs: [shareable_demo_api_tests]
-
-shareable_stage_api_allure_report:
+shareable_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: ss-api-stage
-  needs: [shareable_stage_api_tests]
+  needs: [shareable_api_tests]
 
 lmi_api_allure_report:
   <<: *allure_report
@@ -400,26 +381,14 @@ um_ui_discord_notification:
     WEBHOOK: $UM_UI_DAILY
   needs: [um_ui_tests]
 
-shareable_ui_discord_notification:
-  <<: *discord_notification
-  variables:
-    WEBHOOK: $SS_UI_WP_DAILY
-  needs: [shareable_ui_tests]
-
 um_api_discord_notification:
   <<: *discord_notification
   variables:
     WEBHOOK: $UM_API_DAILY
   needs: [um_api_tests]
 
-shareable_demo_api_discord_notification:
+shareable_api_discord_notification:
   <<: *discord_notification
   variables:
-    WEBHOOK: $SS_API_WP_DAILY
-  needs: [shareable_demo_api_tests]
-
-shareable_stage_api_discord_notification:
-  <<: *discord_notification
-  variables:
-    WEBHOOK: $SS_API_WP_DAILY
-  needs: [shareable_stage_api_tests]
+    WEBHOOK: $SHAREABLE_AUTOTEST_RESULTS
+  needs: [shareable_api_tests]
