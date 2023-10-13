@@ -11,16 +11,16 @@ pytestmark = [pytest.mark.stage]
 
 def test_get_transactions(api):
     response = api.wp_request_api.get_wp_transactions(per_page=1000)
-    response_json = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
-
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_that(response_json.data).is_length(response_json.meta.total_count)
+
+    json = models.qiwa.work_permit.transactions_data.parse_obj(response.json())
+    assert_that(json.data).is_length(json.meta.total_count)
 
 
 @pytest.mark.parametrize("status", WorkPermitStatus, ids=lambda param: param.name)
 def test_get_transactions_by_status(api, status):
     response = api.wp_request_api.get_wp_transactions(per_page=1000, status=status)
-    response_json = models.qiwa.work_permit.transactions_data_with_status(status).parse_obj(response.json())
-
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_that(response_json.data).is_length(response_json.meta.total_count)
+
+    json = models.qiwa.work_permit.transactions_data_with_status(status).parse_obj(response.json())
+    assert_that(json.data).is_length(json.meta.total_count)
