@@ -36,6 +36,7 @@ class MainPageLocators:
     USERS_TABLE = "table.kJwdzn"
     USERS_IN_UN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-1')]/div/div/div/table/tbody"
     ACTION_BTN_TABLE = "td button[data-testid='row-actions']"
+    ACTION_BTN_FOR_OWNER = "tr:nth-child(1) td button[data-testid='row-actions']"
     USER_ROLE_IN_TABLE = "//div[contains(@id, 'tabpanel-:r0:-0')]//tbody/tr[1]/td[4]"
     VIEW_DETAILS_BTN = "button[data-testid='view-action']"
     RENEW_SUBSCRIPTION_BTN = "button[data-testid='renew-action']"
@@ -171,4 +172,4 @@ class MainPage(MainPageLocators):
 
     @allure.step
     def confirm_that_action_btn_is_missed(self):
-        ss(self.ACTION_BTN_TABLE).first.should(be.absent)
+        ss(self.ACTION_BTN_FOR_OWNER).first.should(be.absent)

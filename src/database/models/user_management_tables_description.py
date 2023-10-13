@@ -1,0 +1,86 @@
+# pylint: disable = too-few-public-methods
+from sqlalchemy import VARCHAR, BigInteger, Boolean, Column, Integer, Text
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
+
+class UMSubscriptionPayments(Base):
+    __tablename__ = "UM_Subscription_Payments"
+
+    unified_number = Column("FK_UnifiedNumber", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("FK_Idno", VARCHAR(20))
+    transaction_id = Column("FK_TransactionId", BigInteger)
+
+
+class UMPayments(Base):
+    __tablename__ = "UM_Payments"
+
+    transaction_id = Column("PK_TransactionId", BigInteger, primary_key=True, nullable=False)
+    payment_id = Column("PaymentId", VARCHAR(255))
+    payment_reference = Column("PaymentReference", VARCHAR(255))
+    payment_status_id = Column("FK_PaymentStatusId", Integer)
+    status = Column("Status", Text)
+    labor_office_id = Column("FK_LaborOfficeId", BigInteger)
+    sequence_number = Column("FK_SequenceNumber", BigInteger)
+
+
+class UMPrivileges(Base):
+    __tablename__ = "UM_Privileges"
+
+    labor_office_id = Column("FK_LaborOfficeId", BigInteger)
+    sequence_number = Column("FK_SequenceNumber", BigInteger)
+    personal_number = Column("FK_Idno", VARCHAR(20))
+    services_id = Column("FK_ServiceId", Integer, primary_key=True, nullable=False)
+
+
+class UMEstablishmentAccess(Base):
+    __tablename__ = "UM_EstablishmentAccess"
+
+    labor_office_id = Column("FK_LaborOfficeId", BigInteger)
+    sequence_number = Column("FK_SequenceNumber", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("FK_Idno", VARCHAR(20))
+    unified_number = Column("FK_UnifiedNumber", BigInteger)
+    has_access = Column("HasAccess", Boolean)
+
+
+class UMSubscriptions(Base):
+    __tablename__ = "UM_Subscriptions"
+
+    unified_number = Column("FK_UnifiedNumber", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("FK_Idno", VARCHAR(20))
+    subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
+
+
+class UserPrivileges(Base):
+    __tablename__ = "UserPrivileges"
+
+    id = Column("ID", BigInteger, primary_key=True, nullable=False)
+    user_id = Column("User_ID", BigInteger)
+    personal_number = Column("ID_NO", VARCHAR(10))
+    labor_office_id = Column("Labor_Office_ID", Integer)
+    sequence_number = Column("Establishment_Sequence", BigInteger)
+    subscription_id = Column("Subscription_ID", BigInteger)
+    subscription_status_id = Column("Subscription_Status_ID", Integer)
+    privileges_id = Column("Privilege_ID", Integer)
+    privileges_status_id = Column("Privilege_Status_ID", Integer)
+
+
+class UserSubscriptions(Base):
+    __tablename__ = "UserSubscriptions"
+
+    id = Column("ID", BigInteger, primary_key=True, nullable=False)
+    user_id = Column("User_Id", BigInteger)
+    labor_office_id = Column("LaborOfficeId", Integer)
+    sequence_number = Column("SequenceNumber", BigInteger)
+    status_id = Column("StatusId", Integer)
+    subscription_id = Column("SubscriptionId", Integer)
+    payment_reference = Column("PaymentReference", VARCHAR(150))
+    unified_number = Column("UnifiedNumber", BigInteger)
+
+
+class Users(Base):
+    __tablename__ = "Users"
+
+    id = Column("ID", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("IDNO", VARCHAR(150))

@@ -16,19 +16,21 @@ class UserManagementApi:  # pylint: disable=duplicate-code
     def __init__(self, client: HTTPClient):
         self.client = client
 
-    def get_self_subscription_price(self, cookie, labor_office_id, sequence_number) -> str:
+    def get_self_subscription_price(
+        self, cookie: dict, labor_office_id: str, sequence_number: str
+    ) -> str:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.get(
             url=self.url,
-            endpoint=f"/api/bff/subscriptions/self/price?laborOfficeId={labor_office_id}"
-            f"&sequenceNumber={sequence_number}",
+            endpoint="/api/bff/subscriptions/self/price",
+            params={"laborOfficeId": labor_office_id, "sequenceNumber": sequence_number},
             headers=headers,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        self_subsc_price = str(response.json()["totalFeeAmount"])
-        return self_subsc_price
+        self_subscription_price = str(response.json()["totalFeeAmount"])
+        return self_subscription_price
 
-    def get_thank_you_page(self, cookie, transaction_id) -> Response:
+    def get_thank_you_page(self, cookie: dict, transaction_id: int) -> Response:
         coded_cookie = code_um_cookie(cookie)
         headers = {"Cookie": f"qiwa.authorization={coded_cookie}"}
         return self.client.get(
@@ -38,13 +40,18 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         )
 
     def post_self_flow(
-        self, cookie, labor_office_id, sequence_number, subscription_price, subscr_type
-    ) -> bytes:
+        self,
+        cookie: dict,
+        labor_office_id: str,
+        sequence_number: str,
+        subscription_price: str,
+        subscription_type: str,
+    ) -> str:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.post(
             url=self.url,
-            endpoint=f"/api/bff/subscriptions/self/{subscr_type}?laborOfficeId={labor_office_id}"
-            f"&sequenceNumber={sequence_number}",
+            endpoint=f"/api/bff/subscriptions/self/{subscription_type}",
+            params={"laborOfficeId": labor_office_id, "sequenceNumber": sequence_number},
             headers=headers,
             json=SelfSubscription(totalFeeAmount=subscription_price).dict(),
         )
