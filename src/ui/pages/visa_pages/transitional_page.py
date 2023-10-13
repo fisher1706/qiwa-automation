@@ -107,6 +107,7 @@ class TransitionalPage(BasePage):
     perm_work_visa_card = s('//*[@data-testid="work-visa"]')
     temp_work_visa_card = s('//*[@data-testid="visit-visa"]')
     seasonal_work_visa_card = s('//*[@data-testid="seasonal-visa"]')
+    perm_work_visa_card_exp_date = s('//*[@data-testid="workVisaEligibilityExpirationDateValue"]')
 
     def page_is_loaded(self):
         self.cards_loading.should(be.hidden)
@@ -498,3 +499,13 @@ class TransitionalPage(BasePage):
         self.verify_modal_popup_window(Numbers.ONE)
         self.modal_popup_window_x_button.click()
         self.modal_popup_window.should(be.hidden)
+
+    def verify_no_balance_expiration_date_perm_visa_card(self):
+        self.perm_work_visa_card_exp_date.should(be.hidden)
+
+    def verify_balance_expiration_date_perm_visa_card(self):
+        exp_date = datetime.date.today() + relativedelta(years=+1)
+        self.perm_work_visa_card_exp_date.should(be.visible)
+        self.perm_work_visa_card_exp_date.should(
+            have.exact_text(exp_date.strftime(DateFormats.DD_MM_YYYY))
+        )

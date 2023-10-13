@@ -48,6 +48,17 @@ class AccountsEmailsRequest:
         email_data.enabled_at = created_at
         self.session.commit()
 
+    def update_email_state(self, account_id: str, new_state: str) -> None:
+        email_data = (
+            self.session.query(AccountsEmails)
+            .filter(AccountsEmails.account_id == account_id)
+            .first()
+        )
+        email_data.enabled_at = None
+        email_data.state = new_state
+        email_data.enabled = False
+        self.session.commit()
+
     def delete_account_email_data(self, email_id: str) -> None:
         email_records = (
             self.session.query(AccountsEmails).filter(AccountsEmails.email_id == email_id).all()

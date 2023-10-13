@@ -1,10 +1,7 @@
 import allure
-import pytest
 
 from data.lo.constants import LOSysAdmin, RequesterTypeId, ServicesInfo
 from src.api.app import QiwaApi
-
-pytestmark = [pytest.mark.lo_services, pytest.mark.lo, pytest.mark.lo_api]
 
 
 @allure.title('Get all exist services')

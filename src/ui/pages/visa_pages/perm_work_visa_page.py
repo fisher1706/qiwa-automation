@@ -8,10 +8,15 @@ from data.visa.constants import (
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
     WORK_VISA_PAGE_TITLE_TEXT,
+    VisaType,
 )
 from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.soft_assertions import soft_assert_text
-from utils.pdf_parser import get_downloaded_filename, verify_text_in_pdf
+from utils.pdf_parser import (
+    file_is_valid_pdf,
+    get_downloaded_filename,
+    verify_text_in_pdf,
+)
 
 
 class PermWorkVisaPage(BasePage):
@@ -41,9 +46,14 @@ class PermWorkVisaPage(BasePage):
     )
     table_rows = './/*[@data-testid="tableContent"]'
     request_action_button = './/*[@data-testid="baseTableActions"]'
-    print_action = s('//button/p[contains(text(), "Print request details")]')
+    print_action = s('//button/p[contains(text(), "Print")]')
     view_action = s('//button/p[contains(text(), "View details")]')
     establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
+    increase_quota_establishment_button = s('//*[@data-testid="establishmentPhase"]//button')
+    increase_quota_expansion_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
+    nav_link_to_transitional_page = ss("//nav//li").second
+    allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
+    exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -107,12 +117,28 @@ class PermWorkVisaPage(BasePage):
         self.other_visas_table.ss(self.table_rows).by(have.text(request)).should(have.size(1))
 
     @allure.step("Verify visa request (pdf) permanent work visa page")
-    def verify_perm_work_visa_request_pdf(self, request):
-        self.permanent_visas_tab.click()
-        command.js.scroll_into_view(self.establishment_fund_section)
-        self.permanent_visas_table.ss(self.table_rows).by(have.text(request)).first.s(
-            self.request_action_button
-        ).click()
+    def verify_perm_work_visa_request_pdf(self, request, visa_type=VisaType.ESTABLISHMENT):
+        self.open_action_menu_on_first_visa_request(visa_type, request)
         self.print_action.click()
         filename = get_downloaded_filename(timeout=20)
-        verify_text_in_pdf(filename, request)
+        if visa_type == VisaType.ESTABLISHMENT:
+            verify_text_in_pdf(filename, request)
+        else:
+            file_is_valid_pdf(filename)
+
+    @allure.step("Return to transitional page")
+    def return_to_transitional_page(self):
+        self.nav_link_to_transitional_page.click()
+
+    def open_action_menu_on_first_visa_request(self, visa_type, request):
+        if visa_type == VisaType.ESTABLISHMENT:
+            self.permanent_visas_tab.click()
+            command.js.scroll_into_view(self.establishment_fund_section)
+            self.permanent_visas_table.ss(self.table_rows).by(have.text(request)).first.s(
+                self.request_action_button
+            ).click()
+        else:
+            command.js.scroll_into_view(self.allowed_quota_section)
+            self.exceptional_requests_table.ss(self.table_rows).by(have.text(request)).first.s(
+                self.request_action_button
+            ).click()

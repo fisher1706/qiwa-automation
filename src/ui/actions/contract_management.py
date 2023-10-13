@@ -9,16 +9,15 @@ from data.dedicated.contract_details import (
 )
 from data.dedicated.models.laborer import Entity, Laborer
 from src.ui.actions.e_services import EServiceActions
-from src.ui.actions.sign_in import LoginActions
 from src.ui.components.footer import Footer
 from src.ui.pages.contract_management_page import ContractManagementPage
 from src.ui.pages.workspaces_page import WorkspacesPage
+from src.ui.qiwa import qiwa
 
 
 class ContractManagementActions(ContractManagementPage):
     def __init__(self):
         super().__init__()
-        self.login_action = LoginActions()
         self.workspace_actions = WorkspacesPage()
         self.e_services_action = EServiceActions()
         self.footer = Footer()
@@ -71,7 +70,7 @@ class ContractManagementActions(ContractManagementPage):
         self.fill_contract_details(user_type)
 
     def navigate_to_cm_service(self, entity: Entity):
-        self.login_action.login_user(entity.login_id, UserInfo.PASSWORD).proceed_2fa()
+        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
         self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.CONTRACT_MANAGEMENT)

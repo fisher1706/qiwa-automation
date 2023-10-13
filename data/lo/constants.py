@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
+from data.constants import Language
+
 random_name = f"Auto Test {datetime.now().strftime('%Y.%m.%d %H.%M.%S')}"
 random_email = f"email{datetime.now().strftime('%Y.%m.%d.%H.%M.%S')}@test.com"
 
@@ -23,6 +25,13 @@ class LOAgent:
 @dataclass
 class LOAdmin:
     ID = "1002429940"
+
+
+@dataclass
+class AppointmentsUser:
+    ID = "1006586984"
+    APPOINTMENT_TO_SEARCH_IN_HISTORY = "34132"
+    NON_EXISTING_APPOINTMENT = "0000000000"
 
 
 @dataclass
@@ -56,6 +65,13 @@ class LOSysAdmin:
 
     LABOR_OFFICE_ID_EDIT = "11"
     SEQUENCE_NUMBER_EDIT = 1049676
+
+
+class AppointmentsHistoryStatus(Enum):
+    Expired = 1
+    Cancelled = 2
+    Attended = 3
+    Done = 4
 
 
 @dataclass
@@ -252,3 +268,37 @@ class SubServicesFront(str, Enum):
 
 class EmployeeTransferStatuses(str, Enum):
     CANCELED_BY_NEW_EMPLOYEE = "Cancelled by New Employer"
+
+
+class AppointmentsView:
+    PAGINATION = {Language.EN: "Appointment details", Language.AR: "تفاصيل الموعد"}
+    APPOINTMENT_REFERENCE_NUMBER = {
+        Language.EN: "Appointment reference number:",
+        Language.AR: "الرقم المرجعي للموعد:",
+    }
+    INFO_ROW_TEXT = {
+        Language.EN: "For a seamless experience at the Labor Office, "
+        "please make sure to arrive at the requested location on the "
+        "scheduled date and time.",
+        Language.AR: "للحصول على تجربة أفضل في مكتب العمل،"
+        " يرجى التأكد من الوصول للموقع في التاريخ والوقت المحددين.",
+    }
+    GENERAL_INFO_DATA_TEXT = {Language.EN: "Date", Language.AR: "التاريخ"}
+    GENERAL_INFO_TIME_TEXT = {Language.EN: "Time", Language.AR: "الوقت"}
+    GENERAL_INFO_SERVICE_TEXT = {Language.EN: "Service name", Language.AR: "اسم الخدمة"}
+    GENERAL_INFO_SUB_SERVICE_TEXT = {Language.EN: "Subservice name", Language.AR: "الخدمة الفرعية"}
+    GENERAL_INFO_OFFICE_TEXT = {Language.EN: "Office", Language.AR: "المكتب"}
+    GENERAL_INFO_LOCATION_TEXT = {Language.EN: "Location", Language.AR: "موقع"}
+    GENERAL_INFO_TYPE_TEXT = {Language.EN: "Type", Language.AR: "النوع"}
+    GENERAL_INFO_STATUS_TEXT = {Language.EN: "Status", Language.AR: "الحالة"}
+    REQUESTER_TYPE = {Language.EN: "Account type", Language.AR: "نوع الحساب"}
+    REQUESTER_ID = {Language.EN: "National ID", Language.AR: "الهوية الوطنية"}
+    MAP_TITLE = {Language.EN: "Appointment location", Language.AR: "موقع الموعد"}
+    MAP_TEXT = {
+        Language.EN: "Click on the blue pin to view your appointment’s location details.",
+        Language.AR: "اختر علامة الدبوس الأزرق لعرض تفاصيل موقع موعدك.",
+    }
+    COPY_MAP_TEXT = {
+        Language.EN: "Location link was successfully copied to the clipboard.",
+        Language.AR: "تم نسخ الرابط بنجاح",
+    }

@@ -5,7 +5,7 @@ from requests import Response
 
 import config
 from src.api.http_client import HTTPClient
-from src.api.payloads.raw.um.self_flows import SelfSubscription
+from src.api.payloads.raw.user_management.self_flows import SelfSubscription
 from utils.assertion import assert_status_code
 from utils.crypto_manager import code_um_cookie
 

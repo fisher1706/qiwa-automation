@@ -31,7 +31,6 @@ class EmailConst:  # pylint: disable=too-few-public-methods
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
-    INVALID_PASSWORD = "Invalid"
     EXPIRED_DATE = "2023-05-10"
 
 
@@ -242,7 +241,7 @@ class ContractManagement:
 
 @dataclass
 class SupportedBrowser:
-    version = {"chrome": "102.0", "firefox": "93.0", "opera": "80.0"}
+    version = {"chrome": "114.0", "firefox": "93.0"}
 
 
 @dataclass
