@@ -1,4 +1,4 @@
-from selene import have, query
+from selene import have
 from selene.support.shared.jquery_style import s, ss
 
 from data.data_portal.constants import Reports
@@ -50,10 +50,3 @@ class ReportsPage:
 
     def check_ar_element_on_the_page(self):
         self.TITLE.should(have.text(Reports.TITLE_AR))
-
-    @staticmethod
-    def check_elements_on_the_page(elements, list_text):
-        elements_list = []
-        for element in elements:
-            elements_list.append(element.get(query.text))
-        assert elements_list == list_text, f"{elements_list}\n{list_text}"

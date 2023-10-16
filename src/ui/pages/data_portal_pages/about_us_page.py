@@ -1,4 +1,3 @@
-from selene import have, query
 from selene.support.shared.jquery_style import browser, s, ss
 
 from data.data_portal.constants import Links
@@ -31,8 +30,8 @@ class AboutUsPage:
     )
     QIWA_VISIT_RESOURCE = s('//div[@class="second-column"]//a[@href]')
 
-    TWITTER_SOCIAL_MEDIA = s('(//a[@href="https://twitter.com/qiwa_sa"])[2]')
-    LINKEDIN_SOCIAL_MEDIA = s('(//a[@href="https://www.linkedin.com/company/qiwa-sa/"])[2]')
+    TWITTER = s('(//a[@href="https://twitter.com/qiwa_sa"])[2]')
+    LINKEDIN = s('(//a[@href="https://www.linkedin.com/company/qiwa-sa/"])[2]')
 
     def check_redirection_to_qiwa_sa_service_from_title(self):
         self.QIWA_SA_TITLE.click()
@@ -45,22 +44,11 @@ class AboutUsPage:
         assert browser.driver.current_url == Links.QIWA_SA
 
     def check_redirection_to_linkedin(self):
-        self.LINKEDIN_SOCIAL_MEDIA.click()
+        self.LINKEDIN.click()
         browser.switch_to_next_tab()
         assert browser.driver.current_url == Links.LINKEDIN
 
     def check_redirection_to_twitter(self):
-        self.TWITTER_SOCIAL_MEDIA.click()
+        self.TWITTER.click()
         browser.switch_to_next_tab()
         assert browser.driver.current_url == Links.TWITTER
-
-    @staticmethod
-    def check_element_on_the_page(element, text):
-        element.should(have.text(text))
-
-    @staticmethod
-    def check_elements_on_the_page(elements, list_text):
-        elements_list = []
-        for element in elements:
-            elements_list.append(element.get(query.text))
-        assert elements_list == list_text, f"{elements_list}\n{list_text}"

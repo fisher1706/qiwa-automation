@@ -549,3 +549,15 @@ class Reports:
 @dataclasses.dataclass
 class PrivacyPolicy:
     SHEET = "Privacy policy"
+
+
+@dataclasses.dataclass
+class Admin:
+    LOGIN = "qiwa-data"
+    PASSWORD = "qiwa-data"
+    INVALID_LOGIN = "invalid-qiwa-data"
+    INVALID_PASSWORD = "invalid-qiwa-data"
+    VALIDATION_MESSAGE = "Unrecognized username or password. Forgot your password?"
+    LOGIN_PAGE = "Log in"
+    AUTOMATION = "automation"
+    AUTOMATION_EDIT = "automation-edited"

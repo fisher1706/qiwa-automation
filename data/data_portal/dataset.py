@@ -2,6 +2,7 @@ import dataclasses
 
 from data.data_portal.constants import (
     AboutUs,
+    Admin,
     AllSectors,
     ContactUs,
     EmployeesChart,
@@ -661,4 +662,13 @@ class PrivacyPolicyData:
         (PrivacyPolicyPage.CHANGES_TITLE, 38),
         (PrivacyPolicyPage.CHANGES_PARAGRAPH_1, 39),
         (PrivacyPolicyPage.CHANGES_PARAGRAPH_2, 40),
+    )
+
+
+@dataclasses.dataclass
+class AdminData:
+    invalid_data = (
+        (Admin.INVALID_LOGIN, Admin.PASSWORD),
+        (Admin.LOGIN, Admin.INVALID_PASSWORD),
+        (Admin.INVALID_LOGIN, Admin.INVALID_PASSWORD),
     )
