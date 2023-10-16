@@ -4,6 +4,7 @@ import pytest
 from data.data_portal.constants import Localization, SubscribeBlock
 from data.data_portal.dataset import HomePageDataSet
 from src.ui.dataportal import data_portal
+from src.ui.pages.data_portal_pages.base_methods import base_methods
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.LMI)
@@ -86,7 +87,7 @@ def test_navigation_to_contact_us_page():
                               'Subscribe title en', 'Subscribe description en', 'Subscribe button en'])
 def test_en_translation_element_on_the_page(element, translation):
     data_portal.open_home_page()
-    data_portal.home_page.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check Arabic translation of element on the page')
@@ -104,7 +105,7 @@ def test_en_translation_element_on_the_page(element, translation):
 def test_ar_translation_element_on_the_page(element, translation):
     data_portal.open_home_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.home_page.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check English translation of element on the page')

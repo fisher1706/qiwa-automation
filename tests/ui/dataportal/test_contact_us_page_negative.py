@@ -4,6 +4,7 @@ import pytest
 from data.data_portal.constants import ContactUs, Localization, Variables
 from data.data_portal.dataset import ContactUsDataSet
 from src.ui.dataportal import data_portal
+from src.ui.pages.data_portal_pages.base_methods import base_methods
 from src.ui.pages.data_portal_pages.contact_us_page import ContactUsPage
 from utils.allure import TestmoProject, project
 
@@ -28,7 +29,7 @@ def test_en_validation_alerts():
     data_portal.open_contact_us_page()
     data_portal.contact_us_page.complete_request_form(Variables.EMPTY, Variables.EMPTY,
                                                       Variables.EMPTY, Variables.AUTOTEST)
-    data_portal.contact_us_page.check_elements_on_the_page(ContactUsPage.ALERT, ContactUs.VALIDATION_ALERTS_EN)
+    base_methods.check_elements_on_the_page(ContactUsPage.ALERT, ContactUs.VALIDATION_ALERTS_EN)
 
 
 @allure.title('Check Arabic Validation Alerts')
@@ -38,4 +39,4 @@ def test_ar_validation_alerts():
     data_portal.header.setup_localization(Localization.AR_LOCAL)
     data_portal.contact_us_page.complete_request_form(Variables.EMPTY, Variables.EMPTY,
                                                       Variables.EMPTY, Variables.AUTOTEST)
-    data_portal.contact_us_page.check_elements_on_the_page(ContactUsPage.ALERT, ContactUs.VALIDATION_ALERTS_AR)
+    base_methods.check_elements_on_the_page(ContactUsPage.ALERT, ContactUs.VALIDATION_ALERTS_AR)

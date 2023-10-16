@@ -4,6 +4,7 @@ import pytest
 from data.data_portal.constants import Localization
 from data.data_portal.dataset import AboutUsData
 from src.ui.dataportal import data_portal
+from src.ui.pages.data_portal_pages.base_methods import base_methods
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.LMI)
@@ -44,7 +45,7 @@ def test_redirection_to_twitter():
                               'Believe Title en', 'QiwaSa Title en', 'Visit Title en'])
 def test_en_translation_element_on_the_page(element, translation):
     data_portal.open_about_us_page()
-    data_portal.about_us_page.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check Arabic translation of element on the page')
@@ -55,7 +56,7 @@ def test_en_translation_element_on_the_page(element, translation):
 def test_ar_translation_element_on_the_page(element, translation):
     data_portal.open_about_us_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.about_us_page.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check English translation of elements on the page')
@@ -66,7 +67,7 @@ def test_ar_translation_element_on_the_page(element, translation):
                               'QiwaSa Description en', 'Visit Qiwa Title en'])
 def test_en_translation_elements_on_the_page(elements, translation):
     data_portal.open_about_us_page()
-    data_portal.about_us_page.check_elements_on_the_page(elements, translation)
+    base_methods.check_elements_on_the_page(elements, translation)
 
 
 @allure.title('Check Arabic translation of elements on the page')
@@ -78,4 +79,4 @@ def test_en_translation_elements_on_the_page(elements, translation):
 def test_ar_translation_elements_on_the_page(elements, translation):
     data_portal.open_about_us_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.about_us_page.check_elements_on_the_page(elements, translation)
+    base_methods.check_elements_on_the_page(elements, translation)

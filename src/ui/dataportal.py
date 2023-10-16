@@ -3,10 +3,12 @@ from selene import be
 from selene.support.shared import browser
 
 import config
+from src.api.app import QiwaApi
 from src.api.dataportal.workforcestatistics_api import workforce_api
 from src.ui.pages.data_portal_pages.about_us_page import AboutUsPage
 from src.ui.pages.data_portal_pages.all_sectors_page import AllSectorsPage
 from src.ui.pages.data_portal_pages.contact_us_page import ContactUsPage
+from src.ui.pages.data_portal_pages.data_portal_admin import DataPortalAdmin
 from src.ui.pages.data_portal_pages.footer_block import FooterBlock
 from src.ui.pages.data_portal_pages.header_block import HeaderBlock
 from src.ui.pages.data_portal_pages.home_page import HomePage
@@ -29,6 +31,9 @@ class DataPortal:
         self.market_overview_page = MarketOverViewPage()
         self.reports_page = ReportsPage()
         self.sector_page = SectorPage()
+        self.data_portal_admin = DataPortalAdmin()
+        self.cookies = {}
+        self.qiwa_api = QiwaApi()
 
     def wait_data_portal_page_to_load(self):
         self.footer.ACCEPT_COOKIES.click()
@@ -97,6 +102,35 @@ class DataPortal:
         )
         self.wait_data_portal_page_to_load()
         return self
+
+    @allure.step
+    def open_data_portal_admin_login_page(self):
+        browser.driver.delete_all_cookies()
+        browser.open(config.qiwa_urls.data_portal_admin_url)
+        return self
+
+    @allure.step
+    def open_data_portal_admin_category_page(self):
+        browser.open(
+            f"{config.qiwa_urls.data_portal_admin_url}/admin/structure/taxonomy/manage/category/overview"
+        )
+        return self
+
+    @allure.step
+    def open_data_portal_admin_report_page(self):
+        browser.open(f"{config.qiwa_urls.data_portal_admin_url}/admin/content/reports")
+        return self
+
+    @allure.step
+    def open_data_portal_admin_takeaway_page(self):
+        browser.open(f"{config.qiwa_urls.data_portal_admin_url}/admin/content/takeaway-sections")
+        return self
+
+    def get_cookie(self):
+        cookies = browser.driver.get_cookies()
+        for cookie in cookies:
+            if cookie["name"] == "SESS7c7d78a277693b7a3a692e8537bd44d3":
+                self.cookies = f'{cookie["name"]}={cookie["value"]}'
 
 
 data_portal = DataPortal()

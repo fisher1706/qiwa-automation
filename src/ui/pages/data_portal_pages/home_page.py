@@ -1,7 +1,6 @@
 import dataclasses
 
-from selene import be, browser, query
-from selene.support.conditions import have
+from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
 from data.data_portal.constants import Links, Variables
@@ -115,10 +114,6 @@ class HomePage:
         self.CONTACT_US_BUTTON.click()
         assert browser.driver.current_url == Links.CONTACT_US
 
-    @staticmethod
-    def check_element_on_the_page(element, element_text):
-        element.should(have.text(element_text))
-
     def check_elements_on_the_page(self, elements, list_text, navigation_button=None):
         elements_list = []
         self.SECTORS_LIST.should(be.visible)
@@ -136,7 +131,8 @@ class HomePage:
             for _ in range(i):
                 InsightBlockLocators.FORWARD_BUTTON_NAV.click()
 
-    def check_subscribe_request(self, message):
+    @staticmethod
+    def check_subscribe_request(message):
         SubscribeBlockLocators.EMAIL_FIELD.set_value(Variables.EMAIL)
         SubscribeBlockLocators.BUTTON.click()
-        self.check_element_on_the_page(SubscribeBlockLocators.MESSAGE, message)
+        SubscribeBlockLocators.MESSAGE.should(have.text(message))
