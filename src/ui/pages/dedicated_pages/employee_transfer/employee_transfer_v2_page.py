@@ -25,7 +25,7 @@ class EmployeeTransferV2Page(
 
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
-    tables = ss('table')
+    tables = ss("table")
     sent_requests_table = Table(tables.first)
     received_requests_table = Table(tables.second)
 

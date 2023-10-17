@@ -1,7 +1,11 @@
 import allure
 
 from data.constants import ContractManagement, Language
-from data.dedicated.employee_transfer import employer, laborer, laborer_between_my_establishments
+from data.dedicated.employee_transfer import (
+    employer,
+    laborer,
+    laborer_between_my_establishments,
+)
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions

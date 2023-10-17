@@ -32,7 +32,9 @@ laborer_type_4_freedom_transfer = Laborer(login_id=2283737795, birthdate="25-12-
 laborer_type_4_direct_transfer = Laborer(login_id=2198951952, birthdate="01-01-1959")
 laborer_type_4_absent = Laborer(login_id=2468727199, birthdate="01-01-1986")
 
-laborer_between_my_establishments = Laborer(login_id=2016254472, birthdate="01-01-1976", user_type=UserType.EXPAT)
+laborer_between_my_establishments = Laborer(
+    login_id=2016254472, birthdate="01-01-1976", user_type=UserType.EXPAT
+)
 laborer_between_my_establishments_quota = Laborer(login_id=2111825226, birthdate="01-01-1976")
 
 current_sponsor = Entity(

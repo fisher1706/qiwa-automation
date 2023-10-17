@@ -11,8 +11,8 @@ from data.dedicated.employee_transfer import (
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.actions.individual_actions import IndividualActions
+from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.qiwa import qiwa
 
 
