@@ -263,7 +263,7 @@ class Eligibility:
 
 
 @dataclass
-# TODO: Compare with services and adjust class Tittles
+# TODO: [dp] Compare with services and adjust class Tittles
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"

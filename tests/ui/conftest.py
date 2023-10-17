@@ -13,13 +13,6 @@ from data.constants import SupportedBrowser
 from src.ui.pages.sso_pages.login_page import LoginPage
 
 
-@pytest.fixture
-def go_to_auth_page():  # TODO: Remove usage
-    login_page = LoginPage()
-    login_page.visit()
-    login_page.wait_page_to_load()
-
-
 @pytest.fixture(autouse=True)
 def setup_driver():
     browser.config.timeout = config.settings.timeout

@@ -253,12 +253,6 @@ class EmployeeTransferPage:
                 f"Element value {element.s('input').get(query.value)} " f"is not empty"
             )
 
-    def get_general_number_of_requests_in_received_requests_tab(self) -> str:
-        return self.__extract_number_inside_parentheses(self.received_requests.get(query.text))
-
-    def get_general_number_of_requests_in_sent_requests_tab(self) -> str:
-        return self.__extract_number_inside_parentheses(self.sent_requests.get(query.text))
-
     def click_btn_approve(self):
         s(self.btn_approve).click()
 

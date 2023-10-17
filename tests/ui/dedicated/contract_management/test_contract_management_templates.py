@@ -8,7 +8,7 @@ from src.ui.actions.old_contract_management import OldContractManagementActions
 
 
 @allure.feature('Contract Management Templates')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Old design")
 class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-many-statements
 
     @pytest.fixture(autouse=True)

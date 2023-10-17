@@ -25,7 +25,6 @@ class ContractManagementPage:
 
     # Contract details
     field_occupation = s("#Occupation")
-    dropdown_occupation = s("")
     field_job_title_en = s("[name='jobTitle.en']")
     field_job_title_ar = s("[name='jobTitle.ar']")
     field_employee_number = s("#employeeNumber")
@@ -110,13 +109,13 @@ class ContractManagementPage:
         return self
 
     def fill_field_email(self, data: str) -> ContractManagementPage:
-        self.field_email.perform(command.js.set_value("")).type(data)
+        self.field_email.click().perform(command.js.set_value("")).type(data)
         return self
 
     # Contract Details
     def fill_field_occupation(self, data: str) -> ContractManagementPage:
         self.field_occupation.should(be.visible).perform(command.js.set_value("")).type(data)
-        self.dropdown_occupation.hover().click()
+        self.dropdown.element_by(have.text(data)).click()
         return self
 
     def fill_field_job_title_en(self, data: str) -> ContractManagementPage:
@@ -132,7 +131,7 @@ class ContractManagementPage:
         return self
 
     def fill_field_contract_period(self) -> ContractManagementPage:
-        # TODO: Adjust method for different types of users
+        # todo: [dp] Adjust method for different types of users
         # self.field_contract_period.should(be.visible).all("option").element_by(
         #     have.text(data)
         # ).click()

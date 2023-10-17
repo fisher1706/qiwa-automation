@@ -4,17 +4,17 @@ import pytest
 from data.constants import Language
 from data.dedicated.employee_transfer import employer_old
 from data.dedicated.transfer_requests import request
-from src.ui.actions.employee_transfer import EmployeeTransferActions
+from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.components.footer import Footer
 
 
 @allure.feature('Employee Transfer Dashboard')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Old design")
 class TestEmployeeTransfer:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self):
-        self.employee_transfer_actions = EmployeeTransferActions()
+        self.employee_transfer_actions = EmployeeTransferActionsOld()
         self.footer = Footer()
 
     @allure.title('Create the Dashboard page | Block 1 UI test')
@@ -70,7 +70,7 @@ class TestEmployeeTransfer:  # pylint: disable=unused-argument
         self.employee_transfer_actions.fill_req_number(request.req_number)
         self.employee_transfer_actions.select_first_row()
         self.employee_transfer_actions.verify_expected_dates()
-        # TODO: Add verification of the expected dates after providing correct request
+        # todo: [dp] Add verification of the expected dates after providing correct request
         # self.employee_transfer_actions.click_received_requests_tab()
 
     @allure.title('Create Transfer Requests | Request status filter dropdown UI test')
