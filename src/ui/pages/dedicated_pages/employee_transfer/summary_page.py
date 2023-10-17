@@ -16,5 +16,6 @@ class SummaryPage:
         return self
 
     def check_request_status(self) -> SummaryPage:
-        self.table.cell(row=2, column=1).should(have.exact_text(""))
+        # todo: [dp] Move to test data status request
+        self.table.cell(row=2, column=1).should(have.exact_text("Pending employee’s approval"))
         return self
