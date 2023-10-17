@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import allure
-from selene import be, browser, have
+from selene import be, have
 from selene.support.shared.jquery_style import s, ss
-from selenium.common import NoSuchElementException
 
 
 class WorkspacesPage:
@@ -29,12 +28,7 @@ class WorkspacesPage:
 
     @allure.step
     def wait_page_to_load(self) -> WorkspacesPage:
-        for _ in range(3):
-            try:
-                self.label_choose_account.should(be.visible)
-            except NoSuchElementException:
-                browser.driver.refresh()
-                continue
+        self.label_choose_account.should(be.visible)
         return self
 
     @allure.step
