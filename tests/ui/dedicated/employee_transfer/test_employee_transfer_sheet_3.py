@@ -11,18 +11,18 @@ from data.dedicated.employee_transfer import (
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.ui.actions.employee_transfer import EmployeeTransferActions
+from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.qiwa import qiwa
 
 
 @allure.feature('Employee Transfer sheet 3')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Old design")
 class TestEmployeeTransferSheet3:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
-        self.employee_transfer_actions = EmployeeTransferActions()
+        self.employee_transfer_actions = EmployeeTransferActionsOld()
         self.individual_actions = IndividualActions()
         self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
