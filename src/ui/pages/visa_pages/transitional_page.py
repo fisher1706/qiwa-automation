@@ -8,9 +8,10 @@ from selene.api import be, browser, have, not_, query, s, ss
 from data.visa.constants import (
     INCREASE_ABSHER_MODAL_TITLE,
     INCREASE_ALLOWED_QUOTA,
-    INCREASE_RECRUITMENT_QUOTA_TEXT,
+    IS_SEASONAL_VISA_AVAILABLE,
     ISSUE_VISA_TEXT,
     PERM_WORK_VISA_DESCRIPTION,
+    PERM_WORK_VISA_ELIGIBILITY_ERRORS,
     PERM_WORK_VISA_TITLE,
     SEASONAL_WORK_VISA_BLOCKED_TEXT,
     SEASONAL_WORK_VISA_DESCRIPTION,
@@ -27,6 +28,7 @@ from data.visa.constants import (
 from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert_list, soft_assert_text
+from utils.helpers import get_session_variable
 
 
 class TransitionalPage(BasePage):
@@ -71,6 +73,12 @@ class TransitionalPage(BasePage):
         '//*[@data-testid="seasonalVisaEligibilityCardDescription"]'
     )
     seasonal_work_visa_block_text = s('//*[@data-testid="seasonalVisaEligibilityCardDisabled"]')
+    seasonal_work_recruitment_quota = s(
+        '//*[@data-testid="seasonalVisaEligibilityAllowedQuotaValue"]'
+    )
+    seasonal_work_available_visas = s(
+        '//*[@data-testid="seasonalVisaEligibilityAvailableUnusedVisasValue"]'
+    )
     seasonal_work_visa_service_page_button = s(
         '//*[@data-testid="seasonalVisaEligibilityGoToServicePageButton"]'
     )
@@ -87,7 +95,7 @@ class TransitionalPage(BasePage):
     modal_popup_window_close_button = s('//div[contains(@class, "Modal__ModalWrapper")]//button')
     modal_popup_window_x_button = s('//div[contains(@class, "Modal__ModalWrapper")]//span')
     perm_work_visa_error_banner = s('//*[@data-testid="workVisaEligibilityErrorMessageCard"]')
-    perm_work_visa_error_banner_link = s('//*[@data-testid="workVisaEligibilityErrorMessageLink"]')
+    perm_work_visa_error_link = s('//*[@data-testid="workVisaEligibilityErrorMessageLink"]')
     temp_work_visa_error_banner = s('//*[@data-testid="visitVisaEligibilityErrorMessageCard"]')
     temp_work_visa_error_banner_link = s(
         '//*[@data-testid="visitVisaEligibilityErrorMessageLink"]'
@@ -108,6 +116,12 @@ class TransitionalPage(BasePage):
     temp_work_visa_card = s('//*[@data-testid="visit-visa"]')
     seasonal_work_visa_card = s('//*[@data-testid="seasonal-visa"]')
     perm_work_visa_card_exp_date = s('//*[@data-testid="workVisaEligibilityExpirationDateValue"]')
+    seasonal_work_recruitment_quota = s(
+        '//*[@data-testid="seasonalVisaEligibilityAllowedQuotaValue"]'
+    )
+    seasonal_work_available_visas = s(
+        '//*[@data-testid="seasonalVisaEligibilityAvailableUnusedVisasValue"]'
+    )
 
     def page_is_loaded(self):
         self.cards_loading.should(be.hidden)
@@ -164,9 +178,24 @@ class TransitionalPage(BasePage):
     @allure.step("Verifies seasonal work visa card")
     def verify_seasonal_work_visa_card_loaded(self):
         self.seasonal_work_visa_description.should(have.text(SEASONAL_WORK_VISA_DESCRIPTION))
+        if not get_session_variable(IS_SEASONAL_VISA_AVAILABLE):
+            self.verify_seasonal_work_visa_card_seasonal_visa_not_available_case()
+        else:
+            self.verify_seasonal_work_visa_card_seasonal_visa_available_case()
+
+    def verify_seasonal_work_visa_card_seasonal_visa_available_case(self):
+        self.seasonal_work_visa_block_text.should(not_(have.text(SEASONAL_WORK_VISA_BLOCKED_TEXT)))
+        self.seasonal_work_visa_service_page_button.should(be.visible)
+        self.seasonal_work_visa_issue_visa.should(be.visible)
+        self.seasonal_work_recruitment_quota.should(have.exact_text(str(Numbers.TEN)))
+        self.seasonal_work_available_visas.should(have.exact_text(str(Numbers.NINE)))
+
+    def verify_seasonal_work_visa_card_seasonal_visa_not_available_case(self):
         self.seasonal_work_visa_block_text.should(have.text(SEASONAL_WORK_VISA_BLOCKED_TEXT))
         self.seasonal_work_visa_service_page_button.should(be.hidden)
         self.seasonal_work_visa_issue_visa.should(be.hidden)
+        self.seasonal_work_recruitment_quota.should(be.hidden)
+        self.seasonal_work_available_visas.should(be.hidden)
 
     @allure.step("Verifies temporary work visa page open")
     def verify_temporary_work_visa_page_open(self):
@@ -233,26 +262,15 @@ class TransitionalPage(BasePage):
         self.modal_popup_window_error_list.should(have.size(error_list_size))
 
     @allure.step("Verify work visa error banner has text and amount of errors")
-    def verify_work_visa_error_shown(self, text, error_quantity):
+    def verify_work_visa_error_shown(self, text):
         self.perm_work_visa_error_banner.should(be.visible)
         self.perm_work_visa_error_banner.s(self.banner_icon).should(be.visible)
-        self.perm_work_visa_error_banner_link.should(be.visible)
-        self.perm_work_visa_error_banner_link.should(be.clickable)
         soft_assert_text(self.perm_work_visa_error_banner, text=text)
-        self.perm_work_visa_error_banner_link.click()
-        self.verify_modal_popup_window(error_quantity)
-        self.modal_popup_window_close_button.click()
-        self.modal_popup_window.should(be.hidden)
-        self.perm_work_visa_error_banner_link.click()
-        self.verify_modal_popup_window(error_quantity)
-        self.modal_popup_window_x_button.click()
-        self.modal_popup_window.should(be.hidden)
 
     @allure.step("Verifies work visa card no errors banner is shown")
     def verify_no_visa_card_errors_are_shown(self):
         self.perm_work_visa_error_banner.should(be.hidden)
         self.perm_work_visa_error_banner.s(self.banner_icon).should(be.hidden)
-        self.perm_work_visa_error_banner_link.should(be.hidden)
 
     @allure.step("Verify temporary work visa error banner has text and amount of errors")
     def verify_temp_work_visa_error_shown(self, text, error_quantity):
@@ -313,8 +331,9 @@ class TransitionalPage(BasePage):
         self.global_error_banner.s(self.banner_icon).should(be.visible)
         error_text = self.global_error_banner.get(query.text)
         self.perm_work_visa_error_banner.should(be.visible)
-        self.perm_work_visa_error_banner.should(have.text(error_text))
-        self.perm_work_visa_error_banner_link.should(be.hidden)
+        self.perm_work_visa_error_banner.should(
+            have.text(PERM_WORK_VISA_ELIGIBILITY_ERRORS.format(Numbers.TWO))
+        )
         self.perm_work_visa_issue_visa.element(self.banner_icon).should(be.visible).should(
             be.clickable
         )
@@ -349,29 +368,26 @@ class TransitionalPage(BasePage):
         self.modal_popup_window_x_button.click()
         self.perm_work_visa_error_banner.should(be.visible)
         self.perm_work_visa_error_banner.s(self.banner_icon).should(be.visible)
-        self.perm_work_visa_error_banner_link.should(be.visible)
-        self.perm_work_visa_error_banner_link.click()
+        self.perm_work_visa_error_link.click()
         self.verify_modal_popup_window(Numbers.FOUR)
         self.modal_popup_window_close_button.click()
         self.modal_popup_window.should(be.hidden)
-        self.perm_work_visa_error_banner_link.click()
+        self.perm_work_visa_error_link.click()
         self.verify_modal_popup_window(Numbers.FOUR)
         self.modal_popup_window_x_button.click()
         self.modal_popup_window.should(be.hidden)
         self.perm_work_visa_issue_visa.element(self.banner_icon).should(be.visible).should(
             be.clickable
         )
-        self.perm_work_visa_issue_visa.element(self.banner_icon).click()
+        self.perm_work_visa_error_link.click()
         self.verify_modal_popup_window(Numbers.FOUR)
         self.modal_popup_window_close_button.click()
         self.modal_popup_window.should(be.hidden)
-        self.perm_work_visa_issue_visa.element(self.banner_icon).click()
+        self.perm_work_visa_error_link.click()
         self.verify_modal_popup_window(Numbers.FOUR)
         self.modal_popup_window_x_button.click()
         self.modal_popup_window.should(be.hidden)
-        self.temp_work_visa_issue_visa.element(self.banner_icon).should(be.visible).should(
-            be.clickable
-        )
+        self.perm_work_visa_error_link.should(be.visible).should(be.clickable)
         self.temp_work_visa_issue_visa.element(self.banner_icon).click()
         self.verify_modal_popup_window(Numbers.TWO)
         self.modal_popup_window_close_button.click()
@@ -382,7 +398,9 @@ class TransitionalPage(BasePage):
         self.modal_popup_window.should(be.hidden)
 
     @allure.step("Verify permanent work visa card")
-    def verify_perm_work_visa_card(self):
+    def verify_perm_work_visa_card(
+        self, tier=TIER.ONE, recruitment_quota=Numbers.FOUR, available=Numbers.THREE
+    ):
         self.perm_work_visa_card.should(be.visible)
         soft_assert_text(
             self.perm_work_visa_card_title,
@@ -395,25 +413,25 @@ class TransitionalPage(BasePage):
             element_name="Perm work visa card description",
         )
         soft_assert_text(
-            self.perm_work_recruitment_quota, Numbers.ZERO, element_name="Perm recruitment quota"
+            self.perm_work_recruitment_quota,
+            recruitment_quota,
+            element_name="Perm recruitment quota",
         )
         soft_assert_text(
-            self.perm_work_available_visas, Numbers.ZERO, element_name="Perm available visas"
+            self.perm_work_available_visas, available, element_name="Perm available visas"
         )
-        soft_assert_text(
-            self.perm_work_recruitment_quota_tier, TIER.ONE, element_name="Current tier"
-        )
+        soft_assert_text(self.perm_work_recruitment_quota_tier, tier, element_name="Current tier")
         soft_assert_text(
             self.perm_work_visa_service_page_button,
             SERVICE_PAGE_BUTTON_TEXT,
             "Service page in perm work visa card ",
         )
         soft_assert_text(
-            self.perm_work_visa_increase_quota_visa_button,
-            INCREASE_RECRUITMENT_QUOTA_TEXT,
-            "Increase recruitment quota button perm work visa card",
+            self.perm_work_visa_issue_visa,
+            ISSUE_VISA_TEXT,
+            "Issue visa button perm work visa card",
         )
-        self.perm_work_visa_increase_quota_visa_button.should(be.visible).should(be.clickable)
+        self.perm_work_visa_issue_visa.should(be.visible).should(be.clickable)
         self.perm_work_visa_service_page_button.should(be.visible).should(be.clickable)
 
     @allure.step("Verify temporary work visa card")
@@ -470,12 +488,15 @@ class TransitionalPage(BasePage):
             element_name="Temp work visa card descrition",
         )
         soft_assert_text(
-            self.seasonal_work_visa_block_text,
-            SEASONAL_WORK_VISA_BLOCKED_TEXT,
-            element_name="Temp work visa card block text",
+            self.seasonal_work_recruitment_quota,
+            Numbers.TEN,
+            element_name="Temp recruitment quota",
         )
-        self.seasonal_work_visa_service_page_button.should(be.hidden)
-        self.seasonal_work_visa_issue_visa.should(be.hidden)
+        soft_assert_text(
+            self.seasonal_work_available_visas, Numbers.NINE, element_name="Temp available visas"
+        )
+        self.seasonal_work_visa_service_page_button.should(be.visible).should(be.clickable)
+        self.seasonal_work_visa_issue_visa.should(be.visible).should(be.clickable)
 
     @allure.step("Verify allowed quota tier is shown")
     def verify_allowed_quota_tier_shown(self):
@@ -489,7 +510,6 @@ class TransitionalPage(BasePage):
     def verify_perm_work_visa_error_shown(self):
         self.perm_work_visa_error_banner.should(be.visible)
         self.perm_work_visa_error_banner.s(self.banner_icon).should(be.visible)
-        self.perm_work_visa_error_banner_link.should(be.hidden)
         self.perm_work_visa_issue_visa.element(self.banner_icon).should(be.visible)
         self.perm_work_visa_issue_visa.click()
         self.verify_modal_popup_window(Numbers.ONE)
