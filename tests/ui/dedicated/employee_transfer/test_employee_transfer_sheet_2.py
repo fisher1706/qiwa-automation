@@ -3,7 +3,7 @@ import pytest
 from selene import browser
 
 from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_transfer import (
+from data.dedicated.employee_trasfer.employee_transfer import (
     current_sponsor_type_12,
     laborer_type_4_absent,
     laborer_type_4_direct_transfer,

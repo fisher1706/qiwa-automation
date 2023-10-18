@@ -13,7 +13,7 @@ from data.constants import (
     Language,
     UserInfo,
 )
-from data.dedicated.employee_transfer import Entity, Laborer, employer_old
+from data.dedicated.employee_trasfer.employee_transfer import Entity, Laborer, employer_old
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.validation_message import SuccessMessage
 from src.ui.actions.e_services import EServiceActions

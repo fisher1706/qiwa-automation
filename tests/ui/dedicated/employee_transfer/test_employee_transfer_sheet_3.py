@@ -3,7 +3,7 @@ import pytest
 from selene import browser
 
 from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_transfer import (
+from data.dedicated.employee_trasfer.employee_transfer import (
     employer_between_my_establishments,
     employer_old,
     laborer_between_my_establishments,

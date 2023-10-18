@@ -134,6 +134,12 @@ dedicated_co_ui_tests:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/change_occupation
 
+dedicated_et_ui_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/dedicated/employee_transfer
+
 delegation_ui_tests:
   <<: *testrun
   variables:
@@ -326,6 +332,12 @@ dedicated_co_ui_allure_report:
   variables:
     ALLURE_PROJECT_ID: co-ui-daily
   needs: [dedicated_co_ui_tests]
+
+dedicated_et_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: et-ui-daily
+  needs: [dedicated_et_ui_tests]
 
 dataportal_ui_allure_report:
   <<: *allure_report
