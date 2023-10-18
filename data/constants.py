@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
@@ -260,6 +261,11 @@ class Label:
 class Eligibility:
     ELIGIBLE = "Eligible"
     NOT_ELIGIBLE = "Not Eligible"
+
+
+class AppointmentReason(Enum):
+    COMPLAINT = 1
+    IN_PERSON = 3
 
 
 @dataclass
