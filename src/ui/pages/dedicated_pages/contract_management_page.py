@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
+from selenium.webdriver.common.keys import Keys
 
 
 class ContractManagementPage:
@@ -57,7 +58,7 @@ class ContractManagementPage:
     dropdown_transportation_allowance_frequency = s("")
 
     # Summary
-    terms_checkbox = s("#terms + span")
+    terms_checkbox = s("#terms")
 
     def wait_until_title_verification_code_appears(
         self, text: dict, locale: str
@@ -92,7 +93,7 @@ class ContractManagementPage:
 
     def select_dropdown_education_level(self, data: str) -> ContractManagementPage:
         self.dropdown_education_level.click()
-        self.dropdown.element_by(have.text(data)).click()
+        self.dropdown.element_by(have.exact_text(data)).click()
         return self
 
     def fill_field_major(self, data: str) -> ContractManagementPage:
@@ -115,7 +116,7 @@ class ContractManagementPage:
     # Contract Details
     def fill_field_occupation(self, data: str) -> ContractManagementPage:
         self.field_occupation.should(be.visible).perform(command.js.set_value("")).type(data)
-        self.dropdown.element_by(have.text(data)).click()
+        self.dropdown.element_by(have.exact_text(data)).click()
         return self
 
     def fill_field_job_title_en(self, data: str) -> ContractManagementPage:
@@ -133,7 +134,7 @@ class ContractManagementPage:
     def fill_field_contract_period(self) -> ContractManagementPage:
         # todo: [dp] Adjust method for different types of users
         # self.field_contract_period.should(be.visible).all("option").element_by(
-        #     have.text(data)
+        #     have.exact_text()(data)
         # ).click()
         self.radiobtn_contract_period_type.click()
         return self
@@ -144,7 +145,7 @@ class ContractManagementPage:
 
     def select_type_of_work(self, data: str) -> ContractManagementPage:
         self.dropdown_contract_type.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
@@ -158,7 +159,7 @@ class ContractManagementPage:
 
     def select_working_hours_type(self, data: str) -> ContractManagementPage:
         self.dropdown_work_hours_type.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
@@ -184,13 +185,13 @@ class ContractManagementPage:
 
     def select_dropdown_salary_amount_type(self, data: str) -> ContractManagementPage:
         self.dropdown_salary_amount_type.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
     def select_dropdown_salary_period(self, data: str) -> ContractManagementPage:
         self.dropdown_salary_period.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
@@ -200,13 +201,13 @@ class ContractManagementPage:
 
     def select_dropdown_housing_allowance_type(self, data: str) -> ContractManagementPage:
         self.dropdown_housing_allowance_type.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
     def select_dropdown_housing_allowance_frequency(self, data: str) -> ContractManagementPage:
         self.dropdown_housing_allowance_frequency.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
@@ -216,7 +217,7 @@ class ContractManagementPage:
 
     def select_dropdown_transportation_allowance_type(self, data: str) -> ContractManagementPage:
         self.dropdown_transportation_allowance_type.should(be.visible).all("option").element_by(
-            have.text(data)
+            have.exact_text(data)
         ).click()
         return self
 
@@ -225,10 +226,10 @@ class ContractManagementPage:
     ) -> ContractManagementPage:
         self.dropdown_transportation_allowance_frequency.should(be.visible).all(
             "option"
-        ).element_by(have.text(data)).click()
+        ).element_by(have.exact_text(data)).click()
         return self
 
     # Summary
     def select_terms_checkbox(self) -> ContractManagementPage:
-        self.terms_checkbox.should(be.visible).click()
+        self.terms_checkbox.press(Keys.SPACE)
         return self
