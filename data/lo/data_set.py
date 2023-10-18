@@ -1,4 +1,6 @@
 # pylint: disable=too-few-public-methods
+from dataclasses import dataclass
+
 from data.lo.constants import (
     BasePageInfo,
     LOAgent,
@@ -247,3 +249,13 @@ class VisitsDataSet:
         ),
         individual_edit_scope_ui,
     )
+
+
+@dataclass
+class Case22173ServiceList:
+    WORK_PERMIT = 4
+    VISA = 6
+    EMPLOYEE_TRANSFER = 3
+    SC = 1
+    CO = 2
+    POLICY = 14

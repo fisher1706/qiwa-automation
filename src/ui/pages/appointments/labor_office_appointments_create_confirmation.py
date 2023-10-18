@@ -11,9 +11,9 @@ from src.ui.pages.appointments.labor_office_appointments import (
 
 class LaborOfficeCreateConfirmationPage:
     success_book_message = s('//*[contains(text(), "You’ve successfully booked an appointment")]')
-    confirmation_service_name = '(//tr)[1]//p[contains(text(), "{}")]'
-    confirmation_sub_service_name = '(//tr)[2]//p[contains(text(), "{}")]'
-    confirmation_office_name = '(//tr)[3]//p[contains(text(), "{}")]'
+    confirmation_service_name = '(//tr)[2]//p[contains(text(), "{}")]'
+    confirmation_sub_service_name = '(//tr)[3]//p[contains(text(), "{}")]'
+    confirmation_office_name = '(//tr)[4]//p[contains(text(), "{}")]'
 
     # buttons
     button_back_to_appointments = s("(//button)[1]")

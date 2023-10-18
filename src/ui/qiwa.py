@@ -169,6 +169,7 @@ class QiwaUiClient:
     @allure.step
     def open_labor_office_appointments_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.appointment_booking)
+        self.labor_office_appointments_page.wait_page_to_load()
         return self
 
     @allure.step

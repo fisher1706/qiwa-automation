@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from selene import be, have
+from typing import List
+
+from selene import be, have, query
 from selene.core.entity import Collection, Element
 
 
@@ -39,4 +41,10 @@ class Dropdown:
         self.element.wait_until(be.visible)
         self.element.click()
         self.options[index].click()
+        return self
+
+    def expand(self):
+        self.element.wait_until(be.visible)
+        self.element.click()
+        self.options.first.wait_until(be.visible)
         return self

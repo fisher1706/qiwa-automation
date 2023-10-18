@@ -24,8 +24,9 @@ class Header(BaseModel):
     ChannelId: Optional[str]
     SessionId: Optional[str]
     RequestTime: str
+    MWRequestTime: Optional[str]
     ServiceCode: str
-    DebugFlag: Optional[int]
+    DebugFlag: Optional[str]
     UserInfo: Optional[UserInfo]
 
 

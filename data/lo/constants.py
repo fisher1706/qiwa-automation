@@ -35,6 +35,22 @@ class AppointmentsUser:
 
 
 @dataclass
+class SubscribedUser:
+    ID = "1044076196"
+
+    APPOINTMENT_TO_SEARCH_IN_HISTORY = "35058"
+    NON_EXISTING_APPOINTMENT = "0000000000"
+
+    ESTABLISHMENT = {
+        Language.EN: "شركة التصنيف الدولية للمقاولات",
+        Language.AR: "شركة التصنيف الدولية للمقاولات",
+    }
+    OFFICE_ID = 9
+    ESTABLISHMENT_SEQUENCE = "1112719"
+    SEQUENCE_NUMBER = "9-1112719"
+
+
+@dataclass
 class LOUser:
     ID = "1039682974"
     LO_SYS_ADMIN_ROLE_ID = 2
@@ -68,10 +84,10 @@ class LOSysAdmin:
 
 
 class AppointmentsHistoryStatus(Enum):
-    EXPIRED = 1
-    CANCELLED = 2
-    ATTENDED = 3
-    DONE = 4
+    Expired = 1  # pylint: disable=invalid-name
+    Cancelled = 2  # pylint: disable=invalid-name
+    Attended = 3  # pylint: disable=invalid-name
+    Done = 4  # pylint: disable=invalid-name
 
 
 @dataclass
@@ -86,6 +102,7 @@ class OfficesInfo:
     IS_ELECTRONIC_OFFICE = False
 
     OFFICES_NAME = random_name
+    OFFICE_NAME_TEST_OFFICE = "Test office 125"
     OFFICE_NAME_VEUM_HANE = "Veum - Hane"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
@@ -133,6 +150,9 @@ class ServicesInfo:
     SUB_SERVICE_NAME_INDIVIDUALS = "subservices_10/08"
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
+
+    SERVICE_NAME_WORK_PERMITS = "Work Permits"
+    SUB_SERVICE_NAME_RENEW_WORK_PERMITS = "Renew Work Permits"
 
     EMPLOYEE_TRANSFER_SERVICE = "Employee Transfer"
     EMPLOYEE_TRANSFER_SUB_SERVICE = "Employee Transfer"

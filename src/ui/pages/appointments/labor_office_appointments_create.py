@@ -16,9 +16,14 @@ class LaborOfficeAppointmentsCreatePage:
     sub_service_error = s("#subService-error")
     date_picker = s('//*[@id="date"]')
     available_dates = ss('//*[@role="button" and not(@aria-disabled)]')
+    appointment_reason_section = s("#reason")
+    radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
 
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
+    dropdown_select_service = Dropdown(
+        s('(//div[@id="service"]//*[@data-component="Select"]//div)[1]'), dropdown_element_locator
+    )
     dropdown_select_region = Dropdown(
         s('(//div[@id="details"]//*[@data-component="Select"])[1]'), dropdown_element_locator
     )
@@ -39,10 +44,18 @@ class LaborOfficeAppointmentsCreatePage:
     input_office = s('//input[@id="office"]')
     input_time = s('//input[@name="time"]')
 
+    @allure.step("Select establishment {name}")
     def select_establishment(self, name: str) -> LaborOfficeAppointmentsCreatePage:
         self.search.type(name)
         self.establishment_list.first.click()
         self.next_btn.click()
+        return self
+
+    @allure.step("Select appointment reason {value}")
+    def select_appointment_reason(self, value) -> LaborOfficeAppointmentsCreatePage:
+        if self.appointment_reason_section.wait_until(be.visible):
+            ss(self.radio_button_appointment_reason)[value.value].click()
+            self.next_btn.click()
         return self
 
     @allure.step("Select service {name}")
@@ -84,7 +97,7 @@ class LaborOfficeAppointmentsCreatePage:
     def select_date(
         self, first_available=True, next_year=True
     ) -> LaborOfficeAppointmentsCreatePage:
-        self.input_office.wait_until(be.clickable)
+        self.date_picker.wait_until(be.clickable)
         self.date_picker.click()
         if next_year:
             self.dropdown_select_year.select_by_index(1)
@@ -101,3 +114,11 @@ class LaborOfficeAppointmentsCreatePage:
             self.dropdown_select_time.select_by_index(0)
 
         return self
+
+    @allure.step("Get list of available services")
+    def get_service_list(self):
+        pass
+
+    @allure.step("Verify Service list is not empty")
+    def should_service_list_be(self):
+        assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
