@@ -381,6 +381,12 @@ lo_ui_allure_report:
     ALLURE_PROJECT_ID: lo-ui-daily
   needs: [lo_ui_tests]
 
+visa_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: visa-ui-tests
+  needs: [visa_ui_tests]
+
 .discord_notification_template: &discord_notification
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -411,3 +417,9 @@ shareable_api_discord_notification:
   variables:
     WEBHOOK: $SHAREABLE_AUTOTEST_RESULTS
   needs: [shareable_api_tests]
+
+visa_ui_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $VISA_UI_DAILY
+  needs: [visa_ui_tests]

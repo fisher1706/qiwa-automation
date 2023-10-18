@@ -25,6 +25,7 @@ def test_verify_transitional_page_absher_balance(visa_mock):
     qiwa.transitional.verify_absher_balance_loaded(Numbers.TEN_THOUSAND)
     qiwa.transitional.verify_increase_establishment_fund_modal()
 
+
 @case_id(22101)
 @allure.title('Test verifies balances on the transitional page')
 def test_verify_balances_on_transitional_page(visa_mock):
@@ -33,6 +34,7 @@ def test_verify_balances_on_transitional_page(visa_mock):
     qiwa.transitional.verify_perm_work_visa_card()
     qiwa.transitional.verify_temp_work_visa_card()
     qiwa.transitional.verify_seasonal_work_visa_card()
+
 
 @case_id(22170)
 @allure.title('Test verifies transitional page opens')
@@ -43,6 +45,7 @@ def test_verify_transitional_page(visa_mock):
     qiwa.transitional.verify_absher_balance_loaded(Numbers.TEN_THOUSAND)
 
 
+@case_id(22101)
 @allure.title('Test verifies work visa card is loaded')
 def test_verify_work_visa_card(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION, immediate_balance=Numbers.ONE_HUNDRED)
@@ -51,6 +54,7 @@ def test_verify_work_visa_card(visa_mock):
                                                    available=Numbers.NINTY_NINE)
 
 
+@case_id(22101)
 @allure.title('Test verifies temporary work visa card is loaded')
 def test_verify_temporary_work_visa_card(visa_mock):
     end_date = datetime.date.today() + relativedelta(months=+11)
@@ -63,11 +67,13 @@ def test_verify_temporary_work_visa_card(visa_mock):
                                                              expire_date=end_date.strftime(DateFormats.DD_MM_YYYY))
 
 
+@case_id(22101)
 @allure.title('Test verifies seasonal work visa card is loaded')
 def test_verify_seasonal_work_visa_card(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_seasonal_work_visa_card_loaded()
+
 
 @case_id(22102)
 @allure.title('Test verifies work visa page is opened')
@@ -86,6 +92,7 @@ def test_verify_temporary_work_visa_page_open(visa_mock):
     qiwa.transitional.verify_temporary_work_visa_page_open()
 
 
+@case_id(25575)
 @allure.title('Test verifies work visa card contains allowance period banner')
 def test_verify_work_visa_allowance_period_banner_appears(visa_mock):
     end_date = datetime.date.today() + relativedelta(months=+6)
@@ -102,6 +109,7 @@ def test_verify_work_visa_allowance_period_banner_not_appear_in_expansion(visa_m
     qiwa.transitional.verify_work_visa_allowance_banner_not_appear()
 
 
+@case_id(41423)
 @allure.title('Test verifies work visa card does not contain allowance period banner, when company not started GP')
 def test_verify_work_visa_allowance_period_banner_not_appear_not_in_grace_period(visa_mock):
     start_date = datetime.date.today() + relativedelta(days=+1)
@@ -109,6 +117,7 @@ def test_verify_work_visa_allowance_period_banner_not_appear_not_in_grace_period
                             allowance_start_date=start_date.strftime(DateFormats.YYYYMMDD))
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_work_visa_allowance_banner_not_appear()
+
 
 @case_id(25575)
 @pytest.mark.parametrize("days", [1, 14, 15])
@@ -121,6 +130,7 @@ def test_verify_global_warning_shown_depending_on_gp_days_left(visa_mock, days):
     qiwa.transitional.verify_grace_period_ends_in_days_warning_banner_shown(days=days, expected=days < 15)
 
 
+@case_id(25571)
 @allure.title('Test verifies global two errors are shown')
 def test_verify_two_generic_errors_shown(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.UNKNOWN,
@@ -135,6 +145,7 @@ def test_verify_no_generic_errors_shown(visa_mock):
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_no_generic_errors_are_shown()
 
+
 @case_id(25575)
 @allure.title('Test verifies global no warning are shown, when there are generic errors')
 def test_verify_no_generic_warning_shown_if_generic_errors(visa_mock):
@@ -147,13 +158,14 @@ def test_verify_no_generic_warning_shown_if_generic_errors(visa_mock):
     qiwa.transitional.verify_two_generic_errors_are_shown()
 
 
+@case_id(25571)
 @allure.title('Test verifies one error in work visa card')
 def test_verify_work_visa_one_error(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION,
                             expan_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE),
                             immediate_balance=Numbers.ZERO)
     qiwa.transitional.refresh_page().page_is_loaded()
-    qiwa.transitional.verify_work_visa_error_shown(Numbers.ZERO, Numbers.ONE)
+    qiwa.transitional.verify_work_visa_error_shown(Numbers.ZERO)
 
 
 @allure.title('Test verifies no errors in work visa card')
@@ -163,11 +175,12 @@ def test_verify_work_visa_no_errors(visa_mock):
     qiwa.transitional.verify_no_visa_card_errors_are_shown()
 
 
+@case_id(25571)
 @allure.title('Test verifies two errors in work visa card')
 def test_verify_work_visa_two_errors(visa_mock):
     visa_mock.setup_company(estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.TWO))
     qiwa.transitional.refresh_page().page_is_loaded()
-    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO, Numbers.TWO)
+    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO)
 
 
 @allure.title('Test verifies two errors in work visa card in case when immediate balance is zero')
@@ -175,7 +188,7 @@ def test_verify_work_visa_two_errors_balance_zero(visa_mock):
     visa_mock.setup_company(immediate_balance=Numbers.ZERO,
                             estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE))
     qiwa.transitional.refresh_page().page_is_loaded()
-    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO, Numbers.TWO)
+    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO)
 
 
 @allure.title('Test verifies one error in temporary work visa card')
@@ -193,6 +206,7 @@ def test_verify_temp_work_visa_no_error(visa_mock):
     qiwa.transitional.verify_temp_work_visa_no_error_shown()
 
 
+@case_id(25571)
 @allure.title('Test verifies errors in temporary work visa card concatenates with generic errors')
 def test_verify_temp_work_visa_error_and_generic_error(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
@@ -200,6 +214,7 @@ def test_verify_temp_work_visa_error_and_generic_error(visa_mock):
                             common_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.TWO))
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_temp_work_visa_error_shown(Numbers.FOUR, Numbers.FOUR)
+
 
 @case_id(25569)
 @allure.title('Test verifies warning in work visa card is shown')
@@ -211,12 +226,13 @@ def test_verify_work_visa_warning_shown(visa_mock):
     qiwa.transitional.verify_perm_work_visa_increase_allowed_quota_button()
 
 
+@case_id(25577)
 @allure.title('Test verifies zero quota error in work visa card')
 def test_verify_work_visa_one_error_balance_zero(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION, immediate_balance=Numbers.ZERO)
     visa_mock.change_visa_quantity(Numbers.ONE, Numbers.ZERO)
     qiwa.transitional.refresh_page().page_is_loaded()
-    qiwa.transitional.verify_work_visa_error_shown(WORK_VISA_CARD_ZERO_QUOTA_ERROR, Numbers.ONE)
+    qiwa.transitional.verify_work_visa_error_shown(WORK_VISA_CARD_ZERO_QUOTA_ERROR)
 
 
 @allure.title('Test verifies there is no other visas on work visa page')
@@ -239,6 +255,7 @@ def test_verify_no_permanent_visas_requests(visa_mock):
     qiwa.work_visa.verify_permanent_visas_table_empty()
 
 
+@case_id(25571)
 @allure.title('Test verifies generic one error is shown')
 def test_verify_one_generic_error_shown(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.UNKNOWN,
@@ -247,6 +264,7 @@ def test_verify_one_generic_error_shown(visa_mock):
     qiwa.transitional.verify_generic_error_shown()
 
 
+@case_id(25571)
 @allure.title('Test verifies one generic and permanent work visa errors are shown')
 def test_verify_generic_and_perm_work_visa_error_shown(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
@@ -257,12 +275,13 @@ def test_verify_generic_and_perm_work_visa_error_shown(visa_mock):
     qiwa.transitional.verify_generic_error_and_perm_visa_error_shown()
 
 
+@case_id(25571)
 @allure.title('Test verifies errors in permanent work visa card concatenates with generic errors')
 def test_verify_perm_work_visa_error_and_generic_error(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
                             estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.TWO),
                             common_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.TWO))
-    qiwa.refresh_page()
+    qiwa.transitional.refresh_page()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.verify_two_generic_error_and_two_perm_visa_errors_shown()
 
@@ -291,7 +310,7 @@ def test_verify_general_eligibility_errors_on_transitional_page(visa_mock):
     qiwa.transitional.verify_perm_work_visa_error_shown()
     visa_mock.setup_company(estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.TWO))
     qiwa.transitional.refresh_page().page_is_loaded()
-    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO, Numbers.TWO)
+    qiwa.transitional.verify_work_visa_error_shown(Numbers.TWO)
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
                             common_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE),
                             estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE)
@@ -316,6 +335,7 @@ def test_verify_perm_work_visa_request(visa_mock, visa_type):
     qiwa.work_visa.verify_perm_work_visa_request(ref_number)
 
 
+@case_id(6347)
 @allure.title('Test verifies permanent work visa request (pdf) in establishing phase')
 def test_verify_perm_work_visa_request_establishment_pdf(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
@@ -329,7 +349,7 @@ def test_verify_perm_work_visa_request_establishment_pdf(visa_mock):
     qiwa.visa_request.verify_details_in_pdf(ref_number)
 
 
-@case_id(25571)
+@case_id(25564)
 @allure.title("Test verifies permanent work visa work visa card's errors appearance (internal error) [establishment]")
 def test_verify_perm_work_visa_card_internal_error(visa_mock, visa_db):
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
