@@ -5,7 +5,8 @@ from data.constants import ContractManagement, Language
 from data.dedicated.employee_trasfer.employee_transfer import (
     employer,
     laborer,
-    laborer_between_my_establishments, laborer_between_my_establishments_existing_contract,
+    laborer_between_my_establishments,
+    laborer_between_my_establishments_existing_contract,
 )
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.contract_management import ContractManagementActions

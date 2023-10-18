@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from selene import command, be, have
+from selene import be, command, have
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 

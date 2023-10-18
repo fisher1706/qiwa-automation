@@ -3,7 +3,11 @@ import pytest
 from selene import browser
 
 from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_trasfer.employee_transfer import current_sponsor, employer_old, laborer
+from data.dedicated.employee_trasfer.employee_transfer import (
+    current_sponsor,
+    employer_old,
+    laborer,
+)
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
