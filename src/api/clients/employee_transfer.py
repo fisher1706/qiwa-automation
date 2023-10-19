@@ -3,7 +3,7 @@ import json
 import allure
 
 import config
-from data.dedicated.employee_transfer import employer_old, laborer
+from data.dedicated.employee_trasfer.employee_transfer import employer_old, laborer
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient

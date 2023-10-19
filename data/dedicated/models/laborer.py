@@ -2,12 +2,15 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from data.dedicated.models.transfer_type import TransferType
+
 
 class Laborer(BaseModel):
     login_id: int
     birthdate: str
 
     user_type: Optional[str]
+    transfer_type: Optional[TransferType]
 
 
 class Entity(BaseModel):

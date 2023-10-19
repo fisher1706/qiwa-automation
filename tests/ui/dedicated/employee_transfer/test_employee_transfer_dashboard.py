@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.employee_transfer import employer_old
+from data.dedicated.employee_trasfer.employee_transfer import employer_old
 from data.dedicated.transfer_requests import request
 from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.components.footer import Footer
