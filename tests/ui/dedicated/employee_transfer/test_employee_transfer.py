@@ -107,7 +107,7 @@ def test_received_employee_transfer_requests_are_shown_in_home_page_of_et_servic
     qiwa.employee_transfer_page.check_count_of_received_request_rows()
 
 
-@allure.title("If laborer already has a contract, don't show redirection to CM button another establishment")
+@allure.title("AS-346 If laborer already has a contract, don't show redirection to CM button another establishment")
 @pytest.mark.skip("Find user with contract")
 def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_another_establishment():
     EmployeeTransferApi().post_prepare_laborer_for_et_request()
