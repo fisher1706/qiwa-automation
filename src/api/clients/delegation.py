@@ -1,11 +1,16 @@
 from http import HTTPStatus
 
+from requests import Response
+
 import config
 from data.delegation.delegation_data import AllDelegations, DelegationDetails
 from src.api.http_client import HTTPClient
 from src.api.payloads.delegation import (
+    create_new_delegation,
     filter_delegations_by_status_request,
     get_all_delegations_request,
+    reject_delegation_request,
+    resend_delegation_request,
 )
 from utils.assertion import assert_status_code
 
@@ -18,8 +23,7 @@ class DelegationAPI:
 
     def set_headers(self) -> dict:
         token = self.client.session.cookies.get("qiwa.authorization")
-        headers = {"Cookie": f"qiwa.authorization={token}", "X-Service-Id": "delegation"}
-        return headers
+        return {"Cookie": f"qiwa.authorization={token}", "X-Service-Id": "delegation"}
 
     def get_delegations(self, headers: dict) -> AllDelegations:
         response = self.client.post(
@@ -30,6 +34,16 @@ class DelegationAPI:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return AllDelegations(response.json())
+
+    def get_all_delegations_by_status(self, headers: dict, status_en: str) -> AllDelegations:
+        response = self.client.post(
+            url=self.url,
+            endpoint="/proxy/delegations/find/all",
+            json=filter_delegations_by_status_request(status_en),
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
 
     def get_delegations_by_status(self, headers: dict, status_en: str) -> AllDelegations:
         response = self.client.post(
@@ -85,5 +99,56 @@ class DelegationAPI:
 
     def get_partners(self, headers: dict) -> list:
         response = self.client.get(url=self.url, endpoint="/proxy/partners", headers=headers)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+    def create_delegation(self, headers: dict, employee_nid: str, duration: int) -> list:
+        response = self.client.post(
+            url=self.url,
+            endpoint="/proxy/delegations",
+            json=create_new_delegation(employee_nid, duration),
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+    def resend_delegation_request(self, headers: dict, delegation_id: int) -> Response:
+        response = self.client.post(
+            url=self.url,
+            endpoint="/proxy/delegations/resend/delegation-requests",
+            json=resend_delegation_request(delegation_id),
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response
+
+    def check_delegation_request_status(self, headers: dict, request_id: str) -> Response:
+        response = self.client.get(
+            url=self.url, endpoint=f"/proxy/approve-request/{request_id}/status", headers=headers
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response
+
+    def set_delegation_request_otp_code(self, headers: dict, request_id: str) -> Response:
+        response = self.client.post(
+            url=self.url, endpoint=f"/proxy/approve-request/{request_id}/otp", headers=headers
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response
+
+    def get_delegation_request_details(self, headers: dict, request_id: str) -> list:
+        response = self.client.get(
+            url=self.url, endpoint=f"/proxy/approve-request/{request_id}", headers=headers
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+    def reject_delegation_request_status(self, headers: dict, request_id: str) -> dict:
+        response = self.client.put(
+            url=self.url,
+            endpoint=f"/proxy/approve-request/{request_id}/status",
+            json=reject_delegation_request(),
+            headers=headers,
+        )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()

@@ -103,6 +103,7 @@ class AddDelegationPage:
 
     @allure.step
     def select_english_localization_on_add_delegation_page(self) -> AddDelegationPage:
+        # pylint: disable=R0801
         self.localization_button.click()
         self.english_localization.click()
         self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
@@ -136,15 +137,13 @@ class AddDelegationPage:
 
     @allure.step
     def should_financial_entity_type_be_disabled(self, financial_entity: str) -> AddDelegationPage:
-        # TODO: Uncomment line after testing will be completed
-        # self.financial_entity_type.should(be.disabled)
+        self.financial_entity_type.should(be.disabled)
         self.financial_entity_type_text.should(have.exact_text(financial_entity))
         return self
 
     @allure.step
     def should_telecom_entity_type_be_disabled(self, telecom_entity: str) -> AddDelegationPage:
-        # TODO: Uncomment line after testing will be completed
-        # self.telecom_entity_type.should(be.disabled)
+        self.telecom_entity_type.should(be.disabled)
         self.telecom_entity_type_text.should(have.exact_text(telecom_entity))
         return self
 
