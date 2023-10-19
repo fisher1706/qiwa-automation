@@ -11,8 +11,8 @@ from tests.ui.delegation.add_new_delegation_tests.conftest import (
     get_months_list,
     get_partners_data_for_add_delegation,
     get_random_employee,
-    login_and_open_delegation_dashboard_page,
 )
+from tests.ui.delegation.conftest import login_and_open_delegation_dashboard_page
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.DELEGATION)
