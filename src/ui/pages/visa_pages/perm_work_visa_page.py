@@ -8,8 +8,11 @@ from data.visa.constants import (
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
     WORK_VISA_PAGE_TITLE_TEXT,
+    ColName,
+    TierRequest,
     VisaType,
 )
+from src.ui.components.raw.table import Table
 from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.soft_assertions import soft_assert_text
 from utils.pdf_parser import (
@@ -54,6 +57,7 @@ class PermWorkVisaPage(BasePage):
     nav_link_to_transitional_page = ss("//nav//li").second
     allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
     exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
+    tier_upgrades_requests_table = s('//*[@data-testid="TierHistoryTable"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -142,3 +146,12 @@ class PermWorkVisaPage(BasePage):
             self.exceptional_requests_table.ss(self.table_rows).by(have.text(request)).first.s(
                 self.request_action_button
             ).click()
+
+    @allure.step("Verify tier upgrade status of tier upgrade request")
+    def verify_tier_upgrade_status(self, ref_number: str, status: TierRequest) -> None:
+        table = Table(self.tier_upgrades_requests_table)
+        status_cell = table.cell(row=have.text(ref_number), column=ColName.REQUEST_STATUS)
+        command.js.scroll_into_view(self.tier_upgrades_requests_table)
+        soft_assert_text(
+            element=status_cell, text=status.label, element_name="Tier request status"
+        )

@@ -1,3 +1,6 @@
+from collections import namedtuple
+
+
 class VisaType:  # pylint: disable=R0903
     UNKNOWN = 0
     ESTABLISHMENT = 1
@@ -51,6 +54,21 @@ class PayCardSuccess:  # pylint: disable=R0903
     YEAR = "24"
     CVV2 = "123"
 
+
+class ColName:  # pylint: disable=too-few-public-methods
+    REQUEST_STATUS = "Request status"
+
+
+TierRequest = namedtuple("TierRequest", ["id", "label"])
+
+TR_ACCEPTED = TierRequest(1, "Accepted")
+TR_INACTIVE = TierRequest(2, "Accepted")
+TR_WAITING = TierRequest(3, "Waiting for inspection")
+TR_REJECTED = TierRequest(4, "Rejected")
+TR_REFUNDED = TierRequest(5, "Refunded")
+TR_EXPIRED = TierRequest(6, "Expired")
+TR_TERMINATED = TierRequest(7, "Terminated")
+TR_NEW = TierRequest(8, "Waiting for inspection")
 
 ERROR_CODE = "ODM0024"
 WORK_VISA_CARD_ZERO_QUOTA_ERROR = (
