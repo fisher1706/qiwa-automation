@@ -14,7 +14,7 @@ class ReportedRequest(requests.Request):
         self.hooks = {"response": self.attach_json}
 
     def attach_json(self, rsp: Response, *args, **kwargs):  # pylint: disable=unused-argument
-        url = urlparse(self.url)
+        url = urlparse(rsp.url)
         step_name = (
             f"[{rsp.status_code}] {self.method} {url.path}{'?' + url.query if url.query else ''}"
         )
