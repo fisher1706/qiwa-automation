@@ -17,9 +17,10 @@ class ChangeOccupationApi:
         return self.client.post(f"{self.url}/session", params={"ott-token": token})
 
     def get_requests_laborers(self, page: int = 1, per: int = 10) -> Response:
-        return self.client.get(
-            f"{self.url}/requests-laborers", params={"page": page, "per": per}
-        )
+        return self.client.get(f"{self.url}/requests-laborers", params={"page": page, "per": per})
+
+    def get_requests(self, page: int = 1, per: int = 10) -> Response:
+        return self.client.get(f"{self.url}/requests", params={"page": page, "per": per})
 
     def get_count(self) -> Response:
         return self.client.get(f"{self.url}/count")
