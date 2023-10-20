@@ -81,5 +81,5 @@ class EmployeeTransferSuccessMsg(str, Enum):
     SUMMARY = (
         "The request has been sent to the employees for approval via the Qiwa Individuals platform. To ensure "
         "the completion of the transfer, please ask the employees to log in to the Qiwa platform and accept the "
-        "Employee Transfer request. "
+        "Employee Transfer request."
     )

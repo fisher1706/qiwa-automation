@@ -32,7 +32,7 @@ class ContractManagementActions(ContractManagementPage):
     def fill_contract_details(self, transfer_type: TransferType) -> ContractManagementActions:
         contract_details = ContractDetails()
 
-        if transfer_type.code == type_4.code:
+        if transfer_type.code != type_4.code:
             self.fill_field_occupation(contract_details.occupation)
         self.fill_field_job_title_en(contract_details.job_title_en)
         self.fill_field_job_title_ar(contract_details.job_title_ar)
