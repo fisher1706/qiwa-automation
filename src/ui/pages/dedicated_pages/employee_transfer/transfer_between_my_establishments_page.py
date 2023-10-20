@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from selene import be, command, have
+from selene import command, have
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 
@@ -11,7 +11,7 @@ class TransferBetweenMyEstablishmentsPage:
     table = Table()
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")
-    terms_checkbox = s("#terms + span")
+    terms_checkbox = s("#terms")
     btn_submit_request = s("//button[.='Submit request']")
     btn_submit = s("//button[.='Submit']")
 
@@ -37,7 +37,7 @@ class TransferBetweenMyEstablishmentsPage:
         return self
 
     def click_btn_submit(self) -> TransferBetweenMyEstablishmentsPage:
-        self.btn_submit.should(be.visible).hover().click()
+        self.btn_submit.click()
         return self
 
     def click_link_create_contract(self) -> TransferBetweenMyEstablishmentsPage:

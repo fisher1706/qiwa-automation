@@ -14,7 +14,7 @@ from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.qiwa import qiwa
 
 
-@allure.title('Verify user able to submit ET request')
+@allure.title('Verify user able to submit ET request from my own establishment')
 def test_user_able_to_submit_et_request_from_my_own_establishment():
     EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
     EmployeeTransferActions().navigate_to_et_service(employer)
@@ -47,7 +47,7 @@ def test_user_able_to_submit_et_request_from_my_own_establishment():
 
     qiwa.employee_transfer_page.click_btn_next_step() \
         .select_terms_checkbox() \
-        .click_btn_submit()
+        .click_btn_submit_request()
 
     qiwa.employee_transfer_page.check_success_msg() \
         .check_request_status()
