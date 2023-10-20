@@ -10,7 +10,8 @@ case_id = project(TestmoProject.QIWA_SSO)
 
 
 @case_id(41924)
-def test_user_sign_in_into_qiwa(first_account_data, clear_from_db_first_account_data):
+def test_user_sign_in_into_qiwa(first_account_data):
+    account = first_account_data
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     qiwa.login_page.wait_login_page_to_load() \
@@ -24,7 +25,7 @@ def test_user_sign_in_into_qiwa(first_account_data, clear_from_db_first_account_
 
 
 @case_id(41926)
-def test_user_without_birthdate_sign_in_to_qiwa_sso(account_without_hijiri_birth_day, clear_from_db_first_account_data):
+def test_user_without_birthdate_sign_in_to_qiwa_sso(account_without_hijiri_birth_day):
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     qiwa.login_page.wait_login_page_to_load() \
@@ -42,7 +43,7 @@ def test_user_without_birthdate_sign_in_to_qiwa_sso(account_without_hijiri_birth
 
 
 @case_id(41927, 41932, 41940)
-def test_user_without_phone_number_sign_in_to_qiwa_sso(account_without_phone, clear_from_db_first_account_data):
+def test_user_without_phone_number_sign_in_to_qiwa_sso(account_without_phone):
     new_phone = RandomManager().random_phone_number(prefix="")
     account_with_out_phone = account_without_phone
     qiwa.open_login_page()
@@ -70,8 +71,7 @@ def test_user_without_phone_number_sign_in_to_qiwa_sso(account_without_phone, cl
 
 
 @case_id(41929)
-def test_user_with_unconfirmed_email_sign_into_qiwa_sso(account_with_unconfirmed_email_status,
-                                                        clear_from_db_first_account_data):
+def test_user_with_unconfirmed_email_sign_into_qiwa_sso(account_with_unconfirmed_email_status):
     account = account_with_unconfirmed_email_status
     qiwa.open_login_page()
     qiwa.header.change_local("en")
@@ -89,8 +89,7 @@ def test_user_with_unconfirmed_email_sign_into_qiwa_sso(account_with_unconfirmed
 
 
 @case_id(41930)
-def test_confirmation_code_is_resent_after_clicking_resend_sms_code_button(first_account_data,
-                                                                           clear_from_db_first_account_data):
+def test_confirmation_code_is_resent_after_clicking_resend_sms_code_button(first_account_data):
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     qiwa.login_page.wait_login_page_to_load() \
@@ -102,8 +101,7 @@ def test_confirmation_code_is_resent_after_clicking_resend_sms_code_button(first
 
 
 @case_id(41937)
-def test_captcha_is_displayed_after_entering_incorrect_password_three_times(second_account_data,
-                                                                            clear_from_db_second_account_data):
+def test_captcha_is_displayed_after_entering_incorrect_password_three_times(second_account_data):
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     account = second_account_data
@@ -122,8 +120,7 @@ def test_captcha_is_displayed_after_entering_incorrect_password_three_times(seco
 
 @case_id(57505)
 @pytest.mark.xfail(reasone="functionality could change")
-def test_check_that_account_is_locked_after_four_times_login_with_wrong_credentials(first_account_data,
-                                                                                    clear_from_db_first_account_data):
+def test_check_that_account_is_locked_after_four_times_login_with_wrong_credentials(first_account_data):
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     account_unlock = first_account_data
@@ -147,9 +144,7 @@ def test_check_that_account_is_locked_after_four_times_login_with_wrong_credenti
 
 @case_id(41939)
 def test_verify_user_is_change_phone_number_if_number_is_associated_with_another_account(first_account_data,
-                                                                                         prepare_data_for_sign_in_with_expired_phone,
-                                                                                         clear_from_db_first_account_data,
-                                                                                         clear_from_db_second_account_data):
+                                                                                         prepare_data_for_sign_in_with_expired_phone):
     new_phone = RandomManager().random_phone_number(prefix="")
     qiwa.open_login_page()
     qiwa.header.change_local("en")
@@ -177,8 +172,7 @@ def test_verify_user_is_change_phone_number_if_number_is_associated_with_another
 
 
 @case_id(41947)
-def test_check_functionality_when_user_enter_incorrect_otp_code_four_times_in_row(first_account_data,
-                                                                                  clear_from_db_first_account_data):
+def test_check_functionality_when_user_enter_incorrect_otp_code_four_times_in_row(first_account_data):
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     qiwa.login_page.wait_login_page_to_load() \
