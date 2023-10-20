@@ -8,8 +8,10 @@ def already_canceled_transaction_error() -> dict:
 
 def successfully_canceled_transaction(sadad_number: str) -> dict:
     return {
-        "message_en": f"SADAD bill {sadad_number} has been canceled successfully",
-        "message_ar": f"تم إلغاء معاملة سداد رقم {sadad_number} بنجاح",
+        "message": {
+            "message_en": f"SADAD bill {sadad_number} has been canceled successfully",
+            "message_ar": f"تم إلغاء معاملة سداد رقم {sadad_number} بنجاح",
+        }
     }
 
 
