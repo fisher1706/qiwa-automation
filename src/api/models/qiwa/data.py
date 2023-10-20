@@ -33,13 +33,6 @@ encrypted_saudization_certificate = Data[
 ]
 error = Data[str, Literal["error"], raw.saudi_certificate.Error, Type[None]]
 not_found = Data[Literal["-1"], Literal["not_found"], List[Any], Type[None]]
-change_occupation_request = Data[
-    Type[None],
-    Literal["change-occupation-request"],
-    raw.change_occupation.ChangeOccupationRequest,
-    Type[None],
-]
-request = Data[str, Literal["request"], raw.change_occupation.Request, Type[None]]
 work_permit_request = Data[
     str,
     Literal["work-permit-request"],
