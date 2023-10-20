@@ -5,15 +5,15 @@ import pytest
 from dateutil.relativedelta import relativedelta
 
 from data.visa.constants import (
+    BR_ACCEPTED,
+    BR_EXPIRED,
+    BR_INACTIVE,
+    BR_NEW,
+    BR_REFUNDED,
+    BR_REJECTED,
+    BR_TERMINATED,
+    BR_WAITING,
     ERROR_CODE,
-    TR_ACCEPTED,
-    TR_EXPIRED,
-    TR_INACTIVE,
-    TR_NEW,
-    TR_REFUNDED,
-    TR_REJECTED,
-    TR_TERMINATED,
-    TR_WAITING,
     WORK_VISA_CARD_ZERO_QUOTA_ERROR,
     DateFormats,
     Numbers,
@@ -424,33 +424,75 @@ def test_verify_statuses_tier_upgrades_table_establishment_flow(visa_mock, visa_
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.increase_quota_establishment_button.click()
     ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_WAITING)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_WAITING)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_ACCEPTED.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_ACCEPTED.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_ACCEPTED)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_ACCEPTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_INACTIVE.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_INACTIVE)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_INACTIVE)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_REJECTED.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_REJECTED.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_REJECTED)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_REJECTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_REFUNDED.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_REFUNDED.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_REFUNDED)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_REFUNDED)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_EXPIRED.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_EXPIRED.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_EXPIRED)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_EXPIRED)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_TERMINATED.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_TERMINATED.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_TERMINATED)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_TERMINATED)
 
-    visa_mock.change_balance_request(ref_number, status_id=TR_NEW.id)
+    visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_tier_upgrade_status(ref_number, TR_NEW)
+    qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_NEW)
 
+
+@case_id(25465)
+@allure.title('Test verifies statuses of tier upgrades table for establishment flow')
+def test_verify_statuses_exceptional_balance_requests_table_expansion_flow(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_expansion_button.click()
+    ref_number = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_ACCEPTED)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_INACTIVE)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_INACTIVE)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_WAITING.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_WAITING)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_REJECTED.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_REJECTED)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_REFUNDED.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_REFUNDED)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_EXPIRED.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_EXPIRED)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_TERMINATED.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_TERMINATED)
+
+    visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_balance_request_status(ref_number, BR_NEW)
