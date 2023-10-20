@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import List
-
-from selene import be, have, query
+from selene import be, have
 from selene.core.entity import Collection, Element
 
 
