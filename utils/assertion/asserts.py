@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, date
 from typing import Any, TypeVar
 
 import allure
@@ -23,6 +24,8 @@ def assert_status_code(code: int) -> AssertionMixin:
 def assert_data(*, expected: Any, actual: Any) -> None:
     class SetEncoder(json.JSONEncoder):
         def default(self, obj):
+            if isinstance(obj, (datetime, date)):
+                return str(obj)
             return list(obj)
 
     difference = DeepDiff(expected, actual)
