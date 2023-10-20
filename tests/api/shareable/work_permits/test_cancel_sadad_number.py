@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-import pytest
-
 from data.shareable.expected_json.work_permits.cancel_sadad_number import (
     already_canceled_transaction_error,
     incorrect_transaction_error,
