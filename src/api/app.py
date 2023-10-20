@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from functools import cached_property
 from typing import Optional
 
 import allure
 
 from data.constants import UserInfo
 from src.api.assertions.saudization_certificate import SaudizationApiAssertions
-from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.clients.lo.users import UsersApi
 from src.api.clients.payment import PaymentApi
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
@@ -15,6 +13,7 @@ from src.api.clients.spaces import SpacesApi
 from src.api.clients.user_management import UserManagementApi
 from src.api.clients.work_permit import WorkPermitsApi
 from src.api.clients.wp_debts import WPDebtsApi
+from src.api.controllers.change_occupation import ChangeOccupationController
 from src.api.controllers.delegation import DelegationApiController
 from src.api.controllers.e_service import EServiceApiController
 from src.api.controllers.lmi.dashboard_api_actions import DashboardApiAction
@@ -54,6 +53,7 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
         self.user_management_api = UserManagementApi(self.client)
         self.payment = PaymentApi(self.client)
         # Controllers
+        self.change_occupation = ChangeOccupationController(self.client)
         self.visits_api = VisitsApiController(self.client)
         self.e_service = EServiceApiController(self.client)
         self.dashboard_api_actions = DashboardApiAction(self.client)
@@ -62,10 +62,6 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
         self.survey_result_api_actions = SurveyResultApiAction(self.client)
         self.weq_api_actions = WeqApiAction(self.client)
         self.delegation_api = DelegationApiController(self.client)
-
-    @cached_property
-    def change_occupation(self) -> ChangeOccupationApi:
-        return ChangeOccupationApi(self.client, self.authorization_token)
 
     @property
     def authorization_token(self) -> AuthorizationToken:

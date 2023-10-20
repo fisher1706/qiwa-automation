@@ -1,12 +1,10 @@
 import pytest
 
-from data.mock_mlsd.establishment import Establishment
+from src.api.app import QiwaApi
 
 
-@pytest.fixture(scope="package")
-def establishment() -> Establishment:
-    return Establishment(
-        personal_number="1154466872",
-        labor_office_id="14",
-        sequence_number="2274480",
-    )
+@pytest.fixture(scope="module")
+def api() -> QiwaApi:
+    qiwa = QiwaApi.login_as_user("1048285405").select_company(sequence_number=136401)
+    qiwa.change_occupation.pass_ott_authorization()
+    return qiwa
