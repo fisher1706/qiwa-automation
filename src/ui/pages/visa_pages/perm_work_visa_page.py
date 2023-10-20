@@ -1,5 +1,5 @@
 import allure
-from selene.api import be, command, have, s, ss
+from selene.api import Element, be, command, have, s, ss
 
 from data.visa.constants import (
     FILTERS,
@@ -8,8 +8,8 @@ from data.visa.constants import (
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
     WORK_VISA_PAGE_TITLE_TEXT,
+    BalanceRequestStatus,
     ColName,
-    TierRequest,
     VisaType,
 )
 from src.ui.components.raw.table import Table
@@ -148,10 +148,19 @@ class PermWorkVisaPage(BasePage):
             ).click()
 
     @allure.step("Verify tier upgrade status of tier upgrade request")
-    def verify_tier_upgrade_status(self, ref_number: str, status: TierRequest) -> None:
-        table = Table(self.tier_upgrades_requests_table)
+    def verify_tier_upgrade_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
+        self.verify_request_status(ref_number, status, self.tier_upgrades_requests_table)
+
+    @allure.step("Verify balance request status")
+    def verify_balance_request_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
+        self.verify_request_status(ref_number, status, self.exceptional_requests_table)
+
+    def verify_request_status(
+        self, ref_number: str, status: BalanceRequestStatus, element: Element
+    ) -> None:
+        table = Table(element)
         status_cell = table.cell(row=have.text(ref_number), column=ColName.REQUEST_STATUS)
-        command.js.scroll_into_view(self.tier_upgrades_requests_table)
+        command.js.scroll_into_view(element)
         soft_assert_text(
-            element=status_cell, text=status.label, element_name="Tier request status"
+            element=status_cell, text=status.label, element_name="Balance request status"
         )
