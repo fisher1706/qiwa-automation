@@ -496,3 +496,17 @@ def test_verify_statuses_exceptional_balance_requests_table_expansion_flow(visa_
     visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
     qiwa.work_visa.refresh_page()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_NEW)
+
+
+@case_id(25572)
+@allure.title('Test verifies top navigation tabs/links scrolling work')
+def test_verify_top_navigation_block_perm_work_visa_page(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.return_to_transitional_page()
+    qiwa.transitional.verify_cards_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_top_navigation_tabs_work()
