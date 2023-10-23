@@ -9,3 +9,4 @@ requests_laborers_data = Root[list[change_occupation.requests_laborers], Type[No
 change_occupation_count_data = Root[
     list[change_occupation.change_occupation_count], Type[None], Type[None]
 ]
+users_data = Root[list[change_occupation.user], Type[None], Meta]

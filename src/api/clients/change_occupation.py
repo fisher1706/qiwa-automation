@@ -24,3 +24,6 @@ class ChangeOccupationApi:
 
     def get_count(self) -> Response:
         return self.client.get(f"{self.url}/count")
+
+    def get_users(self, page: int = 1, per: int = 10) -> Response:
+        return self.client.get(f"{self.url}/users", params={"page": page, "per": per})

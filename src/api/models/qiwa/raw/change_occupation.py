@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import Field
 
@@ -97,3 +98,29 @@ class Meta(QiwaBaseModel):
     max_score: int | None = ...
     total_pages: int
     total: MetaTotal
+
+
+class Reason(QiwaBaseModel):
+    code: str
+    ar_description: str
+    en_description: str
+
+
+class User(QiwaBaseModel):
+    personal_number: str
+    name: str
+    status_code: str
+    pk_laborer_id: str
+    establishment_number: str
+    establishment_name: str
+    id_expire_date: datetime
+    nationality_code: str
+    nationality_name_en: str
+    nationality_name_ar: str
+    occupation_code: str
+    occupation_name_en: str
+    occupation_name_ar: str
+    entry_date: datetime
+    eligibility: str
+    iqama_border_number: str
+    reasons: list[Reason] | None
