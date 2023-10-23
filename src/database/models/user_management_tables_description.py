@@ -1,5 +1,5 @@
 # pylint: disable = too-few-public-methods
-from sqlalchemy import VARCHAR, BigInteger, Boolean, Column, Integer, Text
+from sqlalchemy import VARCHAR, BigInteger, Boolean, Column, DateTime, Integer, Text
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -50,6 +50,7 @@ class UMSubscriptions(Base):
     unified_number = Column("FK_UnifiedNumber", BigInteger, primary_key=True, nullable=False)
     personal_number = Column("FK_Idno", VARCHAR(20))
     subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
+    expire_date = Column("ExpireDate", DateTime)
 
 
 class UserPrivileges(Base):

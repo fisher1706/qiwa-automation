@@ -8,6 +8,22 @@ owner_account = User(
     unified_number_id=9086,
 )
 
+delegator_for_owner_new_flow = User(
+    personal_number="1615428222",
+    user_id=1082,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+)
+
+delegator_for_edit_flow = User(
+    personal_number="1096471568",
+    user_id=1666054,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+)
+
 delegator_with_um = User(
     personal_number="1019865797",
     user_id=1667090,
