@@ -27,3 +27,12 @@ class ChangeOccupationApi:
 
     def get_users(self, page: int = 1, per: int = 10) -> Response:
         return self.client.get(f"{self.url}/users", params={"page": page, "per": per})
+
+    def get_occupations(self, page: int = 1, per: int = 10) -> Response:
+        return self.client.get(f"{self.url}/occupations", params={"page": page, "per": per})
+
+    def get_context(self) -> Response:
+        return self.client.get(f"{self.url}/context")
+
+    def validate_establishment(self) -> Response:
+        return self.client.get(f"{self.url}/establishment/validate")
