@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal
 
 from pydantic import Field
 
@@ -124,3 +124,16 @@ class User(QiwaBaseModel):
     eligibility: str
     iqama_border_number: str
     reasons: list[Reason] | None
+
+
+RuleCodesT = Literal["establishment_status", "work_permit_status", "nitaqat_color", "notes", "economic_activity"]
+
+
+class Rule(QiwaBaseModel):
+    code: RuleCodesT
+    message: str
+    status: str
+
+
+class RulesMeta(QiwaBaseModel):
+    valid: bool
