@@ -1,7 +1,10 @@
 from typing import Literal, Type
 
 from src.api.models.qiwa.raw.change_occupations.count import RequestsCount
-from src.api.models.qiwa.raw.change_occupations.establishment_validate import RuleCodesT, Rule
+from src.api.models.qiwa.raw.change_occupations.establishment_validate import (
+    Rule,
+    RuleCodesT,
+)
 from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
