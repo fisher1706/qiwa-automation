@@ -1,7 +1,9 @@
 from typing import Type
 
 from src.api.models.qiwa.data_attr import change_occupation
-from src.api.models.qiwa.raw.change_occupations.establishment_validate import Meta as ValidationMeta
+from src.api.models.qiwa.raw.change_occupations.establishment_validate import (
+    Meta as ValidationMeta,
+)
 from src.api.models.qiwa.raw.change_occupations.meta import Meta
 from src.api.models.qiwa.raw.root import Root
 

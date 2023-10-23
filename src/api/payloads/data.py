@@ -1,10 +1,13 @@
-from src.api.payloads.raw.data import Data
-from src.api.payloads.raw.root import Root
+from typing import Any
 
 
-def change_occupation(attributes):
-    return Root(data=Data(type="change-occupation", attributes=attributes))
+def data(data_type: Any, attributes: Any) -> dict:
+    return {"data": {"type": data_type, "attributes": attributes}}
 
 
-def group(attributes):
-    return Root(data=Data(type="group", attributes=attributes))
+def change_occupation(attributes: Any) -> dict:
+    return data("change-occupation", attributes)
+
+
+def group(attributes: Any) -> dict:
+    return data("group", attributes)
