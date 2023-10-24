@@ -1,14 +1,12 @@
 from http import HTTPStatus
 
-import pytest
-
 from data.shareable.expected_json.work_permits.cancel_sadad_number import (
     already_canceled_transaction_error,
     incorrect_transaction_error,
     successfully_canceled_transaction,
 )
 from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
-from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
+from src.api.models.qiwa.work_permits import cancel_sadad_ibm_error
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_data
 
