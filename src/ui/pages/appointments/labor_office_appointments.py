@@ -6,6 +6,8 @@ import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
 
+from data.constants import Language
+from data.lo.constants import AppointmentsCancel as Ac
 from src.ui.components.raw.dropdown import Dropdown
 from src.ui.components.raw.table import Table
 from src.ui.pages.appointments.labor_office_appointments_create import (
@@ -15,6 +17,8 @@ from utils.assertion import assert_that
 
 
 class LaborOfficeAppointmentsPage:
+    language = Language.EN
+
     book_appointment_btn = s("[data-component='Breadcrumbs'] + div p")
     appointments = s("//p[text()='Labor Office Appointments']")
     upcoming_appointment_row = s('//*[@id="upcoming"]//tr')
@@ -29,9 +33,6 @@ class LaborOfficeAppointmentsPage:
     button_next_step = s('//button[@type="submit"]')
     button_action_view_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//a[1]')
     button_action_cancel_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//button')
-    button_cancel_upcoming_appointment_confirmation = s(
-        '(//*[@data-component="ButtonGroup"]//button)[1]'
-    )
     button_close_modal = s('//button[@aria-label="Close modal"]')
     button_back_to_appointments = s("(//button)[1]")
     button_print = s("(//button)[2]")
@@ -58,6 +59,51 @@ class LaborOfficeAppointmentsPage:
         "//*[@id='archieved']/div/div[2]/div/table/tbody/tr[1]/td[8]/a"
     )
 
+    cancel_app_wrapper_title = s("//*[@id='modalBodyWrapper']/div/p")
+    cancel_app_wrapper_reason_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[1]/td/div/p[1]"
+    )
+    cancel_app_wrapper_reason_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[1]/td/div/p[2]"
+    )
+    cancel_app_wrapper_date_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[2]/td/div/p[1]"
+    )
+    cancel_app_wrapper_date_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[2]/td/div/p[2]"
+    )
+    cancel_app_wrapper_time_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[3]/td/div/p[1]"
+    )
+    cancel_app_wrapper_time_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[3]/td/div/p[2]"
+    )
+    cancel_app_wrapper_office_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[4]/td/div/p[1]"
+    )
+    cancel_app_wrapper_office_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[4]/td/div/p[2]"
+    )
+    cancel_app_wrapper_type_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[5]/td/div/p[1]"
+    )
+    cancel_app_wrapper_type_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[5]/td/div/p[2]"
+    )
+    cancel_app_wrapper_status_text = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[6]/td/div/p[1]"
+    )
+    cancel_app_wrapper_status_value = s(
+        "//*[@id='modalBodyWrapper']/div/div/table/tbody/tr[6]/td/div/div"
+    )
+    cancel_app_wrapper_cancel_btn = s(
+        "//*[@tabindex='-1']//*[@data-component='ButtonGroup']//button[1]"
+    )
+    cancel_app_wrapper_back_btn = s(
+        "//*[@tabindex='-1']//*[@data-component='ButtonGroup']//button[2]"
+    )
+    cancel_app_wrapper_close_btn = s("//button[@aria-label='Close modal']")
+
     @allure.step("Wait Appointments page to load")
     def wait_page_to_load(self) -> LaborOfficeAppointmentsPage:
         self.appointments.wait_until(be.visible)
@@ -75,13 +121,19 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Cancel active appointment if exists")
     def cancel_active_appointment(self) -> LaborOfficeAppointmentsPage:
-        # todo: investigate possibility to remove this sleep
         time.sleep(1)
         if self.upcoming_appointment_row.matching(be.visible):
             self.upcoming_appointments_actions.click()
             self.button_action_cancel_upcoming_appointment.click()
-            self.button_cancel_upcoming_appointment_confirmation.click()
+            self.cancel_app_wrapper_cancel_btn.click()
             self.button_close_modal.click()
+
+        return self
+
+    @allure.step("Check active appointment not exist")
+    def check_active_appointment_not_exist(self) -> LaborOfficeAppointmentsPage:
+        browser.driver.refresh()
+        self.upcoming_appointment_row.should(be.not_.visible)
 
         return self
 
@@ -176,3 +228,47 @@ class LaborOfficeAppointmentsPage:
         browser.switch_to_next_tab()
         assert_that(browser.driver.current_url.startswith("https://knowledge-center.qiwa.info/"))
         return self
+
+    @allure.step("Verify cancel app title text")
+    def verify_cancel_app_title_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_title.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app reason text")
+    def verify_cancel_app_reason_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_reason_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app date text")
+    def verify_cancel_app_date_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_date_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app time text")
+    def verify_cancel_app_time_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_time_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app office text")
+    def verify_cancel_app_office_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_office_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app type text")
+    def verify_cancel_app_type_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_type_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel app status text")
+    def verify_cancel_app_status_text(self, text: dict, locale: str):
+        self.cancel_app_wrapper_status_text.should(have.text(text[locale]))
+
+    @allure.step("Verify cancel appointment wrapper")
+    def verify_cancel_app_wrapper(self):
+        self.verify_cancel_app_title_text(Ac.TITLE_TEXT, self.language)
+        self.verify_cancel_app_reason_text(Ac.REASON_TEXT, self.language)
+        self.cancel_app_wrapper_reason_value.should(be.visible)
+        self.verify_cancel_app_date_text(Ac.DATE_TEXT, self.language)
+        self.cancel_app_wrapper_date_value.should(be.visible)
+        self.verify_cancel_app_time_text(Ac.TIME_TEXT, self.language)
+        self.cancel_app_wrapper_time_value.should(be.visible)
+        self.verify_cancel_app_office_text(Ac.OFFICE_TEXT, self.language)
+        self.cancel_app_wrapper_office_value.should(be.visible)
+        self.verify_cancel_app_type_text(Ac.TYPE_TEXT, self.language)
+        self.cancel_app_wrapper_type_value.should(be.visible)
+        self.verify_cancel_app_status_text(Ac.STATUS_TEXT, self.language)
+        self.cancel_app_wrapper_status_value.should(be.visible)
