@@ -4,10 +4,14 @@ import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
+from data.constants import AppointmentReason, Language
+from data.lo.constants import OfficesInfo, ServicesInfo, SubscribedUser
 from src.ui.components.raw.dropdown import Dropdown
 
 
 class LaborOfficeAppointmentsCreatePage:
+    language = Language.EN
+
     search = s("#establishment-list")
     establishment_list = ss("[data-component='RadioButton'] span")
     next_btn = s("[type='submit']")
@@ -122,3 +126,17 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Verify Service list is not empty")
     def should_service_list_be(self):
         assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
+
+    @allure.step("Create appointment flow in create appointment page")
+    def book_appointment_flow(self):
+        self.select_establishment(SubscribedUser.ESTABLISHMENT[self.language])
+        self.select_appointment_reason(AppointmentReason.IN_PERSON)
+        self.select_service(ServicesInfo.SERVICE_NAME_WORK_PERMITS[self.language])
+        self.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[self.language])
+        self.click_next_step_button()
+        self.select_region(OfficesInfo.REGION_MADINAH[self.language])
+        self.select_office(OfficesInfo.OFFICE_NAME_TEST_OFFICE)
+        self.select_date()
+        self.select_time()
+        self.click_next_step_button()
+        self.click_next_step_button()

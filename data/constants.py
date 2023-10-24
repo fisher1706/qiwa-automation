@@ -275,3 +275,7 @@ class Titles:
     CHANGE_OCCUPATION = "Change Occupation"
     LABOR_OFFICE_APPOINTMENTS = "Labor Office Appointments"
     WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
+
+
+class Workspaces:
+    BUSINESS_ACCOUNT_CARD = {Language.EN: "Business Account", Language.AR: "حساب الأعمال"}

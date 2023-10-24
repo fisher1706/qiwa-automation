@@ -130,7 +130,7 @@ class OfficesInfo:
 
     REGION_NAJRAN = "Najran"
     REGION_TABUK = "Tabuk"
-    REGION_MADINAH = "Madinah"
+    REGION_MADINAH = {Language.EN: "Madinah", Language.AR: "المدينة المنورة"}
     REGION_HAIL_WITHOUT_OFFICES = "Hail"
 
     REGION_ITEM_EDITED = "Riyadh"
@@ -151,8 +151,11 @@ class ServicesInfo:
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
 
-    SERVICE_NAME_WORK_PERMITS = "Work Permits"
-    SUB_SERVICE_NAME_RENEW_WORK_PERMITS = "Renew Work Permits"
+    SERVICE_NAME_WORK_PERMITS = {Language.EN: "Work Permits", Language.AR: "رخص العمل"}
+    SUB_SERVICE_NAME_RENEW_WORK_PERMITS = {
+        Language.EN: "Renew Work Permits",
+        Language.AR: "تجديد رخص العمل",
+    }
 
     EMPLOYEE_TRANSFER_SERVICE = "Employee Transfer"
     EMPLOYEE_TRANSFER_SUB_SERVICE = "Employee Transfer"
@@ -292,8 +295,8 @@ class EmployeeTransferStatuses(str, Enum):
 
 class AppointmentsView:
     PAGINATION = {Language.EN: "Appointment details", Language.AR: "تفاصيل الموعد"}
-    APPOINTMENT_REFERENCE_NUMBER = {
-        Language.EN: "Appointment reference number:",
+    APPOINTMENT_REFERENCE_NUMBER_TEXT = {
+        Language.EN: "Appointment reference number",
         Language.AR: "الرقم المرجعي للموعد:",
     }
     INFO_ROW_TEXT = {
@@ -302,6 +305,10 @@ class AppointmentsView:
         "scheduled date and time.",
         Language.AR: "للحصول على تجربة أفضل في مكتب العمل،"
         " يرجى التأكد من الوصول للموقع في التاريخ والوقت المحددين.",
+    }
+    GENERAL_INFO_REASON_TEXT = {
+        Language.EN: "Appointment reason",
+        Language.AR: "طلب خدمة جديدة - موعد حضوري",
     }
     GENERAL_INFO_DATA_TEXT = {Language.EN: "Date", Language.AR: "التاريخ"}
     GENERAL_INFO_TIME_TEXT = {Language.EN: "Time", Language.AR: "الوقت"}
@@ -322,3 +329,16 @@ class AppointmentsView:
         Language.EN: "Location link was successfully copied to the clipboard.",
         Language.AR: "تم نسخ الرابط بنجاح",
     }
+
+
+class AppointmentsCancel:
+    TITLE_TEXT = {
+        Language.EN: "Are you sure you want to cancel this appointment?",
+        Language.AR: "هل أنت متأكد من إلغاء الموعد؟",
+    }
+    REASON_TEXT = {Language.EN: "Appointment reason", Language.AR: "سبب الموعد"}
+    DATE_TEXT = {Language.EN: "Date", Language.AR: "التاريخ"}
+    TIME_TEXT = {Language.EN: "Time", Language.AR: "الوقت"}
+    OFFICE_TEXT = {Language.EN: "Office", Language.AR: "المكتب"}
+    TYPE_TEXT = {Language.EN: "Type", Language.AR: "النوع"}
+    STATUS_TEXT = {Language.EN: "Status", Language.AR: "الحالة"}
