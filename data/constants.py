@@ -20,7 +20,6 @@ class UserType:  # pylint: disable=too-few-public-methods
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
-    EXPIRED_DATE = "2023-05-10"
 
 
 @dataclass
