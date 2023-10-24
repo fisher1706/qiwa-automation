@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from selene import command
 from selene.support.shared.jquery_style import s
 
@@ -35,5 +37,9 @@ class TransferFromExternalCompanyPage:
         return self
 
     def click_link_create_contract_another_establishment(self) -> TransferFromExternalCompanyPage:
-        self.table.cell(row=1, column=7).ss("a").first.hover().click()
+        link = self.table.cell(row=1, column=7).ss("a").first
+        # todo: [dp] find the possibility of waiting script ends
+        time.sleep(1)
+        link.execute_script("element.scrollIntoViewIfNeeded()")
+        link.click()
         return self
