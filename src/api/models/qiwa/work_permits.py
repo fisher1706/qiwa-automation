@@ -1,7 +1,7 @@
 from typing import Literal, Type
 
 from src.api.constants.work_permit import WorkPermitStatus, WorkPermitStatusLiterals
-from src.api.models.qiwa.data_attr import work_permits
+from src.api.models.qiwa.data import work_permits
 from src.api.models.qiwa.raw import work_permit
 from src.api.models.qiwa.raw.root import Root
 from src.api.models.qiwa.raw.work_permit import validate_expat
