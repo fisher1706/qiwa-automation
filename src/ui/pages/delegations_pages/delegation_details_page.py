@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import Element, be, browser, have
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 import config
 from data.delegation import general_data
@@ -10,9 +10,6 @@ from src.ui.components.raw.table import Table
 
 
 class DelegationDetailsPage:
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     action_buttons_block = s('div[data-component="ButtonGroup"]')
     action_buttons = action_buttons_block.ss("button")
     general_information_block = s("#DelegationDetailsSection1")
@@ -38,26 +35,6 @@ class DelegationDetailsPage:
     delegate_nid = delegate_table.row(2).s('[data-testid="tableCellValue"]')
     delegate_nationality = delegate_table.row(3).s('[data-testid="tableCellValue"]')
     delegate_occupation = delegate_table.row(4).s('[data-testid="tableCellValue"]')
-    resend_modal = s('div[data-testid="ResendModal"]')
-    title_on_modal = s('[id="modalBodyWrapper"] p.dIVImG')
-    description_on_modal = s('[id="modalBodyWrapper"] p.gggtgX')
-    message_on_resend_modal = s('div[data-component="Message"]')
-    resend_button_on_modal = s('button[data-testid="ResendModalAction"]')
-    loader_on_action_button = s('span[data-component="Loader"]')
-    cancel_button_on_resend_modal = s('button[data-testid="ResendModalClose"]')
-    toast_after_action = s('div[data-component="Toast"]')
-    icon_on_toast = s('div[data-component="Toast"] > span[data-component="Icon"] > svg')
-    revoke_modal = s('div[data-testid="RevokeModal"]')
-    revoke_button_on_modal = s('button[data-testid="RevokeModalAction"]')
-    go_back_button_on_revoke_modal = s('button[data-testid="RevokeModalClose"]')
-    close_button_on_modal = s('button[aria-label="Close modal"]')
-
-    @allure.step
-    def select_english_localization_on_delegation_details(self) -> DelegationDetailsPage:
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
-        return self
 
     @allure.step
     def wait_delegation_details_page_to_load(self) -> DelegationDetailsPage:
@@ -130,13 +107,10 @@ class DelegationDetailsPage:
         return self
 
     @allure.step
-    def should_dates_be_correct_on_delegation_details(
-        self, status: str, date: str, locator: Element
+    def should_delegation_dates_be_correct_on_delegation_details(
+        self, date: str, locator: Element
     ) -> DelegationDetailsPage:
-        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
-            locator.should(have.text(date))
-        else:
-            locator.should(have.text("-"))
+        locator.should(have.text(date))
         return self
 
     @allure.step
@@ -197,54 +171,4 @@ class DelegationDetailsPage:
         self, delegate_occupation: str
     ) -> DelegationDetailsPage:
         self.delegate_occupation.should(have.exact_text(delegate_occupation))
-        return self
-
-    @allure.step
-    def should_resend_confirmation_modal_be_displayed_on_delegation_details(
-        self,
-    ) -> DelegationDetailsPage:
-        self.resend_modal.should(be.visible)
-        self.title_on_modal.should(have.exact_text(general_data.RESEND_MODAL_TITLE))
-        self.description_on_modal.should(have.exact_text(general_data.RESEND_MODAL_DESCRIPTION))
-        self.message_on_resend_modal.should(have.exact_text(general_data.RESEND_MODAL_MESSAGE))
-        self.resend_button_on_modal.should(have.exact_text(general_data.RESEND_BUTTON))
-        self.cancel_button_on_resend_modal.should(have.exact_text(general_data.CANCEL_BUTTON))
-        return self
-
-    @allure.step
-    def click_resend_request_button_on_delegation_details(self) -> DelegationDetailsPage:
-        self.resend_button_on_modal.click()
-        self.loader_on_action_button.should(be.visible)
-        return self
-
-    @allure.step
-    def should_successful_message_be_displayed_on_delegation_details(
-        self, message: str
-    ) -> DelegationDetailsPage:
-        self.toast_after_action.should(have.text(message))
-        self.toast_after_action.should(
-            have.css_property(
-                name=general_data.BACKGROUND_COLOR_NAME,
-                value=general_data.SUCCESSFUL_MESSAGE_COLOR,
-            )
-        )
-        self.icon_on_toast.should(be.visible)
-        return self
-
-    @allure.step
-    def should_revoke_confirmation_modal_be_displayed_on_delegation_details(
-        self,
-    ) -> DelegationDetailsPage:
-        self.revoke_modal.should(be.visible)
-        self.title_on_modal.should(have.exact_text(general_data.REVOKE_MODAL_TITLE))
-        self.description_on_modal.should(have.exact_text(general_data.REVOKE_MODAL_DESCRIPTION))
-        self.revoke_button_on_modal.should(have.exact_text(general_data.REVOKE_BUTTON))
-        self.go_back_button_on_revoke_modal.should(have.exact_text(general_data.GO_BACK_BUTTON))
-        self.close_button_on_modal.should(be.visible)
-        return self
-
-    @allure.step
-    def click_revoke_delegation_button_on_dashboard(self) -> DelegationDetailsPage:
-        self.revoke_button_on_modal.click()
-        self.loader_on_action_button.should(be.visible)
         return self
