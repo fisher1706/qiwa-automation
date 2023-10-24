@@ -19,16 +19,11 @@ class ChangeOccupationController:
         cookie = self.api.client.session.cookies.get("qiwa.authorization")
         jwt = decode_authorization_token(cookie)
         auth_token = AuthorizationToken.parse_obj(jwt)
-        payload = {
-            "labor-office-id": auth_token.company_labor_office_id,
-            "sequence-number": auth_token.company_sequence_number,
-            "personal-number": auth_token.user_personal_number,
-            "service-code": "change_occupation",
-            "platform-id": 1,
-            "channel-id": "Qiwa",
-            "language": "en",
-        }
-        response = self.api.get_ott_token(payload)
+        response = self.api.get_ott_token(
+            auth_token.company_labor_office_id,
+            auth_token.company_sequence_number,
+            auth_token.user_personal_number,
+        )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         redirect_url = response.json()["redirect_url"]
         parsed_url = parse.parse_qs(parse.urlparse(redirect_url).query)
