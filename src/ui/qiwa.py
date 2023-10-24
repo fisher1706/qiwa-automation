@@ -8,6 +8,12 @@ import config
 from data.constants import UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
+from src.ui.components.delegation.localisation_change import (
+    DelegationLocalisationChange,
+)
+from src.ui.components.delegation.resend_modal import ResendModal
+from src.ui.components.delegation.revoke_modal import RevokeModal
+from src.ui.components.delegation.toast_message import DelegationToast
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
@@ -101,6 +107,10 @@ class QiwaUiClient:
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
     meet_qiwa_popup = MeetQiwaPopup()
+    resend_modal = ResendModal()
+    revoke_modal = RevokeModal()
+    toast_message = DelegationToast()
+    delegation_localisation = DelegationLocalisationChange()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:

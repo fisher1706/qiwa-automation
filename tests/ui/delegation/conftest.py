@@ -1,3 +1,4 @@
+import allure
 from selene import browser
 
 from data.delegation import general_data
@@ -19,14 +20,16 @@ def open_delegation_dashboard_page(qiwa_api: QiwaApi):
     cookies = qiwa_api.sso.oauth_api.get_context()
     qiwa.open_delegation_dashboard_page()
     set_cookies_for_browser(cookies)
-    qiwa.delegation_dashboard_page.wait_delegation_dashboard_page_to_load().select_english_localization_on_delegation_dashboard()
+    qiwa.delegation_dashboard_page.wait_delegation_dashboard_page_to_load()
+    qiwa.delegation_localisation.select_english_localisation_for_delegation_service()
 
 
 def open_delegation_details_page(qiwa_api: QiwaApi, delegation_id: int):
     cookies = qiwa_api.sso.oauth_api.get_context()
     qiwa.open_delegation_details_page(delegation_id)
     set_cookies_for_browser(cookies)
-    qiwa.delegation_details_page.wait_delegation_details_page_to_load().select_english_localization_on_delegation_details()
+    qiwa.delegation_details_page.wait_delegation_details_page_to_load()
+    qiwa.delegation_localisation.select_english_localisation_for_delegation_service()
 
 
 def login_and_open_delegation_dashboard_page(
@@ -115,6 +118,7 @@ def reject_delegation_request_by_partner(
     )
 
 
+@allure.step
 def check_sms_after_resend_action(
     phone_number: str,
     delegation_id: str,
@@ -130,9 +134,19 @@ def check_sms_after_resend_action(
     return link
 
 
+@allure.step
 def open_url_from_sms(url: str):
     browser.open(url)
 
 
 def get_old_url_after_resend_action(request_id: str, formatted_phone_number: str) -> str:
     return general_data.SMS_LINK.format(request_id, formatted_phone_number)
+
+
+def get_dates_on_delegation_pages(status: str, start_date: str, end_date: str):
+    dates = {}
+    if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
+        dates.update({"start_date": start_date, "expire_date": end_date})
+    else:
+        dates.update({"start_date": "-", "expire_date": "-"})
+    return dates
