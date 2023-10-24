@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 from src.api.constants.work_permit import WorkPermitStatus, WorkPermitStatusArabic
 from src.api.models.qiwa.raw.data import Data
-from src.api.models.qiwa.raw.work_permit.employees import Employee
-from src.api.models.qiwa.raw.work_permit.transaction import WorkPermitRequest
-from src.api.models.qiwa.raw.work_permit.wp_debts import WPDebtInfo
+from src.api.models.qiwa.raw.work_permits.employees import Employee
+from src.api.models.qiwa.raw.work_permits.transaction import WorkPermitRequest
+from src.api.models.qiwa.raw.work_permits.wp_debts import WPDebtInfo
 
 StatusLiteralT = TypeVar("StatusLiteralT", bound=WorkPermitStatus)
 StatusIdLiteralT = TypeVar("StatusIdLiteralT", bound=WorkPermitStatusArabic)

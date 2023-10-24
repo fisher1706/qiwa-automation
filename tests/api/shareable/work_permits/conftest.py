@@ -7,7 +7,7 @@ from data.mock_mlsd.establishment import Establishment
 from src.api.app import QiwaApi
 from src.api.constants.work_permit import WorkPermitStatus
 from src.api.models.qiwa import work_permits
-from src.api.models.qiwa.raw.work_permit.employees import Employee
+from src.api.models.qiwa.raw.work_permits.employees import Employee
 from utils.assertion import assert_status_code
 from utils.json_search import search_by_data
 
