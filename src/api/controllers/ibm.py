@@ -40,6 +40,11 @@ from src.api.payloads.ibm.getusereligibleservices import (
     GetUserEligibleServicesRqBody,
     GetUserEligibleServicesRqPayload,
 )
+from src.api.payloads.ibm.getuserestablishmentsmlsdlo import (
+    GetUserEstablishmentsMLSDLORq,
+    GetUserEstablishmentsMLSDLORqBody,
+    GetUserEstablishmentsMLSDLORqPayload,
+)
 from src.api.payloads.ibm.getworkspaceestablishments import (
     GetWorkspaceEstablishmentsRq,
     GetWorkspaceEstablishmentsRqBody,
@@ -265,7 +270,7 @@ class IBMApiController:
         )
         return personal_number
 
-    @allure.step("Get")
+    @allure.step("Get user eligible services")
     def get_user_eligible_services(self, id_no, office_id, sequence):
         payload = GetUserEligibleServicesRqPayload(
             GetUserEligibleServicesRq=(
@@ -321,3 +326,30 @@ class IBMApiController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         establishment_list = response.json()["GetQiwaWorkspaceEstablishmentsRs"]
         return establishment_list
+
+    @allure.step("Get user establishments MLSDLO")
+    def get_user_establishments_mlsdlo(self, id_no) -> dict:
+        payload = GetUserEstablishmentsMLSDLORqPayload(
+            GetUserEstablishmentsMLSDLORq=(
+                GetUserEstablishmentsMLSDLORq(
+                    Header=Header(
+                        TransactionId="0",
+                        RequestTime="2019-10-10 00:00:00.555",
+                        ServiceCode="MGUELO01",
+                        DebugFlag="1",
+                        ChannelId="Qiwa",
+                        SessionId="212",
+                    ).dict(exclude_none=True),
+                    Body=GetUserEstablishmentsMLSDLORqBody(IdNo=id_no),
+                )
+            )
+        ).dict()
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwalo/getuserestabmlsdlo",
+            headers=HEADERS,
+            json=payload,
+        )
+
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
