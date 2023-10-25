@@ -5,15 +5,15 @@ from selene import be, browser, command, have
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from src.ui.components.code_verification_box import CodeVerificationBox
+from src.ui.components.code_verification import CodeVerification
 
 
 class LoginPage:
     identity_number_field = s("#userId")
     password_field = s("#password")
     login_button = s('button[type="submit"]')
-    otp_pop_up = CodeVerificationBox(s('[data-testid="modal-root"]'))
-    absher_pop_up = CodeVerificationBox(s(".iswHle"))
+    otp_pop_up = CodeVerification(s('[data-testid="modal-root"]'))
+    absher_pop_up = CodeVerification(s(".iswHle"))
     notification_message_texts = ss('[data-component="VerticalNotification"] p')
     unlock_account_button = s('[data-component="VerticalNotification"] button')
     not_robot_captcha = s('[title="reCAPTCHA"]')

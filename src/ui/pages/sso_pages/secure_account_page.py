@@ -4,7 +4,7 @@ import allure
 from selene import have
 from selene.support.shared.jquery_style import s, ss
 
-from src.ui.components.code_verification_box import CodeVerificationBox
+from src.ui.components.code_verification import CodeVerification
 from src.ui.components.raw.dropdown import Dropdown
 
 
@@ -15,7 +15,7 @@ class SecureAccountPage:
     first_question_dropdown = Dropdown(
         element=ss('input[id="test-id-0"]').first, option_element_locator='[id=":r3:-list"]'
     )
-    verify_email_box = CodeVerificationBox(s(".jjSdgF"))
+    verify_email_box = CodeVerification(s(".jjSdgF"))
 
     @allure.step
     def secure_account_page_should_have_title(self, title: str) -> SecureAccountPage:

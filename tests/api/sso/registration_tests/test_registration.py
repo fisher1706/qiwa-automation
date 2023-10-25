@@ -28,8 +28,8 @@ def test_expat_with_iqama_number_registration(clear_expat_db_registration_data):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day=users_data.GREGORIAN_BIRTHDAY)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account)
     qiwa.login_as_user(personal_number=account.personal_number)
@@ -42,8 +42,8 @@ def test_pre_check_user_with_already_used_nid(clear_saudi_db_registration_data):
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
         .register_account_via_sso_api(account=account)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number, expected_code=422)
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number, expected_code=422)
 
 
 @case_id(41865)
@@ -164,8 +164,8 @@ def test_registration_with_registered_email(clear_expat_db_registration_data, cl
     qiwa = QiwaApi()
     second_account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, email=account.email)
     qiwa.sso.init_sso_hsm(second_account.personal_number, second_account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(second_account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(second_account.phone_number) \
         .pre_check_user_email(second_account.email, expected_code=422) \
         .register_user(second_account, expected_code=422)
 
