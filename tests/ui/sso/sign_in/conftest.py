@@ -11,20 +11,6 @@ from src.database.sql_requests.accounts_emails import AccountsEmailsRequest
 from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
 
 
-# @pytest.fixture
-# def first_account_data():
-#     account = Account(
-#         personal_number=users_data.SAUDI_FOR_SIGN_IN, email="email-for-signin@gmail.com"
-#     )
-#     qiwa = QiwaApi()
-#     try:
-#         qiwa.sso.register_account_via_sso_api(account)
-#         qiwa.sso.login_user(account.personal_number, account.password)
-#         qiwa.sso.pass_account_security()
-#     except AssertionError:
-#         pass
-#     return account
-#
 @pytest.fixture
 def first_account_data():
     account = Account(
@@ -99,15 +85,3 @@ def prepare_data_for_sign_in_with_expired_phone(first_account_data):
     )
     QiwaApi().sso.register_account_via_sso_api(second_account)
     return first_account_data
-
-
-# @pytest.fixture
-# def clear_from_db_first_account_data():
-#     yield
-#     delete_account_data_from_db(users_data.SAUDI_FOR_SIGN_IN)
-#
-#
-# @pytest.fixture
-# def clear_from_db_second_account_data():
-#     yield
-#     delete_account_data_from_db(users_data.SECOND_ACCOUNT_FOR_SIGN_IN)

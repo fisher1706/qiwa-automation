@@ -1,6 +1,6 @@
 import pytest
 
-from data.sso import front_messages as messages
+from data.sso import messages as messages
 from data.sso import users_data_constants as users_data
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project

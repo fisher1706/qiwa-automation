@@ -16,8 +16,8 @@ def test_user_with_national_id_registration(clear_saudi_db_registration_data):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account)
     qiwa.login_as_user(personal_number=account.personal_number)
@@ -53,8 +53,8 @@ def test_register_user_with_already_used_iqama(clear_expat_db_registration_data)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
         .register_account_via_sso_api(account=account)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number, expected_code=422)
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number, expected_code=422)
 
 
 @case_id(41865, 41870)
@@ -96,8 +96,8 @@ def test_registration_with_invalid_email(email):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, email=email)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email, expected_code=422)
 
 
@@ -107,8 +107,8 @@ def test_registration_with_invalid_password(invalid_password):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, password=invalid_password)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account, expected_code=422)
 
@@ -118,8 +118,8 @@ def test_registration_without_phone_verification():
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, otp_confirmation_code="")
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .register_user(account, expected_code=422)
+        .active_sso_hsm()
+    qiwa.sso.register_user(account, expected_code=422)
 
 
 @case_id(41889, 41890)
@@ -129,8 +129,8 @@ def test_register_user_with_invalid_otp_at_registration_step(invalid_otp):
     account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day=users_data.GREGORIAN_BIRTHDAY,
                       otp_confirmation_code=invalid_otp)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account, expected_code=422)
 
@@ -139,24 +139,24 @@ def test_registration_with_registered_phone_number(clear_saudi_db_registration_d
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account)
     qiwa = QiwaApi()
     second_account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day=users_data.GREGORIAN_BIRTHDAY,
                              phone_number=account.phone_number)
     qiwa.sso.init_sso_hsm(second_account.personal_number, second_account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(second_account.phone_number, expected_code=422)
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(second_account.phone_number, expected_code=422)
 
 
 def test_registration_with_registered_email(clear_expat_db_registration_data, clear_saudi_account_activities):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day=users_data.GREGORIAN_BIRTHDAY)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account)
     qiwa.sso.login_user(account.personal_number, account.password)
@@ -175,8 +175,8 @@ def test_registration_with_registered_email_but_has_an_expired_period(clear_expa
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day=users_data.GREGORIAN_BIRTHDAY)
     qiwa.sso.init_sso_hsm(account.personal_number, account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(account.phone_number) \
         .pre_check_user_email(account.email) \
         .register_user(account)
     qiwa.sso.login_user(account.personal_number, account.password)
@@ -184,8 +184,8 @@ def test_registration_with_registered_email_but_has_an_expired_period(clear_expa
     update_account_email(iqama_id=account.personal_number, created_at=datetime.now(timezone.utc) - timedelta(weeks=28))
     second_account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, email=account.email)
     qiwa.sso.init_sso_hsm(second_account.personal_number, second_account.birth_day) \
-        .active_sso_hsm() \
-        .phone_verification(second_account.phone_number) \
+        .active_sso_hsm()
+    qiwa.sso.phone_verification(second_account.phone_number) \
         .pre_check_user_email(second_account.email) \
         .register_user(second_account)
 
