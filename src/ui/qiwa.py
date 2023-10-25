@@ -8,6 +8,7 @@ import config
 from data.constants import UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
+from src.ui.components.dedicated.mobile_verification_popup import MobileVerificationPopup
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
@@ -100,13 +101,14 @@ class QiwaUiClient:
     footer = Footer()
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
+    mobile_verification_popup = MobileVerificationPopup()
     meet_qiwa_popup = MeetQiwaPopup()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
         self.open_login_page()
         (self.login_page.enter_login(login).enter_password(password).click_login_button())
-        (self.login_page.otp_pop_up.fill_in_code(code="0000").click_confirm_button())
+        (self.login_page.otp_pop_up.fill_in_code().click_confirm_button())
         return self
 
     @allure.step
