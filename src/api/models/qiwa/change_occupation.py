@@ -1,9 +1,7 @@
 from typing import Type
 
 from src.api.models.qiwa.data import change_occupation
-from src.api.models.qiwa.raw.change_occupations.establishment_validate import (
-    Meta as ValidationMeta,
-)
+from src.api.models.qiwa.raw.change_occupations import establishment_validate
 from src.api.models.qiwa.raw.change_occupations.meta import Meta
 from src.api.models.qiwa.raw.root import Root
 
@@ -13,4 +11,4 @@ change_occupation_count_data = Root[
     list[change_occupation.change_occupation_count], Type[None], Type[None]
 ]
 users_data = Root[list[change_occupation.user], Type[None], Meta]
-validation_data = Root[list[change_occupation.rule], Type[None], ValidationMeta]
+validation_data = Root[list[change_occupation.rule], Type[None], establishment_validate.Meta]

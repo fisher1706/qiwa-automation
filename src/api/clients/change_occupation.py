@@ -29,7 +29,7 @@ class ChangeOccupationApi:
     def get_session(self, token: str) -> Response:
         return self.client.post(f"{self.url}/session", params={"ott-token": token})
 
-    def get_requests_laborers(self, page: int = 1, per: int = 10) -> Response:
+    def get_requests_laborers(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/requests-laborers", params={"page": page, "per": per})
 
     def get_requests(self, page: int = 1, per: int = 10) -> Response:
