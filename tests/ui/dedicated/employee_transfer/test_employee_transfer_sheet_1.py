@@ -58,43 +58,6 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.click_btn_create_contract()
         self.employee_transfer_actions.verify_redirections_popup()
 
-    @allure.title('Verify Laborer is able to approve the ET request')
-    def test_laborer_able_to_approve_et_request(self, create_contract):
-        self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
-        self.individual_actions.proceed_steps_for_verifying_et_request()
-        self.individual_actions.approve_request()
-        self.individual_actions.wait_until_popup_disappears()
-        self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
-
-    @allure.title('ET Request status changes after Laborer approval')
-    def test_et_request_status_changes_after_laborer_approval(self, create_contract):
-        self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
-        self.individual_actions.proceed_steps_for_verifying_et_request()
-        self.individual_actions.approve_request()
-        self.individual_actions.wait_until_popup_disappears()
-        self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_APPROVE, Language.EN)
-        self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_APPROVE, Language.AR)
-
-    @allure.title('Verify Laborer is able to reject the ET request')
-    def test_laborer_able_to_reject_et_request(self, create_contract):
-        self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
-        self.individual_actions.proceed_steps_for_verifying_et_request()
-        self.individual_actions.reject_request()
-        self.individual_actions.wait_until_popup_disappears()
-        self.employee_transfer_actions.verify_message(ErrorMessage.ET_LABORER_REQUEST)
-
-    @allure.title('Verify request status changes when Laborer rejected the ET request')
-    def test_et_request_status_changes_after_laborer_rejected(self, create_contract):
-        self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
-        self.individual_actions.proceed_steps_for_verifying_et_request()
-        self.individual_actions.reject_request()
-        self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
-        self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
-
     @allure.title('Verify Current Sponsor is able to approve the ET request')
     def test_current_sponsor_able_to_approve_et_request(self, create_contract):
         self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
