@@ -42,8 +42,7 @@ class RequestStatus(Enum):
 
 class ServicesAndTools(str, Enum):
     HOME_WORKER_TRANSFER = "Home Worker Transfer"
-    EMPLOYEE_TRANSFER = "View and review employee transfer requests"
-    JOB_CONTRACTS = "View and review job contracts"
+    EMPLOYEE_TRANSFER = "Employee Transfers"
 
 
 class TransferType(str, Enum):
