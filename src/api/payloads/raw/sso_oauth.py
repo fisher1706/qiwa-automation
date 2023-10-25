@@ -54,3 +54,7 @@ class SecurityQuestion(QiwaBaseModel):
 
 class Logout(QiwaBaseModel):
     logout_token: str
+
+
+class UnlockWiaEmail(QiwaBaseModel):
+    account_lockout_key: str

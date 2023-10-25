@@ -6,6 +6,7 @@ from src.api.payloads.raw.sso_oauth import (
     Logout,
     OauthInit,
     SecurityQuestion,
+    UnlockWiaEmail,
     VerifyEmail,
     VerifyPhone,
 )
@@ -33,8 +34,11 @@ def registration_account_payload(account: Account) -> dict:
     return account_attributes(attributes).dict(by_alias=True)
 
 
-def init_sso_hsm_payload(personal_number: str | int, birth_date: str) -> dict:
-    attributes = Hsm(personal_number=personal_number, birth_date=birth_date)
+def init_sso_hsm_payload(personal_number: str | int, birth_date: str | None = None) -> dict:
+    if birth_date is None:
+        attributes = Hsm(personal_number=personal_number)
+    else:
+        attributes = Hsm(personal_number=personal_number, birth_date=birth_date)
     return session(attributes).dict(by_alias=True, exclude_unset=True)
 
 
@@ -68,7 +72,7 @@ def login_payload(login: str, account_pwd: str) -> dict:
     return login_attributes(attributes).dict(exclude_unset=True)
 
 
-def login_with_otp_payload(otp: str) -> dict:
+def request_with_otp_payload(otp: str) -> dict:
     attributes = Auth(otp=otp)
     return otp_attributes(attributes).dict(exclude_unset=True)
 
@@ -86,3 +90,8 @@ def oauth_callback_payload(state: str, code: str) -> dict:
 def logout_payload(logout_token: str) -> dict:
     attributes = Logout(logout_token=logout_token)
     return session(attributes).dict(by_alias=True)
+
+
+def unlock_through_email_payload(lockout_key):
+    attributes = UnlockWiaEmail(account_lockout_key=lockout_key)
+    return user_email(attributes).dict(by_alias=True)
