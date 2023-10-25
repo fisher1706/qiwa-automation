@@ -51,6 +51,17 @@ class SubscribedUser:
 
 
 @dataclass
+class UnSubscribedUser:
+    ID = "1061073274"
+    SEQUENCE_NUMBER = "8-1626749"
+
+    ESTABLISHMENT = {
+        Language.EN: "شركة هجر المحدودة",
+        Language.AR: "شركة هجر المحدودة",
+    }
+
+
+@dataclass
 class LOUser:
     ID = "1039682974"
     LO_SYS_ADMIN_ROLE_ID = 2
