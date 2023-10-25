@@ -26,7 +26,7 @@ from src.api.payloads.sso_oauth_payloads import (
 
 
 class AuthApiSSO:
-    url = config.qiwa_urls.laborer_sso_auth_api
+    url = config.qiwa_urls.sso_api
 
     def __init__(self, api=HTTPClient()):
         self.api = api
