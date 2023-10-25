@@ -137,7 +137,7 @@ class QiwaUiClient:
 
     @allure.step
     def open_login_page(self) -> QiwaUiClient:
-        browser.open(config.qiwa_urls.laborer_sso_auth)
+        browser.open(config.qiwa_urls.sso)
         return self
 
     @allure.step
