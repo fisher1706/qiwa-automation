@@ -16,12 +16,13 @@ from src.api.payloads.sso_oauth_payloads import (
     email_verification_payload,
     init_sso_hsm_payload,
     login_payload,
-    login_with_otp_payload,
     logout_payload,
     otp_code_payload,
     phone_verification_payload,
     registration_account_payload,
+    request_with_otp_payload,
     security_question_payload,
+    unlock_through_email_payload,
 )
 
 
@@ -66,22 +67,53 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def active_sso_hsm(
-        self,
-        expected_code: int = 200,
-        absher: str = "000000",
-        expected_schema="laborer-sso-init.json",
+    def init_hsm_with_out_birthday(
+        self, personal_number: str, expected_code: int = HTTPStatus.OK
     ) -> AuthApiSSO:
+        payload = init_sso_hsm_payload(personal_number)
+        response = self.api.post(
+            url=self.url,
+            endpoint="/session/high-security-mode/init",
+            json=payload,
+        )
+        assert response.status_code == expected_code
+        return self
+
+    @allure.step
+    def init_unlock_account_through_email(self) -> AuthApiSSO:
+        response = self.api.post(url=self.url, endpoint="/accounts/init-unlock")
+        assert response.status_code == HTTPStatus.OK
+        return self
+
+    @allure.step
+    def unlock_account_through_email(self, unlock_key: str) -> AuthApiSSO:
+        payload = unlock_through_email_payload(lockout_key=unlock_key)
+        response = self.api.post(url=self.url, endpoint="/accounts/unlock-via-email", json=payload)
+        assert response.status_code == HTTPStatus.OK
+        return self
+
+    @allure.step
+    def unlock_account_with_otp(self) -> None:
+        payload = request_with_otp_payload(otp="0000")
+        response = self.api.post(url=self.url, endpoint="/accounts/unlock-with-otp", json=payload)
+        assert response.status_code == HTTPStatus.OK
+
+    @allure.step
+    def resend_absher_code_on_unlock_account_flow(self):
+        response = self.api.post(url=self.url, endpoint="/session/high-security-mode/init/resend")
+        assert response.status_code == HTTPStatus.OK
+
+    @allure.step
+    def active_sso_hsm(
+        self, expected_code: int = 200, absher: str = "000000"
+    ) -> tuple[Response, AuthApiSSO]:
         response = self.api.post(
             url=self.url,
             endpoint="/session/high-security-mode",
             json=activate_sso_hsm_payload(absher_code=absher),
         )
-        validator = ResponseValidator(response)
-        validator.check_status_code(name="Activate HSM", expect_code=expected_code)
-        if expected_code == 200:
-            validator.check_response_schema(schema_name=expected_schema)
-        return self
+        assert response.status_code == expected_code
+        return response.json()
 
     @allure.step
     def phone_verification(self, phone_number: str, expected_code: int = 200) -> AuthApiSSO:
@@ -153,7 +185,7 @@ class AuthApiSSO:
             response = self.api.post(
                 url=self.url, endpoint="/accounts", json=registration_account_payload(account)
             )
-        assert response.status_code == expected_code, f"{response.status_code}, {response.json()}"
+        assert response.status_code == expected_code
         return self
 
     @allure.step("GET /session :: get session")
@@ -164,7 +196,7 @@ class AuthApiSSO:
         )
 
     @allure.step
-    def login(self, login, password, expected_code=200):
+    def login(self, login: str, password: str, expected_code: int = 200) -> None:
         response = self.api.post(
             url=self.url,
             endpoint="/session/login",
@@ -173,11 +205,21 @@ class AuthApiSSO:
         ResponseValidator(response).check_status_code(name="Login", expect_code=expected_code)
 
     @allure.step
+    def enter_incorrect_password_numerous_times(self, login: str, password: str, times: int = 8):
+        for _ in range(times):
+            response = self.api.post(
+                url=self.url,
+                endpoint="/session/login",
+                json=login_payload(login=login, account_pwd=password),
+            )
+            assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+
+    @allure.step
     def login_with_otp(self, otp_code="0000", expected_code=200):
         response = self.api.post(
             url=self.url,
             endpoint="/session/login-with-otp",
-            json=login_with_otp_payload(otp=otp_code),
+            json=request_with_otp_payload(otp=otp_code),
         )
         ResponseValidator(response).check_status_code(
             name="Login with OTP", expect_code=expected_code
@@ -188,4 +230,9 @@ class AuthApiSSO:
         response = self.api.post(
             url=self.url, endpoint="/logout/remote", json=logout_payload(logout_token=logout_token)
         )
+        assert response.status_code == HTTPStatus.OK
+
+    @allure.step
+    def unlock_account(self):
+        response = self.api.post(url=self.url, endpoint="/accounts/unlock")
         assert response.status_code == HTTPStatus.OK
