@@ -1,17 +1,18 @@
+import random
 from http import HTTPStatus
 from urllib import parse
 
 import allure
 
 from src.api.clients.change_occupation import ChangeOccupationApi
-from src.api.models.qiwa.change_occupation import requests_laborers_data
+from src.api.models.qiwa.change_occupation import requests_laborers_data, requests_data
+from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.assertion import assert_status_code
 from utils.crypto_manager import decode_authorization_token
 
 
 class ChangeOccupationController(ChangeOccupationApi):
-
     @allure.step
     def pass_ott_authorization(self) -> None:
         cookie = self.client.session.cookies.get("qiwa.authorization")
@@ -34,3 +35,14 @@ class ChangeOccupationController(ChangeOccupationApi):
         response = self.get_requests_laborers(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_laborers_data.parse_obj(response.json())
+
+    @allure.step
+    def get_requests_data(self, page: int = 1, per: int = 10) -> requests_data:
+        response = self.get_requests(page=page, per=per)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return requests_data.parse_obj(response.json())
+
+    @allure.step
+    def get_random_request(self) -> Request:
+        requests = self.get_requests_data(per=1000)
+        return random.choice(requests.data).attributes

@@ -43,3 +43,33 @@ class Request(QiwaBaseModel):
     request_type: int
     requester_name: str
     laborers: list[Laborer]
+
+
+class RequestByID(QiwaBaseModel):
+    labor_office_id: str
+    sequence_number: str
+    request_id: str
+    request_number: str
+    type_id: int
+    type_name_ar: str
+    type_name_en: str
+    current_occupation_id: str
+    new_occupation_id: str
+    id: str
+    nationality_code: str
+    type_name: str
+    date: datetime
+    establishment_id: str
+    requester_personal_number: str
+    requester_id: str
+    request_type: int
+    requester_name: str
+    status_id: int
+    status_name: str
+    current_occupation_name: str
+    new_occupation_name: str
+    nationality_name: str
+    rejection_description: str
+    employee_personal_number: str
+    employee_name: str
+    bulk_id: str | None = ...
