@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be, have
+from selene import have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Language
@@ -9,21 +9,27 @@ from data.constants import Language
 
 class Header:
     # TODO: [dp] Adjust changing language
-    lang_dropdown = ss('[data-component="MenuTrigger"] p').first
+    dropdown_lang = ss('[data-component="MenuTrigger"] p')
     links = ss("[data-component='Menu'] a")
     lang_links = {
         Language.EN: links.first,
         Language.AR: links.second,
     }
     profile = s("[data-testid='menu-trigger'] p")
+    dropdown_profile = ss("[data-component='Menu'] > div")
 
-    @allure.step
-    def change_local(self, lang_value) -> Header:
-        self.lang_dropdown.wait_until(be.visible)
-        self.lang_dropdown.click()
+    def _select_language(self, lang_value: str):
         local = self.lang_links[lang_value]
         if not local.matching(have.attribute("[data-component='Icon']")):
             local.click()
+
+    @allure.step
+    def change_local(self, lang_value: str) -> Header:
+        language = 'ع' if lang_value == Language.EN else 'EN'
+        dropdown = self.dropdown_lang.element_by(have.exact_text(language))
+        if dropdown.matching(have.exact_text(language)):
+            dropdown.click()
+            self._select_language(lang_value)
         return self
 
     @allure.step
@@ -37,5 +43,6 @@ class Header:
         return self
 
     @allure.step
-    def click_on_logout(self):
-        self.profile.all("a")[-1].click()
+    def click_on_logout(self) -> Header:
+        self.dropdown_profile.element(-1).click()
+        return self
