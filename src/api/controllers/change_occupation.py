@@ -33,7 +33,7 @@ class ChangeOccupationController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     @allure.step
-    def get_requests_laborers(self, page: int = 1, per: int = 10) -> requests_laborers_data:
+    def get_requests_laborers_data(self, page: int = 1, per: int = 10) -> requests_laborers_data:
         response = self.api.get_requests_laborers(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_laborers_data.parse_obj(response.json())

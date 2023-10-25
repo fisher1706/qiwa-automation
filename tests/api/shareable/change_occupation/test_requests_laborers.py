@@ -20,7 +20,7 @@ def test_getting_by_page(api, page):
 
 
 def test_getting_last_page(api):
-    requests_laborers = api.change_occupation.get_requests_laborers(per=10)
+    requests_laborers = api.change_occupation.get_requests_laborers_data(per=10)
     last_page = requests_laborers.meta.pages_count
 
     response = api.change_occupation.api.get_requests_laborers(page=last_page, per=10)
@@ -35,7 +35,7 @@ def test_getting_last_page(api):
 
 
 def test_getting_empty_page(api):
-    requests_laborers = api.change_occupation.get_requests_laborers(per=10)
+    requests_laborers = api.change_occupation.get_requests_laborers_data(per=10)
     page = requests_laborers.meta.pages_count + 1
 
     response = api.change_occupation.api.get_requests_laborers(page=page, per=10)
@@ -58,7 +58,7 @@ def test_getting_per_page(api, per_page):
 
 
 def test_getting_total_entities(api):
-    requests_laborers = api.change_occupation.get_requests_laborers()
+    requests_laborers = api.change_occupation.get_requests_laborers_data()
     total_entities = requests_laborers.meta.total_entities
     per_page = total_entities + 1
 
