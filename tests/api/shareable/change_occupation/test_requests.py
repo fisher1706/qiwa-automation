@@ -15,7 +15,8 @@ def test_getting_by_request_id(api):
 
     json = request_by_id_data.parse_obj(response.json())
     assert_that(json.data).is_length(1)
-    assert_that(json.data[0].attributes.request_id).equals_to(data.request_id)
+    assert_data(expected=data, actual=json.data)
+    assert_data(expected=data.laborers[0], actual=json.data)
 
 
 @pytest.mark.parametrize("page", [-1, 0, 1, 3])
