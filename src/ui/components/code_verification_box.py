@@ -3,11 +3,12 @@ from __future__ import annotations
 import allure
 from selene import be, have
 from selene.core.entity import Element
+from selene.support.shared.jquery_style import s
 
 
 class CodeVerificationBox:
-    def __init__(self, web_element: Element):
-        self.web_element = web_element
+    def __init__(self, web_element: Element = None):
+        self.web_element = web_element if web_element else s('[data-component="Modal"]')
         self.code_cells = self.web_element.all("input")
         self.text_rows = self.web_element.all("p")
         self.confirm_button = self.web_element.element("#submit")
@@ -21,7 +22,7 @@ class CodeVerificationBox:
         return self.span_elements.element(index=index - 1)
 
     @allure.step
-    def fill_in_code(self, code: str) -> CodeVerificationBox:
+    def fill_in_code(self, code: str = "0000") -> CodeVerificationBox:
         for index, digit in enumerate(code):
             self.cell(index=index).set_value(digit)
         return self
