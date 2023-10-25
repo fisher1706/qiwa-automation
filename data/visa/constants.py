@@ -1,3 +1,6 @@
+from collections import namedtuple
+
+
 class VisaType:  # pylint: disable=R0903
     UNKNOWN = 0
     ESTABLISHMENT = 1
@@ -22,6 +25,8 @@ class Numbers:  # pylint: disable=R0903
     ZERO = 0
     FOUR = 4
     THREE = 3
+    TEN = 10
+    NINE = 9
 
 
 class VisaUser:  # pylint: disable=R0903
@@ -50,8 +55,26 @@ class PayCardSuccess:  # pylint: disable=R0903
     CVV2 = "123"
 
 
+class ColName:  # pylint: disable=too-few-public-methods
+    REQUEST_STATUS = "Request status"
+
+
+BalanceRequestStatus = namedtuple("TierRequest", ["id", "label"])
+
+BR_ACCEPTED = BalanceRequestStatus(1, "Accepted")
+BR_INACTIVE = BalanceRequestStatus(2, "Accepted")
+BR_WAITING = BalanceRequestStatus(3, "Waiting for inspection")
+BR_REJECTED = BalanceRequestStatus(4, "Rejected")
+BR_REFUNDED = BalanceRequestStatus(5, "Refunded")
+BR_EXPIRED = BalanceRequestStatus(6, "Expired")
+BR_TERMINATED = BalanceRequestStatus(7, "Terminated")
+BR_NEW = BalanceRequestStatus(8, "Waiting for inspection")
+
+
 ERROR_CODE = "ODM0024"
-WORK_VISA_CARD_ZERO_QUOTA_ERROR = "You cannot issue Work Visas because your Allowed quota is 0."
+WORK_VISA_CARD_ZERO_QUOTA_ERROR = (
+    "You cannot issue Work Visas because your recruitment quota is 0."
+)
 PERM_WORK_VISA_TITLE = "Permanent work visas"
 TEMPORARY_WORK_VISA_TITLE = "Temporary work visas"
 SEASONAL_WORK_VISA_TITLE = "Seasonal work visas"
@@ -72,10 +95,7 @@ SEASONAL_WORK_VISA_DESCRIPTION = (
 )
 SEASONAL_WORK_VISA_BLOCKED_TEXT = "This service will be available soon."
 INCREASE_ALLOWED_QUOTA = "Increase recruitment quota"
-WORK_VISA_CARD_WARNING = (
-    "You have already used your Allowed quota in the current tier. "
-    "To request more work visas, you need to upgrade your tier."
-)
+WORK_VISA_CARD_WARNING = "You have already used your recruitment quota in the current tier."
 WORK_VISA_PAGE_TITLE_TEXT = "Permanent work visas"
 OTHER_VISAS_TITLE = "Other Visas"
 FILTERS = "Filters"
@@ -88,7 +108,7 @@ PERMANENT_VISAS_NO_RESULTS = (
     "You have no history of visa requests yet. "
     "Here you will see the list of your Permanent work visa requests."
 )
-INCREASE_ABSHER_MODAL_TITLE = "Increase the Ministry of Interior fund"
+INCREASE_ABSHER_MODAL_TITLE = "Increase establishment funds"
 SERVICE_PAGE_BUTTON_TEXT = "Go to service page"
 INCREASE_RECRUITMENT_QUOTA_TEXT = "Increase recruitment quota"
 ISSUE_VISA_TEXT = "Issue Visa"
@@ -97,3 +117,18 @@ VISA_REQUEST_PAGE_TITLE_TEXT = "Visa request details"
 BALANCE_REQUESTS_WAITING_STATUS = "waiting_for_payment"
 BALANCE_REQUESTS_SUBMIT_FAILED_STATUS = "submit_failed"
 TRANSACTIONID = "transactionId"
+PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
+    "You cannot issue visas because you don’t meet the {} mandatory requirements.\n"
+    "See unmet requirements"
+)
+# env variables:
+IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
+IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
+FIRST_TIER_ACTIVE = "FIRST_TIER_ACTIVE"
+IS_INSPECTOR_VISIT_FLOW_AVAILABLE = "IS_INSPECTOR_VISIT_FLOW_AVAILABLE"
+ENV_VARIABLES = [
+    IS_SEASONAL_VISA_AVAILABLE,
+    IS_BALANCE_FLOW_AVAILABLE,
+    FIRST_TIER_ACTIVE,
+    IS_INSPECTOR_VISIT_FLOW_AVAILABLE,
+]

@@ -9,7 +9,7 @@ from src.ui.components.raw.table import Table
 from utils.random_manager import RandomManager
 
 
-class ContractManagementPage:
+class OldContractManagementPage:
     TITLE_VERIFICATION_CODE = ".otp-verification--title"
     FIELD_VERIFICATION_CODE = "input[name=otp]"
     BTN_VERIFY = '//button[.="Verify"]'

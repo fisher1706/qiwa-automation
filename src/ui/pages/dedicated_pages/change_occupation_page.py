@@ -32,11 +32,11 @@ class ChangeOccupationPage:
         return self
 
     def check_employee_eligibility(self, eligible: str) -> ChangeOccupationPage:
-        self.table_employee_list.cell(row=1, column=3).should(have.exact_text(eligible))
+        self.table_employee_list.cell(row=1, column=4).should(have.exact_text(eligible))
         return self
 
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
-        # TODO: Find the possibility of avoiding sleep
+        # todo: [dp] Find the possibility of avoiding sleep
         time.sleep(3)
         self.table_employee_list.cell(row=1, column=4).s("button").click()
         return self

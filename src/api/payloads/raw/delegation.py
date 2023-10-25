@@ -13,3 +13,19 @@ class GetDelegations(QiwaBaseModel):
     statusAr: Optional[str]
     entityId: Optional[str]
     search: Optional[str]
+
+
+class CreateDelegation(QiwaBaseModel):
+    employeeNid: str
+    entityId: str = "NAFITH"
+    permissionsId: list = ["NAFITH-F04"]
+    durationMonth: int
+
+
+class ChangeRequestStatus(QiwaBaseModel):
+    status: str
+    rejectReason: Optional[str]
+
+
+class ResendDelegationRequest(QiwaBaseModel):
+    id: int

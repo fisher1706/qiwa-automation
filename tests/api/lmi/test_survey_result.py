@@ -8,6 +8,7 @@ from src.api.app import QiwaApi
 
 @allure.title('Check download xlsx result')
 @pytest.mark.parametrize('values', SurveyDataSet.survey_data)
+@pytest.mark.skip("Skipped due to https://employeesgate.atlassian.net/browse/LR-2622")
 def test_download_xlsx_result(values):
     qiwa = QiwaApi.login_as_user(personal_number=UserInfo.LMI_ADMIN_LOGIN)
     qiwa.survey_result_api_actions.get_download_xls_result(*values[:-1])

@@ -1,5 +1,6 @@
 from time import sleep
 
+import allure
 from selene.api import be, command, query, s, ss
 
 from data.visa.constants import Numbers
@@ -27,7 +28,10 @@ class IncreaseQuotaPage(BasePage):
     location_dropdown_options = ss('//li[@role="option"]')
     back_to_perm_work_visa_button = s('//*[@data-testid="backToWorkVisas"]')
     program_agreement_section = s('//p[contains(text(), "Program agreement")]')
-    payment_request_result = s('//*[@data-testid="yourRequestHasBeenSent"]')
+    payment_request_sent = s('//*[@data-testid="yourRequestHasBeenSent"]')
+    payment_request_approved = s(
+        '//*[@data-testid="yourRequestForPaymentIncreaseRecruitmentQuotaApproved"]'
+    )
     history_tier_upgrades = s('//*[@data-testid="TierHistoryTable"]')
     balanse_request = s('//*[@data-testid="ExceptionalRequestsTable"]')
     history_tier_upgrades_table = Table(history_tier_upgrades)
@@ -41,7 +45,7 @@ class IncreaseQuotaPage(BasePage):
         s(self.TIER_CHECK_BOX.format(tier)).click()
         if tier == Numbers.FOUR:
             self.tier_4_input_field.type(num_visas)
-        self.agree_checkbox.click()
+            self.agree_checkbox.click()
         self.next_step_button_tier_select.click()
         command.js.scroll_into_view(self.program_agreement_section)
         self.agree_agreement_checkbox.click()
@@ -49,7 +53,7 @@ class IncreaseQuotaPage(BasePage):
         self.select_location()
         self.goto_payment_button.click()
         self.pay_successfully(visa_db)
-        self.payment_request_result.should(have_any_number())
+        self.verify_created_request()
         self.back_to_perm_work_visa_button.click()
         self.history_tier_upgrades_table.row(1).should(be.visible)
         return self.history_tier_upgrades_table.cell(row=1, column="Request number").get(
@@ -66,7 +70,7 @@ class IncreaseQuotaPage(BasePage):
         self.terms_agree_checkbox.click()
         self.goto_payment_button.click()
         self.pay_successfully(visa_db)
-        self.payment_request_result.should(have_any_number())
+        self.payment_request_sent.should(have_any_number())
         self.back_to_perm_work_visa_button.click()
         ref_number = self.balanse_request_table.cell(row=Numbers.ONE, column="Request number").get(
             query.text
@@ -77,3 +81,10 @@ class IncreaseQuotaPage(BasePage):
         self.location_dropdown.click()
         self.location_dropdown_options.element(index).click()
         self.next_step_button_location.click()
+
+    @allure.step("Verify request is created/sent")
+    def verify_created_request(self):
+        if self.payment_request_sent.with_(timeout=12).wait_until(be.visible):
+            self.payment_request_sent.should(have_any_number())
+        else:
+            self.payment_request_approved.should(have_any_number())

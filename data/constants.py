@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
@@ -13,18 +14,6 @@ class UserType:  # pylint: disable=too-few-public-methods
     BORDER = "border"
     USER = "user"
     MEMBER = "member"
-
-
-@dataclass
-class EmailConst:  # pylint: disable=too-few-public-methods
-    INBOX_FOLDER = '"Inbox"'
-    UNSEEN_EMAILS = "UNSEEN"
-    IMAP_SESSION_ACTIVE = "SELECTED"
-    EMAIL_FORMAT = "(RFC822)"
-    IMAP_DOMAIN = "imap.gmail.com"
-    STATUS_OK = "OK"
-    FLAG_SEEN = r"\Seen"
-    ADD_FLAG = "+FLAGS"
 
 
 @dataclass
@@ -196,6 +185,7 @@ class EmployeeTransfer:
 @dataclass
 class ContractManagement:
     VERIFICATION_CODE = {Language.EN: "Verification Code", Language.AR: "رمز التحقق"}
+    MOBILE_VERIFICATION = {Language.EN: "Mobile verification", Language.AR: "رمز التحقق"}
     TITLE = {Language.EN: "Contract Management", Language.AR: "إدارة العقود"}
     DESCRIPTION = {
         Language.EN: "A service provided to establishments on Qiwa platform to create and authenticate employee "
@@ -273,10 +263,19 @@ class Eligibility:
     NOT_ELIGIBLE = "Not Eligible"
 
 
+class AppointmentReason(Enum):
+    COMPLAINT = 1
+    IN_PERSON = 3
+
+
 @dataclass
-# TODO: Compare with services and adjust class Tittles
+# TODO: [dp] Compare with services and adjust class Tittles
 class Titles:
     CHANGE_OCCUPATION_REQUEST = "Change occupation requests"
     CHANGE_OCCUPATION = "Change Occupation"
     LABOR_OFFICE_APPOINTMENTS = "Labor Office Appointments"
     WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
+
+
+class Workspaces:
+    BUSINESS_ACCOUNT_CARD = {Language.EN: "Business Account", Language.AR: "حساب الأعمال"}

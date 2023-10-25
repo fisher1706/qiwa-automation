@@ -5,7 +5,7 @@ from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation import add_delegation_data, general_data
+from data.delegation import add_delegation_data
 from src.ui.components.raw.table import Table
 
 
@@ -14,9 +14,6 @@ class AddDelegationPage:
     step_title = 'div[data-testid="{0}"] > div:nth-child(1) > div'
     step_number = 'div[data-testid="{0}"] span[data-component="StepIndex"]'
     successful_step_img = 'div[data-testid="{0}"] span[data-component="StepIndex"] svg'
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     entity_types_radio_buttons = s('[data-testid="ExternalEntityRadioTileGroup"]')
     government_entity_type = s("#GOVERNMENT")
     government_entity_type_text = s("#GOVERNMENT-label")
@@ -102,13 +99,6 @@ class AddDelegationPage:
         return self
 
     @allure.step
-    def select_english_localization_on_add_delegation_page(self) -> AddDelegationPage:
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
-        return self
-
-    @allure.step
     def select_entity_name_on_add_delegation_page(self, entity_name: str) -> AddDelegationPage:
         self.entity_name_input.click()
         self.input_option.should(have.exact_text(entity_name))
@@ -136,15 +126,13 @@ class AddDelegationPage:
 
     @allure.step
     def should_financial_entity_type_be_disabled(self, financial_entity: str) -> AddDelegationPage:
-        # TODO: Uncomment line after testing will be completed
-        # self.financial_entity_type.should(be.disabled)
+        self.financial_entity_type.should(be.disabled)
         self.financial_entity_type_text.should(have.exact_text(financial_entity))
         return self
 
     @allure.step
     def should_telecom_entity_type_be_disabled(self, telecom_entity: str) -> AddDelegationPage:
-        # TODO: Uncomment line after testing will be completed
-        # self.telecom_entity_type.should(be.disabled)
+        self.telecom_entity_type.should(be.disabled)
         self.telecom_entity_type_text.should(have.exact_text(telecom_entity))
         return self
 

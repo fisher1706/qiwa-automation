@@ -5,15 +5,11 @@ from selene import Element, be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation import general_data
-from src.ui.components.raw.breadcrumb_navigation import BreadcrumbNavigation
+from src.ui.components.delegation.breadcrumb_navigation import BreadcrumbNavigation
 from src.ui.components.raw.table import Table
 
 
 class DelegationDashboardPage:
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     delegation_table = Table(s('[data-testid="SectionSharedComponent"] table'))
     active_breadcrumb = BreadcrumbNavigation().breadcrumb(1)
     active_breadcrumb_link = BreadcrumbNavigation().breadcrumb(1).s("#BreadcrumbsItemServices")
@@ -28,10 +24,11 @@ class DelegationDashboardPage:
     number_of_items = s('[data-component="Pagination"] > p')
     pagination = s('nav[role="navigation"]')
     rows_per_page = s("#PaginationBoxSelectLabel")
+    rows_per_page_input = s('#PaginationBoxSelectLabel div[data-component="Select"]')
+    rows_per_page_options = ss('li[role="option"]')
     status_filter = 'label[for="{0}"]'
     apply_filters_button = s("button#BaseFiltersButtonApply")
     status_of_filtered_delegation = delegation_table.row(1).s('[role="status"]')
-    more_button = ss('button[aria-label="aria label"]').element(0)
     actions_buttons = ss('[data-component="ActionsMenu"] > button')
     id_on_delegation_table = delegation_table.cell(row=1, column=1)
     delegate_name_on_delegation_table = delegation_table.cell(row=1, column=2)
@@ -39,18 +36,10 @@ class DelegationDashboardPage:
     permissions_on_delegation_table = delegation_table.cell(row=1, column=4)
     start_date_on_delegation_table = delegation_table.cell(row=1, column=5)
     expiry_date_on_delegation_table = delegation_table.cell(row=1, column=6)
-    status_on_delegation_table = delegation_table.cell(row=1, column=7)
 
     @allure.step
     def wait_delegation_dashboard_page_to_load(self) -> DelegationDashboardPage:
         self.delegation_table.body.should(be.visible)
-        return self
-
-    @allure.step
-    def select_english_localization_on_delegation_dashboard(self) -> DelegationDashboardPage:
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
         return self
 
     @allure.step
@@ -145,6 +134,11 @@ class DelegationDashboardPage:
         self.rows_per_page.should(be.visible)
         return self
 
+    def select_rows_per_page(self, rows: str) -> DelegationDashboardPage:
+        self.rows_per_page_input.click()
+        self.rows_per_page_options.element_by(have.exact_text(rows)).click()
+        return self
+
     @allure.step
     def should_pagination_is_displayed_on_delegation_dashboard(self) -> DelegationDashboardPage:
         self.pagination.should(be.visible)
@@ -175,8 +169,10 @@ class DelegationDashboardPage:
         return self
 
     @allure.step
-    def click_more_button_on_delegation_dashboard(self) -> DelegationDashboardPage:
-        self.more_button.click()
+    def click_more_button_on_delegation_dashboard(
+        self, row_number: int = 1
+    ) -> DelegationDashboardPage:
+        self.delegation_table.cell(row=row_number, column="Actions").click()
         return self
 
     def get_id_on_delegation_table(self) -> str:
@@ -184,8 +180,8 @@ class DelegationDashboardPage:
         return delegation_id_on_dashboard
 
     @allure.step
-    def should_correct_actions_of_filtered_delegation_be_displayed(
-        self, action_titles: list
+    def should_correct_actions_be_displayed_on_delegation_dashboard(
+        self, action_titles: list | str
     ) -> DelegationDashboardPage:
         self.actions_buttons.should(have.exact_texts(action_titles))
         return self
@@ -218,21 +214,31 @@ class DelegationDashboardPage:
         return self
 
     @allure.step
-    def should_delegation_status_be_correct(self, status: str) -> DelegationDashboardPage:
-        self.status_on_delegation_table.should(have.text(status.capitalize()))
+    def should_delegation_status_be_correct(
+        self, status: str, row_number: int = 1
+    ) -> DelegationDashboardPage:
+        self.delegation_table.cell(row=row_number, column="Status").should(
+            have.text(status.capitalize())
+        )
         return self
 
     @allure.step
     def should_delegation_dates_be_correct_on_dashboard(
-        self, status: str, date: str, locator: Element
+        self, date: str, locator: Element
     ) -> DelegationDashboardPage:
-        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
-            locator.should(have.text(date))
-        else:
-            locator.should(have.text("-"))
+        locator.should(have.text(date))
         return self
 
     @allure.step
     def select_action_on_delegation_dashboard(self, action: str) -> DelegationDashboardPage:
         self.actions_buttons.element_by(have.text(action)).click()
         return self
+
+    def get_delegation_row(self, delegation_id: str | int):
+        rows = self.delegation_table.rows()
+        for row_number in range(1, len(rows) + 1):
+            cell = self.delegation_table.cell(row=row_number, column=1)
+            if str(delegation_id) == cell.get(query.text):
+                return row_number
+
+        raise AssertionError(f"No delegations found with {delegation_id} delegation id")

@@ -7,7 +7,7 @@ import pytest
 import config
 import src
 from data.dedicated.change_occupation import User
-from data.dedicated.services import Service
+from data.dedicated.models.services import Service
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.change_occupation import NonEligibilityReasons
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
@@ -15,6 +15,7 @@ from src.api.http_client import HTTPClient
 from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.ibm.root import IBMResponse, IBMResponseData
+from src.api.models.ibm.usereligibleservices import ResponseUserEligibleServices
 from src.api.payloads.ibm.createnewappointment import (
     Body,
     CreateNewAppointmentRq,
@@ -33,6 +34,21 @@ from src.api.payloads.ibm.getestablishmentinformation import (
     EstablishmentInformation,
     GetEstablishmentInformationPayload,
     GetEstablishmentInformationRq,
+)
+from src.api.payloads.ibm.getusereligibleservices import (
+    GetUserEligibleServicesRq,
+    GetUserEligibleServicesRqBody,
+    GetUserEligibleServicesRqPayload,
+)
+from src.api.payloads.ibm.getuserestablishmentsmlsdlo import (
+    GetUserEstablishmentsMLSDLORq,
+    GetUserEstablishmentsMLSDLORqBody,
+    GetUserEstablishmentsMLSDLORqPayload,
+)
+from src.api.payloads.ibm.getworkspaceestablishments import (
+    GetWorkspaceEstablishmentsRq,
+    GetWorkspaceEstablishmentsRqBody,
+    GetWorkspaceEstablishmentsRqPayload,
 )
 from src.api.payloads.ibm.token import Token
 from utils.assertion import assert_status_code
@@ -253,3 +269,87 @@ class IBMApiController:
             "",
         )
         return personal_number
+
+    @allure.step("Get user eligible services")
+    def get_user_eligible_services(self, id_no, office_id, sequence):
+        payload = GetUserEligibleServicesRqPayload(
+            GetUserEligibleServicesRq=(
+                GetUserEligibleServicesRq(
+                    Header=Header(
+                        TransactionId=f"{int(datetime.now().timestamp())}",
+                        RequestTime="2019-10-10 00:00:00.555",
+                        ServiceCode="GUES0001",
+                        DebugFlag="1",
+                        ChannelId="Qiwa",
+                        SessionId="212",
+                    ).dict(exclude_none=True),
+                    Body=GetUserEligibleServicesRqBody(
+                        IdNo=id_no, LaborOfficeId=office_id, EstablishmentSequence=sequence
+                    ),
+                )
+            )
+        ).dict()
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/usermanagement/getusereligibleservices",
+            headers=HEADERS,
+            json=payload,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+
+        return ResponseUserEligibleServices(**response.json())
+
+    @allure.step("Get workspace establishments")
+    def get_workspace_establishments(self, id_no) -> dict:
+        payload = GetWorkspaceEstablishmentsRqPayload(
+            GetQiwaWorkspaceEstablishmentsRq=(
+                GetWorkspaceEstablishmentsRq(
+                    Header=Header(
+                        TransactionId="0",
+                        RequestTime="2019-10-10 00:00:00.555",
+                        ServiceCode="GQWE001",
+                        DebugFlag="1",
+                        ChannelId="Qiwa",
+                        SessionId="212",
+                    ).dict(exclude_none=True),
+                    Body=GetWorkspaceEstablishmentsRqBody(IdNo=id_no),
+                )
+            )
+        ).dict()
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/usermanagement/getqiwaworkspaceestablishments",
+            headers=HEADERS,
+            json=payload,
+        )
+
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        establishment_list = response.json()["GetQiwaWorkspaceEstablishmentsRs"]
+        return establishment_list
+
+    @allure.step("Get user establishments MLSDLO")
+    def get_user_establishments_mlsdlo(self, id_no) -> dict:
+        payload = GetUserEstablishmentsMLSDLORqPayload(
+            GetUserEstablishmentsMLSDLORq=(
+                GetUserEstablishmentsMLSDLORq(
+                    Header=Header(
+                        TransactionId="0",
+                        RequestTime="2019-10-10 00:00:00.555",
+                        ServiceCode="MGUELO01",
+                        DebugFlag="1",
+                        ChannelId="Qiwa",
+                        SessionId="212",
+                    ).dict(exclude_none=True),
+                    Body=GetUserEstablishmentsMLSDLORqBody(IdNo=id_no),
+                )
+            )
+        ).dict()
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwalo/getuserestabmlsdlo",
+            headers=HEADERS,
+            json=payload,
+        )
+
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()

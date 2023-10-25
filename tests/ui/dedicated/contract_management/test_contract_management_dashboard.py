@@ -3,7 +3,7 @@ import pytest
 
 from data.constants import ContractManagement, Language
 from data.dedicated.contract_management import employer
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
 
 
@@ -13,7 +13,7 @@ class TestContractManagement:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self):
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
         self.footer = Footer()
 
     @allure.title('Verify the contract authentication score and buttons in the Contract Management page')

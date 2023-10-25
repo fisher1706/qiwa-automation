@@ -4,6 +4,7 @@ import pytest
 from data.data_portal.constants import Footer, Localization
 from data.data_portal.dataset import FooterData
 from src.ui.dataportal import data_portal
+from src.ui.pages.data_portal_pages.base_methods import base_methods
 from src.ui.pages.data_portal_pages.footer_block import FooterBlock
 from utils.allure import TestmoProject, project
 
@@ -103,7 +104,7 @@ def test_navigation_contact_us_page():
                               'Privacy policy hyperlink en'])
 def test_en_translation_element_on_the_page(element, translation):
     data_portal.open_home_page()
-    data_portal.footer.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check Arabic translation of element on the page')
@@ -115,7 +116,7 @@ def test_en_translation_element_on_the_page(element, translation):
 def test_ar_translation_element_on_the_page(element, translation):
     data_portal.open_home_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.footer.check_element_on_the_page(element, translation)
+    base_methods.check_element_on_the_page(element, translation)
 
 
 @allure.title('Check element translation on the page')
@@ -123,7 +124,7 @@ def test_ar_translation_element_on_the_page(element, translation):
 @pytest.mark.skip('Skipped due to absence translations')
 def test_en_translation_elements_on_the_page():
     data_portal.open_about_us_page()
-    data_portal.footer.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_EN)
+    base_methods.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_EN)
 
 
 @allure.title('Check element translation on the page')
@@ -132,4 +133,4 @@ def test_en_translation_elements_on_the_page():
 def test_ar_translation_elements_on_the_page():
     data_portal.open_about_us_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.footer.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_AR)
+    base_methods.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_AR)

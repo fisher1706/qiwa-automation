@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import Element, be, browser, have
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 import config
 from data.delegation import general_data
@@ -10,9 +10,6 @@ from src.ui.components.raw.table import Table
 
 
 class DelegationDetailsPage:
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     action_buttons_block = s('div[data-component="ButtonGroup"]')
     action_buttons = action_buttons_block.ss("button")
     general_information_block = s("#DelegationDetailsSection1")
@@ -40,19 +37,12 @@ class DelegationDetailsPage:
     delegate_occupation = delegate_table.row(4).s('[data-testid="tableCellValue"]')
 
     @allure.step
-    def select_english_localization_on_delegation_details(self) -> DelegationDetailsPage:
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
-        return self
-
-    @allure.step
     def wait_delegation_details_page_to_load(self) -> DelegationDetailsPage:
         self.general_information_block.should(be.visible)
         return self
 
     @allure.step
-    def should_action_buttons_be_correct(self, actions: list) -> DelegationDetailsPage:
+    def should_action_buttons_be_correct(self, actions: list | str) -> DelegationDetailsPage:
         self.action_buttons.should(have.exact_texts(actions))
         return self
 
@@ -69,6 +59,11 @@ class DelegationDetailsPage:
             self.should_action_buttons_be_correct([general_data.RESEND_ACTION])
         else:
             self.should_action_buttons_be_hidden()
+        return self
+
+    @allure.step
+    def select_action_on_delegation_details(self, action: str) -> DelegationDetailsPage:
+        self.action_buttons.element_by(have.text(action)).click()
         return self
 
     @allure.step
@@ -112,13 +107,10 @@ class DelegationDetailsPage:
         return self
 
     @allure.step
-    def should_dates_be_correct_on_delegation_details(
-        self, status: str, date: str, locator: Element
+    def should_delegation_dates_be_correct_on_delegation_details(
+        self, date: str, locator: Element
     ) -> DelegationDetailsPage:
-        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
-            locator.should(have.text(date))
-        else:
-            locator.should(have.text("-"))
+        locator.should(have.text(date))
         return self
 
     @allure.step
@@ -138,7 +130,7 @@ class DelegationDetailsPage:
 
     @allure.step
     def should_partner_request_status_be_correct(
-        self, partner_request_statuses: list
+        self, partner_request_statuses: list | str
     ) -> DelegationDetailsPage:
         self.partner_request_status.should(have.texts(partner_request_statuses))
         return self

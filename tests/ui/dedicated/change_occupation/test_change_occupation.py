@@ -24,11 +24,11 @@ from data.dedicated.enums import (
     SubServiceChangeOccupation,
     SubServiceErrors,
 )
-from data.dedicated.services import change_occupation
+from data.dedicated.models.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.api.controllers.ibm import IBMApiController
-from src.ui.actions.employee_transfer import EmployeeTransferActions
+from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -76,8 +76,8 @@ def test_check_if_cr_is_expired():
     qiwa.login_as_user(lo_co_expired_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_expired_user.personal_number).change_local(Language.EN)
     qiwa.workspace_page.select_company_account_by_name(lo_co_expired_user.establishment_name_ar)
-    qiwa.labor_office_appointments_page.navigate_to_labor_office_appointments_page() \
-        .click_book_appointment_btn()
+    qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_establishment(lo_co_expired_user.establishment_name_ar) \
         .select_service(EService.CHANGE_OCCUPATION) \
         .select_sub_service(SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value) \
@@ -138,7 +138,7 @@ def test_check_if_co_submitted_while_there_is_st(http_client, navigate_to_co):
     employee_transfer_api = EmployeeTransferApi(http_client)
     employee_transfer_api.post_prepare_laborer_for_et_request()
     employee_transfer_api.post_create_new_contract()
-    EmployeeTransferActions().confirm_creation_of_contract(laborer)
+    EmployeeTransferActionsOld().confirm_creation_of_contract(laborer)
 
     qiwa.change_occupation_page.find_expected_employee(laborer.personal_number) \
         .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)

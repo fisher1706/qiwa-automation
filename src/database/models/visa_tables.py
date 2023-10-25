@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-class BalanceRequests(Base):
+class BalanceRequests(Base):  # pylint: disable=too-few-public-methods
     __tablename__ = "balance_requests"
 
     id = Column("id", BigInteger, primary_key=True, nullable=False)

@@ -1,7 +1,7 @@
 import re
 import time
 
-from selene import be, browser, by, command, have, query
+from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
@@ -13,42 +13,6 @@ from utils.assertion import assert_that
 
 class EmployeeTransferPage:
     MESSAGE_LOCATOR = {
-        "pass validation": by.css('div[name="password"] .validation-message span'),
-        "validation": by.css('.validation-message[style=""] span.validation-message__text'),
-        "validation sms": by.css(".validation-message--margin-bottom span"),
-        "second validation": by.css(
-            '.validation-message[style=""]:nth-child(3) span.validation-message__text'
-        ),
-        "top validation": by.css(".validation-message--margin-bottom span"),
-        "error": by.css(".error-message"),
-        "error token": by.css('[class="notices is-top"] > div'),
-        "success": by.css("p.w-text--big"),
-        "subscription_success": by.css(".request-submitted-box__title"),
-        "transaction success": by.css(".media-content > div "),
-        "edit profile success": by.css(".success.is-top > div"),
-        "e service error": by.css(".error-message"),
-        "nitaqat error": by.css(".validation-message__text--error"),
-        "unconfirmed email error": by.css(".error_sign_in_email_not_confirmed"),
-        "invalid credentials error": by.css(".error_sign_in_login_or_password_incorrect"),
-        "invalid otp error": by.css(".error_otp_code_wrong"),
-        "invalid absher error": by.css(".error_security_code_absher_invalid"),
-        "account already exist": by.css(".error_account_already_exist"),
-        "new password equals old": by.css(".error_new_password_equal_old_password"),
-        "absher many attempts error": by.css(".error_security_code_absher_too_many_attempts"),
-        "otp many attempts error": by.css(".error_otp_code_resend"),
-        "locked account error": by.css(".error_account_locked span"),
-        "e service success": by.css(".request-submitted-box__title"),
-        "subscription success": by.css(".p-5"),
-        "permissions": by.css(".u-align-center"),
-        "certificate validation": by.css("p.is-danger"),
-        "certificate error": by.css(".error-block p"),
-        "confirmation error": by.css(".confirmation--error"),
-        "error message": by.css(".error-message"),
-        "valid": by.css(".input-valid span"),
-        "valid second": by.css(".subscription__row:nth-child(2) .input-valid span"),
-        "e-services pop up email title": by.css(".mt-3"),
-        "e-services resend confirmation email": by.css('[role="alert"] div'),
-        "confirmation message": ".confirmation-message",
         "et request": "#q-content svg + p",
         "et laborer request": ".is-top div div",
         "et sponsor request": ".Toastify__toast-body div",
@@ -288,12 +252,6 @@ class EmployeeTransferPage:
             assert not element.s("input").get(query.value), (
                 f"Element value {element.s('input').get(query.value)} " f"is not empty"
             )
-
-    def get_general_number_of_requests_in_received_requests_tab(self) -> str:
-        return self.__extract_number_inside_parentheses(self.received_requests.get(query.text))
-
-    def get_general_number_of_requests_in_sent_requests_tab(self) -> str:
-        return self.__extract_number_inside_parentheses(self.sent_requests.get(query.text))
 
     def click_btn_approve(self):
         s(self.btn_approve).click()

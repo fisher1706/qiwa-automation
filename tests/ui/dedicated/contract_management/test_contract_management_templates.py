@@ -4,16 +4,16 @@ import pytest
 from data.constants import ContractManagement, Language
 from data.dedicated.contract_details import ContractDetails, EmployeeDetails
 from data.dedicated.contract_management import employer
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.old_contract_management import OldContractManagementActions
 
 
 @allure.feature('Contract Management Templates')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Old design")
 class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-many-statements
 
     @pytest.fixture(autouse=True)
     def pre_test(self):
-        self.contract_management_actions = ContractManagementActions()
+        self.contract_management_actions = OldContractManagementActions()
 
     @allure.title('Creating a template with only required fields')
     @allure.testcase('https://qiwa.testmo.net/repositories/4?group_id=1221&case_id=10999')

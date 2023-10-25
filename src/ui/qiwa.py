@@ -9,9 +9,16 @@ from data.constants import UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
+from src.ui.components.delegation.localisation_change import (
+    DelegationLocalisationChange,
+)
+from src.ui.components.delegation.resend_modal import ResendModal
+from src.ui.components.delegation.revoke_modal import RevokeModal
+from src.ui.components.delegation.toast_message import DelegationToast
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
+from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.appointments.labor_office_appointment_view import (
     LaborOfficeAppointmentsViewPage,
@@ -29,6 +36,10 @@ from src.ui.pages.dashboard_page import DashboardPage
 from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentRequestPage
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
 from src.ui.pages.dedicated_pages.change_occupation_page import ChangeOccupationPage
+from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page import (
+    EmployeeTransferV2Page,
+)
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.add_new_delegation_page import AddDelegationPage
@@ -36,6 +47,7 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
     DelegationDashboardPage,
 )
 from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
+from src.ui.pages.delegations_pages.partner_approval_page import PartnerApprovalPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.spaces_page import AdminSpacesPage
@@ -72,6 +84,7 @@ class QiwaUiClient:
     business_page = BusinessPage()
     delegation_dashboard_page = DelegationDashboardPage()
     delegation_details_page = DelegationDetailsPage()
+    delegation_partner_approval_page = PartnerApprovalPage()
     add_delegation_page = AddDelegationPage()
     admin_spaces_page = AdminSpacesPage()
     lo_work_permit_page = LoWorkPermitPage()
@@ -86,12 +99,19 @@ class QiwaUiClient:
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
+    employee_transfer_page = EmployeeTransferV2Page()
+    contract_management_page = ContractManagementPage()
 
     # Components
     header = Header()
     footer = Footer()
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
+    meet_qiwa_popup = MeetQiwaPopup()
+    resend_modal = ResendModal()
+    revoke_modal = RevokeModal()
+    toast_message = DelegationToast()
+    delegation_localisation = DelegationLocalisationChange()
     code_verification = CodeVerification()
 
     @allure.step
@@ -116,7 +136,7 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_login_page(self):
+    def open_login_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.laborer_sso_auth)
         return self
 
@@ -151,12 +171,29 @@ class QiwaUiClient:
         return self
 
     @allure.step
-    def open_visa_page(self):
+    def open_visa_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.visa_web_url)
+        return self
 
     @allure.step
     def open_user_management_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.ui_user_management)
+        return self
+
+    @allure.step
+    def open_labor_office_appointments_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.appointment_booking)
+        self.labor_office_appointments_page.wait_page_to_load()
+        return self
+
+    @allure.step
+    def open_employee_transfer_v2_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.employee_transfer_v2)
+        return self
+
+    @allure.step
+    def open_e_services_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.e_services)
         return self
 
 

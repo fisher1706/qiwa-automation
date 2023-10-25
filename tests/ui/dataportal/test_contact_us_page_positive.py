@@ -4,6 +4,7 @@ import pytest
 from data.data_portal.constants import ContactUs, Localization
 from data.data_portal.dataset import ContactUsDataSet
 from src.ui.dataportal import data_portal
+from src.ui.pages.data_portal_pages.base_methods import base_methods
 from src.ui.pages.data_portal_pages.contact_us_page import ContactUsPage
 from utils.allure import TestmoProject, project
 
@@ -35,7 +36,7 @@ def test_ar_translation_element_on_the_page(element, translation, perform_reques
 @case_id(5546)
 def test_en_translation_titles_element_on_the_page():
     data_portal.open_contact_us_page()
-    data_portal.contact_us_page.check_elements_on_the_page(ContactUsPage.FIELD_TITLES, ContactUs.FIELD_NAMES_EN)
+    base_methods.check_elements_on_the_page(ContactUsPage.FIELD_TITLES, ContactUs.FIELD_NAMES_EN)
 
 
 @allure.title('Check Arabic translations for Titles on the page')
@@ -43,7 +44,7 @@ def test_en_translation_titles_element_on_the_page():
 def test_ar_translation_titles_on_the_page():
     data_portal.open_contact_us_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.contact_us_page.check_elements_on_the_page(ContactUsPage.FIELD_TITLES, ContactUs.FIELD_NAMES_AR)
+    base_methods.check_elements_on_the_page(ContactUsPage.FIELD_TITLES, ContactUs.FIELD_NAMES_AR)
 
 
 @allure.title('Check navigation to Home page after request')

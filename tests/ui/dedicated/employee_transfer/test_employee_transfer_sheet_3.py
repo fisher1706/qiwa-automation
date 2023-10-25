@@ -3,26 +3,26 @@ import pytest
 from selene import browser
 
 from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_transfer import (
-    employer,
+from data.dedicated.employee_trasfer.employee_transfer import (
     employer_between_my_establishments,
+    employer_old,
     laborer_between_my_establishments,
 )
 from data.dedicated.enums import TransferType
 from data.validation_message import ErrorMessage, SuccessMessage
 from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
+from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
 from src.ui.qiwa import qiwa
 
 
 @allure.feature('Employee Transfer sheet 3')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Old design")
 class TestEmployeeTransferSheet3:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self, http_client):
-        self.employee_transfer_actions = EmployeeTransferActions()
+        self.employee_transfer_actions = EmployeeTransferActionsOld()
         self.individual_actions = IndividualActions()
         self.employee_transfer_api = EmployeeTransferApi(http_client)
         self.employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
@@ -107,7 +107,7 @@ class TestEmployeeTransferSheet3:  # pylint: disable=unused-argument
         browser.driver.delete_all_cookies()
         browser.driver.refresh()
         qiwa.open_login_page()
-        self.employee_transfer_actions.navigate_to_et_service(employer)
+        self.employee_transfer_actions.navigate_to_et_service(employer_old)
         self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
         self.employee_transfer_actions.click_check_balance()
         self.employee_transfer_actions.verify_balance_value(is_decreased=False)

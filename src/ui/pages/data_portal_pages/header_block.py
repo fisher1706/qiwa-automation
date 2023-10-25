@@ -1,4 +1,3 @@
-from selene import query
 from selene.support.conditions import have
 from selene.support.shared.jquery_style import browser, s, ss
 
@@ -29,13 +28,6 @@ class HeaderBlock:
         if open_dropdown:
             self.SECTORS.click()
         element.should(have.text(element_text))
-
-    @staticmethod
-    def check_elements_on_the_page(elements, list_text):
-        elements_list = []
-        for element in elements:
-            elements_list.append(element.get(query.text))
-        assert elements_list == list_text, f"{elements_list}\n{list_text}"
 
     def check_navigation_to_all_sectors_page(self):
         self.SECTORS.click()

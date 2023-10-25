@@ -8,7 +8,7 @@ from data.constants import Language
 
 
 class Header:
-    # TODO: Adjust changing language
+    # TODO: [dp] Adjust changing language
     lang_dropdown = ss('[data-component="MenuTrigger"] p').first
     links = ss("[data-component='Menu'] a")
     lang_links = {

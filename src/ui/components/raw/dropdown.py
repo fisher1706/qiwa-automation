@@ -40,3 +40,9 @@ class Dropdown:
         self.element.click()
         self.options[index].click()
         return self
+
+    def expand(self):
+        self.element.wait_until(be.visible)
+        self.element.click()
+        self.options.first.wait_until(be.visible)
+        return self

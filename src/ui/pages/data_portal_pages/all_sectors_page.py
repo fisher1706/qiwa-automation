@@ -39,10 +39,6 @@ class AllSectorsPage:
         activities_type.should(be.enabled)
         activities_type.click()
 
-    @staticmethod
-    def check_element_on_the_page(element, element_text):
-        element.should(have.text(element_text))
-
     def check_elements_on_the_page(self, elements, list_text):
         self.SECTORS_LIST.should(be.visible)
         elements_list = []

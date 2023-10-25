@@ -4,10 +4,14 @@ import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
+from data.constants import AppointmentReason, Language
+from data.lo.constants import OfficesInfo, ServicesInfo, SubscribedUser
 from src.ui.components.raw.dropdown import Dropdown
 
 
 class LaborOfficeAppointmentsCreatePage:
+    language = Language.EN
+
     search = s("#establishment-list")
     establishment_list = ss("[data-component='RadioButton'] span")
     next_btn = s("[type='submit']")
@@ -16,9 +20,14 @@ class LaborOfficeAppointmentsCreatePage:
     sub_service_error = s("#subService-error")
     date_picker = s('//*[@id="date"]')
     available_dates = ss('//*[@role="button" and not(@aria-disabled)]')
+    appointment_reason_section = s("#reason")
+    radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
 
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
+    dropdown_select_service = Dropdown(
+        s('(//div[@id="service"]//*[@data-component="Select"]//div)[1]'), dropdown_element_locator
+    )
     dropdown_select_region = Dropdown(
         s('(//div[@id="details"]//*[@data-component="Select"])[1]'), dropdown_element_locator
     )
@@ -39,10 +48,18 @@ class LaborOfficeAppointmentsCreatePage:
     input_office = s('//input[@id="office"]')
     input_time = s('//input[@name="time"]')
 
+    @allure.step("Select establishment {name}")
     def select_establishment(self, name: str) -> LaborOfficeAppointmentsCreatePage:
         self.search.type(name)
         self.establishment_list.first.click()
         self.next_btn.click()
+        return self
+
+    @allure.step("Select appointment reason {value}")
+    def select_appointment_reason(self, value) -> LaborOfficeAppointmentsCreatePage:
+        if self.appointment_reason_section.wait_until(be.visible):
+            ss(self.radio_button_appointment_reason)[value.value].click()
+            self.next_btn.click()
         return self
 
     @allure.step("Select service {name}")
@@ -84,7 +101,7 @@ class LaborOfficeAppointmentsCreatePage:
     def select_date(
         self, first_available=True, next_year=True
     ) -> LaborOfficeAppointmentsCreatePage:
-        self.input_office.wait_until(be.clickable)
+        self.date_picker.wait_until(be.clickable)
         self.date_picker.click()
         if next_year:
             self.dropdown_select_year.select_by_index(1)
@@ -101,3 +118,25 @@ class LaborOfficeAppointmentsCreatePage:
             self.dropdown_select_time.select_by_index(0)
 
         return self
+
+    @allure.step("Get list of available services")
+    def get_service_list(self):
+        pass
+
+    @allure.step("Verify Service list is not empty")
+    def should_service_list_be(self):
+        assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
+
+    @allure.step("Create appointment flow in create appointment page")
+    def book_appointment_flow(self):
+        self.select_establishment(SubscribedUser.ESTABLISHMENT[self.language])
+        self.select_appointment_reason(AppointmentReason.IN_PERSON)
+        self.select_service(ServicesInfo.SERVICE_NAME_WORK_PERMITS[self.language])
+        self.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[self.language])
+        self.click_next_step_button()
+        self.select_region(OfficesInfo.REGION_MADINAH[self.language])
+        self.select_office(OfficesInfo.OFFICE_NAME_TEST_OFFICE)
+        self.select_date()
+        self.select_time()
+        self.click_next_step_button()
+        self.click_next_step_button()

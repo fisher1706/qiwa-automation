@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     mock_mlsd_url: Optional[HttpUrl]
     sso_auth_db_url: Optional[str]
     ibm_url: Optional[HttpUrl]
+    um_db_url: Optional[str]
+    delegation_db_url: Optional[str]
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
     timeout: int = 20
@@ -68,7 +70,7 @@ class QiwaUrls:
         self.employee_transfer: str = f"{protocol}employee-transfer.{domain}"
         self.laborer_sso_auth_api: str = f"{protocol}laborer-sso-auth-api.{domain}"
         self.laborer_sso_auth: str = f"{protocol}laborer-sso-auth.{domain}"
-        self.delegation_service: str = f"{protocol}delegationservice.{domain}"
+        self.delegation_service: str = f"{protocol}delegation.{domain}"
         self.delegation_service_api: str = f"{protocol}api-proxy.{domain}"
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
@@ -80,6 +82,9 @@ class QiwaUrls:
         self.appointment_booking: str = f"{protocol}appointment-booking.{domain}"
         self.lmi_url: str = f"{protocol}lmi-dashboard.{domain}"
         self.lmi_landing_url: str = f"{protocol}lmi.{domain}"
+        self.data_portal_admin_url: str = f"{protocol}data-portal-admin.{domain}"
+        self.employee_transfer_v2: str = f"{protocol}employee-transfer-v2.{domain}"
+        self.e_services: str = f"{protocol}e-services.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))

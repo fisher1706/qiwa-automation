@@ -1,4 +1,3 @@
-from selene import have, query
 from selene.support.shared.jquery_style import browser, s, ss
 
 from data.data_portal.constants import Links
@@ -66,17 +65,6 @@ class FooterBlock:
         self.HUMAN_RESOURCES.click()
         browser.switch_to_next_tab()
         assert browser.driver.current_url == Links.HUMAN_RESOURCES
-
-    @staticmethod
-    def check_element_on_the_page(element, element_text):
-        element.should(have.text(element_text))
-
-    @staticmethod
-    def check_elements_on_the_page(elements, list_text):
-        elements_list = []
-        for element in elements:
-            elements_list.append(element.get(query.text))
-        assert elements_list == list_text, f"{elements_list}\n{list_text}"
 
     def check_navigation_to_all_sectors_page(self):
         self.VIEW_ALL_SECTORS.click()
