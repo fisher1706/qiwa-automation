@@ -33,7 +33,7 @@ def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
     json = cancel_sadad_ibm_error.parse_obj(response.json())
     assert_data(
         expected=already_canceled_transaction_error(),
-        actual=json.data.attributes.dict(include=set(already_canceled_transaction_error().keys()))
+        actual=json.data.attributes.dict()
     )
 
 
@@ -48,5 +48,5 @@ def test_cancelling_incorrect_sadad_number(api):
     json = cancel_sadad_ibm_error.parse_obj(response.json())
     assert_data(
         expected=incorrect_transaction_error(),
-        actual=json.data.attributes.dict(include=set(incorrect_transaction_error().keys()))
+        actual=json.data.attributes.dict()
     )
