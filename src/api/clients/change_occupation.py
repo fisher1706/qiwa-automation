@@ -32,7 +32,7 @@ class ChangeOccupationApi:
     def get_requests_laborers(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/requests-laborers", params={"page": page, "per": per})
 
-    def get_requests(self, page: int = 1, per: int = 10) -> Response:
+    def get_requests(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/requests", params={"page": page, "per": per})
 
     def get_request(self, request_id: int) -> Response:
@@ -56,10 +56,10 @@ class ChangeOccupationApi:
     def get_count(self) -> Response:
         return self.client.get(f"{self.url}/count")
 
-    def get_users(self, page: int = 1, per: int = 10) -> Response:
+    def get_users(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/users", params={"page": page, "per": per})
 
-    def get_occupations(self, page: int = 1, per: int = 10) -> Response:
+    def get_occupations(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/occupations", params={"page": page, "per": per})
 
     def get_context(self) -> Response:
