@@ -116,7 +116,7 @@ class ContractManagementPage:
     # Contract Details
     def fill_field_occupation(self, data: str) -> ContractManagementPage:
         self.field_occupation.should(be.visible).perform(command.js.set_value("")).type(data)
-        self.dropdown.element_by(have.exact_text(data)).click()
+        self.dropdown.element_by(have.text(data)).click()
         return self
 
     def fill_field_job_title_en(self, data: str) -> ContractManagementPage:

@@ -40,10 +40,10 @@ laborer_type_4_direct_transfer = Laborer(
 laborer_type_4_absent = Laborer(login_id=2468727199, birthdate="01-01-1986", transfer_type=type_4)
 
 laborer_between_my_establishments = Laborer(
-    login_id=2016254472, birthdate="01-01-1976", transfer_type=type_9
+    login_id=2016254472, birthdate="01-01-1976", transfer_type=type_4
 )
 laborer_between_my_establishments_existing_contract = Laborer(
-    login_id=2126951132, birthdate="01-03-1961", transfer_type=type_9
+    login_id=2126951132, birthdate="01-03-1961", transfer_type=type_4
 )
 laborer_between_my_establishments_quota = Laborer(login_id=2111825226, birthdate="01-01-1976")
 

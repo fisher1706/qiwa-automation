@@ -37,3 +37,8 @@ class SelfSubscriptionType:
 @dataclasses.dataclass
 class UsersTypes:
     users = [owner_account, delegator_with_um]
+
+
+@dataclasses.dataclass
+class Privileges:
+    default_privileges = [1, 5, 8, 11, 13, 16, 20, 23, 29, 31]

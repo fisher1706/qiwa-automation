@@ -27,6 +27,7 @@ from src.api.controllers.lo.offices_api_actions import OfficesApiActions
 from src.api.controllers.lo.services_api_actions import ServiceApiActions
 from src.api.controllers.lo.visits_api_actions import VisitsApiActions
 from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.user_management import UserManagementControllers
 from src.api.controllers.visits import VisitsApiController
 from src.api.controllers.workspaces import WorkspacesApiController
 from src.api.http_client import HTTPClient
@@ -62,6 +63,7 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
         self.survey_result_api_actions = SurveyResultApiAction(self.client)
         self.weq_api_actions = WeqApiAction(self.client)
         self.delegation_api = DelegationApiController(self.client)
+        self.user_management = UserManagementControllers(self.client)
 
     @property
     def authorization_token(self) -> AuthorizationToken:

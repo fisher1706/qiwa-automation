@@ -5,7 +5,7 @@ from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation import add_delegation_data, general_data
+from data.delegation import add_delegation_data
 from src.ui.components.raw.table import Table
 
 
@@ -14,9 +14,6 @@ class AddDelegationPage:
     step_title = 'div[data-testid="{0}"] > div:nth-child(1) > div'
     step_number = 'div[data-testid="{0}"] span[data-component="StepIndex"]'
     successful_step_img = 'div[data-testid="{0}"] span[data-component="StepIndex"] svg'
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     entity_types_radio_buttons = s('[data-testid="ExternalEntityRadioTileGroup"]')
     government_entity_type = s("#GOVERNMENT")
     government_entity_type_text = s("#GOVERNMENT-label")
@@ -99,14 +96,6 @@ class AddDelegationPage:
     @allure.step
     def should_url_for_add_delegation_page_be_correct(self) -> AddDelegationPage:
         browser.should(have.url(f"{config.qiwa_urls.delegation_service}/create-delegation"))
-        return self
-
-    @allure.step
-    def select_english_localization_on_add_delegation_page(self) -> AddDelegationPage:
-        # pylint: disable=R0801
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
         return self
 
     @allure.step

@@ -13,6 +13,7 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
 from src.ui.qiwa import qiwa
 from tests.ui.delegation.conftest import (
     check_sms_after_resend_action,
+    get_dates_on_delegation_pages,
     get_delegation_request,
     get_old_url_after_resend_action,
     login_and_open_delegation_dashboard_page,
@@ -71,17 +72,18 @@ def test_correct_data_on_delegation_dashboard():
         sequence_number=establishment_owner_with_one_partner.sequence_number)
     headers = qiwa_api.delegation_api.set_headers()
     delegation_list = qiwa_api.delegation_api.get_delegations(headers)
+    delegation_dates = get_dates_on_delegation_pages(delegation_list.first_delegation_status,
+                                                     delegation_list.first_delegation_start_date,
+                                                     delegation_list.first_delegation_expiry_date)
     qiwa.delegation_dashboard_page.should_number_of_delegations_be_correct(delegation_list.total_elements) \
         .should_delegation_id_be_correct(delegation_list.first_delegation_id) \
         .should_employee_name_be_correct(delegation_list.first_delegation_employee_name) \
         .should_entity_name_be_correct(delegation_list.first_delegation_entity_name_en) \
         .should_delegation_permission_be_correct(delegation_list.first_delegation_permission) \
         .should_delegation_dates_be_correct_on_dashboard(
-        delegation_list.first_delegation_status, delegation_list.first_delegation_start_date,
-        DelegationDashboardPage.start_date_on_delegation_table) \
+        delegation_dates["start_date"], DelegationDashboardPage.start_date_on_delegation_table) \
         .should_delegation_dates_be_correct_on_dashboard(
-        delegation_list.first_delegation_status, delegation_list.first_delegation_expiry_date,
-        DelegationDashboardPage.expiry_date_on_delegation_table) \
+        delegation_dates["expire_date"], DelegationDashboardPage.expiry_date_on_delegation_table) \
         .should_delegation_status_be_correct(delegation_list.first_delegation_status)
 
 
@@ -99,14 +101,15 @@ def test_resend_action_on_delegation_dashboard():
         status=general_data.REJECTED, row_number=row_number) \
         .click_more_button_on_delegation_dashboard(row_number=row_number) \
         .should_correct_actions_be_displayed_on_delegation_dashboard([general_data.VIEW_DETAILS, general_data.RESEND]) \
-        .select_action_on_delegation_dashboard(action=general_data.RESEND) \
-        .should_resend_confirmation_modal_be_displayed_on_dashboard() \
-        .click_cancel_button_on_resend_modal().should_resend_confirmation_modal_be_hidden() \
-        .click_more_button_on_delegation_dashboard(row_number=row_number) \
-        .select_action_on_delegation_dashboard(action=general_data.RESEND) \
-        .click_resend_request_button_on_dashboard() \
-        .should_successful_message_be_displayed_on_dashboard(message=general_data.RESEND_MESSAGE) \
-        .wait_delegation_dashboard_page_to_load()
+        .select_action_on_delegation_dashboard(action=general_data.RESEND)
+    qiwa.resend_modal.should_resend_confirmation_modal_be_displayed().click_cancel_button_on_resend_modal() \
+        .should_resend_confirmation_modal_be_hidden()
+    qiwa.delegation_dashboard_page.click_more_button_on_delegation_dashboard(row_number=row_number) \
+        .select_action_on_delegation_dashboard(action=general_data.RESEND)
+    qiwa.resend_modal.click_resend_request_button()
+    qiwa.toast_message.should_message_be_displayed(message=general_data.RESEND_MESSAGE,
+                                                   toast_color=general_data.SUCCESSFUL_MESSAGE_COLOR)
+    qiwa.delegation_dashboard_page.wait_delegation_dashboard_page_to_load()
     row_number = qiwa.delegation_dashboard_page.get_delegation_row(delegation_data["delegationId"])
     qiwa.delegation_dashboard_page.should_delegation_status_be_correct(
         status=general_data.PENDING, row_number=row_number) \
@@ -120,8 +123,8 @@ def test_resend_action_on_delegation_dashboard():
                                             request_id=updated_delegation_request.id,
                                             formatted_phone_number=delegation_data["formattedPartnerPhone"])
     open_url_from_sms(sms_url)
-    qiwa.delegation_partner_approval_page.select_english_localization_on_partner_approval_page() \
-        .wait_partner_approval_page_to_load()
+    qiwa.delegation_localisation.select_english_localisation_for_public_pages()
+    qiwa.delegation_partner_approval_page.wait_partner_approval_page_to_load()
 
 
 @allure.title("Verify that the old link to partner's approval flow is not active (before resending)")
@@ -138,8 +141,10 @@ def test_old_link_is_not_active_after_resending():
     url_from_sms = get_old_url_after_resend_action(request_id=delegation_request.id,
                                                    formatted_phone_number=delegation_data["formattedPartnerPhone"])
     open_url_from_sms(url_from_sms)
-    qiwa.delegation_partner_approval_page.select_english_localization_on_partner_approval_page() \
-        .should_partner_approval_flow_be_not_available()
+    qiwa.delegation_localisation.select_english_localisation_for_public_pages()
+    qiwa.delegation_partner_approval_page.should_partner_approval_flow_be_not_available()
+    qiwa.toast_message.should_message_be_displayed(message=general_data.ERROR_TOAST,
+                                                   toast_color=general_data.ERROR_MESSAGE_COLOR)
 
 
 @allure.title("Revoke action on the delegation dashboard")
@@ -158,11 +163,12 @@ def test_revoke_action_on_delegation_dashboard():
         .click_more_button_on_delegation_dashboard(row_number=row_number) \
         .should_correct_actions_be_displayed_on_delegation_dashboard(
         [general_data.PREVIEW_LETTER, general_data.VIEW_DETAILS, general_data.REVOKE]) \
-        .select_action_on_delegation_dashboard(action=general_data.REVOKE) \
-        .should_revoke_confirmation_modal_be_displayed_on_dashboard() \
-        .click_revoke_delegation_button_on_dashboard() \
-        .should_successful_message_be_displayed_on_dashboard(message=general_data.REVOKE_MESSAGE) \
-        .wait_delegation_dashboard_page_to_load()
+        .select_action_on_delegation_dashboard(action=general_data.REVOKE)
+    qiwa.revoke_modal.should_revoke_confirmation_modal_be_displayed() \
+        .click_revoke_delegation_button()
+    qiwa.toast_message.should_message_be_displayed(message=general_data.REVOKE_MESSAGE,
+                                                   toast_color=general_data.SUCCESSFUL_MESSAGE_COLOR)
+    qiwa.delegation_dashboard_page.wait_delegation_dashboard_page_to_load()
     row_number = qiwa.delegation_dashboard_page.get_delegation_row(delegation_id)
     qiwa.delegation_dashboard_page.should_delegation_status_be_correct(
         status=general_data.REVOKED, row_number=row_number) \

@@ -4,8 +4,11 @@ import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
+from data.constants import Language, Workspaces
+
 
 class WorkspacesPage:
+    language = Language.EN
     page_content = s('//*[@data-component="Layout"]//*[contains(@class, "Tile")]')
     label_choose_account = s("//*[text()='Choose your account type']")
 
@@ -15,7 +18,6 @@ class WorkspacesPage:
     account_cards = ss("[data-component='Tile']")
     individual_account_card = account_cards.element_by(have.text("Individual account"))
     lo_agent_card = account_cards.element_by(have.text("LO agent"))
-    business_account_card = account_cards.element_by(have.text("Business Account"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
     search = s("#search")
@@ -48,7 +50,10 @@ class WorkspacesPage:
 
     @allure.step
     def select_business_account(self) -> WorkspacesPage:
-        self.business_account_card.click()
+        business_account_card = self.account_cards.element_by(
+            have.text(Workspaces.BUSINESS_ACCOUNT_CARD[self.language])
+        )
+        business_account_card.click()
         return self
 
     @allure.step

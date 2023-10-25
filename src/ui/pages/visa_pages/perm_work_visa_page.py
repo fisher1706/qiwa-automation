@@ -1,5 +1,7 @@
+from time import sleep
+
 import allure
-from selene.api import be, command, have, s, ss
+from selene.api import Element, be, command, have, query, s, ss
 
 from data.visa.constants import (
     FILTERS,
@@ -8,13 +10,13 @@ from data.visa.constants import (
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
     WORK_VISA_PAGE_TITLE_TEXT,
+    BalanceRequestStatus,
     ColName,
-    TierRequest,
     VisaType,
 )
 from src.ui.components.raw.table import Table
 from src.ui.pages.visa_pages.base_page import BasePage
-from utils.assertion.soft_assertions import soft_assert_text
+from utils.assertion.soft_assertions import soft_assert, soft_assert_text
 from utils.pdf_parser import (
     file_is_valid_pdf,
     get_downloaded_filename,
@@ -58,6 +60,12 @@ class PermWorkVisaPage(BasePage):
     allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
     exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
     tier_upgrades_requests_table = s('//*[@data-testid="TierHistoryTable"]')
+    establishment_fund_tab = s('//*[@data-testid="nav-Establishment fund"]')
+    learn_more_tab = s('//*[@data-testid="nav-Learn more"]')
+    learn_more_section = s('//*[@id="knowledgeSection"]//p')
+    recruitment_quota_section = s("#allowedQuotaSection")
+    recruitment_quota_tab = s('//*[@data-testid="nav-Recruitment quota"]')
+    navigation_list = s("#navigationList")
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -148,10 +156,45 @@ class PermWorkVisaPage(BasePage):
             ).click()
 
     @allure.step("Verify tier upgrade status of tier upgrade request")
-    def verify_tier_upgrade_status(self, ref_number: str, status: TierRequest) -> None:
-        table = Table(self.tier_upgrades_requests_table)
+    def verify_tier_upgrade_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
+        self.verify_request_status(ref_number, status, self.tier_upgrades_requests_table)
+
+    @allure.step("Verify balance request status")
+    def verify_balance_request_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
+        self.verify_request_status(ref_number, status, self.exceptional_requests_table)
+
+    def verify_request_status(
+        self, ref_number: str, status: BalanceRequestStatus, element: Element
+    ) -> None:
+        table = Table(element)
         status_cell = table.cell(row=have.text(ref_number), column=ColName.REQUEST_STATUS)
-        command.js.scroll_into_view(self.tier_upgrades_requests_table)
+        command.js.scroll_into_view(element)
         soft_assert_text(
-            element=status_cell, text=status.label, element_name="Tier request status"
+            element=status_cell, text=status.label, element_name="Balance request status"
+        )
+
+    @allure.step("Verify top navigation tabs (links) scrolling work")
+    def verify_top_navigation_tabs_work(self):
+        self.verify_section_visible(self.allowed_quota_section)
+        self.establishment_fund_tab.click()
+        self.verify_section_visible(self.establishment_fund_section)
+        self.permanent_visas_tab.click()
+        self.verify_section_visible(self.permanent_visas_section)
+        self.other_visas_tab.click()
+        self.verify_section_visible(self.other_visas_section)
+        self.learn_more_tab.click()
+        self.verify_section_visible(self.learn_more_section)
+        self.recruitment_quota_tab.click()
+        self.verify_section_visible(self.allowed_quota_section)
+
+    def verify_section_visible(self, element: Element) -> None:
+        sleep(2)  # wait until scrolling is complete
+        top_y = (
+            self.navigation_list.get(query.location)["y"]
+            + self.navigation_list.get(query.size)["height"]
+        )
+        element_y = element.get(query.location)["y"]
+        soft_assert(
+            top_y <= element_y < top_y + 100,
+            error_message=f"Element {element} is not scrolled properly",
         )
