@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-import time
-
 from selene import command
 from selene.support.shared.jquery_style import s
 
 from src.ui.components.raw.table import Table
+from utils.selene import scroll_into_view_if_needed
 
 
 class TransferFromExternalCompanyPage:
@@ -38,8 +37,6 @@ class TransferFromExternalCompanyPage:
 
     def click_link_create_contract_another_establishment(self) -> TransferFromExternalCompanyPage:
         link = self.table.cell(row=1, column=7).ss("a").first
-        # todo: [dp] find the possibility of waiting script ends
-        time.sleep(1)
-        link.execute_script("element.scrollIntoViewIfNeeded()")
+        scroll_into_view_if_needed(link)
         link.click()
         return self
