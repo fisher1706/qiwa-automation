@@ -4,6 +4,8 @@ from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
+from utils.selene import scroll_into_view_if_needed
+
 
 class ContractManagementPage:
     otp_form = s("#otp-form")
@@ -61,7 +63,7 @@ class ContractManagementPage:
     terms_checkbox = s("#terms")
 
     def wait_until_title_verification_code_appears(
-        self, text: dict, locale: str
+            self, text: dict, locale: str
     ) -> ContractManagementPage:
         locator = self.title_verification_code
         locator.wait_until(be.visible)
@@ -115,7 +117,10 @@ class ContractManagementPage:
 
     # Contract Details
     def fill_field_occupation(self, data: str) -> ContractManagementPage:
-        self.field_occupation.should(be.visible).perform(command.js.set_value("")).type(data)
+        scroll_into_view_if_needed(self.field_occupation)
+        # TODO(dm): Find the possibility of removing this sleep.
+        #   All methods and approaches were used
+        self.field_occupation.click().clear().type(data)
         self.dropdown.element_by(have.text(data)).click()
         return self
 
@@ -128,11 +133,11 @@ class ContractManagementPage:
         return self
 
     def fill_field_employee_number(self, data: str) -> ContractManagementPage:
-        self.field_employee_number.hover().perform(command.js.set_value("")).type(data)
+        self.field_employee_number.perform(command.js.set_value("")).type(data)
         return self
 
     def fill_field_contract_period(self) -> ContractManagementPage:
-        # todo: [dp] Adjust method for different types of users
+        # TODO(dp): Adjust method for different types of users
         # self.field_contract_period.should(be.visible).all("option").element_by(
         #     have.exact_text()(data)
         # ).click()
@@ -222,7 +227,7 @@ class ContractManagementPage:
         return self
 
     def select_dropdown_transportation_allowance_frequency(
-        self, data: str
+            self, data: str
     ) -> ContractManagementPage:
         self.dropdown_transportation_allowance_frequency.should(be.visible).all(
             "option"
