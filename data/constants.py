@@ -128,7 +128,7 @@ class EmployeeTransfer:
         Language.EN: "Pending Completing Transfer in Absher by New Employer",
         Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
     }
-    LABORER_STATUS_REJECT = {Language.EN: "Rejected by Laborer", Language.AR: "مرفوض من الموظف"}
+    LABORER_STATUS_REJECT = {Language.EN: "Rejected by Employee", Language.AR: "مرفوض من الموظف"}
     SPONSOR_STATUS_APPROVE = {
         Language.EN: "Pending Completing Transfer in Absher by New Employer",
         Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
