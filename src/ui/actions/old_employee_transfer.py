@@ -32,6 +32,7 @@ from src.ui.qiwa import qiwa
 from utils.assertion import assert_that
 
 
+# pylint: disable=duplicate-code
 class EmployeeTransferActionsOld(EmployeeTransferPage):
     def __init__(self):
         super().__init__()
@@ -61,14 +62,6 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         time.sleep(3)
         self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, Language.EN)
 
-    def navigate_to_individual(self, user_id: int):
-        browser.close_current_tab()
-        browser.switch_to_tab(0)
-        browser.driver.delete_all_cookies()
-        browser.driver.refresh()
-        qiwa.open_login_page().login_as_user(user_id, UserInfo.PASSWORD)
-        self.workspace_actions.select_individual_account()
-
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
         match transfer_type:
             case TransferType.FROM_ANOTHER_BUSINESS_OWNER:
@@ -83,11 +76,11 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
                 self.click_btn_next()
 
     def request_new_contract(
-        self,
-        transfer_type: TransferType,
-        establishment_number: str,
-        entity_laborer: Laborer,
-        is_get_balance_value: bool = False,
+            self,
+            transfer_type: TransferType,
+            establishment_number: str,
+            entity_laborer: Laborer,
+            is_get_balance_value: bool = False,
     ):
         self.click_btn_request_employee_transfer().click_btn_approve()
         self.select_transfer_type(transfer_type)
@@ -119,12 +112,12 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.verify_title_transfer_laborer_between_my_establishments()
 
     def confirm_creation_of_contract(
-        self,
-        entity_laborer: Laborer,
-        entity: Entity = employer_old,
-        transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
-        is_get_balance_value: bool = False,
-        is_verify_popup: bool = False,
+            self,
+            entity_laborer: Laborer,
+            entity: Entity = employer_old,
+            transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
+            is_get_balance_value: bool = False,
+            is_verify_popup: bool = False,
     ):
         self.navigate_to_et_service(entity)
         self.request_new_contract(
