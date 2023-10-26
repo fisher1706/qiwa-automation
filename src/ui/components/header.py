@@ -1,35 +1,37 @@
 from __future__ import annotations
 
 import allure
-from selene import have
+from selene import have, be
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Language
 
 
 class Header:
-    # TODO: [dp] Adjust changing language
-    dropdown_lang = ss('[data-component="MenuTrigger"] p')
+    dropdown_language = ss('[data-component="MenuTrigger"] p')
     links = ss("[data-component='Menu'] a")
-    lang_links = {
+    language_links = {
         Language.EN: links.first,
         Language.AR: links.second,
     }
     profile = s("[data-testid='menu-trigger'] p")
     dropdown_profile = ss("[data-component='Menu'] > div")
 
-    def _select_language(self, lang_value: str):
-        local = self.lang_links[lang_value]
-        if not local.matching(have.attribute("[data-component='Icon']")):
-            local.click()
+    def _select_language(self, language: str):
+        element = self.language_links[language]
+        if not element.matching(have.attribute("[data-component='Icon']")):
+            element.click()
 
     @allure.step
-    def change_local(self, lang_value: str) -> Header:
-        language = 'ع' if lang_value == Language.EN else 'EN'
-        dropdown = self.dropdown_lang.element_by(have.exact_text(language))
-        if dropdown.matching(have.exact_text(language)):
-            dropdown.click()
-            self._select_language(lang_value)
+    def change_local(self, language: str) -> Header:
+        # TODO: [dp] Adjust changing language after fix issue with different AR text
+        language_tags = ['ع', 'AR'] if language == Language.EN else ['EN']
+        self.dropdown_language.first.wait_until(be.visible)
+        elements = [self.dropdown_language.element_by(have.exact_text(el)) for el in language_tags]
+        for dropdown, tag in zip(elements, language_tags):
+            if dropdown.matching(have.exact_text(tag)):
+                dropdown.click()
+                self._select_language(language)
         return self
 
     @allure.step
