@@ -5,10 +5,12 @@ from selene import be
 from selene.support.shared import browser
 
 import config
-from data.constants import UserInfo, Language
+from data.constants import Language, UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
-from src.ui.components.dedicated.mobile_verification_popup import MobileVerificationPopup
+from src.ui.components.dedicated.mobile_verification_popup import (
+    MobileVerificationPopup,
+)
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header

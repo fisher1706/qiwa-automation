@@ -63,7 +63,7 @@ class ContractManagementPage:
     terms_checkbox = s("#terms")
 
     def wait_until_title_verification_code_appears(
-            self, text: dict, locale: str
+        self, text: dict, locale: str
     ) -> ContractManagementPage:
         locator = self.title_verification_code
         locator.wait_until(be.visible)
@@ -227,7 +227,7 @@ class ContractManagementPage:
         return self
 
     def select_dropdown_transportation_allowance_frequency(
-            self, data: str
+        self, data: str
     ) -> ContractManagementPage:
         self.dropdown_transportation_allowance_frequency.should(be.visible).all(
             "option"

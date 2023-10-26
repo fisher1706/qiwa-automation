@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import have, be
+from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Language
@@ -25,7 +25,7 @@ class Header:
     @allure.step
     def change_local(self, language: str) -> Header:
         # TODO: [dp] Adjust changing language after fix issue with different AR text
-        language_tags = ['ع', 'AR'] if language == Language.EN else ['EN']
+        language_tags = ["ع", "AR"] if language == Language.EN else ["EN"]
         self.dropdown_language.first.wait_until(be.visible)
         elements = [self.dropdown_language.element_by(have.exact_text(el)) for el in language_tags]
         for dropdown, tag in zip(elements, language_tags):

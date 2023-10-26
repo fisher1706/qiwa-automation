@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 
-from selene import be, have, browser
+from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
@@ -59,9 +59,7 @@ class IndividualPage:
 
     def select_rejection_reason(self, reason: str) -> IndividualPage:
         self.dropdown_modal_reject_reason.click()
-        self.dropdown.all('[role="option"]').element_by(
-            have.text(reason)
-        ).click()
+        self.dropdown.all('[role="option"]').element_by(have.text(reason)).click()
         return self
 
     def change_locale(self, locale: str = Language.AR) -> IndividualPage:
