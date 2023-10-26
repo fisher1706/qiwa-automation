@@ -15,9 +15,6 @@ from src.ui.components.delegation.localisation_change import (
 from src.ui.components.delegation.resend_modal import ResendModal
 from src.ui.components.delegation.revoke_modal import RevokeModal
 from src.ui.components.delegation.toast_message import DelegationToast
-from src.ui.components.dedicated.mobile_verification_popup import (
-    MobileVerificationPopup,
-)
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
@@ -110,7 +107,6 @@ class QiwaUiClient:
     footer = Footer()
     feedback = FeedbackPopup()
     email_popup = EmailConfirmationPopup()
-    mobile_verification_popup = MobileVerificationPopup()
     meet_qiwa_popup = MeetQiwaPopup()
     resend_modal = ResendModal()
     revoke_modal = RevokeModal()
