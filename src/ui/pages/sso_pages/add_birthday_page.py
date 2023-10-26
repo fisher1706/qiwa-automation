@@ -4,7 +4,7 @@ import allure
 from selene import have, query
 from selene.support.shared.jquery_style import s
 
-from src.ui.components.sso.bithday_box import BirthdayBoxes
+from src.ui.components.sso.birthday_box import BirthdayBoxes
 
 
 class AddBirthdayPage:

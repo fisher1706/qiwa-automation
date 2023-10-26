@@ -1,10 +1,12 @@
+from sqlalchemy.exc import IntegrityError
+
 from src.database.sql_requests.user_management.delete_subscription_requests import (
-    UserManagementRequests,
+    UserManagementRequestsDeleteSubscription,
 )
 
 
 def delete_subscription(personal_number: str, unified_number: int):
-    user_management_request = UserManagementRequests()
+    user_management_request = UserManagementRequestsDeleteSubscription()
     try:
         transaction_id = user_management_request.get_transaction_id(
             personal_number, unified_number
@@ -18,5 +20,5 @@ def delete_subscription(personal_number: str, unified_number: int):
         ).user_subscriptions(
             personal_number, unified_number
         )
-    except AttributeError:
+    except (IntegrityError, AttributeError):
         pass

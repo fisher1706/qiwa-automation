@@ -7,7 +7,14 @@ from selene.support.shared import browser
 import config
 from data.constants import Language, UserInfo
 from src.api.app import QiwaApi
+from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
+from src.ui.components.delegation.localisation_change import (
+    DelegationLocalisationChange,
+)
+from src.ui.components.delegation.resend_modal import ResendModal
+from src.ui.components.delegation.revoke_modal import RevokeModal
+from src.ui.components.delegation.toast_message import DelegationToast
 from src.ui.components.dedicated.mobile_verification_popup import (
     MobileVerificationPopup,
 )
@@ -105,6 +112,11 @@ class QiwaUiClient:
     email_popup = EmailConfirmationPopup()
     mobile_verification_popup = MobileVerificationPopup()
     meet_qiwa_popup = MeetQiwaPopup()
+    resend_modal = ResendModal()
+    revoke_modal = RevokeModal()
+    toast_message = DelegationToast()
+    delegation_localisation = DelegationLocalisationChange()
+    code_verification = CodeVerification()
 
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
@@ -130,7 +142,7 @@ class QiwaUiClient:
 
     @allure.step
     def open_login_page(self) -> QiwaUiClient:
-        browser.open(config.qiwa_urls.laborer_sso_auth)
+        browser.open(config.qiwa_urls.sso)
         return self
 
     @allure.step

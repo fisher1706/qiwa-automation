@@ -14,7 +14,7 @@ from src.database.models.user_management_tables_description import (
 )
 
 
-class UserManagementRequests:
+class UserManagementRequestsDeleteSubscription:
     session = DBClient(db_url=config.settings.um_db_url).set_db_session()
 
     def get_transaction_id(self, personal_number: str, unified_number: int) -> int:
@@ -31,7 +31,7 @@ class UserManagementRequests:
 
     def subscription_payment(
         self, personal_number: str, unified_number: int
-    ) -> UserManagementRequests:
+    ) -> UserManagementRequestsDeleteSubscription:
         subscription_payment_to_delete = (
             self.session.query(UMSubscriptionPayments)
             .filter(
@@ -45,7 +45,7 @@ class UserManagementRequests:
             self.session.commit()
         return self
 
-    def um_payment(self, transaction_id: int) -> UserManagementRequests:
+    def um_payment(self, transaction_id: int) -> UserManagementRequestsDeleteSubscription:
         user_management_payment_to_delete = (
             self.session.query(UMPayments)
             .filter(UMPayments.transaction_id == transaction_id)
@@ -58,7 +58,7 @@ class UserManagementRequests:
 
     def establishment_access(
         self, personal_number: str, unified_number: int
-    ) -> UserManagementRequests:
+    ) -> UserManagementRequestsDeleteSubscription:
         establishment_access_to_delete = (
             self.session.query(UMEstablishmentAccess)
             .filter(
@@ -72,7 +72,9 @@ class UserManagementRequests:
             self.session.commit()
         return self
 
-    def subscription(self, personal_number: str, unified_number: int) -> UserManagementRequests:
+    def subscription(
+        self, personal_number: str, unified_number: int
+    ) -> UserManagementRequestsDeleteSubscription:
         subscription_to_delete = (
             self.session.query(UMSubscriptions)
             .filter(
@@ -88,7 +90,7 @@ class UserManagementRequests:
 
     def user_subscriptions(
         self, personal_number: str, unified_number: int
-    ) -> UserManagementRequests:
+    ) -> UserManagementRequestsDeleteSubscription:
         user_info = (
             self.session.query(Users).filter(Users.personal_number == personal_number).first()
         )
@@ -106,7 +108,9 @@ class UserManagementRequests:
             self.session.commit()
         return self
 
-    def user_privileges(self, personal_number: str, unified_number: int) -> UserManagementRequests:
+    def user_privileges(
+        self, personal_number: str, unified_number: int
+    ) -> UserManagementRequestsDeleteSubscription:
         user_info = (
             self.session.query(Users).filter(Users.personal_number == personal_number).first()
         )
@@ -125,7 +129,9 @@ class UserManagementRequests:
             self.session.commit()
         return self
 
-    def um_privileges(self, personal_number: str, unified_number: int) -> UserManagementRequests:
+    def um_privileges(
+        self, personal_number: str, unified_number: int
+    ) -> UserManagementRequestsDeleteSubscription:
         um_privileges_to_delete = (
             self.session.query(UMEstablishmentAccess)
             .select_from(UMPrivileges)

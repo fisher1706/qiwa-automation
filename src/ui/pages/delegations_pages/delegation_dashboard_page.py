@@ -5,15 +5,11 @@ from selene import Element, be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.delegation import general_data
-from src.ui.components.raw.breadcrumb_navigation import BreadcrumbNavigation
+from src.ui.components.delegation.breadcrumb_navigation import BreadcrumbNavigation
 from src.ui.components.raw.table import Table
 
 
 class DelegationDashboardPage:
-    localization_button = ss('[data-component="MenuTrigger"] button').element(1)
-    localization_state = localization_button.s('[data-component="Box"] p')
-    english_localization = s('div[data-component="Menu"] a:nth-child(1)')
     delegation_table = Table(s('[data-testid="SectionSharedComponent"] table'))
     active_breadcrumb = BreadcrumbNavigation().breadcrumb(1)
     active_breadcrumb_link = BreadcrumbNavigation().breadcrumb(1).s("#BreadcrumbsItemServices")
@@ -40,34 +36,10 @@ class DelegationDashboardPage:
     permissions_on_delegation_table = delegation_table.cell(row=1, column=4)
     start_date_on_delegation_table = delegation_table.cell(row=1, column=5)
     expiry_date_on_delegation_table = delegation_table.cell(row=1, column=6)
-    # pylint: disable=R0801
-    # TODO move locators to components
-    resend_modal = s('div[data-testid="ResendModal"]')
-    title_on_modal = s('[id="modalBodyWrapper"] p.dIVImG')
-    description_on_modal = s('[id="modalBodyWrapper"] p.gggtgX')
-    message_on_resend_modal = s('div[data-component="Message"]')
-    resend_button_on_modal = s('button[data-testid="ResendModalAction"]')
-    loader_on_action_button = s('span[data-component="Loader"]')
-    cancel_button_on_resend_modal = s('button[data-testid="ResendModalClose"]')
-    toast_after_action = s('div[data-component="Toast"]')
-    icon_on_toast = s('div[data-component="Toast"] > span[data-component="Icon"] > svg')
-    revoke_modal = s('div[data-testid="RevokeModal"]')
-    revoke_button_on_modal = s('button[data-testid="RevokeModalAction"]')
-    go_back_button_on_revoke_modal = s('button[data-testid="RevokeModalClose"]')
-    close_button_on_modal = s('button[aria-label="Close modal"]')
 
     @allure.step
     def wait_delegation_dashboard_page_to_load(self) -> DelegationDashboardPage:
         self.delegation_table.body.should(be.visible)
-        return self
-
-    @allure.step
-    def select_english_localization_on_delegation_dashboard(self) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        self.localization_button.click()
-        self.english_localization.click()
-        self.localization_state.wait_until(have.exact_text(general_data.ENGLISH_LOCAL))
         return self
 
     @allure.step
@@ -252,14 +224,9 @@ class DelegationDashboardPage:
 
     @allure.step
     def should_delegation_dates_be_correct_on_dashboard(
-        self, status: str, date: str, locator: Element
+        self, date: str, locator: Element
     ) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        if status in [general_data.ACTIVE, general_data.EXPIRED, general_data.REVOKED]:
-            locator.should(have.text(date))
-        else:
-            locator.should(have.text("-"))
+        locator.should(have.text(date))
         return self
 
     @allure.step
@@ -275,72 +242,3 @@ class DelegationDashboardPage:
                 return row_number
 
         raise AssertionError(f"No delegations found with {delegation_id} delegation id")
-
-    @allure.step
-    def should_resend_confirmation_modal_be_displayed_on_dashboard(
-        self,
-    ) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        self.resend_modal.should(be.visible)
-        self.title_on_modal.should(have.exact_text(general_data.RESEND_MODAL_TITLE))
-        self.description_on_modal.should(have.exact_text(general_data.RESEND_MODAL_DESCRIPTION))
-        self.message_on_resend_modal.should(have.exact_text(general_data.RESEND_MODAL_MESSAGE))
-        self.resend_button_on_modal.should(have.exact_text(general_data.RESEND_BUTTON))
-        self.cancel_button_on_resend_modal.should(have.exact_text(general_data.CANCEL_BUTTON))
-        self.close_button_on_modal.should(be.visible)
-        return self
-
-    @allure.step
-    def click_resend_request_button_on_dashboard(self) -> DelegationDashboardPage:
-        self.resend_button_on_modal.click()
-        self.loader_on_action_button.should(be.visible)
-        return self
-
-    @allure.step
-    def click_cancel_button_on_resend_modal(self) -> DelegationDashboardPage:
-        self.cancel_button_on_resend_modal.click()
-        return self
-
-    @allure.step
-    def should_resend_confirmation_modal_be_hidden(self) -> DelegationDashboardPage:
-        self.resend_modal.should(be.not_.visible)
-        return self
-
-    @allure.step
-    def should_successful_message_be_displayed_on_dashboard(
-        self, message: str
-    ) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        self.toast_after_action.should(have.text(message))
-        self.toast_after_action.should(
-            have.css_property(
-                name=general_data.BACKGROUND_COLOR_NAME,
-                value=general_data.SUCCESSFUL_MESSAGE_COLOR,
-            )
-        )
-        self.icon_on_toast.should(be.visible)
-        return self
-
-    @allure.step
-    def should_revoke_confirmation_modal_be_displayed_on_dashboard(
-        self,
-    ) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        self.revoke_modal.should(be.visible)
-        self.title_on_modal.should(have.exact_text(general_data.REVOKE_MODAL_TITLE))
-        self.description_on_modal.should(have.exact_text(general_data.REVOKE_MODAL_DESCRIPTION))
-        self.revoke_button_on_modal.should(have.exact_text(general_data.REVOKE_BUTTON))
-        self.go_back_button_on_revoke_modal.should(have.exact_text(general_data.GO_BACK_BUTTON))
-        self.close_button_on_modal.should(be.visible)
-        return self
-
-    @allure.step
-    def click_revoke_delegation_button_on_dashboard(self) -> DelegationDashboardPage:
-        # pylint: disable=R0801
-        # TODO move method to components
-        self.revoke_button_on_modal.click()
-        self.loader_on_action_button.should(be.visible)
-        return self
