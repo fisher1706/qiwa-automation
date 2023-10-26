@@ -52,7 +52,7 @@ class IndividualPage:
 
     def verify_expected_status(self, text: str) -> IndividualPage:
         # TODO(dp): Remove this sleep after fixing an issue with the shown section
-        time.sleep(5)
+        time.sleep(10)
         browser.driver.refresh()
         self.status.should(have.exact_text(text))
         return self
