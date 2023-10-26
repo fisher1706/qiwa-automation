@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from selene import be, have
+import time
+
+from selene import be, have, browser
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
@@ -15,8 +17,10 @@ class IndividualPage:
     btn_accept_the_request = s('//button[.="Accept"]')
     btn_reject_the_request = s('//button[.="Reject"]')
     btn_modal_accept_the_request = s('//button[.="Accept transfer"]')
-    btn_modal_reject_the_request = s('//button[.="Reject the request"]')
-    dropdown_modal_reject_reason = s("#reject-reason")
+    btn_modal_reject_the_request = s('//button[.="Reject transfer"]')
+    # TODO(dp): Redesign elements using raw dropdown
+    dropdown_modal_reject_reason = s("#reasonType")
+    dropdown = s(".tippy-content")
     locale = s("#language-select")
     modal = s(".basic-modal__header")
     individual_table = Table(s(".table"))
@@ -47,11 +51,15 @@ class IndividualPage:
         return self
 
     def verify_expected_status(self, text: str) -> IndividualPage:
+        # TODO(dp): Remove this sleep after fixing an issue with the shown section
+        time.sleep(5)
+        browser.driver.refresh()
         self.status.should(have.exact_text(text))
         return self
 
     def select_rejection_reason(self, reason: str) -> IndividualPage:
-        self.dropdown_modal_reject_reason.should(be.visible).all("option").element_by(
+        self.dropdown_modal_reject_reason.click()
+        self.dropdown.all('[role="option"]').element_by(
             have.text(reason)
         ).click()
         return self
