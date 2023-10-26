@@ -52,7 +52,7 @@ class EmployeeTransferActions(EmployeeTransferPage):
             .click_btn_proceed_to_contract_management()
         )
 
-        qiwa.mobile_verification_popup.popup.fill_in_code().click_confirm_button()
+        qiwa.code_verification.fill_in_code().click_confirm_button()
 
         contract_management_actions = ContractManagementActions()
         (

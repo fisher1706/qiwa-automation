@@ -30,7 +30,7 @@ def test_user_able_to_submit_et_request_from_my_own_establishment():
         .click_link_create_contract() \
         .click_btn_proceed_to_contract_management()
 
-    qiwa.mobile_verification_popup.popup.fill_in_code().click_confirm_button()
+    qiwa.code_verification.fill_in_code().click_confirm_button()
 
     contract_management_actions = ContractManagementActions()
     contract_management_actions.click_btn_next_step() \
@@ -115,7 +115,7 @@ def test_laborer_able_to_approve_et_request():
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
 
-    qiwa.mobile_verification_popup.popup.fill_in_code()\
+    qiwa.code_verification.fill_in_code()\
         .click_confirm_button()
 
     # TODO(dp): Remove after fixing an issue with changing the language
@@ -144,7 +144,7 @@ def test_laborer_able_to_reject_et_request():
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
 
-    qiwa.mobile_verification_popup.popup.fill_in_code()\
+    qiwa.code_verification.fill_in_code()\
         .click_confirm_button()
 
     qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
