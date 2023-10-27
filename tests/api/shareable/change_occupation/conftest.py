@@ -30,7 +30,11 @@ def pytest_generate_tests(metafunc):
                 requests_laborers_data,
                 ChangeOccupationController.get_requests_laborers_data,
             ),
-            "/users": (ChangeOccupationApi.get_users, users_data, ChangeOccupationController.get_users_data),
+            "/users": (
+                ChangeOccupationApi.get_users,
+                users_data,
+                ChangeOccupationController.get_users_data,
+            ),
         }
         if metafunc.function.__name__ == "test_getting_total_items":
             params.pop("/users")  # exclude /users from test
