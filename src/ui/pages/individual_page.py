@@ -1,66 +1,71 @@
-from selene import be, have
+from __future__ import annotations
+
+import time
+
+from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
+from selenium.webdriver.common.keys import Keys
 
 from data.constants import Language
 from src.ui.components.raw.table import Table
 
 
-class IndividualLocators:  # pylint: disable=too-few-public-methods, no-member
-    SERVICE_CARD = ".service-card__title"
-    FIELD_CONFIRMATION_CODE = 'input[name="code"]'
-    ACTIONS_VIEW = 'button[title="View"]'
-    CHECKBOX_AGREE = ".check"
-    BTN_ACCEPT_THE_REQUEST = 'button[title="Accept the request"]'
-    BTN_REJECT_THE_REQUEST = 'button[title="Reject the request"] span'
-    BTN_MODAL_ACCEPT_THE_REQUEST = (
-        '.employee-transfer-action-modal__buttons button[title="Accept the request"]'
-    )
-    BTN_MODAL_REJECT_THE_REQUEST = (
-        '.employee-transfer-action-modal__buttons button[title="Reject the request"]'
-    )
-    DROPDOWN_MODAL_REJECT_REASON = "#reject-reason"
-    LOCALE = "#language-select"
-    MODAL = ".basic-modal__header"
-
-
-class IndividualPage(IndividualLocators):
+class IndividualPage:
+    service_card = ss('[data-component="ActionTile"] div')
+    field_confirmation_code = ss('[inputmode="numeric"]')
+    checkbox_agree = s("#termsOfService")
+    btn_accept_the_request = s('//button[.="Accept"]')
+    btn_reject_the_request = s('//button[.="Reject"]')
+    btn_modal_accept_the_request = s('//button[.="Accept transfer"]')
+    btn_modal_reject_the_request = s('//button[.="Reject transfer"]')
+    # TODO(dp): Redesign elements using raw dropdown
+    dropdown_modal_reject_reason = s("#reasonType")
+    dropdown = s(".tippy-content")
+    locale = s("#language-select")
+    modal = s(".basic-modal__header")
     individual_table = Table(s(".table"))
+    status = s('[role="status"]')
 
-    def select_service(self, text: str):
-        ss(self.SERVICE_CARD).element_by(have.exact_text(text)).click()
+    def select_service(self, text: str) -> IndividualPage:
+        self.service_card.element_by(have.text(text)).click()
+        return self
 
-    def proceed_2fa(self, code: str = "0000"):
-        s(self.FIELD_CONFIRMATION_CODE).type(code).press_enter()
+    def click_agree_checkbox(self) -> IndividualPage:
+        self.checkbox_agree.press(Keys.SPACE)
+        return self
 
-    def select_first_view_request(self):
-        self.individual_table.cell(row=1, column="Action").click()  # pylint: disable=no-member
+    def click_btn_accept_the_request(self) -> IndividualPage:
+        self.btn_accept_the_request.click()
+        return self
 
-    def click_agree_checkbox(self):
-        s(self.CHECKBOX_AGREE).click()
+    def click_btn_reject_the_request(self) -> IndividualPage:
+        self.btn_reject_the_request.click()
+        return self
 
-    def click_btn_accept_the_request(self):
-        s(self.BTN_ACCEPT_THE_REQUEST).should(be.clickable).click()
+    def click_btn_modal_accept_the_request(self) -> IndividualPage:
+        self.btn_modal_accept_the_request.click()
+        return self
 
-    def click_btn_reject_the_request(self):
-        s(self.BTN_REJECT_THE_REQUEST).should(be.clickable).click()
+    def click_btn_modal_reject_the_request(self) -> IndividualPage:
+        self.btn_modal_reject_the_request.click()
+        return self
 
-    def click_btn_modal_accept_the_request(self):
-        s(self.BTN_MODAL_ACCEPT_THE_REQUEST).should(be.clickable).click()
+    def verify_expected_status(self, text: str) -> IndividualPage:
+        # TODO(dp): Remove this sleep after fixing an issue with the shown section
+        time.sleep(10)
+        browser.driver.refresh()
+        self.status.should(have.exact_text(text))
+        return self
 
-    def click_btn_modal_reject_the_request(self):
-        s(self.BTN_MODAL_REJECT_THE_REQUEST).should(be.clickable).click()
+    def select_rejection_reason(self, reason: str) -> IndividualPage:
+        self.dropdown_modal_reject_reason.click()
+        self.dropdown.all('[role="option"]').element_by(have.text(reason)).click()
+        return self
 
-    def verify_expected_status(self, status: dict, locale: str):
-        cell_name = "Status" if locale == Language.EN else "الحالة"
-        self.individual_table.cell(row=1, column=cell_name).should(have.exact_text(status[locale]))
+    def change_locale(self, locale: str = Language.AR) -> IndividualPage:
+        self.locale.should(be.visible).all("option").element_by(have.value(locale)).click()
+        return self
 
-    def select_rejection_reason(self, reason: str):
-        s(self.DROPDOWN_MODAL_REJECT_REASON).should(be.visible).all("option").element_by(
-            have.text(reason)
-        ).click()
-
-    def change_locale(self, locale: str = Language.AR):
-        s(self.LOCALE).should(be.visible).all("option").element_by(have.value(locale)).click()
-
-    def wait_until_popup_disappears(self):
-        s(self.MODAL).wait_until(be.not_.visible)
+    def wait_until_popup_disappears(self) -> IndividualPage:
+        self.modal.wait_until(be.not_.visible)
+        return self

@@ -8,22 +8,30 @@ from data.constants import Language
 
 
 class Header:
-    # TODO: [dp] Adjust changing language
-    lang_dropdown = ss('[data-component="MenuTrigger"] p').first
+    dropdown_language = ss('[data-component="MenuTrigger"] p')
     links = ss("[data-component='Menu'] a")
-    lang_links = {
+    language_links = {
         Language.EN: links.first,
         Language.AR: links.second,
     }
     profile = s("[data-testid='menu-trigger'] p")
+    dropdown_profile = ss("[data-component='Menu'] > div")
+
+    def _select_language(self, language: str):
+        element = self.language_links[language]
+        if not element.matching(have.attribute("[data-component='Icon']")):
+            element.click()
 
     @allure.step
-    def change_local(self, lang_value) -> Header:
-        self.lang_dropdown.wait_until(be.visible)
-        self.lang_dropdown.click()
-        local = self.lang_links[lang_value]
-        if not local.matching(have.attribute("[data-component='Icon']")):
-            local.click()
+    def change_local(self, language: str) -> Header:
+        # TODO: [dp] Adjust changing language after fix issue with different AR text
+        language_tags = ["ع", "AR"] if language == Language.EN else ["EN"]
+        self.dropdown_language.first.wait_until(be.visible)
+        elements = [self.dropdown_language.element_by(have.exact_text(el)) for el in language_tags]
+        for dropdown, tag in zip(elements, language_tags):
+            if dropdown.matching(have.exact_text(tag)):
+                dropdown.click()
+                self._select_language(language)
         return self
 
     @allure.step
@@ -37,5 +45,6 @@ class Header:
         return self
 
     @allure.step
-    def click_on_logout(self):
-        self.profile.all("a")[-1].click()
+    def click_on_logout(self) -> Header:
+        self.dropdown_profile.element(-1).click()
+        return self

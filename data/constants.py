@@ -20,7 +20,6 @@ class UserType:  # pylint: disable=too-few-public-methods
 class UserInfo:
     PASSWORD = "123456789aA@"
     CHANGED_PASSWORD = "123456789aA@!#"
-    EXPIRED_DATE = "2023-05-10"
 
 
 @dataclass
@@ -129,7 +128,7 @@ class EmployeeTransfer:
         Language.EN: "Pending Completing Transfer in Absher by New Employer",
         Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
     }
-    LABORER_STATUS_REJECT = {Language.EN: "Rejected by Laborer", Language.AR: "مرفوض من الموظف"}
+    LABORER_STATUS_REJECT = {Language.EN: "Rejected by Employee", Language.AR: "مرفوض من الموظف"}
     SPONSOR_STATUS_APPROVE = {
         Language.EN: "Pending Completing Transfer in Absher by New Employer",
         Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",

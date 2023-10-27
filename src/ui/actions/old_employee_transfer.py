@@ -32,6 +32,7 @@ from src.ui.qiwa import qiwa
 from utils.assertion import assert_that
 
 
+# pylint: disable=duplicate-code
 class EmployeeTransferActionsOld(EmployeeTransferPage):
     def __init__(self):
         super().__init__()
@@ -60,14 +61,6 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.__switch_tab_with_timeout()
         time.sleep(3)
         self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, Language.EN)
-
-    def navigate_to_individual(self, user_id: int):
-        browser.close_current_tab()
-        browser.switch_to_tab(0)
-        browser.driver.delete_all_cookies()
-        browser.driver.refresh()
-        qiwa.open_login_page().login_as_user(user_id, UserInfo.PASSWORD)
-        self.workspace_actions.select_individual_account()
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
         match transfer_type:

@@ -4,6 +4,7 @@ from selene import command
 from selene.support.shared.jquery_style import s
 
 from src.ui.components.raw.table import Table
+from utils.selene import scroll_into_view_if_needed
 
 
 class TransferFromExternalCompanyPage:
@@ -35,5 +36,7 @@ class TransferFromExternalCompanyPage:
         return self
 
     def click_link_create_contract_another_establishment(self) -> TransferFromExternalCompanyPage:
-        self.table.cell(row=1, column=7).ss("a").first.hover().click()
+        link = self.table.cell(row=1, column=7).ss("a").first
+        scroll_into_view_if_needed(link)
+        link.click()
         return self

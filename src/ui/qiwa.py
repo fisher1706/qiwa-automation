@@ -5,7 +5,7 @@ from selene import be
 from selene.support.shared import browser
 
 import config
-from data.constants import UserInfo
+from data.constants import Language, UserInfo
 from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
@@ -117,8 +117,9 @@ class QiwaUiClient:
     @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
         self.open_login_page()
+        self.header.change_local(Language.EN)
         (self.login_page.enter_login(login).enter_password(password).click_login_button())
-        (self.login_page.otp_pop_up.fill_in_code(code="0000").click_confirm_button())
+        (self.login_page.otp_pop_up.fill_in_code().click_confirm_button())
         return self
 
     @allure.step

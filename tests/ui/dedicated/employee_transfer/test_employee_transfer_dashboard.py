@@ -70,7 +70,7 @@ class TestEmployeeTransfer:  # pylint: disable=unused-argument
         self.employee_transfer_actions.fill_req_number(request.req_number)
         self.employee_transfer_actions.select_first_row()
         self.employee_transfer_actions.verify_expected_dates()
-        # todo: [dp] Add verification of the expected dates after providing correct request
+        # TODO(dp): Add verification of the expected dates after providing correct request
         # self.employee_transfer_actions.click_received_requests_tab()
 
     @allure.title('Create Transfer Requests | Request status filter dropdown UI test')

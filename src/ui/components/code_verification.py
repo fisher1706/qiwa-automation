@@ -22,7 +22,7 @@ class CodeVerification:
         return self.span_elements.element(index=index - 1)
 
     @allure.step
-    def fill_in_code(self, code: str) -> CodeVerification:
+    def fill_in_code(self, code: str = "0000") -> CodeVerification:
         for index, digit in enumerate(code):
             self.cell(index=index).set_value(digit)
         return self
