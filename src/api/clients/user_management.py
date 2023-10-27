@@ -145,7 +145,7 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.get(
             url=self.url,
-            endpoint=f"/api/bff/users/user-subscription-info",
+            endpoint="/api/bff/users/user-subscription-info",
             headers=headers,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)

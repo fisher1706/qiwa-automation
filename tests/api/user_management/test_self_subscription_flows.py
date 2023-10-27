@@ -18,7 +18,7 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 @pytest.mark.skip(
     "waiting to confirmation payment endpoint from IBM team + need a script how to expire user"
 )
-@case_id(46665, 47002, 46667)
+@case_id(46665, 47002, 46667, 67236, 67237, 67238)
 @pytest.mark.parametrize("subscription_type", SelfSubscriptionType.subscription_type)
 def test_self_renew_extend_subscription_flows(subscription_type):
     user = owner_account
@@ -52,7 +52,7 @@ def test_self_renew_extend_subscription_flows(subscription_type):
 
 
 @allure.title("E2e self subscription flows")
-@case_id(47003)
+@case_id(47003, 67231)
 @pytest.mark.skip("waiting to confirmation payment endpoint from IBM team")
 def test_self_new_subscription_flow():
     user = terminated_owner
