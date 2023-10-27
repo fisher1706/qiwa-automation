@@ -5,7 +5,11 @@ from urllib import parse
 import allure
 
 from src.api.clients.change_occupation import ChangeOccupationApi
-from src.api.models.qiwa.change_occupation import requests_laborers_data, requests_data, users_data
+from src.api.models.qiwa.change_occupation import (
+    requests_data,
+    requests_laborers_data,
+    users_data,
+)
 from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.assertion import assert_status_code

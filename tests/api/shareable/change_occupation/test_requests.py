@@ -1,4 +1,5 @@
 from http import HTTPStatus
+
 from src.api.models.qiwa.change_occupation import request_by_id_data
 from utils.assertion import assert_status_code, assert_that
 from utils.assertion.asserts import assert_data
