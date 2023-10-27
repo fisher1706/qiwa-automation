@@ -19,21 +19,21 @@ def api() -> QiwaApi:
 
 def pytest_generate_tests(metafunc):
     if "endpoint" in metafunc.fixturenames:
-        params = [
-            (
+        params = {
+            "/requests": (
                 ChangeOccupationApi.get_requests,
                 requests_data,
                 ChangeOccupationController.get_requests_data,
             ),
-            (
+            "/requests-laborers": (
                 ChangeOccupationApi.get_requests_laborers,
                 requests_laborers_data,
                 ChangeOccupationController.get_requests_laborers_data,
             ),
-            (ChangeOccupationApi.get_users, users_data, ChangeOccupationController.get_users_data),
-        ]
+            "/users": (ChangeOccupationApi.get_users, users_data, ChangeOccupationController.get_users_data),
+        }
         if metafunc.function.__name__ == "test_getting_total_items":
-            params.pop(-1)  # exclude /users from test
+            params.pop("/users")  # exclude /users from test
         elif metafunc.function.__name__ == "test_getting_empty_page":
-            params.pop(1)  # exclude /requests-laborers from test
-        metafunc.parametrize("endpoint", params)
+            params.pop("/requests-laborers")  # exclude /requests-laborers from test
+        metafunc.parametrize("endpoint", params.values(), ids=params.keys())
