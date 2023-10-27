@@ -55,7 +55,7 @@ from src.ui.pages.sso_pages.add_birthday_page import AddBirthdayPage
 from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPage
 from src.ui.pages.sso_pages.login_page import LoginPage
 from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
-from src.ui.pages.user_management_pages.main_page import MainPage
+from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.visa_pages.balance_request import BalanceRequest
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
@@ -88,7 +88,7 @@ class QiwaUiClient:
     add_delegation_page = AddDelegationPage()
     admin_spaces_page = AdminSpacesPage()
     lo_work_permit_page = LoWorkPermitPage()
-    main_page = MainPage()
+    main_page = UserManagementMainPage()
     transitional = TransitionalPage()
     work_visa = PermWorkVisaPage()
     visa_request = VisaRequestPage()

@@ -102,7 +102,7 @@ def test_registration_with_invalid_email(email):
 
 
 @case_id(41885)
-@pytest.mark.parametrize("invalid_password", [" ", "1q", "qwertyu123@", "12345@#$%^&"])
+@pytest.mark.parametrize("invalid_password", [" ", "1q", "qwertyu123@", "123456789@@@"])
 def test_registration_with_invalid_password(invalid_password):
     qiwa = QiwaApi()
     account = Account(personal_number=users_data.SAUDI_FOR_SIGN_UP, password=invalid_password)

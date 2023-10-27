@@ -40,9 +40,7 @@ def test_error_message_is_received_after_entering_invalid_otp_code_four_times(un
     qiwa.sso.init_hsm_with_out_birthday(unlock_account_data.personal_number)
     error_message = ...
     for _ in range(4):
-        error_message = qiwa.sso.active_sso_hsm(expected_code=422, absher="123456")[0]["errors"][
-            0
-        ]["details"]["en"]
+        error_message = qiwa.sso.active_sso_hsm(expected_code=422, absher="123456")["errors"][0]["details"]["en"]
     assert_that(error_message).equals_to(TOO_MANY_ABSHER_ATTEMPTS)
 
 
