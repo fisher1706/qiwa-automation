@@ -40,10 +40,10 @@ def assert_data(*, expected: Any, actual: Any) -> None:
         "Actual",
         allure.attachment_type.JSON,
     )
-    if difference:
+    if "values_changed" in difference.keys():
         allure.attach(
-            json.dumps(difference, indent=2, ensure_ascii=False, cls=SetEncoder),
+            json.dumps(difference["values_changed"], indent=2, ensure_ascii=False, cls=SetEncoder),
             "Difference",
             allure.attachment_type.JSON,
         )
-        raise AssertionError(difference)
+        raise AssertionError(difference["values_changed"])

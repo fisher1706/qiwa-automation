@@ -5,8 +5,8 @@ from data.shareable.expected_json.work_permits.cancel_sadad_number import (
     incorrect_transaction_error,
     successfully_canceled_transaction,
 )
-from src.api.models.qiwa.raw.work_permit.cancel_sadad import SuccessfulCancelling
-from src.api.models.qiwa.work_permit import cancel_sadad_ibm_error
+from src.api.models.qiwa.raw.work_permits.cancel_sadad import SuccessfulCancelling
+from src.api.models.qiwa.work_permits import cancel_sadad_ibm_error
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_data
 
@@ -33,7 +33,7 @@ def test_canceling_already_canceled_sadad_number(api, canceled_sadad_number):
     json = cancel_sadad_ibm_error.parse_obj(response.json())
     assert_data(
         expected=already_canceled_transaction_error(),
-        actual=json.data.attributes.dict(include=set(already_canceled_transaction_error().keys()))
+        actual=json.data.attributes.dict()
     )
 
 
@@ -48,5 +48,5 @@ def test_cancelling_incorrect_sadad_number(api):
     json = cancel_sadad_ibm_error.parse_obj(response.json())
     assert_data(
         expected=incorrect_transaction_error(),
-        actual=json.data.attributes.dict(include=set(incorrect_transaction_error().keys()))
+        actual=json.data.attributes.dict()
     )

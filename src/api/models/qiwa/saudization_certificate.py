@@ -1,6 +1,6 @@
 from typing import Type
 
-from src.api.models.qiwa.data import (
+from src.api.models.qiwa.data.saudization_certificate import (
     encrypted_saudization_certificate,
     error,
     not_found,
