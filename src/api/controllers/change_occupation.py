@@ -5,7 +5,7 @@ from urllib import parse
 import allure
 
 from src.api.clients.change_occupation import ChangeOccupationApi
-from src.api.models.qiwa.change_occupation import requests_laborers_data, requests_data
+from src.api.models.qiwa.change_occupation import requests_laborers_data, requests_data, users_data
 from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.assertion import assert_status_code
@@ -41,6 +41,12 @@ class ChangeOccupationController(ChangeOccupationApi):
         response = self.get_requests(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_data.parse_obj(response.json())
+
+    @allure.step
+    def get_users_data(self, page: int = 1, per: int = 10) -> users_data:
+        response = self.get_users(page=page, per=per)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return users_data.parse_obj(response.json())
 
     @allure.step
     def get_random_request(self) -> Request:

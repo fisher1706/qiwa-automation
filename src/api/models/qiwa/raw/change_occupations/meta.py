@@ -14,5 +14,5 @@ class Meta(QiwaBaseModel):
     from_: int = Field(alias="from")
     size: int
     max_score: int | None = ...
-    total_pages: int
+    total_pages: int | None
     total: Total
