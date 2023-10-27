@@ -104,8 +104,10 @@ isort:
     - shared
   script:
     - echo $TEST_SUITE
-    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$TEST_SUITE || EXIT_CODE=$?
+    - pytest $TEST_SUITE $OPTIONS -s --alluredir=$ALLURE_RESULTS_DIRECTORY --junitxml=$XML_REPORT -o junit_suite_name=$SUITE_NAME || EXIT_CODE=$?
     - exit $EXIT_CODE
+  variables:
+    SUITE_NAME: $TEST_SUITE
   artifacts:
     paths:
       - $XML_REPORT
@@ -188,7 +190,8 @@ shareable_api_tests:
   <<: *testrun
   variables:
     ENV: stage
-    TEST_SUITE: tests/api/shareable/work_permits
+    TEST_SUITE: tests/api/shareable
+    SUITE_NAME: API
 
 lmi_api_tests:
   <<: *testrun
