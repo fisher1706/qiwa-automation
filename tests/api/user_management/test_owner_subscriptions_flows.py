@@ -57,7 +57,8 @@ def test_owner_subscription_flow():
 
 @allure.title("E2e owner renew/terminate renew/extend subscription flows")
 @pytest.mark.skip(
-    "waiting to confirmation payment endpoint from IBM team + need a script how to expire user"
+    "waiting to confirmation payment endpoint from IBM team, TO DO: should be separated with different users "
+    "(terminated, expired and will be expired)"
 )
 @case_id(49410, 49409, 49408)
 @pytest.mark.parametrize("subscription_type", SelfSubscriptionType.subscription_type)
