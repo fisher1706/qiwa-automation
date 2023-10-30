@@ -6,13 +6,10 @@ from data.constants import Language, UserInfo
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.ui.actions.contract_management import ContractManagementActions
-from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
-    EmployeeTransferPage,
-)
 from src.ui.qiwa import qiwa
 
 
-class EmployeeTransferActions(EmployeeTransferPage):
+class EmployeeTransferActions:
     @allure.step
     def navigate_to_et_service(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
@@ -28,9 +25,6 @@ class EmployeeTransferActions(EmployeeTransferPage):
 
     @allure.step
     def navigate_to_individual(self, user_id: int) -> EmployeeTransferActions:
-        qiwa.header.click_on_menu().click_on_logout()
-        qiwa.login_page.wait_login_page_to_load()
-        qiwa.header.change_local(Language.EN)
         qiwa.login_as_user(user_id, UserInfo.PASSWORD)
         qiwa.header.check_personal_number_or_name(str(user_id)).change_local(Language.EN)
         qiwa.workspace_page.select_individual_account()
