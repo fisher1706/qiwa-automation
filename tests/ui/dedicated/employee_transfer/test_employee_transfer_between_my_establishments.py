@@ -9,7 +9,7 @@ from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.qiwa import qiwa
-from utils.allure import project, TestmoProject
+from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 

@@ -8,7 +8,7 @@ from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.qiwa import qiwa
-from utils.allure import project, TestmoProject
+from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
 
 case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
