@@ -302,6 +302,13 @@ lo_ui_testmo_report:
     ALLURE_PROJECT_ID: lo-ui-daily
   needs: [lo_ui_tests]
 
+lo_api_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 16
+    ALLURE_PROJECT_ID: lo-api-daily
+  needs: [lo_ui_tests]
+
 delegation_ui_testmo_report:
   <<: *testmo_report
   variables:
