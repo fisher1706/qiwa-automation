@@ -9,10 +9,10 @@ from utils.assertion.asserts import assert_data
 
 
 @pytest.mark.parametrize("page", [-1, 0, 1])
-def test_getting_by_page(api, endpoint, page):
+def test_getting_by_page(qiwa, endpoint, page):
     tested_endpoint, validation_model, data = endpoint
 
-    response = tested_endpoint(api.change_occupation, page=page, per=10)
+    response = tested_endpoint(qiwa.change_occupation.api, page=page, per=10)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
@@ -21,13 +21,13 @@ def test_getting_by_page(api, endpoint, page):
     assert_that(json.meta.total_entities).equals_to(json.meta.total.value)
 
 
-def test_getting_last_page(api, endpoint):
+def test_getting_last_page(qiwa, endpoint):
     tested_endpoint, validation_model, data = endpoint
 
-    requests_laborers = data(api.change_occupation, per=10)
+    requests_laborers = data(qiwa.change_occupation, per=10)
     last_page = requests_laborers.meta.pages_count
 
-    response = tested_endpoint(api.change_occupation, page=last_page, per=10)
+    response = tested_endpoint(qiwa.change_occupation.api, page=last_page, per=10)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
@@ -38,28 +38,28 @@ def test_getting_last_page(api, endpoint):
     assert_that(json.meta.total_pages).equals_to(last_page)
 
 
-def test_getting_empty_page(api, endpoint):
+def test_getting_empty_page(qiwa, endpoint):
     tested_endpoint, validation_model, data = endpoint
 
-    requests_laborers = data(api.change_occupation, per=10)
+    requests_laborers = data(qiwa.change_occupation, per=10)
     page = requests_laborers.meta.pages_count + 1
 
-    response = tested_endpoint(api.change_occupation, page=page, per=10)
+    response = tested_endpoint(qiwa.change_occupation.api, page=page, per=10)
     json = validation_model.parse_obj(response.json())
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_data(expected=empty_data(), actual=json)
 
-    response = tested_endpoint(api.change_occupation, page=10000, per=10)
+    response = tested_endpoint(qiwa.change_occupation.api, page=10000, per=10)
     json = validation_model.parse_obj(response.json())
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_data(expected=empty_data(), actual=json)
 
 
 @pytest.mark.parametrize("per_page", list(range(1, 11)))
-def test_getting_per_page(api, endpoint, per_page):
+def test_getting_per_page(qiwa, endpoint, per_page):
     tested_endpoint, validation_model, data = endpoint
 
-    response = tested_endpoint(api.change_occupation, page=1, per=per_page)
+    response = tested_endpoint(qiwa.change_occupation.api, page=1, per=per_page)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
@@ -67,11 +67,11 @@ def test_getting_per_page(api, endpoint, per_page):
     assert_that(json.meta.size).equals_to(per_page)
 
 
-def test_getting_max_items(api):
+def test_getting_max_items(qiwa):
     total_users = 103
     max_items = 100
 
-    response = api.change_occupation.get_users(page=1, per=total_users)
+    response = qiwa.change_occupation.api.get_users(page=1, per=total_users)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = users_data.parse_obj(response.json())
@@ -79,14 +79,14 @@ def test_getting_max_items(api):
     assert_data(actual=json.meta.dict(), expected=dict(pages_count=2, total_pages=2, size=max_items))
 
 
-def test_getting_total_items(api, endpoint):
+def test_getting_total_items(qiwa, endpoint):
     tested_endpoint, validation_model, data = endpoint
 
-    data = data(api.change_occupation)
+    data = data(qiwa.change_occupation)
     total_entities = data.meta.total_entities
     per_page = total_entities + 1
 
-    response = tested_endpoint(api.change_occupation, page=1, per=per_page)
+    response = tested_endpoint(qiwa.change_occupation.api, page=1, per=per_page)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
@@ -98,8 +98,8 @@ def test_getting_total_items(api, endpoint):
     assert_that(json.meta.from_).equals_to(0)
 
 
-def test_getting_zero_per_page(api, endpoint):
+def test_getting_zero_per_page(qiwa, endpoint):
     tested_endpoint, validation_model, data = endpoint
 
-    response = tested_endpoint(api.change_occupation, page=1, per=0)
+    response = tested_endpoint(qiwa.change_occupation.api, page=1, per=0)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)

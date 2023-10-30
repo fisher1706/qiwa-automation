@@ -11,7 +11,7 @@ from src.api.models.qiwa.change_occupation import (
 
 
 @pytest.fixture(scope="module")
-def api() -> QiwaApi:
+def qiwa() -> QiwaApi:
     qiwa = QiwaApi.login_as_user("1048285405").select_company(sequence_number=136401)
     qiwa.change_occupation.pass_ott_authorization()
     return qiwa
