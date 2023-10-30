@@ -11,7 +11,7 @@ class CodeVerification:
         self.web_element = web_element if web_element else s('[data-component="Modal"]')
         self.code_cells = self.web_element.all("input")
         self.text_rows = self.web_element.all("p")
-        self.confirm_button = self.web_element.all('[data-component="Grid"] button').first
+        self.confirm_button = self.web_element.all('[data-component="Button"]').first
         self.resend_sms_code_link = self.web_element.element('[href="/registration"]')
         self.span_elements = self.web_element.all("span")
 
