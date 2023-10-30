@@ -8,7 +8,7 @@ from utils.json_search import search_data_by_attributes
 
 
 def test_getting_empty_page(qiwa):
-    requests_laborers = qiwa.change_occupation.get_requests_laborers_data(per=10)
+    requests_laborers = qiwa.change_occupation.get_requests_laborers(per=10)
     page = requests_laborers.meta.pages_count + 1
 
     response = qiwa.change_occupation.api.get_requests_laborers(page=page, per=10)

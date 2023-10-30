@@ -40,29 +40,29 @@ class ChangeOccupationController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     @allure.step
-    def get_requests_laborers_data(self, page: int = 1, per: int = 10) -> requests_laborers_data:
+    def get_requests_laborers(self, page: int = 1, per: int = 10) -> requests_laborers_data:
         response = self.api.get_requests_laborers(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_laborers_data.parse_obj(response.json())
 
     @allure.step
-    def get_requests_data(self, page: int = 1, per: int = 10) -> requests_data:
+    def get_requests(self, page: int = 1, per: int = 10) -> requests_data:
         response = self.api.get_requests(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_data.parse_obj(response.json())
 
     @allure.step
-    def get_users_data(self, page: int = 1, per: int = 10) -> users_data:
+    def get_users(self, page: int = 1, per: int = 10) -> users_data:
         response = self.api.get_users(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return users_data.parse_obj(response.json())
 
     @allure.step
     def get_random_request(self) -> Request:
-        requests = self.get_requests_data(per=1000)
+        requests = self.get_requests(per=1000)
         return random.choice(requests.data).attributes
 
     @allure.step
     def get_random_laborer(self) -> RequestLaborer:
-        requests = self.get_requests_laborers_data(per=1000)
+        requests = self.get_requests_laborers(per=1000)
         return random.choice(requests.data).attributes

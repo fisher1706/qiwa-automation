@@ -23,17 +23,17 @@ def pytest_generate_tests(metafunc):
             "/requests": (
                 ChangeOccupationApi.get_requests,
                 requests_data,
-                ChangeOccupationController.get_requests_data,
+                ChangeOccupationController.get_requests,
             ),
             "/requests-laborers": (
                 ChangeOccupationApi.get_requests_laborers,
                 requests_laborers_data,
-                ChangeOccupationController.get_requests_laborers_data,
+                ChangeOccupationController.get_requests_laborers,
             ),
             "/users": (
                 ChangeOccupationApi.get_users,
                 users_data,
-                ChangeOccupationController.get_users_data,
+                ChangeOccupationController.get_users,
             ),
         }
         if metafunc.function.__name__ == "test_getting_total_items":
