@@ -35,6 +35,16 @@ class AppointmentsUser:
 
 
 @dataclass
+class IndividualService:
+    APPOINTMENTS = "Appointments in Labor Office"
+
+
+@dataclass
+class IndividualUser:
+    ID = "1080910035"
+
+
+@dataclass
 class SubscribedUser:
     ID = "1044076196"
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 
+import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
@@ -25,6 +26,18 @@ class IndividualPage:
     modal = s(".basic-modal__header")
     individual_table = Table(s(".table"))
     status = s('[role="status"]')
+    see_all_services = s('//a[@href="/services"]')
+
+    @allure.step("Wait Individual page to load")
+    def wait_page_to_load(self) -> IndividualPage:
+        self.service_card.first.should(be.visible)
+        return self
+
+    @allure.step("Click on See all services")
+    def click_see_all_services(self) -> IndividualPage:
+        self.see_all_services.click()
+        self.service_card.first.should(be.visible)
+        return self
 
     def select_service(self, text: str) -> IndividualPage:
         self.service_card.element_by(have.text(text)).click()

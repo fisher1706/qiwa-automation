@@ -38,6 +38,8 @@ class LaborOfficeAppointmentsPage:
     button_print = s("(//button)[2]")
     button_upcoming_appointments = s('(//button[contains(@class, "Navigation")])[1]')
     button_appointments_history = s('(//button[contains(@class, "Navigation")])[2]')
+    button_appointments_history_next_page = s('//*[@aria-label="Next"]')
+    button_appointments_history_previous_page = s('//*[@aria-label="Previous"]')
     button_clear_search_history = s('//button[@aria-label="Delete"]')
     button_knowledge_center = s('//*[contains(text(), "Go to Knowledge Center")]//ancestor::a')
     section_upcoming_appointments = s("#upcoming")
@@ -109,6 +111,11 @@ class LaborOfficeAppointmentsPage:
         self.appointments.wait_until(be.visible)
         return self
 
+    @allure.step("Wait Appointments history table to load")
+    def wait_appointments_history_table_load(self):
+        self.table_history.body.should(be.visible)
+        return self
+
     @allure.step("Click on book appointment button")
     def click_book_appointment_btn(self) -> LaborOfficeAppointmentsPage:
         self.book_appointment_btn.click()
@@ -117,6 +124,20 @@ class LaborOfficeAppointmentsPage:
     @allure.step("Clear appointments history search field")
     def click_clear_search(self):
         self.button_clear_search_history.click()
+        return self
+
+    @allure.step("Click on next page button in appointments history")
+    def click_appointments_history_next_page(self):
+        # self.button_appointments_history_next_page.wait_until(be.visible)
+        self.button_appointments_history_next_page.click()
+        self.wait_appointments_history_table_load()
+        return self
+
+    @allure.step("Click on previous page button in appointments history")
+    def click_appointments_history_previous_page(self):
+        # self.button_appointments_history_previous_page.wait_until(be.visible)
+        self.button_appointments_history_previous_page.click()
+        self.wait_appointments_history_table_load()
         return self
 
     @allure.step("Cancel active appointment if exists")
@@ -168,7 +189,7 @@ class LaborOfficeAppointmentsPage:
     @allure.step("Search appointment by: {value}")
     def search_appointments(self, value):
         self.input_search.type(value)
-        self.table_history.body.wait_until(be.visible)
+        self.wait_appointments_history_table_load()
         return self
 
     @allure.step("Filter appointments history by status: {status}")
@@ -272,3 +293,13 @@ class LaborOfficeAppointmentsPage:
         self.cancel_app_wrapper_type_value.should(be.visible)
         self.verify_cancel_app_status_text(Ac.STATUS_TEXT, self.language)
         self.cancel_app_wrapper_status_value.should(be.visible)
+
+    @allure.step("Verify Next button in appointments history table is visible")
+    def verify_appointments_history_next_button(self):
+        self.button_appointments_history_next_page.should(be.visible)
+        return self
+
+    @allure.step("Verify Previous button in appointments history table is visible")
+    def verify_appointments_history_previous_button(self):
+        self.button_appointments_history_previous_page.should(be.visible)
+        return self
