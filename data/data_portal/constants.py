@@ -560,4 +560,28 @@ class Admin:
     VALIDATION_MESSAGE = "Unrecognized username or password. Forgot your password?"
     LOGIN_PAGE = "Log in"
     AUTOMATION = "automation"
+    AUTOMATION_UPPER_CASE = "Automation"
     AUTOMATION_EDIT = "automation-edited"
+    TABS = ["Content", "Reports\n(active tab)", "Blocks", "Takeaway Sections", "Files"]
+    FILTERS = ["Title", "Published status", "Language", "Category (field_category)"]
+    REPORT_CATEGORY_COLUMNS = [
+        "Title",
+        "Likes",
+        "Sharing",
+        "Language",
+        "Status",
+        "Author",
+        "Updated\nSort ascending",
+        "Copy Link",
+        "Operations",
+    ]
+    LANGUAGES = ["English (Original language)", "Arabic"]
+    MODAL_WARNING = "Are you sure you want to delete the content item"
+    PUBLISHED = "1"
+    UNPUBLISHED = "2"
+    ENGLISH_FILTER = "en"
+    ARABIC_FILTER = "ar"
+    SUCCESS_MESSAGE = "Action processing results: Change Category "
+    VALIDATION_TITLE = "The title of the takeaway section cannot contain special symbols."
+    VALIDATION_CONTENT = "Maximum 2000 characters are allowed"
+    AUTOMATION_AR = "أتمتة"

@@ -126,6 +126,11 @@ class DataPortal:
         browser.open(f"{config.qiwa_urls.data_portal_admin_url}/admin/content/takeaway-sections")
         return self
 
+    @allure.step
+    def open_data_portal_admin_content_page(self):
+        browser.open(f"{config.qiwa_urls.data_portal_admin_url}/admin/content")
+        return self
+
     def get_cookie(self):
         cookies = browser.driver.get_cookies()
         for cookie in cookies:
