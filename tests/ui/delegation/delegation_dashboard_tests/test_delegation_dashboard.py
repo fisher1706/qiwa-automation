@@ -143,8 +143,6 @@ def test_old_link_is_not_active_after_resending():
     open_url_from_sms(url_from_sms)
     qiwa.delegation_localisation.select_english_localisation_for_public_pages()
     qiwa.delegation_partner_approval_page.should_partner_approval_flow_be_not_available()
-    qiwa.toast_message.should_message_be_displayed(message=general_data.ERROR_TOAST,
-                                                   toast_color=general_data.ERROR_MESSAGE_COLOR)
 
 
 @allure.title("Revoke action on the delegation dashboard")

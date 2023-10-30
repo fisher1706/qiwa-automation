@@ -36,4 +36,3 @@ GO_BACK_BUTTON: str = "Go back"
 
 TITLE_ON_PARTNER_APPROVAL: str = "Verification code"
 TITLE_ON_NOT_AVAILABLE_FLOW: str = "The delegation request is no longer valid"
-ERROR_TOAST: str = "Request failed with status code 404"
