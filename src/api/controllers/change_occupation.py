@@ -9,7 +9,7 @@ from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
     requests_data,
     requests_laborers_data,
-    users_data,
+    users_data, request_by_id_data,
 )
 from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
@@ -40,8 +40,8 @@ class ChangeOccupationController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     @allure.step
-    def get_requests_laborers(self, page: int = 1, per: int = 10) -> requests_laborers_data:
-        response = self.api.get_requests_laborers(page=page, per=per)
+    def get_requests_laborers(self, page: int = 1, per: int = 10, laborer_name: str = None, laborer_id: int = None) -> requests_laborers_data:
+        response = self.api.get_requests_laborers(page, per, laborer_name, laborer_id)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_laborers_data.parse_obj(response.json())
 
@@ -50,6 +50,12 @@ class ChangeOccupationController:
         response = self.api.get_requests(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_data.parse_obj(response.json())
+
+    @allure.step
+    def get_request(self, request_id: int) -> request_by_id_data:
+        response = self.api.get_request(request_id)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return request_by_id_data.parse_obj(response.json())
 
     @allure.step
     def get_users(self, page: int = 1, per: int = 10) -> users_data:

@@ -71,10 +71,7 @@ def test_getting_max_items(qiwa):
     total_users = 103
     max_items = 100
 
-    response = qiwa.change_occupation.api.get_users(page=1, per=total_users)
-    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-
-    json = users_data.parse_obj(response.json())
+    json = qiwa.change_occupation.get_users(page=1, per=total_users)
     assert_that(json.data).is_length(max_items)
     assert_data(actual=json.meta.dict(), expected=dict(pages_count=2, total_pages=2, size=max_items))
 
