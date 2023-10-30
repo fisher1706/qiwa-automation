@@ -11,6 +11,7 @@ from src.api.models.qiwa.change_occupation import (
     users_data,
 )
 from src.api.models.qiwa.raw.change_occupations.requests import Request
+from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.token import AuthorizationToken
 from utils.assertion import assert_status_code
 from utils.crypto_manager import decode_authorization_token
@@ -55,4 +56,9 @@ class ChangeOccupationController(ChangeOccupationApi):
     @allure.step
     def get_random_request(self) -> Request:
         requests = self.get_requests_data(per=1000)
+        return random.choice(requests.data).attributes
+
+    @allure.step
+    def get_random_laborer(self) -> RequestLaborer:
+        requests = self.get_requests_laborers_data(per=1000)
         return random.choice(requests.data).attributes

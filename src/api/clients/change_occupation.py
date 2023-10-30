@@ -29,8 +29,18 @@ class ChangeOccupationApi:
     def get_session(self, token: str) -> Response:
         return self.client.post(f"{self.url}/session", params={"ott-token": token})
 
-    def get_requests_laborers(self, page: int, per: int) -> Response:
-        return self.client.get(f"{self.url}/requests-laborers", params={"page": page, "per": per})
+    def get_requests_laborers(
+        self, page: int, per: int, laborer_name: str = None, laborer_id: int = None
+    ) -> Response:
+        params = dict(
+            page=page,
+            per=per,
+        )
+        if laborer_name:
+            params["q[laborer-name][eq]"] = laborer_name
+        if laborer_id:
+            params["q[laborer-id-no][eq]"] = laborer_id
+        return self.client.get(f"{self.url}/requests-laborers", params=params)
 
     def get_requests(self, page: int, per: int) -> Response:
         return self.client.get(f"{self.url}/requests", params={"page": page, "per": per})
