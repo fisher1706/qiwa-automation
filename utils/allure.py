@@ -13,6 +13,7 @@ class TestmoProject(enum.Enum):
     CONTRACT_MANAGEMENT = 4
     VISAS = 7
     DELEGATION = 9
+    EMPLOYEE_TRANSFER = 10
     LABOR_OFFICE = 16
     USER_MANAGEMENT = 26
     WORK_PERMIT = 29

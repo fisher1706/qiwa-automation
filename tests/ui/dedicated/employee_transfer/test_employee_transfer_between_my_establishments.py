@@ -9,9 +9,13 @@ from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.ui.actions.contract_management import ContractManagementActions
 from src.ui.actions.employee_transfer import EmployeeTransferActions
 from src.ui.qiwa import qiwa
+from utils.allure import project, TestmoProject
+
+case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 
 
 @allure.title('Verify user able to submit ET request from my own establishment')
+@case_id(123677)
 def test_user_able_to_submit_et_request_from_my_own_establishment():
     EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
     EmployeeTransferActions().navigate_to_et_service(employer)
@@ -47,6 +51,7 @@ def test_user_able_to_submit_et_request_from_my_own_establishment():
 
 
 @allure.title("If laborer already has a contract, don't show redirection to CM button from my own establishment")
+@case_id(123678)
 def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_from_my_own_establishment():
     EmployeeTransferActions().navigate_to_et_service(employer)
 
