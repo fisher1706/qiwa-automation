@@ -4,8 +4,6 @@ import pytest
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
     AppointmentsHistoryStatus,
-    OfficesInfo,
-    ServicesInfo,
     SubscribedUser,
     UnSubscribedUser,
 )
@@ -45,7 +43,7 @@ def test_book_establishment_appointment(language):
 
 
 @allure.title(
-    "VAppointments: iew the Appointment details (from the 'Upcoming appointments' table)"
+    "Appointments: View the Appointment details (from the 'Upcoming appointments' table)"
 )
 @case_id(25509)
 def test_view_establishment_appointment_from_upcoming(language=Language.EN):
@@ -205,16 +203,23 @@ def test_view_service_list_unsubscribed_user():
     qiwa.login_as_user(login=UnSubscribedUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
-    qiwa.workspace_page.select_company_account_with_sequence_number(UnSubscribedUser.SEQUENCE_NUMBER)
+    qiwa.workspace_page.select_company_account_with_sequence_number(
+        UnSubscribedUser.SEQUENCE_NUMBER
+    )
     qiwa.dashboard_page.wait_dashboard_page_to_load()
     qiwa.open_labor_office_appointments_page()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
-    qiwa.labor_office_appointments_create_page.select_establishment(UnSubscribedUser.ESTABLISHMENT[Language.EN])
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON)
+    qiwa.labor_office_appointments_create_page.select_establishment(
+        UnSubscribedUser.ESTABLISHMENT[Language.EN]
+    )
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.IN_PERSON
+    )
     qiwa.labor_office_appointments_create_page.dropdown_select_service.expand()
     qiwa.labor_office_appointments_create_page.should_service_list_be()
     response = ibm.get_user_establishments_mlsdlo(id_no=UnSubscribedUser.ID)
     # todo add validation step to check mlsdlo response
+
 
 @allure.title("Appointments: Cancel Appointment (from the 'Upcoming appointments' table)")
 @case_id(22144)
