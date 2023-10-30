@@ -4,7 +4,7 @@ from data.shareable.expected_json.change_occupation.requests_laborers import emp
 from src.api.models.qiwa.change_occupation import requests_laborers_data
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_data, assert_that
-from utils.json_search import search_data_by_attribute
+from utils.json_search import search_data_by_attributes
 
 
 def test_getting_empty_page(api):
@@ -29,7 +29,7 @@ def test_getting_by_laborer_name(api):
     json = requests_laborers_data.parse_obj(response.json())
     assert_that(len(json.data)).not_equals_to(0)
     assert_that(json.data).is_length(json.meta.total_entities)
-    assert_that(search_data_by_attribute(json, laborer_name=laborer.laborer_name)).is_length(json.meta.total_entities)
+    assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).is_length(json.meta.total_entities)
 
 
 def test_getting_by_non_existent_laborer_name(api):
@@ -47,7 +47,7 @@ def test_getting_by_laborer_id(api):
     json = requests_laborers_data.parse_obj(response.json())
     assert_that(len(json.data)).not_equals_to(0)
     assert_that(json.data).is_length(json.meta.total_entities)
-    assert_that(search_data_by_attribute(json, laborer_id_no=laborer.laborer_id_no)).is_length(json.meta.total_entities)
+    assert_that(search_data_by_attributes(json, laborer_id_no=laborer.laborer_id_no)).is_length(json.meta.total_entities)
 
 
 def test_getting_by_non_existent_laborer_id(api):

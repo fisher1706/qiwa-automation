@@ -23,7 +23,12 @@ def search_by_data(expression: str, data: Any) -> Any:
 
 
 @allure.step
-def search_data_by_attribute(data: Root, **attribute) -> Any:
-    x = list(attribute.items())
-    expression = f'data[?attributes."{x[0][0]}" == \'{x[0][1]}\']'
+def search_data_by_attributes(data: Root, **attributes) -> Any:
+    attrs = [
+        f"attributes.\"{key}\" == '{attributes[key]}'"
+        if not isinstance(attributes[key], int)
+        else f'attributes."{key}" == `{attributes[key]}`'
+        for key in attributes
+    ]
+    expression = f"data[? {' && '.join(attrs)}]"
     return search_by_data(expression, data=data.dict(exclude_unset=True))
