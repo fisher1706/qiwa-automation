@@ -24,6 +24,7 @@ from src.api.payloads.sso_oauth_payloads import (
     security_question_payload,
     unlock_through_email_payload,
 )
+from utils.assertion import assert_status_code
 
 
 class AuthApiSSO:
@@ -104,6 +105,12 @@ class AuthApiSSO:
         assert response.status_code == HTTPStatus.OK
 
     @allure.step
+    def resend_otp_on_secure_otp_flow(self):
+        response = self.api.post(url=self.url, endpoint="/emails/init-verification/resend")
+        assert response.status_code == HTTPStatus.OK
+        return response.json()["data"]["attributes"]
+
+    @allure.step
     def active_sso_hsm(
         self, expected_code: int = 200, absher: str = "000000"
     ) -> tuple[Response, AuthApiSSO]:
@@ -160,13 +167,31 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def answer_security_question(self, expected_code: int = 200) -> AuthApiSSO:
-        response = self.api.post(
-            url=self.url, endpoint="/security-questions", json=security_question_payload()
-        )
-        ResponseValidator(response).check_status_code(
-            name="Email confirm verify", expect_code=expected_code
-        )
+    def answer_security_question(
+        self,
+        first_answer: str = "1-1-2011",
+        second_answer: str = "Test name",
+        expected_code: int = 200,
+    ) -> AuthApiSSO:
+        payload = security_question_payload(first_answer, second_answer)
+        response = self.api.post(url=self.url, endpoint="/security-questions", json=payload)
+        assert response.status_code == expected_code
+        return self
+
+    @allure.step
+    def same_answer(self, expected_code: int = 422):
+        # disable pylint because needed to check same question for the API
+        payload = {
+            "data": {
+                "attributes": {  # pylint: disable = duplicate-key
+                    "mother-dob": "1-1-2011",
+                    "mother-dob": "1-1-2011",
+                },
+                "type": "account",
+            }
+        }
+        response = self.api.post(url=self.url, endpoint="/security-questions", json=payload)
+        assert response.status_code == expected_code
         return self
 
     @allure.step
@@ -236,3 +261,9 @@ class AuthApiSSO:
     def unlock_account(self):
         response = self.api.post(url=self.url, endpoint="/accounts/unlock")
         assert response.status_code == HTTPStatus.OK
+
+    @allure.step
+    def check_acceptance_criteria(self):
+        response = self.api.get(url=self.url, endpoint="/acceptance-criteria")
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
