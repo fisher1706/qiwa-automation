@@ -39,7 +39,7 @@ class Header:
 
     @allure.step
     def check_personal_number_or_name(self, personal_number: str) -> Header:
-        self.profile.should(be.visible).should(have.text(personal_number))
+        self.profile.should(have.text(personal_number))
         return self
 
     @allure.step

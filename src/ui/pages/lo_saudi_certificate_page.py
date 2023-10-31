@@ -2,6 +2,8 @@ import allure
 from selene import be, have, query
 from selene.support.shared.jquery_style import s, ss
 
+from data.constants import SaudiCertificateDashboard, OtpMessage
+
 
 class LoSaudiCertificatePage:
     certificate_issuance_btn = s(".c-certificate-issuance button")
@@ -9,13 +11,13 @@ class LoSaudiCertificatePage:
     certification_details = ss(
         ".c-certificate-details__center span.c-certificate-details__item-value"
     )
-    certificate_details_after = {
-        "number": s("(//span[@class='c-certificate-details__item-value'])[1]"),
-        "issue_date": s("(//span[@class='c-certificate-details__item-value'])[2]"),
-        "expiry_date": s("(//span[@class='c-certificate-details__item-value'])[3]"),
-        "cr_number": s("(//span[@class='c-certificate-details__item-value'])[5]"),
-        "unified_number": s("(//span[@class='c-certificate-details__item-value'])[6]"),
-    }
+    certificate_details_after = ss("//span[@class='c-certificate-details__item-value']")
+    cer_number_after = certificate_details_after[0]
+    cer_issue_date_after = certificate_details_after[1]
+    cer_expiry_date_after = certificate_details_after[2]
+    cer_cr_number_after = certificate_details_after[4]
+    cer_unified_number_after = certificate_details_after[5]
+
     view_certificate_btn = s(".c-certificate-details__top")
     resend_certificate_btn = s(".c-certificate-details__resend button")
     saudi_certificate_title = s(".c-certificate-details__top-title")
@@ -37,53 +39,52 @@ class LoSaudiCertificatePage:
         "resend_sms_btn": s("(//div[@class='o-modal__resend-buttons']//button)[2]"),
         "otp_validation_message": s(".c-otp-modal__input p"),
     }
-    certificate_details_before = {
-        "issue_date": s("(//section[@class='c-service-details']//span)[1]"),
-        "expiry_date": s("(//section[@class='c-service-details']//span)[2]"),
-        "number": s("(//section[@class='c-service-details']//span)[3]"),
-    }
+    certificate_details_before = ss("//section[@class='c-service-details']//span")
+    cer_issue_date_before = certificate_details_before[1]
+    cer_expiry_date_before = certificate_details_before[2]
+    cer_number_before = certificate_details_before[3]
 
-    @allure.step("click on issue saudi certificate button")
+    @allure.step
     def issue_saudi_certificate(self):
         self.certificate_issuance_btn.click()
         return self
 
-    @allure.step("check on the success message after issuing the certificate")
-    def get_expected_success_message(self, success_message: str):
+    @allure.step
+    def check_expected_success_message(self, success_message: str):
         self.validation_message.should(be.visible).should(have.exact_text(success_message))
         return self
 
-    @allure.step("check on the cr number")
+    @allure.step
     def validate_cr_number(self, expected_cr_number: str):
-        self.certificate_details_after["cr_number"].should(be.existing).should(
+        self.cer_cr_number_after.should(be.existing).should(
             have.exact_text(expected_cr_number)
         )
         return self
 
     @allure.step
     def validate_certificate_number(self, expected_certificate_number: str):
-        self.certificate_details_after["number"].should(be.existing).should(
+        self.cer_number_after.should(be.existing).should(
             have.exact_text(expected_certificate_number)
         )
         return self
 
-    @allure.step("check unified establishment number")
+    @allure.step
     def validate_unified_est_number(self, expected_uni_number):
-        self.certificate_details_after["unified_number"].should(be.existing).should(
+        self.cer_unified_number_after.should(be.existing).should(
             have.exact_text(expected_uni_number)
         )
         return self
 
-    @allure.step("check the issue date of the certificate")
+    @allure.step
     def validate_issue_date(self, expected_issue_date):
-        self.certificate_details_after["issue_date"].should(be.existing).should(
+        self.cer_issue_date_after.should(be.existing).should(
             have.exact_text(expected_issue_date)
         )
         return self
 
-    @allure.step("check the expiry date to be after 90 days")
+    @allure.step
     def validate_expiry_date(self, expected_expiry_date):
-        self.certificate_details_after["expiry_date"].should(be.existing).should(
+        self.cer_expiry_date_after.should(be.existing).should(
             have.exact_text(expected_expiry_date)
         )
         return self
@@ -121,54 +122,52 @@ class LoSaudiCertificatePage:
     @allure.step
     def validate_wrong_otp(self):
         self.otp_module["otp_validation_message"].should(be.visible).should(
-            have.text("OTP is wrong. Try again or resend email to the client.")
+            have.text(OtpMessage.ERROR)
         )
         return self
 
-    @allure.step("check the view certificate button")
+    @allure.step
     def validate_view_certificate_btn(self):
         self.view_certificate_btn.should(be.visible).should(be.clickable)
         return self
 
-    @allure.step("check the resend certificate button")
+    @allure.step
     def validate_resend_certificate_btn(self):
         self.resend_certificate_btn.should(be.visible).should(be.clickable)
         return self
 
-    @allure.step("check dashboard sub title")
+    @allure.step
     def validate_saudi_certificate_title(self):
         self.saudi_certificate_title.should(be.visible)
         return self
 
-    @allure.step("check if back to establishment link directs correctly")
+    @allure.step
     def validate_back_to_est_hyper_link(self):
         assert "lo-agent-system.qiwa.info/appointment" in self.back_to_est_hyper_link.get(
             query.attribute("href")
         )
         return self
 
-    @allure.step("check the dashboard title has correct header")
+    @allure.step
     def validate_dashboard_title(self):
-        self.dashboard_details["header"].should(have.exact_text("Saudization Certificate"))
+        self.dashboard_details["header"].should(have.exact_text(SaudiCertificateDashboard.HEADER))
         return self
 
-    @allure.step("check dashboard sub title")
+    @allure.step
     def validate_dashboard_sub_title(self):
         self.dashboard_details["sub_header"].should(
-            have.exact_text(
-                "Saudization certificate states that the company has achieved the required Saudization rates based on Nitaqat."
-            )
+            have.exact_text(SaudiCertificateDashboard.SUB_HEADER)
         )
         return self
 
     @allure.step
     def get_certificate_issue_date(self):
-        return self.certificate_details_before["issue_date"].should(be.visible).get(query.text)
+        return self.cer_issue_date_before.should(be.visible).get(query.text)
 
     @allure.step
     def get_certificate_expiry_date(self):
-        return self.certificate_details_before["expiry_date"].should(be.visible).get(query.text)
+        return self.cer_expiry_date_before.should(be.visible).get(query.text)
 
     @allure.step
     def get_certificate_number(self):
-        return self.certificate_details_before["number"].should(be.visible).get(query.text)
+        return self.cer_number_before.should(be.visible).get(query.text)

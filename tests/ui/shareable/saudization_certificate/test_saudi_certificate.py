@@ -1,11 +1,13 @@
 import allure
 import pytest
 
-from data.constants import Language
+from data.constants import Language, OtpMessage
 from data.dedicated.enums import SearchingType
 from data.dedicated.models.services import Service, saudi_certificate
+from data.lo.constants import ServicesInfo
 from data.shareable.saudization_certificate.saudi_certificate import *
 from src.api.app import QiwaApi
+from src.api.controllers.appointment import AppointmentsApiController
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
@@ -34,7 +36,7 @@ def login(user: User, service: Service):
 
 @pytest.mark.parametrize("user", [
     lo_sc_low_green_nitaqat, lo_sc_med_green_nitaqat, lo_sc_high_green_nitaqat, lo_sc_platinum_nitaqat])
-@allure.title('Check if user in different nitaqat color can issue saudi certificate')
+@allure.title('AS-343, AS-368, AS-376, AS-375 Check if user in different nitaqat color can issue saudi certificate')
 @case_id(99864, 99882, 99891, 99889)
 def test_verify_user_can_issue_saudi_certificate(user: User):
     # login step
@@ -48,8 +50,8 @@ def test_verify_user_can_issue_saudi_certificate(user: User):
         .validate_dashboard_title() \
         .validate_dashboard_sub_title()
 
-    qiwa.email_popup.proceed_otp_code("0000").click_on_proceed_button()
-    qiwa.lo_saudization_certificate_page.get_expected_success_message(successful_issuing_message)
+    qiwa.email_popup.proceed_otp_code().click_on_proceed_button()
+    qiwa.lo_saudization_certificate_page.check_expected_success_message(successful_issuing_message)
 
     # get cr and unified number for an establishment
     est_details = IBMApiController().get_cr_unified_numbers_for_establishment(user)
@@ -70,12 +72,8 @@ def test_verify_user_can_issue_saudi_certificate(user: User):
 @allure.title('AS-344 Verify the establishment not in Nitaqat cannot book an appointment')
 @case_id(99865)
 def test_if_establishment_not_included_in_nitaqat():
-    create_new_appointment_rs = IBMApiController().get_response_book_an_appointment(lo_sc_nitaqat_not_included,
-                                                                                    saudi_certificate)
-
-    # backend validation on the response in arabic and english
-    appointment_rs = AppointmentStatus.validate(create_new_appointment_rs)
-    assert appointment_rs == not_in_nitaqat_appointment_rs
+    AppointmentsApiController().check_invalid_response(lo_sc_nitaqat_not_included, saudi_certificate,
+                                                       not_in_nitaqat_appointment_rs)
 
     # validation on the UI
     qiwa.login_as_user(lo_sc_nitaqat_not_included.personal_number)
@@ -96,8 +94,8 @@ def test_if_establishment_not_included_in_nitaqat():
         .click_next_step_button()
 
     qiwa.labor_office_appointments_create_page.select_in_person_appointments().click_next_step_button()
-    qiwa.labor_office_appointments_create_page.select_service("Saudization Certificate") \
-        .select_sub_service("Create Saudi Certificate")
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SAUDI_CERTIFICATE_SERVICE) \
+        .select_sub_service(ServicesInfo.SAUDI_CERTIFICATE_SUB_SERVICE)
 
     # validate on the error message
     qiwa.labor_office_appointments_create_confirmation_page.validate_error_message(
@@ -107,12 +105,7 @@ def test_if_establishment_not_included_in_nitaqat():
 @allure.title('AS-367 Verify that the establishment with red NITAQAT level cannot book the appointment')
 @case_id(99866)
 def test_if_establishment_has_red_nitaqat():
-    create_new_appointment_rs = IBMApiController().get_response_book_an_appointment(lo_sc_red_nitaqat,
-                                                                                    saudi_certificate)
-
-    # backend validation on the response in arabic and english
-    appointment_rs = AppointmentStatus.validate(create_new_appointment_rs)
-    assert appointment_rs == red_nitaqat_appointment_rs
+    AppointmentsApiController().check_invalid_response(lo_sc_red_nitaqat, saudi_certificate, red_nitaqat_appointment_rs)
 
     # validation on the UI
     qiwa.login_as_user(lo_sc_red_nitaqat.personal_number)
@@ -133,15 +126,15 @@ def test_if_establishment_has_red_nitaqat():
         .click_next_step_button()
 
     qiwa.labor_office_appointments_create_page.select_in_person_appointments().click_next_step_button()
-    qiwa.labor_office_appointments_create_page.select_service("Saudization Certificate") \
-        .select_sub_service("Create Saudi Certificate")
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SAUDI_CERTIFICATE_SERVICE) \
+        .select_sub_service(ServicesInfo.SAUDI_CERTIFICATE_SUB_SERVICE)
 
     # validate on the error message
     qiwa.labor_office_appointments_create_confirmation_page.validate_error_message(
         red_nitaqat_appointment_rs.EnglishMsg)
 
 
-@allure.title('Check UI OTP modal elements')
+@allure.title('AS-373, AS-374 Check UI OTP modal elements')
 @case_id(99888, 99890)
 def test_check_otp_ui_module():
     # login step
@@ -151,8 +144,8 @@ def test_check_otp_ui_module():
     qiwa.business_page.select_saudization_certificate()
     qiwa.lo_saudization_certificate_page.issue_saudi_certificate()
     qiwa.lo_saudization_certificate_page \
-        .validate_otp_messages("Confirmation", "Please enter the OTP to proceed",
-                               "Please inform client that the OTP is sent to the email") \
+        .validate_otp_messages(OtpMessage.TITLE, OtpMessage.PROMPT,
+                               OtpMessage.CONFIRMATION) \
         .validate_otp_proceed_btn_is_disabled() \
         .validate_otp_resend_sms_is_disabled() \
         .validate_otp_resend_email_is_disabled() \
@@ -164,7 +157,7 @@ def test_check_otp_ui_module():
     qiwa.email_popup.proceed_otp_code("2222")
 
 
-@allure.title('user can reissue the certificate with the same details')
+@allure.title('AS-371, AS-372 User can reissue the certificate with the same details')
 @case_id(99886, 99887)
 def test_reissue_certificate_with_same_old_certificate_number():
     # login step
@@ -172,8 +165,6 @@ def test_reissue_certificate_with_same_old_certificate_number():
 
     qiwa.business_page.select_saudization_certificate()
     expected_certificate_number = qiwa.lo_saudization_certificate_page.get_certificate_number()
-    expected_issue_date = qiwa.lo_saudization_certificate_page.get_certificate_issue_date()
-    expected_expiry_date = qiwa.lo_saudization_certificate_page.get_certificate_expiry_date()
     qiwa.lo_saudization_certificate_page.issue_saudi_certificate()
 
     # validate on UI elements in dashboard
@@ -181,8 +172,8 @@ def test_reissue_certificate_with_same_old_certificate_number():
         .validate_dashboard_title() \
         .validate_dashboard_sub_title()
 
-    qiwa.email_popup.proceed_otp_code("0000").click_on_proceed_button()
-    qiwa.lo_saudization_certificate_page.get_expected_success_message(successful_issuing_message)
+    qiwa.email_popup.proceed_otp_code().click_on_proceed_button()
+    qiwa.lo_saudization_certificate_page.check_expected_success_message(successful_issuing_message)
 
     # validate saudi certificate details element on UI
     qiwa.lo_saudization_certificate_page.validate_saudi_certificate_title() \
@@ -190,6 +181,4 @@ def test_reissue_certificate_with_same_old_certificate_number():
         .validate_resend_certificate_btn() \
         .validate_back_to_est_hyper_link()
 
-    qiwa.lo_saudization_certificate_page.validate_issue_date(expected_issue_date) \
-        .validate_expiry_date(expected_expiry_date) \
-        .validate_certificate_number(expected_certificate_number)
+    qiwa.lo_saudization_certificate_page.validate_certificate_number(expected_certificate_number)

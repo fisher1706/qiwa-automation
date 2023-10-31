@@ -62,5 +62,6 @@ class LaborOfficeCreateConfirmationPage:
         self.should_confirmation_sub_service_name_be(sub_service)
         self.should_confirmation_office_name_be(office)
 
-    def validate_error_message(self, expected_error_msg: str):
+    def validate_error_message(self, expected_error_msg: str) -> LaborOfficeCreateConfirmationPage:
         self.sub_service_error.should(be.visible).should(have.exact_text(expected_error_msg))
+        return self

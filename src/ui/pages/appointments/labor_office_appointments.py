@@ -8,6 +8,7 @@ from selene.support.shared.jquery_style import s
 
 from data.constants import Language
 from data.lo.constants import AppointmentsCancel as Ac
+import config
 from src.ui.components.raw.dropdown import Dropdown
 from src.ui.components.raw.table import Table
 from src.ui.pages.appointments.labor_office_appointments_create import (
@@ -118,7 +119,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Click on book appointment button")
     def click_book_appointment_btn(self) -> LaborOfficeAppointmentsPage:
-        self.book_appointment_btn.should(be.visible).click()
+        self.book_appointment_btn.click()
         return self
 
     @allure.step("Clear appointments history search field")
@@ -306,5 +307,5 @@ class LaborOfficeAppointmentsPage:
     def switch_to_appointment_booking_tab(self):
         # should be used after select lo service from UI
         browser.switch_to_next_tab()
-        assert_that(browser.driver.current_url.startswith("https://appointment-booking"))
+        assert_that(browser.driver.current_url.startswith(config.qiwa_urls.appointment_booking))
         return self
