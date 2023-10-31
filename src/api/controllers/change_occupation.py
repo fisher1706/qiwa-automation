@@ -13,11 +13,11 @@ from src.api.models.qiwa.change_occupation import (
     requests_laborers_data,
     users_data,
 )
-from src.api.models.qiwa.raw.change_occupations.requests import Request
+from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
 from src.api.models.qiwa.raw.token import AuthorizationToken
-from src.api.payloads.raw.change_occupation import Laborer
+from src.api.payloads.raw.change_occupation import Laborer as LaborerToRequest
 from utils.assertion import assert_status_code
 from utils.crypto_manager import decode_authorization_token
 from utils.json_search import search_by_data
@@ -75,7 +75,19 @@ class ChangeOccupationController:
         return search_by_data(expression, requests.dict(exclude_unset=True))
 
     @allure.step
-    def create_request(self, *laborers: Laborer) -> CreatedRequestsData:
+    def get_requests_by_request_number(self, number: str) -> list[Laborer]:
+        requests = self.get_requests(per=100)
+        expression = (
+            f"data[?attributes.laborers[?\"request_number\" == '{number}']]"
+            f"[attributes.laborers[? \"request_number\" == '{number}']][][]"
+        )
+        return [
+            Laborer.parse_obj(data)
+            for data in search_by_data(expression, requests.dict(exclude_unset=True))
+        ]
+
+    @allure.step
+    def create_request(self, *laborers: LaborerToRequest) -> CreatedRequestsData:
         response = self.api.create_request(*laborers)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return CreatedRequestsData.parse_obj(response.json())
