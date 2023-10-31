@@ -35,4 +35,6 @@ REVOKE_BUTTON: str = "Revoke delegation"
 GO_BACK_BUTTON: str = "Go back"
 
 TITLE_ON_PARTNER_APPROVAL: str = "Verification code"
-TITLE_ON_NOT_AVAILABLE_FLOW: str = "The delegation request is no longer valid"
+TITLE_ON_UNAVAILABLE_FLOW: str = "The delegation request is no longer valid"
+SUBTITLE_ON_UNAVAILABLE_FLOW: str = "The delegation request has already been approved or rejected."
+DESCRIPTION_ON_UNAVAILABLE_FLOW: str = "You can close this page now."

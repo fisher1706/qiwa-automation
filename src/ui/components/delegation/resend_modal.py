@@ -9,8 +9,8 @@ from data.delegation import general_data
 
 class ResendModal:
     resend_modal = s('div[data-testid="ResendModal"]')
-    title_on_modal = s('[id="modalBodyWrapper"] p.dIVImG')
-    description_on_modal = s('[id="modalBodyWrapper"] p.gggtgX')
+    title_on_modal = s('p[data-testid="ResendModalTitle"]')
+    description_on_modal = s('p[data-testid="ResendModalDescription"]')
     message_on_resend_modal = s('div[data-component="Message"]')
     resend_button_on_modal = s('button[data-testid="ResendModalAction"]')
     cancel_button_on_resend_modal = s('button[data-testid="ResendModalClose"]')
