@@ -62,6 +62,8 @@ class EServicesPage:
         "forbidden": ".eServices-page__forbidden-eservices div h2",
     }
     EMPLOYEE_TRANSFER_CARD = s("//p[.='Employee Transfer']")
+    CERTIFICATES_CARD = s("//p[.='Certificates'']")
+    LO = s("//p[.='Labor Office Appointments']")
 
     def __init__(self):
         super().__init__()
@@ -125,3 +127,9 @@ class EServicesPage:
 
     def select_employee_transfer(self):
         self.EMPLOYEE_TRANSFER_CARD.click()
+
+    def select_certificates(self):
+        self.CERTIFICATES_CARD.click()
+
+    def select_lo(self):
+        self.LO.click()

@@ -14,6 +14,7 @@ class BusinessPage:
     QIWA_SERVICES = ss(".service-item")
     CHANGE_OCCUPATION = QIWA_SERVICES.element_by(have.text("Change Occupation"))
     LO_WORK_PERMIT = QIWA_SERVICES.element_by(have.text("Work Permit"))
+    LO_SAUDI_CERTIFICATE = QIWA_SERVICES.element_by(have.text("Saudization Certificate"))
 
     def check_establishment_status(self, status: str) -> BusinessPage:
         self.ESTABLISHMENT_STATUS.should(have.exact_text(status))
@@ -29,4 +30,8 @@ class BusinessPage:
 
     def select_work_permit(self) -> BusinessPage:
         self.LO_WORK_PERMIT.s(".btn").click()
+        return self
+
+    def select_saudization_certificate(self) -> BusinessPage:
+        self.LO_SAUDI_CERTIFICATE.s(".btn").click()
         return self

@@ -50,6 +50,7 @@ from src.ui.pages.delegations_pages.delegation_details_page import DelegationDet
 from src.ui.pages.delegations_pages.partner_approval_page import PartnerApprovalPage
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
+from src.ui.pages.lo_saudi_certificate_page import LoSaudiCertificatePage
 from src.ui.pages.spaces_page import AdminSpacesPage
 from src.ui.pages.sso_pages.add_birthday_page import AddBirthdayPage
 from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPage
@@ -101,6 +102,7 @@ class QiwaUiClient:
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
     employee_transfer_page = EmployeeTransferV2Page()
     contract_management_page = ContractManagementPage()
+    lo_saudization_certificate_page = LoSaudiCertificatePage()
 
     # Components
     header = Header()

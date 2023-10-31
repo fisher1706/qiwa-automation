@@ -6,7 +6,7 @@ from selene.support.shared.jquery_style import s
 
 class DashboardPage:
     switch_account_link = by.css(".dropdown-menu div:nth-child(1) > a")
-    e_services_menu = by.css('.q-navigation__list_item img[alt="E-services"]')
+    e_services_menu = by.xpath('//a[@href="https://e-services.qiwa.info/e-services"]')
     nitaqat_level = s('[data-component="NitaqatLevel"]')
 
     def click_on_switch_account_link(self) -> DashboardPage:
@@ -18,5 +18,5 @@ class DashboardPage:
         return self
 
     def wait_dashboard_page_to_load(self) -> DashboardPage:
-        self.nitaqat_level.should(be.present)
+        s('//p[.="Nitaqat Level"]').wait_until(be.visible)
         return self

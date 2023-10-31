@@ -21,7 +21,7 @@ class LaborOfficeAppointmentsPage:
 
     book_appointment_btn = s("[data-component='Breadcrumbs'] + div p")
     appointments = s("//p[text()='Labor Office Appointments']")
-    upcoming_appointment_row = s('//*[@id="upcoming"]//tr')
+    upcoming_appointment_row = s('(//*[@id="upcoming"]//tr)[2]')
     upcoming_appointments_actions = upcoming_appointment_row.element(
         '//*[@data-component="Actions"]'
     )
@@ -118,7 +118,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Click on book appointment button")
     def click_book_appointment_btn(self) -> LaborOfficeAppointmentsPage:
-        self.book_appointment_btn.click()
+        self.book_appointment_btn.should(be.visible).click()
         return self
 
     @allure.step("Clear appointments history search field")
@@ -300,4 +300,10 @@ class LaborOfficeAppointmentsPage:
     @allure.step("Verify Previous button in appointments history table is visible")
     def verify_appointments_history_previous_button(self):
         self.button_appointments_history_previous_page.should(be.visible)
+        return self
+
+    def switch_to_appointment_booking_tab(self):
+        # should be used after select lo service from UI
+        browser.switch_to_next_tab()
+        assert_that(browser.driver.current_url.startswith("https://appointment-booking"))
         return self
