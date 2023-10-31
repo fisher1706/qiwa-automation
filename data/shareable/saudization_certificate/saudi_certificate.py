@@ -53,7 +53,7 @@ lo_sc_nitaqat_not_included = User(
     labor_office_id="1",
     sequence_number="99679",
     office_id="3186",
-    name="مركز عبدالعزيز صالح المقيرن لصيانة السيارات"
+    name="عبدالعزيز المقيرن"
 )
 
 

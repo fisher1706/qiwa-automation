@@ -363,6 +363,7 @@ class IBMApiController:
             ChannelId="Qiwa",
             SessionId="0",
             RequestTime="2019-10-10 00:00:00.555",
+            MWRequestTime="2019-10-10 00:00:00.555",
             ServiceCode="GEI00001",
             DebugFlag="1",
         )

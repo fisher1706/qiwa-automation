@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 
+import allure
 from selene import be
 from selene.support.shared.jquery_style import s
 
@@ -15,6 +16,7 @@ class EmailConfirmationPopup:
     confirm_and_proceed_button = s("//button[normalize-space()='Confirm and proceed to summary']")
     proceed_button = s("//button[normalize-space()='Proceed']")
 
+    @allure.step("add otp")
     def proceed_otp_code(self, number: str = "0000") -> EmailConfirmationPopup:
         self.otp_first_cell.clear().type(number)
         self.otp_second_cell.clear().type(number)

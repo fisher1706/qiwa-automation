@@ -131,5 +131,6 @@ class EServicesPage:
     def select_certificates(self):
         self.CERTIFICATES_CARD.click()
 
+    @allure.step
     def select_lo(self):
         self.LO.click()

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
+import allure
 from selene import have, query
 from selene.support.shared.jquery_style import ss
 
@@ -32,6 +33,7 @@ class BusinessPage:
         self.LO_WORK_PERMIT.s(".btn").click()
         return self
 
+    @allure.step("click on saudi certificate btn")
     def select_saudization_certificate(self) -> BusinessPage:
         self.LO_SAUDI_CERTIFICATE.s(".btn").click()
         return self

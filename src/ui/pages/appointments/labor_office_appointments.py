@@ -21,7 +21,7 @@ class LaborOfficeAppointmentsPage:
 
     book_appointment_btn = s("[data-component='Breadcrumbs'] + div p")
     appointments = s("//p[text()='Labor Office Appointments']")
-    upcoming_appointment_row = s('(//*[@id="upcoming"]//tr)[2]')
+    upcoming_appointment_row = s('//*[@id="upcoming"]//tr')
     upcoming_appointments_actions = upcoming_appointment_row.element(
         '//*[@data-component="Actions"]'
     )
@@ -302,6 +302,7 @@ class LaborOfficeAppointmentsPage:
         self.button_appointments_history_previous_page.should(be.visible)
         return self
 
+    @allure.step
     def switch_to_appointment_booking_tab(self):
         # should be used after select lo service from UI
         browser.switch_to_next_tab()

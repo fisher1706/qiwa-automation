@@ -141,10 +141,12 @@ class LaborOfficeAppointmentsCreatePage:
         self.click_next_step_button()
         self.click_next_step_button()
 
+    @allure.step
     def select_establishment_by_seq_number(self, labor_office_id: str, sequence_number: str):
         s(f"//div[@for='{labor_office_id}-{sequence_number}']").should(be.visible).click()
         return self
 
+    @allure.step
     def select_in_person_appointments(self):
         self.in_person_appointment.should(be.visible).click()
         return self
