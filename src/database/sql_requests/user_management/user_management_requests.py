@@ -10,8 +10,7 @@ from src.database.models.user_management_tables_description import UMSubscriptio
 
 
 class UserManagementRequests:
-    # session = DBClient(db_url=config.settings.um_db_url).set_db_session()
-    session = None
+    session = DBClient(db_url=config.settings.um_db_url).set_db_session()
 
     def get_expired_date(self, personal_number: str, unified_number: int) -> datetime:
         subscription = (

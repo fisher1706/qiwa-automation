@@ -42,6 +42,7 @@ class IndividualService:
 @dataclass
 class IndividualUser:
     ID = "1080910035"
+    ID_2 = "1037855416"
 
 
 @dataclass
