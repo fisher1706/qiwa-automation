@@ -10,8 +10,8 @@ from data.delegation import general_data
 class RevokeModal:
     revoke_modal = s('div[data-testid="RevokeModal"]')
     revoke_button_on_modal = s('button[data-testid="RevokeModalAction"]')
-    title_on_modal = s('[id="modalBodyWrapper"] p.dIVImG')
-    description_on_modal = s('[id="modalBodyWrapper"] p.gggtgX')
+    title_on_modal = s('p[data-testid="RevokeModalTitle"]')
+    description_on_modal = s('p[data-testid="RevokeModalDescription"]')
     go_back_button_on_revoke_modal = s('button[data-testid="RevokeModalClose"]')
     close_button_on_modal = s('button[aria-label="Close modal"]')
 
