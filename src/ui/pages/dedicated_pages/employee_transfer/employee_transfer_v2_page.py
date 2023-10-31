@@ -27,13 +27,21 @@ class EmployeeTransferV2Page(
 
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
-    tables = ss("table")
-    sent_requests_table = Table(tables.first)
-    received_requests_table = Table(tables.second)
+    sent_requests_section = s("#requests-sent-by-you + div + div")
+    received_requests_section = s("#received-requests + div + div")
 
-    items = ss('[data-component="Table"] + div > div > p')
-    sent_requests = items.first
-    received_requests = items.second
+    sent_requests_table = Table(sent_requests_section.s("table"))
+    received_requests_table = Table(received_requests_section.s("table"))
+
+    pagination_info = '[data-component="Table"] + div > div > p'
+    sent_requests_pagination_info = sent_requests_section.s(pagination_info)
+    received_requests_pagination_info = received_requests_section.s(pagination_info)
+
+    search_sent_requests = sent_requests_section.s("#sent")
+    search_received_requests = received_requests_section.s("#received")
+
+    btn_accept_request = s("//button[.='Accept request']")
+    btn_reject_request = s("//button[.='Reject request']")
 
     @staticmethod
     def _get_count_of_requests(web_element: Element) -> int:
@@ -58,12 +66,44 @@ class EmployeeTransferV2Page(
         self.btn_proceed_to_contract_management.click()
         return self
 
-    def check_count_of_sent_request_rows(self):
-        requests = EmployeeTransferV2Page._get_count_of_requests(self.sent_requests)
+    def check_count_of_sent_request_rows(self) -> None:
+        requests = EmployeeTransferV2Page._get_count_of_requests(
+            self.sent_requests_pagination_info
+        )
         rows = requests if requests < 10 else 10
         self.sent_requests_table.rows.should(have.size(rows))
 
-    def check_count_of_received_request_rows(self):
-        requests = EmployeeTransferV2Page._get_count_of_requests(self.received_requests)
+    def check_count_of_received_request_rows(self) -> None:
+        requests = EmployeeTransferV2Page._get_count_of_requests(
+            self.received_requests_pagination_info
+        )
         rows = requests if requests < 10 else 10
         self.received_requests_table.rows.should(have.size(rows))
+
+    def search_sent_request(self, iqama_number: str) -> EmployeeTransferV2Page:
+        self.search_sent_requests.type(iqama_number)
+        return self
+
+    def search_received_request(self, iqama_number: str) -> EmployeeTransferV2Page:
+        self.search_received_requests.type(iqama_number)
+        return self
+
+    def click_btn_approve(self) -> EmployeeTransferV2Page:
+        self.received_requests_table.cell(row=1, column=5).all("button").first.click()
+        return self
+
+    def click_btn_reject(self) -> EmployeeTransferV2Page:
+        self.received_requests_table.cell(row=1, column=5).all("button").second.click()
+        return self
+
+    def click_btn_accept_request(self) -> EmployeeTransferV2Page:
+        self.btn_accept_request.click()
+        return self
+
+    def click_btn_reject_request(self) -> EmployeeTransferV2Page:
+        self.btn_reject_request.click()
+        return self
+
+    def check_sponsor_request_status(self, status: str) -> EmployeeTransferV2Page:
+        self.received_requests_table.cell(row=1, column=5).should(have.exact_text(status))
+        return self

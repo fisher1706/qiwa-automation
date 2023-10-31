@@ -74,7 +74,8 @@ class WorkspacesPage:
     def select_company_account_by_name(self, name: str) -> WorkspacesPage:
         self.select_business_account()
         self.search.type(name)
-        self.business_account_list.second.click()
+        # TODO(dp): Add filter by name after fixing search results
+        self.business_account_list[2].should(have.text(name)).click()
         return self
 
     @allure.step

@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from datetime import datetime
 
-import config
-from src.database.client.db_client import DBClient
 from src.database.models.user_management_tables_description import UMSubscriptions
 
 

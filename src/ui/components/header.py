@@ -17,7 +17,7 @@ class Header:
             Language.AR: self.links.second,
         }
         self.profile = self.web_element.s("[data-testid='menu-trigger'] p")
-        self.profile_individuals = self.web_element.ss('[data-component="MenuTrigger"] p')
+        self.profile_individuals = self.web_element.ss('[data-component="MenuTrigger"] p')[2]
         self.dropdown_profile = ss("[data-component='Menu'] > div")
 
     def _select_language(self, language: str):
@@ -48,8 +48,8 @@ class Header:
         return self
 
     @allure.step
-    def click_on_menu_individuals(self, personal_number: int) -> Header:
-        self.profile_individuals.element_by(have.text(str(personal_number))).click()
+    def click_on_menu_individuals(self) -> Header:
+        self.profile_individuals.click()
         return self
 
     @allure.step
