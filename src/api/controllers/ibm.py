@@ -78,7 +78,7 @@ class IBMApiController:
 
     @allure.step
     def get_work_permit_requests_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
+        self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
     ) -> IBMWorkPermitRequestList:
         payload = {
             IBMServicesRequest.GET_WORK_PERMIT_REQUESTS.value: {
@@ -94,7 +94,7 @@ class IBMApiController:
 
     @allure.step
     def get_saudization_certificate_from_ibm(
-            self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
     ) -> IBMResponseData[GetSaudiCertificateRsBody]:
         payload = {
             IBMServicesRequest.GET_SAUDI_CERTIFICATE.value: {
@@ -110,7 +110,7 @@ class IBMApiController:
 
     @allure.step
     def validate_establishment_saudization_in_ibm(
-            self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
+        self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
     ) -> IBMResponseData:
         payload = {
             IBMServicesRequest.VALIDATE_EST_SAUDI_CERTIFICATE.value: {
@@ -126,7 +126,7 @@ class IBMApiController:
 
     @allure.step
     def get_change_occupation_requests_from_ibm(
-            self, body: Body
+        self, body: Body
     ) -> IBMResponseData[src.api.models.ibm.searchchangeoccupation.Body]:
         payload = {
             IBMServicesRequest.SEARCH_CHANGE_OCCUPATION.value: {
@@ -382,7 +382,11 @@ class IBMApiController:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return SaudiEstValidation(
-            cr_number=response.json()["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"]["CRNumber"],
-            unified_number_id=response.json()["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"][
-                "UnifiedNationalNumber"])
+            cr_number=response.json()["GetEstablishmentInformationRs"]["Body"][
+                "EstablishmentDetails"
+            ]["CRNumber"],
+            unified_number_id=response.json()["GetEstablishmentInformationRs"]["Body"][
+                "EstablishmentDetails"
+            ]["UnifiedNationalNumber"],
+        )
 

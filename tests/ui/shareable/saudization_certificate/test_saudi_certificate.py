@@ -3,12 +3,12 @@ import pytest
 
 from data.constants import Language
 from data.dedicated.enums import SearchingType
-from data.dedicated.models.services import saudi_certificate, Service
+from data.dedicated.models.services import Service, saudi_certificate
 from data.shareable.saudization_certificate.saudi_certificate import *
 from src.api.app import QiwaApi
 from src.api.controllers.ibm import IBMApiController
 from src.ui.qiwa import qiwa
-from utils.allure import project, TestmoProject
+from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.LABOR_OFFICE)
 
