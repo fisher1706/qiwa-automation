@@ -11,3 +11,10 @@ def test_getting_by_request_id(qiwa):
     request_by_id = json.data[0].attributes
     assert_data(expected=request_data.dict(exclude={"id"}), actual=request_by_id.dict())
     assert_data(expected=laborer_data.dict(exclude={"request_number"}), actual=request_by_id.dict())
+
+
+def test_creating_request(qiwa, laborer):
+    json = qiwa.change_occupation.create_request(laborer)
+
+    assert_that(json.data).is_length(1)
+    assert_that(json.data[0].attributes.personal_number).as_("personal number").equals_to(laborer.personal_number)

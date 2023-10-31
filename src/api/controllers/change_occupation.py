@@ -7,6 +7,7 @@ import allure
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
+    CreatedRequestsData,
     request_by_id_data,
     requests_data,
     requests_laborers_data,
@@ -14,9 +15,12 @@ from src.api.models.qiwa.change_occupation import (
 )
 from src.api.models.qiwa.raw.change_occupations.requests import Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
+from src.api.models.qiwa.raw.change_occupations.users import User
 from src.api.models.qiwa.raw.token import AuthorizationToken
+from src.api.payloads.raw.change_occupation import Laborer
 from utils.assertion import assert_status_code
 from utils.crypto_manager import decode_authorization_token
+from utils.json_search import search_by_data
 
 
 class ChangeOccupationController:
@@ -61,6 +65,22 @@ class ChangeOccupationController:
         return request_by_id_data.parse_obj(response.json())
 
     @allure.step
+    def get_requests_by_laborer(self, personal_number: str):
+        requests = self.get_requests(per=100)
+        expression = (
+            f"data[?attributes.laborers[?\"employee_personal_number\" == '{personal_number}'"
+            f' && "status_id" != `9`]]'
+            f"[attributes.laborers[? \"employee_personal_number\" == '{personal_number}']][][]"
+        )
+        return search_by_data(expression, requests.dict(exclude_unset=True))
+
+    @allure.step
+    def create_request(self, *laborers: Laborer) -> CreatedRequestsData:
+        response = self.api.create_request(*laborers)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return CreatedRequestsData.parse_obj(response.json())
+
+    @allure.step
     def get_users(self, page: int = 1, per: int = 10) -> users_data:
         response = self.api.get_users(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
@@ -75,3 +95,8 @@ class ChangeOccupationController:
     def get_random_laborer(self) -> RequestLaborer:
         requests = self.get_requests_laborers(per=1000)
         return random.choice(requests.data).attributes
+
+    @allure.step
+    def get_random_user(self) -> User:
+        users = self.get_users(per=1000)
+        return random.choice(users.data).attributes

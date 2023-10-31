@@ -48,13 +48,9 @@ class ChangeOccupationApi:
     def get_request(self, request_id: int) -> Response:
         return self.http.get(f"{self.url}/requests/{request_id}")
 
-    def create_request(
-        self, labor_office_id: str, sequence_number: str, *laborers: Laborer
-    ) -> Response:
+    def create_request(self, *laborers: Laborer) -> Response:
         payload = change_occupation(
             {
-                "labor-office-id": labor_office_id,
-                "sequence-number": sequence_number,
                 "laborers": [laborer.dict(by_alias=True) for laborer in laborers],
             }
         )
