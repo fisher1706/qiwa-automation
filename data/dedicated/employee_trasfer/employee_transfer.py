@@ -29,6 +29,9 @@ employer_between_my_establishments = Entity(
 laborer = Laborer(
     login_id=2449079728, birthdate="11-07-1993", user_type=UserType.EXPAT, transfer_type=type_9
 )
+laborer_with_sponsor = Laborer(
+    login_id=2178708182, birthdate="29-01-1958", user_type=UserType.EXPAT, transfer_type=type_4
+)
 laborer_type_12 = Laborer(login_id=2493081331, birthdate="03-01-1990", transfer_type=type_12)
 laborer_type_9 = Laborer(login_id=2021014218, birthdate="18-10-1982", transfer_type=type_9)
 laborer_type_4_freedom_transfer = Laborer(
@@ -47,11 +50,11 @@ laborer_between_my_establishments_existing_contract = Laborer(
 )
 laborer_between_my_establishments_quota = Laborer(login_id=2111825226, birthdate="01-01-1976")
 
-current_sponsor = Entity(
-    login_id=1070495955,
-    labor_office_id=1,
-    sequence_number=24636,
-    establishment_name_ar="شركة منتجات التغليف",
+current_sponsor = User(
+    personal_number="1071480196",
+    labor_office_id="4",
+    sequence_number="93766",
+    establishment_name_ar="شركة سراكو",
 )
 
 current_sponsor_type_12 = Entity(login_id=1046395800)
