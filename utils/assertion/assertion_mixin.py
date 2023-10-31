@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, Callable, TypeVar
+from typing import TypeVar
 
 import allure
 
@@ -20,17 +20,14 @@ class AssertionMixin(AssertionBase):
             assert operator(self.actual, expected), template
             return self
 
-    def has(self, key: T) -> Callable:
+    def has(self, **kwargs) -> AssertionMixin:
         is_dict = isinstance(self.actual, Mapping)
-
-        def _wrapper(val: Any) -> AssertionMixin:
-            actual = self.actual[key] if is_dict else getattr(self.actual, key)
+        for k, v in kwargs.items():
+            actual = self.actual[k] if is_dict else getattr(self.actual, k)
             self.__class__(actual).as_(
-                f'"{self._description} {key}"' if self._description else f'"{key}"'
-            ).equals_to(val)
-            return self
-
-        return _wrapper
+                f'"{self._description} {k}"' if self._description else f'"{k}"'
+            ).equals_to(v)
+        return self
 
     def equals_to(self, expected: T) -> AssertionMixin:
         return self.__assert(expected, AssertionTypes.EQUAL)
