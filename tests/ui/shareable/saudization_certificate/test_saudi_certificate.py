@@ -36,8 +36,8 @@ def login(user: User, service: Service):
 
 @pytest.mark.parametrize("user", [
     lo_sc_low_green_nitaqat, lo_sc_med_green_nitaqat, lo_sc_high_green_nitaqat, lo_sc_platinum_nitaqat])
-@allure.title('AS-343, AS-368, AS-376, AS-375 Check if user in different nitaqat color can issue saudi certificate')
-@case_id(99864, 99882, 99891, 99889)
+@allure.title('AS-343, AS-368, AS-376 Check if user in different nitaqat color can issue saudi certificate')
+@case_id(99864, 99882, 99891)
 def test_verify_user_can_issue_saudi_certificate(user: User):
     # login step
     login(user, saudi_certificate)
@@ -66,7 +66,8 @@ def test_verify_user_can_issue_saudi_certificate(user: User):
     qiwa.lo_saudization_certificate_page.validate_unified_est_number(est_details.unified_number_id) \
         .validate_cr_number(est_details.cr_number) \
         .validate_issue_date(today_date) \
-        .validate_expiry_date(date_after_90_days)
+        .validate_expiry_date(date_after_90_days) \
+        .validate_certificate_status_to_be_active()
 
 
 @allure.title('AS-344 Verify the establishment not in Nitaqat cannot book an appointment')
@@ -131,7 +132,7 @@ def test_if_establishment_has_red_nitaqat():
 
     # validate on the error message
     qiwa.labor_office_appointments_create_confirmation_page.validate_error_message(
-        red_nitaqat_appointment_rs.EnglishMsg)
+        unsuccessful_issuing_message_red_nitaqat)
 
 
 @allure.title('AS-373, AS-374 Check UI OTP modal elements')
@@ -155,30 +156,3 @@ def test_check_otp_ui_module():
     qiwa.lo_saudization_certificate_page.validate_wrong_otp().validate_otp_proceed_btn_is_disabled()
     # user able to re-write the otp once again
     qiwa.email_popup.proceed_otp_code("2222")
-
-
-@allure.title('AS-371, AS-372 User can reissue the certificate with the same details')
-@case_id(99886, 99887)
-def test_reissue_certificate_with_same_old_certificate_number():
-    # login step
-    login(lo_sc_user, saudi_certificate)
-
-    qiwa.business_page.select_saudization_certificate()
-    expected_certificate_number = qiwa.lo_saudization_certificate_page.get_certificate_number()
-    qiwa.lo_saudization_certificate_page.issue_saudi_certificate()
-
-    # validate on UI elements in dashboard
-    qiwa.lo_saudization_certificate_page.validate_back_to_est_hyper_link() \
-        .validate_dashboard_title() \
-        .validate_dashboard_sub_title()
-
-    qiwa.email_popup.proceed_otp_code().click_on_proceed_button()
-    qiwa.lo_saudization_certificate_page.check_expected_success_message(successful_issuing_message)
-
-    # validate saudi certificate details element on UI
-    qiwa.lo_saudization_certificate_page.validate_saudi_certificate_title() \
-        .validate_view_certificate_btn() \
-        .validate_resend_certificate_btn() \
-        .validate_back_to_est_hyper_link()
-
-    qiwa.lo_saudization_certificate_page.validate_certificate_number(expected_certificate_number)

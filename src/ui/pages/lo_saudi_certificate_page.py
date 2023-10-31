@@ -15,6 +15,7 @@ class LoSaudiCertificatePage:
     cer_number_after = certificate_details_after[0]
     cer_issue_date_after = certificate_details_after[1]
     cer_expiry_date_after = certificate_details_after[2]
+    cer_status_after = certificate_details_after[3]
     cer_cr_number_after = certificate_details_after[4]
     cer_unified_number_after = certificate_details_after[5]
 
@@ -40,9 +41,9 @@ class LoSaudiCertificatePage:
         "otp_validation_message": s(".c-otp-modal__input p"),
     }
     certificate_details_before = ss("//section[@class='c-service-details']//span")
-    cer_issue_date_before = certificate_details_before[1]
-    cer_expiry_date_before = certificate_details_before[2]
-    cer_number_before = certificate_details_before[3]
+    cer_issue_date_before = certificate_details_before[0]
+    cer_expiry_date_before = certificate_details_before[1]
+    cer_number_before = certificate_details_before[2]
 
     @allure.step
     def issue_saudi_certificate(self):
@@ -87,6 +88,11 @@ class LoSaudiCertificatePage:
         self.cer_expiry_date_after.should(be.existing).should(
             have.exact_text(expected_expiry_date)
         )
+        return self
+
+    @allure.step
+    def validate_certificate_status_to_be_active(self):
+        self.cer_status_after.should(be.existing).should(have.exact_text("Active"))
         return self
 
     @allure.step

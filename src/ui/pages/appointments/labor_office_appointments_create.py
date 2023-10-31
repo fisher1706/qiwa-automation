@@ -18,7 +18,7 @@ class LaborOfficeAppointmentsCreatePage:
     available_dates = ss('//*[@role="button" and not(@aria-disabled)]')
     appointment_reason_section = s("#reason")
     radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
-    in_person_appointment = s('//div[p="Request new service-in person"]')
+    in_person_appointment = s('//fieldset//label[4]//p[@id="1-label"]')
 
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
