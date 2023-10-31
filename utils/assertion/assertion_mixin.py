@@ -12,12 +12,13 @@ T = TypeVar("T")
 
 
 class AssertionMixin(AssertionBase):
-    def __assert(self, expected: T, method: AssertionTypes) -> None:
+    def __assert(self, expected: T, method: AssertionTypes) -> AssertionMixin:
         operator, context = method.value
         step_name = f'Assert that {self._description} {context} "{expected}"'
         with allure.step(step_name):
             template = self._error_template(expected, context)
             assert operator(self.actual, expected), template
+            return self
 
     def has(self, key: T) -> Callable:
         is_dict = isinstance(self.actual, Mapping)
@@ -31,18 +32,18 @@ class AssertionMixin(AssertionBase):
 
         return _wrapper
 
-    def equals_to(self, expected: T) -> None:
-        self.__assert(expected, AssertionTypes.EQUAL)
+    def equals_to(self, expected: T) -> AssertionMixin:
+        return self.__assert(expected, AssertionTypes.EQUAL)
 
-    def not_equals_to(self, expected: T) -> None:
-        self.__assert(expected, AssertionTypes.NOT_EQUAL)
+    def not_equals_to(self, expected: T) -> AssertionMixin:
+        return self.__assert(expected, AssertionTypes.NOT_EQUAL)
 
-    def in_(self, expected: T) -> None:
-        self.__assert(expected, AssertionTypes.IN_)
+    def in_(self, expected: T) -> AssertionMixin:
+        return self.__assert(expected, AssertionTypes.IN_)
 
-    def is_length(self, length: int) -> None:
+    def is_length(self, length: int) -> AssertionMixin:
         if not hasattr(self.actual, "__len__"):
             raise NotImplementedError(
                 f'The expected value "{self.actual}" {type(self.actual)} has no length attribute'
             )
-        self.__assert(length, AssertionTypes.LENGTH)
+        return self.__assert(length, AssertionTypes.LENGTH)

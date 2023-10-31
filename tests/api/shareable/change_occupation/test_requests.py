@@ -1,19 +1,29 @@
-from http import HTTPStatus
-
-from src.api.models.qiwa.change_occupation import request_by_id_data
-from utils.assertion import assert_status_code, assert_that
+from utils.assertion import assert_that
 from utils.assertion.asserts import assert_data
 
 
-def test_getting_by_request_id(api):
-    request_data = api.change_occupation.get_random_request()
+def test_getting_by_request_id(qiwa):
+    request_data = qiwa.change_occupation.get_random_request()
     laborer_data = request_data.laborers[0]
 
-    response = api.change_occupation.get_request(request_data.request_id)
-    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-
-    json = request_by_id_data.parse_obj(response.json())
+    json = qiwa.change_occupation.get_request(request_data.request_id)
     assert_that(json.data).is_length(1)
     request_by_id = json.data[0].attributes
     assert_data(expected=request_data.dict(exclude={"id"}), actual=request_by_id.dict())
     assert_data(expected=laborer_data.dict(exclude={"request_number"}), actual=request_by_id.dict())
+
+
+def test_creating_request(qiwa, laborer):
+    json = qiwa.change_occupation.create_request(laborer)
+    assert_that(json.data).is_length(1)
+
+    request_attributes = json.data[0].attributes
+    assert_that(request_attributes.personal_number).as_("personal number").equals_to(laborer.personal_number)
+
+    requests = qiwa.change_occupation.get_requests_by_request_number(request_attributes.request_id)
+    assert_that(requests).is_length(1)
+
+    created_request = requests[0]
+    assert_that(created_request.status_id).as_("status id").equals_to(3)
+    assert_that(created_request.employee_personal_number).as_("personal number").equals_to(laborer.personal_number)
+    assert_that(created_request.new_occupation_id).as_("new occupation id").equals_to(laborer.occupation_code)

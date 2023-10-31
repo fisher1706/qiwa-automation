@@ -8,10 +8,11 @@ from src.api.models.qiwa.change_occupation import (
     requests_laborers_data,
     users_data,
 )
+from src.api.payloads.raw.change_occupation import Laborer
 
 
 @pytest.fixture(scope="module")
-def api() -> QiwaApi:
+def qiwa() -> QiwaApi:
     qiwa = QiwaApi.login_as_user("1048285405").select_company(sequence_number=136401)
     qiwa.change_occupation.pass_ott_authorization()
     return qiwa
@@ -23,17 +24,17 @@ def pytest_generate_tests(metafunc):
             "/requests": (
                 ChangeOccupationApi.get_requests,
                 requests_data,
-                ChangeOccupationController.get_requests_data,
+                ChangeOccupationController.get_requests,
             ),
             "/requests-laborers": (
                 ChangeOccupationApi.get_requests_laborers,
                 requests_laborers_data,
-                ChangeOccupationController.get_requests_laborers_data,
+                ChangeOccupationController.get_requests_laborers,
             ),
             "/users": (
                 ChangeOccupationApi.get_users,
                 users_data,
-                ChangeOccupationController.get_users_data,
+                ChangeOccupationController.get_users,
             ),
         }
         if metafunc.function.__name__ == "test_getting_total_items":
@@ -41,3 +42,15 @@ def pytest_generate_tests(metafunc):
         elif metafunc.function.__name__ == "test_getting_empty_page":
             params.pop("/requests-laborers")  # exclude /requests-laborers from test
         metafunc.parametrize("endpoint", params.values(), ids=params.keys())
+
+
+@pytest.fixture
+def laborer(qiwa):
+    laborer = Laborer(personal_number="2037659303", occupation_code="712501")
+    requests = qiwa.change_occupation.get_requests_by_laborer(laborer.personal_number)
+    for request in requests:
+        qiwa.change_occupation.api.cancel_request(request["request_number"])
+    yield laborer
+    requests = qiwa.change_occupation.get_requests_by_laborer(laborer.personal_number)
+    for request in requests:
+        qiwa.change_occupation.api.cancel_request(request["request_number"])

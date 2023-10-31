@@ -128,14 +128,12 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Click on next page button in appointments history")
     def click_appointments_history_next_page(self):
-        # self.button_appointments_history_next_page.wait_until(be.visible)
         self.button_appointments_history_next_page.click()
         self.wait_appointments_history_table_load()
         return self
 
     @allure.step("Click on previous page button in appointments history")
     def click_appointments_history_previous_page(self):
-        # self.button_appointments_history_previous_page.wait_until(be.visible)
         self.button_appointments_history_previous_page.click()
         self.wait_appointments_history_table_load()
         return self
