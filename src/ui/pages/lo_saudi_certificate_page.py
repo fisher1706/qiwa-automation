@@ -2,7 +2,7 @@ import allure
 from selene import be, have, query
 from selene.support.shared.jquery_style import s, ss
 
-from data.constants import SaudiCertificateDashboard, OtpMessage
+from data.constants import OtpMessage, SaudiCertificateDashboard
 
 
 class LoSaudiCertificatePage:
@@ -57,9 +57,7 @@ class LoSaudiCertificatePage:
 
     @allure.step
     def validate_cr_number(self, expected_cr_number: str):
-        self.cer_cr_number_after.should(be.existing).should(
-            have.exact_text(expected_cr_number)
-        )
+        self.cer_cr_number_after.should(be.existing).should(have.exact_text(expected_cr_number))
         return self
 
     @allure.step
@@ -78,9 +76,7 @@ class LoSaudiCertificatePage:
 
     @allure.step
     def validate_issue_date(self, expected_issue_date):
-        self.cer_issue_date_after.should(be.existing).should(
-            have.exact_text(expected_issue_date)
-        )
+        self.cer_issue_date_after.should(be.existing).should(have.exact_text(expected_issue_date))
         return self
 
     @allure.step

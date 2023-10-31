@@ -8,13 +8,19 @@ from data.dedicated.models.services import Service
 from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
-from src.api.payloads.ibm.createnewappointment import Header, UserInfo, Body, EstablishmentDetails, RequesterDetails, \
-    CreateNewAppointmentRqPayload, CreateNewAppointmentRq
+from src.api.payloads.ibm.createnewappointment import (
+    Body,
+    CreateNewAppointmentRq,
+    CreateNewAppointmentRqPayload,
+    EstablishmentDetails,
+    Header,
+    RequesterDetails,
+    UserInfo,
+)
 from utils.assertion import assert_status_code
 
 
 class CreateAppointment:
-
     def __init__(self):
         self.client = HTTPClient()
         self.url = config.settings.ibm_url

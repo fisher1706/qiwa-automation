@@ -6,9 +6,9 @@ import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
 
+import config
 from data.constants import Language
 from data.lo.constants import AppointmentsCancel as Ac
-import config
 from src.ui.components.raw.dropdown import Dropdown
 from src.ui.components.raw.table import Table
 from src.ui.pages.appointments.labor_office_appointments_create import (

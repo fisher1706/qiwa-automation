@@ -4,7 +4,7 @@ from datetime import datetime
 
 import allure
 from selene import have, query
-from selene.support.shared.jquery_style import ss, s
+from selene.support.shared.jquery_style import s, ss
 
 
 class BusinessPage:
@@ -15,7 +15,7 @@ class BusinessPage:
     QIWA_SERVICES = ss(".service-item")
     CHANGE_OCCUPATION = QIWA_SERVICES.element_by(have.text("Change Occupation"))
     LO_WORK_PERMIT = QIWA_SERVICES.element_by(have.text("Work Permit"))
-    LO_SAUDI_CERTIFICATE = s('.service-item .btn')
+    LO_SAUDI_CERTIFICATE = s(".service-item .btn")
 
     def check_establishment_status(self, status: str) -> BusinessPage:
         self.ESTABLISHMENT_STATUS.should(have.exact_text(status))

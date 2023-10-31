@@ -23,17 +23,17 @@ not_in_nitaqat_appointment_rs = AppointmentStatus(
     Code="E0000949",
     ArabicMsg="عفوًا، لايمكن حجز موعد لهذه الخدمة لإن المنشأة غير " "مدرجة في نطاقات",
     EnglishMsg="Sorry , you can not be able to book appointment "
-               "because the establishment does not exists in NITAQAT",
+    "because the establishment does not exists in NITAQAT",
 )
 
 red_nitaqat_appointment_rs = AppointmentStatus(
     Status="ERROR",
     Code="ODM00102",
     ArabicMsg="عفواً، نطاق كيان المنشأة يجب أن يكون في الأخضر المنخفض أو "
-              "أعلى الرجاء رفع نسبة التوطين في الكيان للاستفادة من الخدمات",
+    "أعلى الرجاء رفع نسبة التوطين في الكيان للاستفادة من الخدمات",
     EnglishMsg="Sorry, Nitaqat color of the establishment entity must be "
-               "in low green or above , please raise the nationalization "
-               "percentage in the entity to benefit from the services.",
+    "in low green or above , please raise the nationalization "
+    "percentage in the entity to benefit from the services.",
 )
 
 lo_sc_user = User(
@@ -103,7 +103,8 @@ successful_issuing_message = (
 
 unsuccessful_issuing_message_red_nitaqat = (
     "Nitaqat level is too low Your Nitaqat level must be at least Low Green or higher to request this service. "
-    "Please select a different one or contact our support team.")
+    "Please select a different one or contact our support team."
+)
 
 today_date = datetime.today().strftime("%d/%m/%Y")
 date_after_90_days = (datetime.today() + timedelta(days=90)).strftime("%d/%m/%Y")
