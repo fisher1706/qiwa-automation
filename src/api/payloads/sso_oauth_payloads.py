@@ -62,8 +62,8 @@ def otp_code_payload(otp: str) -> dict:
     return password(attributes).dict(exclude_unset=True)
 
 
-def security_question_payload() -> dict:
-    attributes = SecurityQuestion()
+def security_question_payload(first_answer, second_answer) -> dict:
+    attributes = SecurityQuestion(mother_dob=first_answer, mother_name=second_answer)
     return account_attributes(attributes).dict(by_alias=True)
 
 
