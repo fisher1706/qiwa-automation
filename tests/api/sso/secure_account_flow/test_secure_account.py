@@ -25,8 +25,6 @@ def test_new_registered_user_navigated_to_secure_account_flow_after_login(accoun
 def test_that_user_is_able_to_resend_otp_on_confirm_e_mail_step(account_data):
     qiwa = QiwaApi()
     qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
-    qiwa = QiwaApi()
-    qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
     qiwa.sso.verify_email_with_otp_code()
     response = qiwa.sso.resend_otp_on_secure_otp_flow()
     assert_that(response["value"]).equals_to(account_data.email)
@@ -34,8 +32,6 @@ def test_that_user_is_able_to_resend_otp_on_confirm_e_mail_step(account_data):
 
 @case_id(57415)
 def test_that_user_is_able_to_save_answers_for_security_questions_for_his_account(account_data):
-    qiwa = QiwaApi()
-    qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
     qiwa = QiwaApi()
     qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
     acceptance_criteria = qiwa.sso.check_acceptance_criteria()
@@ -47,8 +43,6 @@ def test_that_user_is_able_to_save_answers_for_security_questions_for_his_accoun
 
 @case_id(57416)
 def test_user_cant_gave_the_same_answer_for_security_question_twice(account_data):
-    qiwa = QiwaApi()
-    qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
     qiwa = QiwaApi()
     qiwa.sso.login_user(personal_number=account_data.personal_number, password=account_data.password)
     acceptance_criteria = qiwa.sso.check_acceptance_criteria()
