@@ -151,3 +151,12 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         expired_date = response.json()["subscription"]["expireAt"]
         return expired_date
+
+    def cron_job_for_expiry_subscription(self) -> UserManagementApi:
+        headers = {"Authorization Bearer": "18353afa-2144-437e-89d5-458d788c6549"}
+        self.client.post(
+            url=self.url,
+            endpoint="/api/private/trigger-expire-job",
+            headers=headers,
+        )
+        return self

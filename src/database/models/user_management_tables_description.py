@@ -50,7 +50,7 @@ class UMSubscriptions(Base):
     unified_number = Column("FK_UnifiedNumber", BigInteger, primary_key=True, nullable=False)
     personal_number = Column("FK_Idno", VARCHAR(20))
     subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
-    expire_date = Column("ExpireDate", DateTime)
+    expiry_date = Column("ExpireDate", DateTime)
 
 
 class UserPrivileges(Base):

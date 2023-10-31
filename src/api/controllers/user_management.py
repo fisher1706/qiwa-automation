@@ -20,3 +20,14 @@ class UserManagementControllers(UserManagementApi):
         expired_date = UserManagementRequests().get_expired_date(personal_number, unified_number)
         assert utc_time == expired_date
         return self
+
+    @allure.step("Expiry user subscription")
+    def expiry_user_subscription(
+        self, personal_number: str, unified_number: int, expiry_date: datetime
+    ) -> UserManagementControllers:
+        # expiry_date should be in format '2024-10-20 06:00:00.000'
+        UserManagementRequests().update_expiry_date_for_um_subscriptions(
+            personal_number, unified_number, expiry_date
+        )
+        self.cron_job_for_expiry_subscription()
+        return self
