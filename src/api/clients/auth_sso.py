@@ -43,11 +43,11 @@ class AuthApiSSO:
 
     @allure.step
     def init_sso_hsm(
-        self,
-        personal_number: str,
-        birth_date: str,
-        expected_code: int = 200,
-        requests_number: int = None,
+            self,
+            personal_number: str,
+            birth_date: str,
+            expected_code: int = 200,
+            requests_number: int = None,
     ) -> AuthApiSSO:
         payload = init_sso_hsm_payload(personal_number, birth_date)
         response: Response = ...
@@ -69,7 +69,7 @@ class AuthApiSSO:
 
     @allure.step
     def init_hsm_with_out_birthday(
-        self, personal_number: str, expected_code: int = HTTPStatus.OK
+            self, personal_number: str, expected_code: int = HTTPStatus.OK
     ) -> AuthApiSSO:
         payload = init_sso_hsm_payload(personal_number)
         response = self.api.post(
@@ -112,7 +112,7 @@ class AuthApiSSO:
 
     @allure.step
     def active_sso_hsm(
-        self, expected_code: int = 200, absher: str = "000000"
+            self, expected_code: int = 200, absher: str = "000000"
     ) -> tuple[Response, AuthApiSSO]:
         response = self.api.post(
             url=self.url,
@@ -154,7 +154,7 @@ class AuthApiSSO:
 
     @allure.step
     def confirm_verify_email_with_otp_code(
-        self, otp_code: str = "0000", expected_code: int = 200
+            self, otp_code: str = "0000", expected_code: int = 200
     ) -> AuthApiSSO:
         response = self.api.post(
             url=self.url,
@@ -168,7 +168,7 @@ class AuthApiSSO:
 
     @allure.step
     def answer_security_question(
-        self, first_answer="1-1-2011", second_answer="Test name", expected_code: int = 200
+            self, first_answer="1-1-2011", second_answer="Test name", expected_code: int = 200
     ) -> AuthApiSSO:
         payload = security_question_payload(first_answer, second_answer)
         response = self.api.post(url=self.url, endpoint="/security-questions", json=payload)
@@ -180,7 +180,10 @@ class AuthApiSSO:
         # disable pylint because needed to check same question for the API
         payload = {
             "data": {
-                "attributes": {"mother-dob": "1-1-2011", "mother-dob": "1-1-2011"},  # pylint: disable = duplicate-key
+                "attributes": {  # pylint: disable = duplicate-key
+                    "mother-dob": "1-1-2011",
+                    "mother-dob": "1-1-2011",
+                },
                 "type": "account",
             }
         }
@@ -190,7 +193,7 @@ class AuthApiSSO:
 
     @allure.step
     def register_user(
-        self, account: Account, requests_number: int = None, expected_code: int = 200
+            self, account: Account, requests_number: int = None, expected_code: int = 200
     ) -> AuthApiSSO:
         response: Response = ...
         if requests_number is not None:
