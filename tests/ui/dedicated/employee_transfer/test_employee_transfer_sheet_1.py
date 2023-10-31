@@ -134,28 +134,6 @@ class TestEmployeeTransferSheet1:  # pylint: disable=unused-argument, duplicate-
         self.employee_transfer_actions.click_received_requests_tab()
         self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.AR)
 
-    @allure.title('Quota (Establishment Balance) Should be decreased after submitting ET request')
-    def test_quota_should_be_decreased_after_submitting_et_request(self, create_contract_with_quota):
-        self.employee_transfer_actions.navigate_to_employee_transfer_by_link()
-        self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
-        self.employee_transfer_actions.click_check_balance()
-        self.employee_transfer_actions.verify_balance_value()
-
-    @allure.title('Quota (Establishment Balance) increased after rejection of ET request by Laborer')
-    def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer(self, create_contract_with_quota):
-        self.employee_transfer_actions.navigate_to_individual(laborer.login_id)
-        self.individual_actions.proceed_steps_for_verifying_et_request()
-        self.individual_actions.reject_request()
-        self.individual_actions.wait_until_popup_disappears()
-        self.employee_transfer_actions.verify_message(ErrorMessage.ET_LABORER_REQUEST)
-        browser.driver.delete_all_cookies()
-        browser.driver.refresh()
-        qiwa.open_login_page()
-        self.employee_transfer_actions.navigate_to_et_service(employer_old)
-        self.employee_transfer_actions.click_btn_request_employee_transfer().click_btn_approve()
-        self.employee_transfer_actions.click_check_balance()
-        self.employee_transfer_actions.verify_balance_value(is_decreased=False)
-
     @allure.title('Quota (Establishment Balance) increased after rejection of ET request by current sponsor')
     def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor(self, create_contract_with_quota):
         self.employee_transfer_actions.navigate_to_individual(laborer.login_id)

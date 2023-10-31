@@ -23,6 +23,8 @@ class EmployeeTransferV2Page(
     own_establishment = tiles.first
     another_establishment = tiles.second
 
+    recruitment_quota = ss('[data-testid="desktop_wrapper"] p').second
+
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
     tables = ss("table")
@@ -48,6 +50,9 @@ class EmployeeTransferV2Page(
     def select_another_establishment(self) -> EmployeeTransferV2Page:
         self.another_establishment.click()
         return self
+
+    def get_recruitment_quota(self) -> int:
+        return int(self.recruitment_quota.get(query.text))
 
     def click_btn_proceed_to_contract_management(self) -> EmployeeTransferV2Page:
         self.btn_proceed_to_contract_management.click()

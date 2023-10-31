@@ -8,14 +8,17 @@ from data.constants import Language
 
 
 class Header:
-    dropdown_language = ss('[data-component="MenuTrigger"] p')
-    links = ss("[data-component='Menu'] a")
-    language_links = {
-        Language.EN: links.first,
-        Language.AR: links.second,
-    }
-    profile = s("[data-testid='menu-trigger'] p")
-    dropdown_profile = ss("[data-component='Menu'] > div")
+    def __init__(self, web_element=None):
+        self.web_element = web_element if web_element else s('[data-component="Navigation"]')
+        self.dropdown_language = ss('[data-component="MenuTrigger"] p')
+        self.links = ss("[data-component='Menu'] a")
+        self.language_links = {
+            Language.EN: self.links.first,
+            Language.AR: self.links.second,
+        }
+        self.profile = self.web_element.s("[data-testid='menu-trigger'] p")
+        self.profile_individuals = self.web_element.ss('[data-component="MenuTrigger"] p')
+        self.dropdown_profile = ss("[data-component='Menu'] > div")
 
     def _select_language(self, language: str):
         element = self.language_links[language]
@@ -42,6 +45,11 @@ class Header:
     @allure.step
     def click_on_menu(self) -> Header:
         self.profile.click()
+        return self
+
+    @allure.step
+    def click_on_menu_individuals(self, personal_number: int) -> Header:
+        self.profile_individuals.element_by(have.text(str(personal_number))).click()
         return self
 
     @allure.step
