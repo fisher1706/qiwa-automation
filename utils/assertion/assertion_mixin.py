@@ -4,6 +4,7 @@ from collections.abc import Mapping
 from typing import TypeVar
 
 import allure
+from pytest_check import check
 
 from utils.assertion.assertion_base import AssertionBase
 from utils.assertion.assertion_types import AssertionTypes
@@ -12,6 +13,7 @@ T = TypeVar("T")
 
 
 class AssertionMixin(AssertionBase):
+    @check.check_func
     def __assert(self, expected: T, method: AssertionTypes) -> AssertionMixin:
         operator, context = method.value
         step_name = f'Assert that {self._description} {context} "{expected}"'
