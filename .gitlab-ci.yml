@@ -310,7 +310,7 @@ lo_api_testmo_report:
   variables:
     TESTMO_PROJECT_ID: 16
     ALLURE_PROJECT_ID: lo-api-daily
-  needs: [lo_ui_tests]
+  needs: [lo_api_tests]
 
 delegation_ui_testmo_report:
   <<: *testmo_report
@@ -395,7 +395,7 @@ lo_api_allure_report:
   <<: *allure_report
   variables:
     ALLURE_PROJECT_ID: lo-api-daily
-  needs: [lo_ui_tests]
+  needs: [lo_api_tests]
 
 lo_ui_allure_report:
   <<: *allure_report
@@ -445,3 +445,15 @@ visa_ui_discord_notification:
   variables:
     WEBHOOK: $VISA_UI_DAILY
   needs: [visa_ui_tests]
+
+lo_ui_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $LO_UI_DAILY
+  needs: [lo_ui_tests]
+
+lo_api_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $LO_API_DAILY
+  needs: [lo_api_tests]
