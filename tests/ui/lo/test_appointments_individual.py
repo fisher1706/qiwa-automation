@@ -77,6 +77,7 @@ def test_individual_view_appointment_from_history():
     qiwa.labor_office_appointments_page.wait_page_to_load()
 
     qiwa.labor_office_appointments_page.search_appointments("35778")
+    qiwa.labor_office_appointments_page.view_appointment_from_history_last()
     qiwa.labor_office_appointments_view_page.verify_general_info_row()
     qiwa.labor_office_appointments_view_page.verify_general_table()
     qiwa.labor_office_appointments_view_page.verify_requester_info()
