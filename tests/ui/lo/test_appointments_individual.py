@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
@@ -7,6 +6,7 @@ from data.lo.constants import (
     IndividualUser,
     OfficesInfo,
     ServicesInfo,
+    SubscribedUser,
 )
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
@@ -37,12 +37,10 @@ def test_view_appointments_page():
 
 @allure.title("Appointments[Individual]: Book appointment")
 @case_id(39180)
-@pytest.mark.parametrize("language", [Language.EN])
-def test_book_individual_appointment(language):
+def test_book_individual_appointment():
     qiwa.login_as_user(login=IndividualUser.ID_2)
     qiwa.workspace_page.should_have_workspace_list_appear()
-    qiwa.header.change_local(language)
-    qiwa.workspace_page.language = language
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
@@ -54,7 +52,7 @@ def test_book_individual_appointment(language):
         appointment_reason=AppointmentReason.IN_PERSON,
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
-        region=OfficesInfo.REGION_MADINAH[language],
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
@@ -64,3 +62,24 @@ def test_book_individual_appointment(language):
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+
+@allure.title("Appointments[Individual]: View details via appointments history")
+@case_id(41776)
+def test_individual_view_appointment_from_history():
+    qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+
+    qiwa.labor_office_appointments_page.search_appointments("35778")
+    qiwa.labor_office_appointments_view_page.verify_general_info_row()
+    qiwa.labor_office_appointments_view_page.verify_general_table()
+    qiwa.labor_office_appointments_view_page.verify_requester_info()
+    qiwa.labor_office_appointments_view_page.verify_map_elements()
+    qiwa.labor_office_appointments_view_page.verify_map_functions()
+    qiwa.labor_office_appointments_view_page.verify_print_btn()
