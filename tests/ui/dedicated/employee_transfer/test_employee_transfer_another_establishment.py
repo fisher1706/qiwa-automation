@@ -291,20 +291,65 @@ def test_current_sponsor_able_to_reject_et_request():
     individual_actions.approve_request()
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
-    qiwa.login_page.wait_login_page_to_load()
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service_current_sponsor(current_sponsor)
 
     qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.login_id) \
-        .click_btn_reject() \
+        .click_btn_reject()\
+        .fill_rejection_reason() \
         .click_btn_reject_request()
-
-    qiwa.code_verification.fill_in_code() \
-        .click_confirm_button()
 
     qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.EN])
 
     qiwa.header.change_local(Language.AR)
 
     qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.AR])
+
+
+@allure.title('Quota (Establishment Balance) increased after rejection of ET request by current sponsor')
+@case_id(123669)
+def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor():
+    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_with_sponsor.login_id)
+    employee_transfer_actions = EmployeeTransferActions()
+    employee_transfer_actions.navigate_to_et_service(employer)
+
+    establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
+
+    employee_transfer_actions.create_et_request_from_another_establishment(laborer_with_sponsor)
+
+    qiwa.employee_transfer_page.click_btn_back_to_employee_transfer()
+
+    qiwa.header.click_on_menu().click_on_logout()
+    qiwa.login_page.wait_login_page_to_load()
+    qiwa.header.change_local(Language.EN)
+
+    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.login_id)
+
+    qiwa.code_verification.fill_in_code() \
+        .click_confirm_button()
+
+    # TODO(dp): Remove after fixing an issue with changing the language
+    qiwa.header.change_local(Language.EN)
+
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+        .click_agree_checkbox()
+
+    individual_actions = IndividualActions()
+    individual_actions.approve_request()
+
+    qiwa.header.click_on_menu_individuals().click_on_logout()
+
+    employee_transfer_actions.navigate_to_et_service_current_sponsor(current_sponsor)
+
+    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.login_id) \
+        .click_btn_reject()\
+        .fill_rejection_reason() \
+        .click_btn_reject_request()
+
+    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.EN])
+
+    qiwa.header.click_on_menu().click_on_logout()
+
+    employee_transfer_actions.navigate_to_et_service(employer)
+
+    assert_that(establishment_balance).equals_to(qiwa.employee_transfer_page.get_recruitment_quota())
