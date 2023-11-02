@@ -1,8 +1,9 @@
 import json
 from typing import Any, Optional, TypeVar
-from pytest_check import check
+
 import allure
 from deepdiff import DeepDiff
+from pytest_check import check, check_func
 
 from utils.assertion.assertion_mixin import AssertionMixin
 
@@ -10,11 +11,11 @@ T = TypeVar("T")
 
 
 def assert_that(actual: T) -> AssertionMixin:
-    assertion = AssertionMixin(actual=actual)
+    assertion = AssertionMixin(actual=actual, decorator=check_func)
     return assertion
 
 
-def assert_status_code(code: int) -> AssertionMixin:  # Refactor to strict
+def assert_status_code(code: int) -> AssertionMixin:
     assertion = AssertionMixin(actual=code)
     return assertion.as_("status code")
 
@@ -42,9 +43,7 @@ def assert_data(*, expected: Any, actual: Any, title: Optional[str] = None) -> N
 
             if difference:
                 allure.attach(
-                    json.dumps(
-                        difference, indent=2, ensure_ascii=False, default=str
-                    ),
+                    json.dumps(difference, indent=2, ensure_ascii=False, default=str),
                     "Difference",
                     allure.attachment_type.JSON,
                 )

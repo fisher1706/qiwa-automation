@@ -3,9 +3,6 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TypeVar
 
-import allure
-from pytest_check import check
-
 from utils.assertion.assertion_base import AssertionBase
 from utils.assertion.assertion_types import AssertionTypes
 
@@ -13,15 +10,6 @@ T = TypeVar("T")
 
 
 class AssertionMixin(AssertionBase):
-    @check.check_func
-    def __assert(self, expected: T, method: AssertionTypes) -> AssertionMixin:
-        operator, context = method.value
-        step_name = f'Assert that {self._description} {context} "{expected}"'
-        with allure.step(step_name):
-            template = self._error_template(expected, context)
-            assert operator(self.actual, expected), template
-            return self
-
     def has(self, **kwargs) -> AssertionMixin:
         is_dict = isinstance(self.actual, Mapping)
         for k, v in kwargs.items():
@@ -32,17 +20,17 @@ class AssertionMixin(AssertionBase):
         return self
 
     def equals_to(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.EQUAL)
+        self._assert(expected, AssertionTypes.EQUAL)
+        return self
 
     def not_equals_to(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.NOT_EQUAL)
+        self._assert(expected, AssertionTypes.NOT_EQUAL)
+        return self
 
     def in_(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.IN_)
+        self._assert(expected, AssertionTypes.IN_)
+        return self
 
     def is_length(self, length: int) -> AssertionMixin:
-        if not hasattr(self.actual, "__len__"):
-            raise NotImplementedError(
-                f'The expected value "{self.actual}" {type(self.actual)} has no length attribute'
-            )
-        return self.__assert(length, AssertionTypes.LENGTH)
+        self._assert(length, AssertionTypes.LENGTH)
+        return self
