@@ -121,6 +121,7 @@ PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
     "You cannot issue visas because you don’t meet the {} mandatory requirements.\n"
     "See unmet requirements"
 )
+ESTABLISHMENT_FUND = "Establishment fund"
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
