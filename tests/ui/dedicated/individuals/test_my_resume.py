@@ -98,7 +98,6 @@ def test_for_inactive_links():
 
 
 @allure.title('AS-365 Test for viewing statistics')
-@case_id()
 def test_for_viewing_statistics():
     qiwa.login_as_user(user1.login_id)
     qiwa.workspace_page.select_individual_account()
@@ -108,7 +107,6 @@ def test_for_viewing_statistics():
 
 
 @allure.title('AS-366 Test for generating views')
-@case_id()
 def test_for_generating_views():
     qiwa.login_as_user(user1.login_id)
     qiwa.workspace_page.select_individual_account()

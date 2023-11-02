@@ -143,10 +143,6 @@ class IndividualPage:
         self.dropdown.all('[role="option"]').element_by(have.text(reason)).click()
         return self
 
-    def change_locale(self, locale: str = Language.AR) -> IndividualPage:
-        self.locale.should(be.visible).all("option").element_by(have.value(locale)).click()
-        return self
-
     def wait_until_popup_disappears(self) -> IndividualPage:
         self.modal.wait_until(be.not_.visible)
         return self
