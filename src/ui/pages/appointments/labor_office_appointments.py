@@ -6,6 +6,7 @@ import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
 
+import config
 from data.constants import Language
 from data.lo.constants import AppointmentsCancel as Ac
 from src.ui.components.raw.dropdown import Dropdown
@@ -300,4 +301,11 @@ class LaborOfficeAppointmentsPage:
     @allure.step("Verify Previous button in appointments history table is visible")
     def verify_appointments_history_previous_button(self):
         self.button_appointments_history_previous_page.should(be.visible)
+        return self
+
+    @allure.step
+    def switch_to_appointment_booking_tab(self):
+        # should be used after select lo service from UI
+        browser.switch_to_next_tab()
+        assert_that(browser.driver.current_url.startswith(config.qiwa_urls.appointment_booking))
         return self

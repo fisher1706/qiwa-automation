@@ -18,6 +18,7 @@ class LaborOfficeAppointmentsCreatePage:
     available_dates = ss('//*[@role="button" and not(@aria-disabled)]')
     appointment_reason_section = s("#reason")
     radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
+    in_person_appointment = s('//fieldset//label[4]//p[@id="1-label"]')
 
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
@@ -139,3 +140,13 @@ class LaborOfficeAppointmentsCreatePage:
         self.select_time()
         self.click_next_step_button()
         self.click_next_step_button()
+
+    @allure.step
+    def select_establishment_by_seq_number(self, labor_office_id: str, sequence_number: str):
+        s(f"//div[@for='{labor_office_id}-{sequence_number}']").click()
+        return self
+
+    @allure.step
+    def select_in_person_appointments(self):
+        self.in_person_appointment.click()
+        return self

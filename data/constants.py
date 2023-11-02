@@ -278,3 +278,18 @@ class Titles:
 
 class Workspaces:
     BUSINESS_ACCOUNT_CARD = {Language.EN: "Business Account", Language.AR: "حساب الأعمال"}
+
+
+class OtpMessage:
+    TITLE = "Confirmation"
+    PROMPT = "Please enter the OTP to proceed"
+    CONFIRMATION = "Please inform client that the OTP is sent to the email"
+    ERROR = "OTP is wrong. Try again or resend email to the client."
+
+
+class SaudiCertificateDashboard:
+    HEADER = "Saudization Certificate"
+    SUB_HEADER = (
+        "Saudization certificate states that the company has achieved the required Saudization rates based "
+        "on Nitaqat."
+    )

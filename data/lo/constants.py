@@ -203,6 +203,9 @@ class ServicesInfo:
     EDIT_SUB_SERVICE_SUCCESS_MESSAGE = "Subservice edited successfully"
     SERVICE_STATUS_SUCCESS_MESSAGE = "Service status changed successfully"
 
+    SAUDI_CERTIFICATE_SERVICE = "Saudization Certificate"
+    SAUDI_CERTIFICATE_SUB_SERVICE = "Create Saudi Certificate"
+
 
 @dataclass
 class RequesterTypeId:
