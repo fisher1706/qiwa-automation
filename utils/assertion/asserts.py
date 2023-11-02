@@ -1,6 +1,6 @@
 import json
-from typing import Any, TypeVar, Optional
-
+from typing import Any, Optional, TypeVar
+from pytest_check import check
 import allure
 from deepdiff import DeepDiff
 
@@ -14,12 +14,14 @@ def assert_that(actual: T) -> AssertionMixin:
     return assertion
 
 
-def assert_status_code(code: int) -> AssertionMixin:
+def assert_status_code(code: int) -> AssertionMixin:  # Refactor to strict
     assertion = AssertionMixin(actual=code)
     return assertion.as_("status code")
 
 
+@check.check_func
 def assert_data(*, expected: Any, actual: Any, title: Optional[str] = None) -> None:
+    exclude = ["dictionary_item_added", "dictionary_item_removed", "attribute_added"]
     with allure.step(f"Assert {title or 'data'}"):
         difference = DeepDiff(expected, actual)
 
@@ -33,10 +35,17 @@ def assert_data(*, expected: Any, actual: Any, title: Optional[str] = None) -> N
             "Actual",
             allure.attachment_type.JSON,
         )
-        if "values_changed" in difference.keys():
-            allure.attach(
-                json.dumps(difference["values_changed"], indent=2, ensure_ascii=False, default=str),
-                "Difference",
-                allure.attachment_type.JSON,
-            )
-            raise AssertionError(difference["values_changed"])
+        if difference:
+            for rule in exclude:
+                if rule in difference.keys():
+                    difference.pop(rule)
+
+            if difference:
+                allure.attach(
+                    json.dumps(
+                        difference, indent=2, ensure_ascii=False, default=str
+                    ),
+                    "Difference",
+                    allure.attachment_type.JSON,
+                )
+                raise AssertionError(difference)
