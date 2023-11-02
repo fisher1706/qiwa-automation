@@ -1,11 +1,12 @@
 import allure
 import pytest
 
-from data.constants import Language, EmployeeTransfer
+from data.constants import EmployeeTransfer, Language
 from data.dedicated.employee_trasfer.employee_transfer import (
     employer,
+    employer_between_my_establishments,
     laborer_between_my_establishments,
-    laborer_between_my_establishments_existing_contract, employer_between_my_establishments,
+    laborer_between_my_establishments_existing_contract,
 )
 from data.dedicated.enums import ServicesAndTools
 from src.api.clients.employee_transfer import EmployeeTransferApi

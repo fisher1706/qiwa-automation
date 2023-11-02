@@ -13,10 +13,7 @@ from data.constants import (
     Language,
     UserInfo,
 )
-from data.dedicated.employee_trasfer.employee_transfer import (
-    Laborer,
-    employer,
-)
+from data.dedicated.employee_trasfer.employee_transfer import Laborer, employer
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.dedicated.models.user import User
 from data.validation_message import SuccessMessage
