@@ -24,12 +24,20 @@ class IndividualPage:
     dropdown = s(".tippy-content")
     locale = s("#language-select")
     modal = s(".basic-modal__header")
+    modal_meet_qiwa = s('//*[@data-component="Modal"]')
+    button_close_modal = s('//*[@aria-label="Close modal"]')
     individual_table = Table(s(".table"))
     status = s('[role="status"]')
     see_all_services = s('//a[@href="/services"]')
 
+    @allure.step("Close Meet Qiwa 2.0 modal")
+    def close_meet_qiwa_modal(self):
+        if self.modal_meet_qiwa.wait_until(be.visible):
+            self.button_close_modal.click()
+
     @allure.step("Wait Individual page to load")
     def wait_page_to_load(self) -> IndividualPage:
+        self.close_meet_qiwa_modal()
         self.service_card.first.should(be.visible)
         return self
 
