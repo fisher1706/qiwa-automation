@@ -4,6 +4,7 @@ import allure
 from selene.api import Element, be, command, have, query, s, ss
 
 from data.visa.constants import (
+    ESTABLISHMENT_FUND,
     FILTERS,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
@@ -12,10 +13,12 @@ from data.visa.constants import (
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
     ColName,
+    Numbers,
     VisaType,
 )
 from src.ui.components.raw.table import Table
 from src.ui.pages.visa_pages.base_page import BasePage
+from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert, soft_assert_text
 from utils.pdf_parser import (
     file_is_valid_pdf,
@@ -54,6 +57,10 @@ class PermWorkVisaPage(BasePage):
     print_action = s('//button/p[contains(text(), "Print")]')
     view_action = s('//button/p[contains(text(), "View details")]')
     establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
+    establishment_fund_section_title = establishment_fund_section.ss("./div").first
+    establishment_fund_table = Table(establishment_fund_section.s(".//table"))
+    establishment_fund_left_cell = establishment_fund_table.cell(row=1, column=1)
+    establishment_fund_right_cell = establishment_fund_table.cell(row=1, column=2)
     increase_quota_establishment_button = s('//*[@data-testid="establishmentPhase"]//button')
     increase_quota_expansion_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
     nav_link_to_transitional_page = ss("//nav//li").second
@@ -65,6 +72,10 @@ class PermWorkVisaPage(BasePage):
     learn_more_section = s('//*[@id="knowledgeSection"]//p')
     recruitment_quota_section = s("#allowedQuotaSection")
     recruitment_quota_tab = s('//*[@data-testid="nav-Recruitment quota"]')
+    increase_fund_modal = s('//*[@data-testid="absherFundsModal"]')
+    increase_fund_modal_x_button = increase_fund_modal.ss(".//button").first
+    increase_fund_modal_close_button = increase_fund_modal.ss(".//button").second
+    increase_fund_modal_link = increase_fund_modal.s(".//a")
     navigation_list = s("#navigationList")
 
     @allure.step("Verify work visa page is opened")
@@ -198,3 +209,32 @@ class PermWorkVisaPage(BasePage):
             top_y <= element_y < top_y + 100,
             error_message=f"Element {element} is not scrolled properly",
         )
+
+    @allure.step("Verify establishment section")
+    def verify_absher_balance_section(self) -> None:
+        self.establishment_fund_tab.click()
+        soft_assert_text(
+            self.establishment_fund_section_title,
+            ESTABLISHMENT_FUND,
+            element_name="Establishment title section",
+        )
+        self.establishment_fund_left_cell.should(have_any_number())
+        self.establishment_fund_left_cell.s("./a").should(be.visible)
+        self.establishment_fund_right_cell.should(have_in_text_number(Numbers.TEN_THOUSAND))
+        self.open_increase_fund_modal()
+        self.verify_increase_fund_modal()
+        self.increase_fund_modal_x_button.click()
+        self.increase_fund_modal.should(be.hidden)
+        self.establishment_fund_left_cell.s("./a").click()
+        self.verify_increase_fund_modal()
+        self.increase_fund_modal_close_button.click()
+        self.increase_fund_modal.should(be.hidden)
+
+    def verify_increase_fund_modal(self) -> None:
+        self.increase_fund_modal.should(be.visible)
+        self.increase_fund_modal_x_button.should(be.visible).should(be.clickable)
+        self.increase_fund_modal_close_button.should(be.visible).should(be.clickable)
+        self.increase_fund_modal_link.should(be.visible)
+
+    def open_increase_fund_modal(self) -> None:
+        self.establishment_fund_left_cell.s("./a").click()

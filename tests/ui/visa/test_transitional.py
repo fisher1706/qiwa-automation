@@ -510,3 +510,13 @@ def test_verify_top_navigation_block_perm_work_visa_page(visa_mock):
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.verify_work_visa_page_open()
     qiwa.work_visa.verify_top_navigation_tabs_work()
+
+
+@case_id(25573)
+@allure.title('Test verifies absher balance section on permanent work visa page')
+def test_verify_absher_balance_perm_work_visa_page(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_absher_balance_section()
