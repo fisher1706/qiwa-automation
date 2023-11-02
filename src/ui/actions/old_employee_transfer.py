@@ -14,11 +14,11 @@ from data.constants import (
     UserInfo,
 )
 from data.dedicated.employee_trasfer.employee_transfer import (
-    Entity,
     Laborer,
-    employer_old,
+    employer,
 )
 from data.dedicated.enums import RowsPerPage, TransferType
+from data.dedicated.models.user import User
 from data.validation_message import SuccessMessage
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.old_contract_management import OldContractManagementActions
@@ -53,9 +53,9 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
                 time.sleep(1)
         return self
 
-    def navigate_to_et_service(self, entity: Entity):
-        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
-        self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
+    def navigate_to_et_service(self, user: User):
+        qiwa.login_as_user(user.personal_number, UserInfo.PASSWORD)
+        self.workspace_actions.select_company_account_with_sequence_number(user.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
         self.__switch_tab_with_timeout()
@@ -114,15 +114,15 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
     def confirm_creation_of_contract(
         self,
         entity_laborer: Laborer,
-        entity: Entity = employer_old,
+        user: User = employer,
         transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
         is_get_balance_value: bool = False,
         is_verify_popup: bool = False,
     ):
-        self.navigate_to_et_service(entity)
+        self.navigate_to_et_service(user)
         self.request_new_contract(
             transfer_type=transfer_type,
-            establishment_number=entity.establishment_number,
+            establishment_number=user.establishment_number,
             entity_laborer=entity_laborer,
             is_get_balance_value=is_get_balance_value,
         )
@@ -142,10 +142,10 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.verify_description(EmployeeTransfer.DESCRIPTION, locale)
         self.verify_establishment_id_label(EmployeeTransfer.ESTABLISHMENT_ID_LABEL, locale)
         self.verify_establishment_id_value(
-            f"{employer_old.labor_office_id}-{employer_old.sequence_number}"
+            f"{employer.labor_office_id}-{employer.sequence_number}"
         )
         self.verify_establishment_name_label(EmployeeTransfer.ESTABLISHMENT_NAME_LABEL, locale)
-        self.verify_establishment_name_value(employer_old.establishment_name_ar)
+        self.verify_establishment_name_value(employer.establishment_name_ar)
         self.btn_request_employee_transfer_should_be_enabled()
 
     def verify_terms_conditions_popup(self, locale: str):
