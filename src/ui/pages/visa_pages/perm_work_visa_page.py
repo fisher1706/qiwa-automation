@@ -4,6 +4,7 @@ from time import sleep
 import allure
 from dateutil.relativedelta import relativedelta
 from selene.api import Element, be, command, have, query, s, ss
+from selene.support.shared import browser
 
 from data.visa.constants import (
     ALLOWANCE_PERIOD_END_DATE,
@@ -88,10 +89,16 @@ class PermWorkVisaPage(BasePage):
     increase_fund_modal_x_button = increase_fund_modal.ss(".//button").first
     increase_fund_modal_close_button = increase_fund_modal.ss(".//button").second
     LINK = ".//a"
+    ICON = './/*[name()="svg"]'
     increase_fund_modal_link = increase_fund_modal.s(LINK)
     navigation_list = s("#navigationList")
     recruitment_quota_table_expansion = Table('//*[@data-testid="expansionPhase"]')
     recruitment_quota_table_establishment = Table('//*[@data-testid="establishmentPhase"]')
+    issue_visa_button = s('//*[@data-testid="issueVisaBtn"]')
+    increase_recruitment_quota_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
+    modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
+    modal_window_x_button = modal_window.ss(".//button").first
+    modal_window_close_button = modal_window.ss(".//button").second
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -373,3 +380,67 @@ class PermWorkVisaPage(BasePage):
         self.recruitment_quota_table_establishment.cell(row=6, column=2).should(
             have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
         )
+
+    @allure.step(
+        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled"
+    )
+    def verify_buttons(self, issue_enabled: bool, increase_enabled: bool) -> None:
+        if issue_enabled:
+            self.verify_issue_visa_button_enabled()
+        else:
+            self.verify_issue_visa_button_disabled()
+        if increase_enabled:
+            self.verify_increase_recruitment_quota_button_enabled()
+        else:
+            self.verify_increase_recruitment_quota_button_disabled()
+
+    def verify_issue_visa_button_enabled(self) -> None:
+        self.issue_visa_button.should(be.visible).should(be.clickable)
+        self.issue_visa_button.s(self.ICON).should(be.hidden)
+        curr_url = browser.driver.current_url
+        self.issue_visa_button.click()
+        soft_assert(
+            curr_url != browser.driver.current_url,
+            "Issue visa button not redirected to another page",
+        )
+        browser.driver.back()
+
+    def verify_issue_visa_button_disabled(self) -> None:
+        self.issue_visa_button.should(be.visible).should(be.clickable)
+        self.issue_visa_button.s(self.ICON).should(be.visible)
+        self.issue_visa_button.click()
+        self.verify_modal_error_window()
+        self.modal_window_x_button.click()
+        self.modal_window.should(be.hidden)
+        self.issue_visa_button.click()
+        self.verify_modal_error_window()
+        self.modal_window_close_button.click()
+        self.modal_window.should(be.hidden)
+
+    def verify_increase_recruitment_quota_button_enabled(self) -> None:
+        self.increase_recruitment_quota_button.should(be.visible).should(be.clickable)
+        self.increase_recruitment_quota_button.s(self.ICON).should(be.hidden)
+        curr_url = browser.driver.current_url
+        self.increase_recruitment_quota_button.click()
+        soft_assert(
+            curr_url != browser.driver.current_url,
+            "Increase recruitment quota button not redirected to another page",
+        )
+        browser.driver.back()
+
+    def verify_increase_recruitment_quota_button_disabled(self) -> None:
+        self.increase_recruitment_quota_button.should(be.visible).should(be.clickable)
+        self.increase_recruitment_quota_button.s(self.ICON).should(be.visible)
+        self.increase_recruitment_quota_button.click()
+        self.verify_modal_error_window()
+        self.modal_window_x_button.click()
+        self.modal_window.should(be.hidden)
+        self.increase_recruitment_quota_button.click()
+        self.verify_modal_error_window()
+        self.modal_window_close_button.click()
+        self.modal_window.should(be.hidden)
+
+    def verify_modal_error_window(self):
+        self.modal_window.should(be.visible)
+        self.modal_window_x_button.should(be.visible).should(be.clickable)
+        self.modal_window_close_button.should(be.visible).should(be.clickable)
