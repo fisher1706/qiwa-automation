@@ -159,7 +159,7 @@ def test_resend_action_on_delegation_details():
                                   delegation_id=delegation_data["delegationId"],
                                   establishment_name=general_data.ESTABLISHMENT_NAME,
                                   request_id=updated_delegation_request.id,
-                                  formatted_phone_number=delegation_data["formattedPartnerPhone"])
+                                  partner_phone_for_url=delegation_data["hiddenPartnerPhone"])
 
 
 @allure.title("Revoke action on the delegation details")
