@@ -21,7 +21,7 @@ def assert_status_code(code: int) -> AssertionMixin:
     return assertion.as_("status code")
 
 
-@check.check_func
+@check.check_func  # pylint: disable=no-member
 def assert_data(*, expected: Any, actual: Any, title: Optional[str] = None) -> None:
     exclude = ["dictionary_item_added", "dictionary_item_removed", "attribute_added"]
     with allure.step(f"Assert {title or 'data'}"):
