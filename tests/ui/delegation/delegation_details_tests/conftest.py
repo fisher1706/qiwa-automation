@@ -1,7 +1,10 @@
 from data.delegation import general_data
 from data.delegation.delegation_data import AllDelegations, DelegationDetails
 from src.api.app import QiwaApi
-from tests.ui.delegation.conftest import open_delegation_details_page
+from tests.ui.delegation.conftest import (
+    get_formatted_phone_number,
+    open_delegation_details_page,
+)
 
 
 def login_and_open_delegation_details_page_by_status(
@@ -31,10 +34,6 @@ def login_and_open_delegation_details_page(
     return delegation_details
 
 
-def formatted_phone_number(phone_number: str) -> str:
-    return f"{phone_number[:4]} {phone_number[4:6]} {phone_number[6:9]} {phone_number[9:]}"
-
-
 def get_partners_names_for_delegation_details(partner_list: list) -> list:
     partner_names = []
     for partner in partner_list:
@@ -46,7 +45,7 @@ def get_partners_phone_numbers_for_delegation_details(partner_list: list) -> lis
     partners_numbers = []
     for partner in partner_list:
         partner_phone = partner["partnerPhoneNumber"]
-        formatted_partner_phone_number = formatted_phone_number(partner_phone)
+        formatted_partner_phone_number = get_formatted_phone_number(partner_phone)
         partners_numbers.append(formatted_partner_phone_number)
     return partners_numbers
 

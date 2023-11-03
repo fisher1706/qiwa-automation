@@ -34,8 +34,8 @@ class CodeVerification:
         return self
 
     @allure.step
-    def resend_sms_code_link_should_have_text(self) -> None:
-        self.counter(5).should(have.exact_text("Resend SMS code (42)"))
+    def resend_sms_code_link_should_have_text(self, index: int = 5, seconds: str = 42) -> None:
+        self.counter(index).should(have.exact_text(f"Resend SMS code ({seconds})"))
 
     @allure.step
     def click_confirm_button(self) -> CodeVerification:
