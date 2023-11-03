@@ -454,7 +454,9 @@ class TransitionalPage(BasePage):
             element_name="Temp recruitment quota",
         )
         soft_assert_text(
-            self.temp_work_available_visas, Numbers.NINTY_NINE, element_name="Temp available visas"
+            self.temp_work_available_visas,
+            Numbers.NINETY_NINE,
+            element_name="Temp available visas",
         )
         soft_assert_text(
             self.temp_work_expire_date,
