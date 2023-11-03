@@ -59,7 +59,7 @@ def test_verify_work_visa_card(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION, immediate_balance=Numbers.ONE_HUNDRED)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_work_visa_card_loaded(allowed_quota=Numbers.ONE_HUNDRED,
-                                                   available=Numbers.NINTY_NINE)
+                                                   available=Numbers.NINETY_NINE)
 
 
 @case_id(22101)
@@ -71,7 +71,7 @@ def test_verify_temporary_work_visa_card(visa_mock):
                             allowance_end_date=end_date.strftime(DateFormats.YYYYMMDD))
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.verify_temporary_work_visa_card_loaded(allowed_quota=Numbers.ONE_HUNDRED,
-                                                             available=Numbers.NINTY_NINE,
+                                                             available=Numbers.NINETY_NINE,
                                                              expire_date=end_date.strftime(DateFormats.DD_MM_YYYY))
 
 
@@ -520,3 +520,16 @@ def test_verify_absher_balance_perm_work_visa_page(visa_mock):
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.verify_work_visa_page_open()
     qiwa.work_visa.verify_absher_balance_section()
+
+
+@case_id(25574)
+@allure.title('Test verifies allowed quota section on permanent work visa page')
+def test_verify_allowed_quota_perm_work_visa_page(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_allowed_quota_section_expansion()
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_allowed_quota_section_establishment()

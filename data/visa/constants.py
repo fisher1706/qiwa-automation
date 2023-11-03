@@ -19,7 +19,8 @@ class Numbers:  # pylint: disable=R0903
     TEN_THOUSAND = 10000
     ONE_THOUSAND = 1000
     ONE_HUNDRED = 100
-    NINTY_NINE = 99
+    NINETY_NINE = 99
+    NINE_HUNDRED_NINETY_NINE = 999
     TWO = 2
     ONE = 1
     ZERO = 0
@@ -27,6 +28,7 @@ class Numbers:  # pylint: disable=R0903
     THREE = 3
     TEN = 10
     NINE = 9
+    SIX = 6
 
 
 class VisaUser:  # pylint: disable=R0903
@@ -122,6 +124,15 @@ PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
     "See unmet requirements"
 )
 ESTABLISHMENT_FUND = "Establishment fund"
+RECRUITMENT_QUOTA = "Recruitment quota"
+ESTABLISHMENT_PHASE = "Establishment phase"
+ESTABLISHMENT_PHASE = "Establishment phase"
+EXPANSION = "Expansion"
+RECRUITMENT_QUOTA_TIER = "Recruitment quota tier"
+ALLOWANCE_PERIOD_START_DATE = "Allowance period start date"
+ALLOWANCE_PERIOD_END_DATE = "Allowance period end date"
+ESTIMATED_RECRUITMENT_QUOTA = "Estimated recruitment quota after allowance period ends"
+ESTABLISHING = "Establishing"
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"

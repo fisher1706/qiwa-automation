@@ -1,18 +1,30 @@
+import datetime
 from time import sleep
 
 import allure
+from dateutil.relativedelta import relativedelta
 from selene.api import Element, be, command, have, query, s, ss
 
 from data.visa.constants import (
+    ALLOWANCE_PERIOD_END_DATE,
+    ALLOWANCE_PERIOD_START_DATE,
+    ESTABLISHING,
     ESTABLISHMENT_FUND,
+    ESTABLISHMENT_PHASE,
+    ESTIMATED_RECRUITMENT_QUOTA,
+    EXPANSION,
     FILTERS,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
+    RECRUITMENT_QUOTA,
+    RECRUITMENT_QUOTA_TIER,
+    TIER,
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
     ColName,
+    DateFormats,
     Numbers,
     VisaType,
 )
@@ -75,8 +87,11 @@ class PermWorkVisaPage(BasePage):
     increase_fund_modal = s('//*[@data-testid="absherFundsModal"]')
     increase_fund_modal_x_button = increase_fund_modal.ss(".//button").first
     increase_fund_modal_close_button = increase_fund_modal.ss(".//button").second
-    increase_fund_modal_link = increase_fund_modal.s(".//a")
+    LINK = ".//a"
+    increase_fund_modal_link = increase_fund_modal.s(LINK)
     navigation_list = s("#navigationList")
+    recruitment_quota_table_expansion = Table('//*[@data-testid="expansionPhase"]')
+    recruitment_quota_table_establishment = Table('//*[@data-testid="establishmentPhase"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -238,3 +253,123 @@ class PermWorkVisaPage(BasePage):
 
     def open_increase_fund_modal(self) -> None:
         self.establishment_fund_left_cell.s("./a").click()
+
+    @allure.step("Verify allowed quota section (expansion)")
+    def verify_allowed_quota_section_expansion(self) -> None:
+        self.recruitment_quota_table_expansion.body.should(be.visible)
+        self.recruitment_quota_table_expansion.rows.should(have.size(Numbers.TWO))
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        self.recruitment_quota_table_expansion.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_expansion.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        self.recruitment_quota_table_expansion.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=2, column=2),
+            text=EXPANSION,
+            element_name="Establishment phase cell (value)",
+        )
+
+    @allure.step("Verify allowed quota section (establishment)")
+    def verify_allowed_quota_section_establishment(self) -> None:
+        self.recruitment_quota_table_establishment.body.should(be.visible)
+        self.recruitment_quota_table_establishment.rows.should(have.size(Numbers.SIX))
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=1),
+            text=RECRUITMENT_QUOTA_TIER,
+            element_name="Recruitment quota tier cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=1),
+            text=ALLOWANCE_PERIOD_START_DATE,
+            element_name="Allowance period start date cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=1),
+            text=ALLOWANCE_PERIOD_END_DATE,
+            element_name="Allowance period end date cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=6, column=1),
+            text=ESTIMATED_RECRUITMENT_QUOTA,
+            element_name="Estimated recruitment quota after allowance period ends cell (header)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=3, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=4, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=5, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=6, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.FOUR)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=2),
+            text=ESTABLISHING,
+            element_name="Establishing cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=2),
+            text=TIER.ONE,
+            element_name="Tier cell (value)",
+        )
+        today = datetime.date.today()
+        start_date = today + relativedelta(months=-6)
+        end_date = today + relativedelta(months=+6)
+        left = end_date - today
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=2),
+            text=start_date.strftime(DateFormats.DD_MM_YYYY),
+            element_name="Start date cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=2),
+            text=end_date.strftime(DateFormats.DD_MM_YYYY),
+            element_name="End date cell (date value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=2),
+            text=f"{left.days} days left",
+            element_name="End date cell (days left value)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=5, column=2).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=6, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )
