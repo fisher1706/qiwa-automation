@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 def assert_that(actual: T) -> AssertionMixin:
     assertion = AssertionMixin(actual)
-    assertion.assert_ = check.check_func(assertion.assert_)
+    assertion.assert_ = check.check_func(assertion.assert_)  # pylint: disable=no-member
     return assertion
 
 
