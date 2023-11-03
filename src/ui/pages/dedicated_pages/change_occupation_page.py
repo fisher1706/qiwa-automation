@@ -5,7 +5,8 @@ import time
 from selene import command, have
 from selene.support.shared.jquery_style import s, ss
 
-from data.constants import Label, Titles
+from data.constants import Titles
+from data.dedicated.change_occupation.change_occupation_constants import Label
 from data.dedicated.enums import ChangeOccupationWarning
 from src.ui.components.raw.table import Table
 

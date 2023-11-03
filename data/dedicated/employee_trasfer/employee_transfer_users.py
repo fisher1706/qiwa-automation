@@ -1,5 +1,8 @@
-from data.constants import UserType
-from data.dedicated.employee_trasfer.constants import type_4, type_9, type_12
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    type_4,
+    type_9,
+    type_12,
+)
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 
@@ -26,12 +29,8 @@ current_sponsor = User(
 )
 current_sponsor_type_12 = User(personal_number="1046395800")
 
-laborer = Laborer(
-    login_id=2449079728, birthdate="11-07-1993", user_type=UserType.EXPAT, transfer_type=type_9
-)
-laborer_with_sponsor = Laborer(
-    login_id=2178708182, birthdate="29-01-1958", user_type=UserType.EXPAT, transfer_type=type_4
-)
+laborer = Laborer(login_id=2449079728, birthdate="11-07-1993", transfer_type=type_9)
+laborer_with_sponsor = Laborer(login_id=2178708182, birthdate="29-01-1958", transfer_type=type_4)
 laborer_type_12 = Laborer(login_id=2493081331, birthdate="03-01-1990", transfer_type=type_12)
 laborer_type_9 = Laborer(login_id=2021014218, birthdate="18-10-1982", transfer_type=type_9)
 laborer_type_4_freedom_transfer = Laborer(

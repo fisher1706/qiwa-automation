@@ -1,8 +1,12 @@
 import allure
 import pytest
 
-from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_trasfer.employee_transfer import (
+from data.constants import Language
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    LABORER_STATUS_REJECT,
+    LABORER_TYPE_9_STATUS_APPROVE,
+)
+from data.dedicated.employee_trasfer.employee_transfer_users import (
     employer,
     employer_between_my_establishments,
     laborer_between_my_establishments,
@@ -72,9 +76,9 @@ def test_bme_laborer_able_to_approve_et_request():
     individual_actions = IndividualActions()
     individual_actions.approve_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
+        .verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE[Language.AR])
+    individual_actions.verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE[Language.AR])
 
 
 @allure.title('Verify Laborer is able to reject the ET request')
@@ -103,9 +107,9 @@ def test_bme_laborer_able_to_reject_et_request():
     individual_actions = IndividualActions()
     individual_actions.reject_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.EN])
+        .verify_expected_status(LABORER_STATUS_REJECT[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.AR])
+    individual_actions.verify_expected_status(LABORER_STATUS_REJECT[Language.AR])
 
 
 @allure.title('Quota (Establishment Balance) Should be decreased after submitting ET request')
@@ -177,7 +181,7 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
     individual_actions = IndividualActions()
     individual_actions.reject_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.EN])
+        .verify_expected_status(LABORER_STATUS_REJECT[Language.EN])
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
 
