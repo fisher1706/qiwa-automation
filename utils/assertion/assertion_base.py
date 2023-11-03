@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Optional, TypeVar
+from typing import TypeVar
 
 import allure
 
@@ -10,32 +10,27 @@ T = TypeVar("T")
 
 
 class AssertionBase:
-    def __init__(self, actual: T, decorator: Optional[Callable] = None):
+    def __init__(self, actual: T):
         self.actual = actual
         self._description: str = ""
-        self._decorator = decorator
 
-    def _assert(self, expected: T, method: AssertionTypes) -> AssertionBase:
-        operator, context = method.value
-        step_name = f'Assert that {self._description} {context} "{expected}"'
-        error_message = self._error_template(expected, context)
-        with allure.step(step_name):
-            self._decorator(
-                self._perform_assertion(operator, expected, error_message)
-            ) if self._decorator else self._perform_assertion(operator, expected, error_message)
-            return self
+    def _assert(
+        self, actual: T, expected: T, assertion: AssertionTypes, allure_title: str
+    ) -> AssertionBase:
+        operator, context = assertion.value
+        error_message = self._error_template(actual, expected, context)
+        with allure.step(f"Assert that {self._description} {allure_title} {expected}"):
+            assert operator(actual, expected), error_message
+        return self
 
-    def _perform_assertion(self, operator: Callable, expected: T, message: str) -> None:
-        assert operator(self.actual, expected), message
-
-    def _error_template(self, expected: T, context: str) -> str:
+    def _error_template(self, actual: T, expected: T, context: str) -> str:
         return f"""
-        Checking: {self._description}
-        Expected: {expected} {type(expected)}
-        Actual: {self.actual} {type(self.actual)}
-
-        Expression: assert {self.actual} {context} {expected}
-        """
+            Checking: {self._description}
+            Expected: {expected} {type(expected)}
+            Actual: {actual} {type(actual)}
+    
+            Expression: assert {actual} {context} {expected}
+            """
 
     def as_(self, description: str) -> AssertionBase:
         self._description = description

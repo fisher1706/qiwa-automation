@@ -33,7 +33,7 @@ def test_getting_last_page(qiwa, endpoint):
 
     json = validation_model.parse_obj(response.json())
     last_page_data_count = json.meta.total_entities - json.meta.from_
-    assert_that(json.data).is_length(last_page_data_count)
+    assert_that(json.data).size_is(last_page_data_count)
     assert_that(json.meta).has(
         current_page=last_page,
         pages_count=last_page,
@@ -66,8 +66,8 @@ def test_getting_per_page(qiwa, endpoint, per_page):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.data).is_length(per_page)
-    assert_that(json.meta.size).equals_to(per_page)
+    assert_that(json.data).size_is(per_page)
+    assert_that(json.meta).has(size=per_page)
 
 
 def test_getting_max_items(qiwa):
@@ -75,8 +75,8 @@ def test_getting_max_items(qiwa):
     max_items = 100
 
     json = qiwa.change_occupation.get_users(page=1, per=total_users)
-    assert_that(json.data).is_length(max_items)
-    assert_data(actual=json.meta.dict(), expected=dict(pages_count=2, total_pages=2, size=max_items))
+    assert_that(json.data).size_is(max_items)
+    assert_that(json.meta).has(pages_count=2, total_pages=2, size=max_items)
 
 
 def test_getting_total_items(qiwa, endpoint):
@@ -90,14 +90,14 @@ def test_getting_total_items(qiwa, endpoint):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.data).is_length(total_entities)
+    assert_that(json.data).size_is(total_entities)
     assert_that(json.meta).has(
         total_entities=total_entities,
         pages_count=1,
         total_pages=1,
         from_=0
     )
-    assert_that(json.meta.total.value).equals_to(total_entities)
+    assert_that(json.meta.total).has(value=total_entities)
 
 
 def test_getting_zero_per_page(qiwa, endpoint):

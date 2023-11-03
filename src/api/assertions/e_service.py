@@ -17,7 +17,7 @@ def assert_created_group(actual: dict, expected: Group) -> None:
         .has("image")(expected.image)
         .has("state")("active")
     )
-    assert_that(actual["data"]["relationships"]["e-services"]["data"]).is_length(
+    assert_that(actual["data"]["relationships"]["e-services"]["data"]).size_is(
         len(expected.e_services)
     )
     (
@@ -25,7 +25,7 @@ def assert_created_group(actual: dict, expected: Group) -> None:
         .has("id")(expected.e_services[0].id)
         .has("type")("e-service")
     )
-    assert_that(actual["included"]).is_length(len(expected.e_services))
+    assert_that(actual["included"]).size_is(len(expected.e_services))
     (
         assert_that(actual["included"][0])
         .has("id")(expected.e_services[0].id)

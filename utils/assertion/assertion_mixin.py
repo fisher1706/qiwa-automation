@@ -10,27 +10,32 @@ T = TypeVar("T")
 
 
 class AssertionMixin(AssertionBase):
-    def has(self, **kwargs) -> AssertionMixin:
+    def has(self, **kwargs) -> None:
         is_dict = isinstance(self.actual, Mapping)
         for k, v in kwargs.items():
             actual = self.actual[k] if is_dict else getattr(self.actual, k)
-            self.__class__(actual).as_(
-                f'"{self._description} {k}"' if self._description else f'"{k}"'
-            ).equals_to(v)
-        return self
+            self.as_(k)._assert(actual, v, AssertionTypes.EQUAL, "=")
 
     def equals_to(self, expected: T) -> AssertionMixin:
-        self._assert(expected, AssertionTypes.EQUAL)
+        self._assert(self.actual, expected, AssertionTypes.EQUAL, "equals")
         return self
 
-    def not_equals_to(self, expected: T) -> AssertionMixin:
-        self._assert(expected, AssertionTypes.NOT_EQUAL)
+    def not_equals(self, expected: T) -> AssertionMixin:
+        self._assert(self.actual, expected, AssertionTypes.NOT_EQUAL, "not equals")
         return self
 
-    def in_(self, expected: T) -> AssertionMixin:
-        self._assert(expected, AssertionTypes.IN_)
+    def contains(self, expected: T) -> AssertionMixin:
+        self._assert(self.actual, expected, AssertionTypes.CONTAINS, "contains")
         return self
 
-    def is_length(self, length: int) -> AssertionMixin:
-        self._assert(length, AssertionTypes.LENGTH)
+    def size_is(self, expected: int) -> AssertionMixin:
+        self._assert(len(self.actual), expected, AssertionTypes.EQUAL, "size is")
+        return self
+
+    def is_empty(self) -> AssertionMixin:
+        self._assert(len(self.actual), 0, AssertionTypes.EQUAL, "is empty")
+        return self
+
+    def is_not_empty(self) -> AssertionMixin:
+        self._assert(len(self.actual), 0, AssertionTypes.NOT_EQUAL, "is not empty")
         return self

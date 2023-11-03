@@ -11,7 +11,8 @@ T = TypeVar("T")
 
 
 def assert_that(actual: T) -> AssertionMixin:
-    assertion = AssertionMixin(actual=actual, decorator=check_func)
+    assertion = AssertionMixin(actual)
+    assertion._assert = check_func(assertion._assert)
     return assertion
 
 
