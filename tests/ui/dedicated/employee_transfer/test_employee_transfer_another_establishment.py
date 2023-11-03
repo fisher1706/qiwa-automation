@@ -1,8 +1,10 @@
 import allure
 import pytest
 
-from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_trasfer.employee_transfer import (
+from data.constants import Language
+from data.dedicated.employee_trasfer.employee_transfer_constants import SPONSOR_STATUS_REJECT, SPONSOR_STATUS_APPROVE, \
+    LABORER_STATUS_REJECT, LABORER_TYPE_9_STATUS_APPROVE
+from data.dedicated.employee_trasfer.employee_transfer_users import (
     current_sponsor,
     employer,
     laborer,
@@ -92,9 +94,9 @@ def test_laborer_able_to_approve_et_request():
     individual_actions = IndividualActions()
     individual_actions.approve_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
+        .verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE[Language.AR])
+    individual_actions.verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE[Language.AR])
 
 
 @allure.title('AS-322 Verify Laborer is able to reject the ET request')
@@ -126,9 +128,9 @@ def test_laborer_able_to_reject_et_request():
     individual_actions = IndividualActions()
     individual_actions.reject_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.EN])
+        .verify_expected_status(LABORER_STATUS_REJECT[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.AR])
+    individual_actions.verify_expected_status(LABORER_STATUS_REJECT[Language.AR])
 
 
 @allure.title('AS-328 Quota (Establishment Balance) Should be decreased after submitting ET request')
@@ -163,7 +165,7 @@ def test_quota_should_be_decreased_after_submitting_et_request():
     individual_actions = IndividualActions()
     individual_actions.approve_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
+        .verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE[Language.EN])
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
 
@@ -204,7 +206,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
     individual_actions = IndividualActions()
     individual_actions.reject_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT[Language.EN])
+        .verify_expected_status(LABORER_STATUS_REJECT[Language.EN])
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
 
@@ -254,11 +256,11 @@ def test_current_sponsor_able_to_approve_et_request():
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
-    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE[Language.EN])
+    qiwa.employee_transfer_page.check_sponsor_request_status(SPONSOR_STATUS_APPROVE[Language.EN])
 
     qiwa.header.change_local(Language.AR)
 
-    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE[Language.AR])
+    qiwa.employee_transfer_page.check_sponsor_request_status(SPONSOR_STATUS_APPROVE[Language.AR])
 
 
 @allure.title('Verify Current Sponsor Able to reject the ET request')
@@ -299,11 +301,11 @@ def test_current_sponsor_able_to_reject_et_request():
         .fill_rejection_reason() \
         .click_btn_reject_request()
 
-    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.EN])
+    qiwa.employee_transfer_page.check_sponsor_request_status(SPONSOR_STATUS_REJECT[Language.EN])
 
     qiwa.header.change_local(Language.AR)
 
-    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.AR])
+    qiwa.employee_transfer_page.check_sponsor_request_status(SPONSOR_STATUS_REJECT[Language.AR])
 
 
 @allure.title('Quota (Establishment Balance) increased after rejection of ET request by current sponsor')
@@ -347,7 +349,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
         .fill_rejection_reason() \
         .click_btn_reject_request()
 
-    qiwa.employee_transfer_page.check_sponsor_request_status(EmployeeTransfer.SPONSOR_STATUS_REJECT[Language.EN])
+    qiwa.employee_transfer_page.check_sponsor_request_status(SPONSOR_STATUS_REJECT[Language.EN])
 
     qiwa.header.click_on_menu().click_on_logout()
 

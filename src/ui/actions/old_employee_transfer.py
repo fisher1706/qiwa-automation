@@ -7,13 +7,15 @@ from selene.support.shared.jquery_style import s
 from selenium.common import NoSuchElementException
 
 from data.constants import (
-    ContractManagement,
-    EmployeeTransfer,
     EService,
     Language,
-    UserInfo,
+    UserInfo
 )
-from data.dedicated.employee_trasfer.employee_transfer import Laborer, employer
+from data.dedicated.contract_management.contract_management_constants import VERIFICATION_CODE
+from data.dedicated.employee_trasfer.employee_transfer_constants import DASHBOARD, EMPLOYEE_TRANSFER, \
+    ESTABLISHMENT_ID_LABEL, ESTABLISHMENT_NAME_LABEL, DESCRIPTION, TERMS_POPUP_TITLE, TERMS_POPUP_DESCRIPTION, \
+    TERMS_POPUP_BTN_APPROVE
+from data.dedicated.employee_trasfer.employee_transfer_users import Laborer, employer
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.dedicated.models.user import User
 from data.validation_message import SuccessMessage
@@ -57,7 +59,7 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
         self.__switch_tab_with_timeout()
         time.sleep(3)
-        self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, Language.EN)
+        self.verify_title_employee_transfer(EMPLOYEE_TRANSFER, Language.EN)
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
         match transfer_type:
@@ -99,7 +101,7 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.verify_redirections_popup()
         self.click_popup_btn_proceed()
         self.contract_management_actions.wait_until_title_verification_code_appears(
-            ContractManagement.VERIFICATION_CODE, Language.EN
+            VERIFICATION_CODE, Language.EN
         )
         self.contract_management_actions.refresh_if_not_employee_details(str(laborer_id))
         self.contract_management_actions.fill_contract_info()
@@ -134,30 +136,30 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         assert_that(self.get_actual_balance()).equals_to(expected_value)
 
     def verify_info_banner(self, locale: str):
-        self.verify_breadcrumb(EmployeeTransfer.DASHBOARD, locale)
-        self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, locale)
-        self.verify_description(EmployeeTransfer.DESCRIPTION, locale)
-        self.verify_establishment_id_label(EmployeeTransfer.ESTABLISHMENT_ID_LABEL, locale)
+        self.verify_breadcrumb(DASHBOARD, locale)
+        self.verify_title_employee_transfer(EMPLOYEE_TRANSFER, locale)
+        self.verify_description(DESCRIPTION, locale)
+        self.verify_establishment_id_label(ESTABLISHMENT_ID_LABEL, locale)
         self.verify_establishment_id_value(
             f"{employer.labor_office_id}-{employer.sequence_number}"
         )
-        self.verify_establishment_name_label(EmployeeTransfer.ESTABLISHMENT_NAME_LABEL, locale)
+        self.verify_establishment_name_label(ESTABLISHMENT_NAME_LABEL, locale)
         self.verify_establishment_name_value(employer.establishment_name_ar)
         self.btn_request_employee_transfer_should_be_enabled()
 
     def verify_terms_conditions_popup(self, locale: str):
         self.click_btn_request_employee_transfer()
-        self.verify_terms_popup_title(EmployeeTransfer.TERMS_POPUP_TITLE, locale)
-        self.verify_terms_popup_description(EmployeeTransfer.TERMS_POPUP_DESCRIPTION, locale)
+        self.verify_terms_popup_title(TERMS_POPUP_TITLE, locale)
+        self.verify_terms_popup_description(TERMS_POPUP_DESCRIPTION, locale)
         self.verify_terms_popup_close_icon()
         self.click_btn_request_employee_transfer()
         self.click_terms_popup_redirections_link()
         self.contract_management_actions.wait_until_title_verification_code_appears(
-            ContractManagement.VERIFICATION_CODE, locale
+            VERIFICATION_CODE, locale
         )
         self.navigate_to_employee_transfer_by_link()
         self.click_btn_request_employee_transfer()
-        self.verify_terms_popup_btn_approve(EmployeeTransfer.TERMS_POPUP_BTN_APPROVE, locale)
+        self.verify_terms_popup_btn_approve(TERMS_POPUP_BTN_APPROVE, locale)
         self.close_terms_popup()
 
     def verify_sent_requests_tab(self, locale: str):

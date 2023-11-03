@@ -6,8 +6,8 @@ import pytest
 
 import config
 import src
-from data.dedicated.change_occupation import User
 from data.dedicated.models.services import Service
+from data.dedicated.models.user import User
 from data.shareable.saudization_certificate.saudi_certificate import SaudiEstValidation
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.change_occupation import NonEligibilityReasons

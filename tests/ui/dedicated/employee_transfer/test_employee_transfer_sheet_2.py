@@ -2,8 +2,11 @@ import allure
 import pytest
 from selene import browser
 
-from data.constants import EmployeeTransfer, Language
-from data.dedicated.employee_trasfer.employee_transfer import (
+from data.constants import Language
+from data.dedicated.employee_trasfer.employee_transfer_constants import SPONSOR_STATUS_APPROVE, SPONSOR_STATUS_REJECT, \
+    LABORER_STATUS_REJECT, LABORER_TYPE_9_STATUS_APPROVE, LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, \
+    LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE
+from data.dedicated.employee_trasfer.employee_transfer_users import (
     current_sponsor_type_12,
     laborer_type_4_absent,
     laborer_type_4_direct_transfer,
@@ -44,9 +47,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.login_id)
         self.individual_actions.select_service(ServicesAndTools.HOME_WORKER_TRANSFER.value)
-        self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE, Language.EN)
+        self.employee_transfer_actions.verify_expected_status(SPONSOR_STATUS_APPROVE, Language.EN)
         self.individual_actions.change_locale()
-        self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_APPROVE, Language.AR)
+        self.employee_transfer_actions.verify_expected_status(SPONSOR_STATUS_APPROVE, Language.AR)
 
     @allure.title('[Type 12] Approval by laborer and rejection by current sponsor | Home Worker Transfer')
     def test_type_12_approval_by_laborer_and_rejection_by_current_sponsor(self):
@@ -63,9 +66,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         qiwa.open_login_page()
         self.employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.login_id)
         self.individual_actions.select_service(ServicesAndTools.HOME_WORKER_TRANSFER.value)
-        self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.EN)
+        self.employee_transfer_actions.verify_expected_status(SPONSOR_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.employee_transfer_actions.verify_expected_status(EmployeeTransfer.SPONSOR_STATUS_REJECT, Language.AR)
+        self.employee_transfer_actions.verify_expected_status(SPONSOR_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 12] Rejection by laborer | Home Worker Transfer')
     def test_type_12_rejection_by_laborer(self):
@@ -76,9 +79,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 9] Approval by laborer | Dependent Transfer')
     def test_type_9_approval_by_laborer_dependent_transfer(self):
@@ -90,9 +93,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.approve_request()
         self.individual_actions.wait_until_popup_disappears()
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_9_STATUS_APPROVE, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_TYPE_9_STATUS_APPROVE, Language.AR)
 
     @allure.title('[Type 9] Rejection by laborer | Dependent Transfer')
     def test_type_9_rejection_by_laborer_dependent_transfer(self):
@@ -103,9 +106,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 4 Freedom Transfer] Verify that after Approval by Laborer status changes')
     def test_type_4_freedom_transfer_verify_that_after_approval_by_laborer_status_changes(self):
@@ -117,9 +120,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.approve_request()
         self.individual_actions.wait_until_popup_disappears()
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, Language.AR)
 
     @allure.title('[Type 4 Freedom Transfer] Verify that after Rejection by Laborer status changes')
     def test_type_4_freedom_transfer_verify_that_after_rejection_by_laborer_status_changes_(self):
@@ -130,9 +133,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 4 Direct Transfer] Verify that after Approval by Laborer status changes')
     def test_type_4_direct_transfer_verify_that_after_approval_by_laborer_status_changes(self):
@@ -144,10 +147,10 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.approve_request()
         self.individual_actions.wait_until_popup_disappears()
         self.employee_transfer_actions.verify_message(SuccessMessage.ET_LABORER_REQUEST)
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE,
+        self.individual_actions.verify_expected_status(LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE,
                                                        Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE,
+        self.individual_actions.verify_expected_status(LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE,
                                                        Language.AR)
 
     @allure.title('[Type 4 Direct Transfer] Verify that after Rejection by Laborer status changes')
@@ -159,9 +162,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 4 Absent Laborer] Verify that after Approval by Laborer status changes')
     def test_type_4_absent_laborer_verify_that_after_approval_by_laborer_status_changes(self):
@@ -172,9 +175,9 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
 
     @allure.title('[Type 4 Absent Laborer] Verify that after Rejection by Laborer status changes ')
     def test_type_4_absent_laborer_verify_that_after_rejection_by_laborer_status_changes(self):
@@ -185,6 +188,6 @@ class TestEmployeeTransferSheet2:  # pylint: disable=unused-argument, duplicate-
         self.individual_actions.proceed_steps_for_verifying_et_request()
         self.individual_actions.reject_request()
         self.individual_actions.wait_until_popup_disappears()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.EN)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.EN)
         self.individual_actions.change_locale()
-        self.individual_actions.verify_expected_status(EmployeeTransfer.LABORER_STATUS_REJECT, Language.AR)
+        self.individual_actions.verify_expected_status(LABORER_STATUS_REJECT, Language.AR)
