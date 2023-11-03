@@ -2,6 +2,7 @@ import allure
 
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
+    AppointmentsHistoryStatus,
     IndividualService,
     IndividualUser,
     OfficesInfo,
@@ -84,3 +85,70 @@ def test_individual_view_appointment_from_history():
     qiwa.labor_office_appointments_view_page.verify_map_elements()
     qiwa.labor_office_appointments_view_page.verify_map_functions()
     qiwa.labor_office_appointments_view_page.verify_print_btn()
+
+
+@allure.title("Appointments[Individual]: Filter appointments in appointments history")
+@case_id(39204)
+def test_individual_filter_appointments_history():
+    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.search_appointments(
+        IndividualUser.APPOINTMENT_TO_SEARCH_IN_HISTORY
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=IndividualUser.APPOINTMENT_TO_SEARCH_IN_HISTORY
+    )
+    qiwa.labor_office_appointments_page.click_clear_search()
+    qiwa.labor_office_appointments_page.search_appointments(
+        SubscribedUser.NON_EXISTING_APPOINTMENT
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+    qiwa.labor_office_appointments_page.click_clear_search()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.EXPIRED['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED['value']
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.CANCELLED['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED['value']
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.ATTENDED['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.ATTENDED['value']
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.DONE['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.DONE['value']
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.UNDER_PROGRESS['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.UNDER_PROGRESS['value']
+    )
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.PENDING['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.PENDING['index']
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.SHOW_ALL['index']
+    )
+    qiwa.labor_office_appointments_page.should_search_history_be_visible()

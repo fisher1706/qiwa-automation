@@ -193,7 +193,7 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Filter appointments history by status: {status}")
     def filter_appointments_history_by_status(self, status):
-        self.dropdown_status.select_by_index(status.value)
+        self.dropdown_status.select_by_index(status)
         self.table_loader.wait_until(be.not_.visible)
         return self
 
