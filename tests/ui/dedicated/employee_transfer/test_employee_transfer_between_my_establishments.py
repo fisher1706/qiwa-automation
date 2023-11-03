@@ -2,8 +2,10 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.employee_trasfer.employee_transfer_constants import LABORER_TYPE_9_STATUS_APPROVE, \
-    LABORER_STATUS_REJECT
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    LABORER_STATUS_REJECT,
+    LABORER_TYPE_9_STATUS_APPROVE,
+)
 from data.dedicated.employee_trasfer.employee_transfer_users import (
     employer,
     employer_between_my_establishments,

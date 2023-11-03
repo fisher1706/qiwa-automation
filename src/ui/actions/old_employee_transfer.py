@@ -6,15 +6,20 @@ from selene.core.exceptions import TimeoutException
 from selene.support.shared.jquery_style import s
 from selenium.common import NoSuchElementException
 
-from data.constants import (
-    EService,
-    Language,
-    UserInfo
+from data.constants import EService, Language, UserInfo
+from data.dedicated.contract_management.contract_management_constants import (
+    VERIFICATION_CODE,
 )
-from data.dedicated.contract_management.contract_management_constants import VERIFICATION_CODE
-from data.dedicated.employee_trasfer.employee_transfer_constants import DASHBOARD, EMPLOYEE_TRANSFER, \
-    ESTABLISHMENT_ID_LABEL, ESTABLISHMENT_NAME_LABEL, DESCRIPTION, TERMS_POPUP_TITLE, TERMS_POPUP_DESCRIPTION, \
-    TERMS_POPUP_BTN_APPROVE
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    DASHBOARD,
+    DESCRIPTION,
+    EMPLOYEE_TRANSFER,
+    ESTABLISHMENT_ID_LABEL,
+    ESTABLISHMENT_NAME_LABEL,
+    TERMS_POPUP_BTN_APPROVE,
+    TERMS_POPUP_DESCRIPTION,
+    TERMS_POPUP_TITLE,
+)
 from data.dedicated.employee_trasfer.employee_transfer_users import Laborer, employer
 from data.dedicated.enums import RowsPerPage, TransferType
 from data.dedicated.models.user import User

@@ -2,9 +2,16 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.contract_management.contract_management_constants import SuccessMessages
-from data.dedicated.contract_management.contract_management_users import employer, laborer_saudi, laborer_expatriate, \
-    laborer_expatriate_not_in_the_establishment, laborer_saudi_not_in_the_establishment
+from data.dedicated.contract_management.contract_management_constants import (
+    SuccessMessages,
+)
+from data.dedicated.contract_management.contract_management_users import (
+    employer,
+    laborer_expatriate,
+    laborer_expatriate_not_in_the_establishment,
+    laborer_saudi,
+    laborer_saudi_not_in_the_establishment,
+)
 from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer

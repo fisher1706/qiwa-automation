@@ -79,10 +79,12 @@ class Titles:
     WORK_PERMIT = "WORK PERMITS - Select employees for issuing or renewal of work permit"
 
 
+@dataclass
 class Workspaces:
     BUSINESS_ACCOUNT_CARD = {Language.EN: "Business Account", Language.AR: "حساب الأعمال"}
 
 
+@dataclass
 class OtpMessage:
     TITLE = "Confirmation"
     PROMPT = "Please enter the OTP to proceed"
@@ -90,6 +92,7 @@ class OtpMessage:
     ERROR = "OTP is wrong. Try again or resend email to the client."
 
 
+@dataclass
 class SaudiCertificateDashboard:
     HEADER = "Saudization Certificate"
     SUB_HEADER = (

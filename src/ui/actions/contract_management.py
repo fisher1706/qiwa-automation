@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.contract_details import (
     ContractDetails,
     EmployeeDetails,
     EstablishmentDetails,
 )
-from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.transfer_type import TransferType
 from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
 

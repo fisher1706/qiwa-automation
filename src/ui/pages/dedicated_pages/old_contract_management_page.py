@@ -5,9 +5,14 @@ from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.constants import Language
-from data.dedicated.contract_management.contract_management_constants import \
-    CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES, CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES, \
-    TOTAL_CONTRACT_AUTHENTICATION, AUTHENTICATED_CONTRACTS, UNAUTHENTICATED_CONTRACTS, SuccessMessages
+from data.dedicated.contract_management.contract_management_constants import (
+    AUTHENTICATED_CONTRACTS,
+    CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES,
+    CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES,
+    TOTAL_CONTRACT_AUTHENTICATION,
+    UNAUTHENTICATED_CONTRACTS,
+    SuccessMessages,
+)
 from src.ui.components.raw.table import Table
 from utils.random_manager import RandomManager
 
@@ -24,12 +29,8 @@ class OldContractManagementPage:
     DESCRIPTION = ".dashboard-actions--box-text"
     BLOCKS = ss(".contract-auth-indicator")
     CONTRACT_AUTHENTICATION = {
-        CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES[
-            Language.EN
-        ]: BLOCKS.first,
-        CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES[
-            Language.EN
-        ]: BLOCKS.second,
+        CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES[Language.EN]: BLOCKS.first,
+        CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES[Language.EN]: BLOCKS.second,
         TOTAL_CONTRACT_AUTHENTICATION[Language.EN]: BLOCKS[2],
     }
     CONTRACT_AUTH_INFO = ".contract-auth-indicator--info"
@@ -227,12 +228,8 @@ class OldContractManagementPage:
             .second
         )
 
-        authenticated_contracts.should(
-            have.text(AUTHENTICATED_CONTRACTS[locale])
-        )
-        unauthenticated_contracts.should(
-            have.text(UNAUTHENTICATED_CONTRACTS[locale])
-        )
+        authenticated_contracts.should(have.text(AUTHENTICATED_CONTRACTS[locale]))
+        unauthenticated_contracts.should(have.text(UNAUTHENTICATED_CONTRACTS[locale]))
 
         score_authenticated_contracts = int(authenticated_contracts.get(query.text).split()[0])
         score_unauthenticated_contracts = int(unauthenticated_contracts.get(query.text).split()[0])

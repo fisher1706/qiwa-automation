@@ -1,12 +1,18 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Eligibility:
     ELIGIBLE = "Eligible"
     NOT_ELIGIBLE = "Not Eligible"
 
 
+@dataclass
 class EstablishmentStatus:
     EXISTING = "قائمة"
 
 
+@dataclass
 class Occupation:
     SUPERVISOR = "مشرف عمال"
     MANAGER_DIRECTOR = "مدير الادارة"
@@ -17,6 +23,7 @@ class Occupation:
     GENERAL_DIRECTOR = "مدير عام"
 
 
+@dataclass
 class Label:
     ACTIONS = "Actions"
     ELIGIBILITY = "Eligibility"

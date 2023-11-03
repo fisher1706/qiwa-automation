@@ -3,9 +3,14 @@ import pytest
 from selene import browser
 
 from data.constants import Language
-from data.dedicated.employee_trasfer.employee_transfer_constants import SPONSOR_STATUS_APPROVE, SPONSOR_STATUS_REJECT, \
-    LABORER_STATUS_REJECT, LABORER_TYPE_9_STATUS_APPROVE, LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE, \
-    LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    LABORER_STATUS_REJECT,
+    LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE,
+    LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE,
+    LABORER_TYPE_9_STATUS_APPROVE,
+    SPONSOR_STATUS_APPROVE,
+    SPONSOR_STATUS_REJECT,
+)
 from data.dedicated.employee_trasfer.employee_transfer_users import (
     current_sponsor_type_12,
     laborer_type_4_absent,

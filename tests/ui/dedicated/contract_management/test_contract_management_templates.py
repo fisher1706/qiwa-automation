@@ -2,7 +2,10 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.contract_management.contract_management_constants import CONTRACT_TYPE, SuccessMessages
+from data.dedicated.contract_management.contract_management_constants import (
+    CONTRACT_TYPE,
+    SuccessMessages,
+)
 from data.dedicated.contract_management.contract_management_users import employer
 from data.dedicated.models.contract_details import ContractDetails, EmployeeDetails
 from src.ui.actions.old_contract_management import OldContractManagementActions

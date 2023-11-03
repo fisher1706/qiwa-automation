@@ -1,13 +1,22 @@
 import allure
 import pytest
 
-from data.constants import (
-    EService,
-    Language,
+from data.constants import EService, Language
+from data.dedicated.change_occupation.change_occupation_constants import (
+    Eligibility,
+    EstablishmentStatus,
+    Occupation,
 )
-from data.dedicated.change_occupation.change_occupation_constants import Eligibility, EstablishmentStatus, Occupation
-from data.dedicated.change_occupation.change_occupation_users import lo_co_user, lo_co_expired_user, employee, laborer, \
-    employee_po, lo_co_ho_user, employee_ho, employee_1
+from data.dedicated.change_occupation.change_occupation_users import (
+    employee,
+    employee_1,
+    employee_ho,
+    employee_po,
+    laborer,
+    lo_co_expired_user,
+    lo_co_ho_user,
+    lo_co_user,
+)
 from data.dedicated.enums import (
     RequestStatus,
     SearchingType,

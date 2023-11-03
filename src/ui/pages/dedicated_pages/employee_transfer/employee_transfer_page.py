@@ -6,10 +6,19 @@ from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.constants import Language
-from data.dedicated.employee_trasfer.employee_transfer_constants import POPUP_REDIRECTION_TITLE, \
-    TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS, TITLE_FROM_ANOTHER_BUSINESS_OWNER, REQUEST_SUBMITTED, \
-    EXPECTED_DATE, PLACEHOLDER_SEARCH, HEADER_TITLES_LIST, RECEIVED_REQUESTS, SENT_REQUESTS, TRANSFER_REQUESTS, \
-    POPUP_REDIRECTION_BODY
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    EXPECTED_DATE,
+    HEADER_TITLES_LIST,
+    PLACEHOLDER_SEARCH,
+    POPUP_REDIRECTION_BODY,
+    POPUP_REDIRECTION_TITLE,
+    RECEIVED_REQUESTS,
+    REQUEST_SUBMITTED,
+    SENT_REQUESTS,
+    TITLE_FROM_ANOTHER_BUSINESS_OWNER,
+    TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS,
+    TRANSFER_REQUESTS,
+)
 from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
 from utils.assertion import assert_that
@@ -156,9 +165,7 @@ class EmployeeTransferPage:
     # Transfer Requests section on Dashboard page
 
     def verify_title_transfer_request(self, locale: str):
-        self.title_transfer_request.should(
-            have.exact_text(TRANSFER_REQUESTS[locale])
-        )
+        self.title_transfer_request.should(have.exact_text(TRANSFER_REQUESTS[locale]))
 
     def verify_title_tab_sent_requests(self, locale: str):
         self.sent_requests.should(have.text(SENT_REQUESTS[locale]))
@@ -185,9 +192,7 @@ class EmployeeTransferPage:
     def verify_placeholder_search(self, locale: str):
         list_of_search_elements = self.header_rows.all("input")
         for search_field in list_of_search_elements[:-1]:
-            search_field.should(
-                have.attribute("placeholder").value(PLACEHOLDER_SEARCH[locale])
-            )
+            search_field.should(have.attribute("placeholder").value(PLACEHOLDER_SEARCH[locale]))
 
     def verify_statuses_in_dropdown(self):
         self.dropdown_status.click()
@@ -197,9 +202,7 @@ class EmployeeTransferPage:
         self.table_body.row(1).s("img").click()
 
     def verify_expected_dates(self):
-        self.table_body.row(2).ss("li p + p").should(
-            have.exact_texts(EXPECTED_DATE)
-        )
+        self.table_body.row(2).ss("li p + p").should(have.exact_texts(EXPECTED_DATE))
 
     def verify_count_of_rows(self, count: int):
         self.all_table_rows.should(have.size(count))
@@ -224,9 +227,7 @@ class EmployeeTransferPage:
 
     def verify_first_row_on_focus(self):
         self.select_first_row()
-        self.table_body.row(2).s("div p").should(
-            have.exact_text(REQUEST_SUBMITTED[Language.EN])
-        )
+        self.table_body.row(2).s("div p").should(have.exact_text(REQUEST_SUBMITTED[Language.EN]))
 
     def select_rows_per_page(self, count: str):
         self.row_per_page.click()

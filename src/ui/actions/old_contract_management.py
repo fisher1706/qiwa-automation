@@ -2,14 +2,18 @@ import time
 from typing import Optional
 
 from data.constants import EService, Language, UserInfo
-from data.dedicated.contract_management.contract_management_constants import CONTRACT_TYPE, TITLE, VERIFICATION_CODE, \
-    SuccessMessages
+from data.dedicated.contract_management.contract_management_constants import (
+    CONTRACT_TYPE,
+    TITLE,
+    VERIFICATION_CODE,
+    SuccessMessages,
+)
+from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.contract_details import (
     ContractDetails,
     EmployeeDetails,
     EstablishmentDetails,
 )
-from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.transfer_type import TransferType
 from data.dedicated.models.user import User
@@ -72,7 +76,9 @@ class OldContractManagementActions(OldContractManagementPage):
         self.fill_field_contract_period(contract_details.contract_period[0])
         self.fill_field_basic_salary(contract_details.basic_salary)
 
-    def fill_contract_info(self, laborer: Optional[Laborer] = None, transfer_type: TransferType = None):
+    def fill_contract_info(
+        self, laborer: Optional[Laborer] = None, transfer_type: TransferType = None
+    ):
         self.fill_establishment_details(transfer_type)
         self.fill_employee_details(transfer_type, laborer)
         self.fill_contract_details(transfer_type)
@@ -82,9 +88,7 @@ class OldContractManagementActions(OldContractManagementPage):
         self.workspace_actions.select_company_account_with_sequence_number(user.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.CONTRACT_MANAGEMENT)
-        self.wait_until_title_verification_code_appears(
-            VERIFICATION_CODE, Language.EN
-        )
+        self.wait_until_title_verification_code_appears(VERIFICATION_CODE, Language.EN)
         self.proceed_2fa().click_btn_verify()
         self.verify_title(TITLE, Language.EN)
 

@@ -2,9 +2,13 @@ import allure
 import pytest
 
 from data.constants import Language
-from data.dedicated.contract_management.contract_management_constants import DESCRIPTION, \
-    CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES, CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES, TITLE, \
-    TOTAL_CONTRACT_AUTHENTICATION
+from data.dedicated.contract_management.contract_management_constants import (
+    CONTRACT_AUTHENTICATION_SCORE_FOR_EXPATS_EMPLOYEES,
+    CONTRACT_AUTHENTICATION_SCORE_FOR_SAUDI_EMPLOYEES,
+    DESCRIPTION,
+    TITLE,
+    TOTAL_CONTRACT_AUTHENTICATION,
+)
 from data.dedicated.contract_management.contract_management_users import employer
 from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer

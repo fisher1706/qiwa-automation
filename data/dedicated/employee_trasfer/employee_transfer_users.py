@@ -1,4 +1,8 @@
-from data.dedicated.employee_trasfer.employee_transfer_constants import type_4, type_9, type_12
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    type_4,
+    type_9,
+    type_12,
+)
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 
