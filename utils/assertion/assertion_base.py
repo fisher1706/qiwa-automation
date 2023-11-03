@@ -14,7 +14,7 @@ class AssertionBase:
         self.actual = actual
         self._description: str = ""
 
-    def _assert(
+    def assert_(
         self, actual: T, expected: T, assertion: AssertionTypes, allure_title: str
     ) -> AssertionBase:
         operator, context = assertion.value

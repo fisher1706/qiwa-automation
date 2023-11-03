@@ -3,7 +3,7 @@ from typing import Any, Optional, TypeVar
 
 import allure
 from deepdiff import DeepDiff
-from pytest_check import check, check_func
+from pytest_check import check
 
 from utils.assertion.assertion_mixin import AssertionMixin
 
@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 def assert_that(actual: T) -> AssertionMixin:
     assertion = AssertionMixin(actual)
-    assertion._assert = check_func(assertion._assert)
+    assertion.assert_ = check.check_func(assertion.assert_)
     return assertion
 
 
