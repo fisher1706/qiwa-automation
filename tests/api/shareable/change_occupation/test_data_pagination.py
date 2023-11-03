@@ -3,7 +3,6 @@ from http import HTTPStatus
 import pytest
 
 from data.shareable.expected_json.change_occupation.common import empty_data
-from src.api.models.qiwa.change_occupation import users_data
 from utils.assertion import assert_status_code, assert_that
 from utils.assertion.asserts import assert_data
 
@@ -16,9 +15,11 @@ def test_getting_by_page(qiwa, endpoint, page):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.meta.current_page).equals_to(page)
-    assert_that(json.meta.pages_count).equals_to(json.meta.total_pages)
-    assert_that(json.meta.total_entities).equals_to(json.meta.total.value)
+    assert_that(json.meta).has(
+        current_page=page,
+        pages_count=json.meta.total_pages,
+        total_entities=json.meta.total.value
+    )
 
 
 def test_getting_last_page(qiwa, endpoint):
@@ -32,10 +33,12 @@ def test_getting_last_page(qiwa, endpoint):
 
     json = validation_model.parse_obj(response.json())
     last_page_data_count = json.meta.total_entities - json.meta.from_
-    assert_that(json.data).is_length(last_page_data_count)
-    assert_that(json.meta.current_page).equals_to(last_page)
-    assert_that(json.meta.pages_count).equals_to(last_page)
-    assert_that(json.meta.total_pages).equals_to(last_page)
+    assert_that(json.data).size_is(last_page_data_count)
+    assert_that(json.meta).has(
+        current_page=last_page,
+        pages_count=last_page,
+        total_pages=last_page
+    )
 
 
 def test_getting_empty_page(qiwa, endpoint):
@@ -47,12 +50,12 @@ def test_getting_empty_page(qiwa, endpoint):
     response = tested_endpoint(qiwa.change_occupation.api, page=page, per=10)
     json = validation_model.parse_obj(response.json())
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_data(expected=empty_data(), actual=json)
+    assert_data(expected=empty_data(), actual=json.dict())
 
     response = tested_endpoint(qiwa.change_occupation.api, page=10000, per=10)
     json = validation_model.parse_obj(response.json())
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_data(expected=empty_data(), actual=json)
+    assert_data(expected=empty_data(), actual=json.dict())
 
 
 @pytest.mark.parametrize("per_page", list(range(1, 11)))
@@ -63,8 +66,8 @@ def test_getting_per_page(qiwa, endpoint, per_page):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.data).is_length(per_page)
-    assert_that(json.meta.size).equals_to(per_page)
+    assert_that(json.data).size_is(per_page)
+    assert_that(json.meta).has(size=per_page)
 
 
 def test_getting_max_items(qiwa):
@@ -72,8 +75,8 @@ def test_getting_max_items(qiwa):
     max_items = 100
 
     json = qiwa.change_occupation.get_users(page=1, per=total_users)
-    assert_that(json.data).is_length(max_items)
-    assert_data(actual=json.meta.dict(), expected=dict(pages_count=2, total_pages=2, size=max_items))
+    assert_that(json.data).size_is(max_items)
+    assert_that(json.meta).has(pages_count=2, total_pages=2, size=max_items)
 
 
 def test_getting_total_items(qiwa, endpoint):
@@ -87,12 +90,14 @@ def test_getting_total_items(qiwa, endpoint):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.data).is_length(total_entities)
-    assert_that(json.meta.total_entities).equals_to(total_entities)
-    assert_that(json.meta.total.value).equals_to(total_entities)
-    assert_that(json.meta.pages_count).equals_to(1)
-    assert_that(json.meta.total_pages).equals_to(1)
-    assert_that(json.meta.from_).equals_to(0)
+    assert_that(json.data).size_is(total_entities)
+    assert_that(json.meta).has(
+        total_entities=total_entities,
+        pages_count=1,
+        total_pages=1,
+        from_=0
+    )
+    assert_that(json.meta.total).has(value=total_entities)
 
 
 def test_getting_zero_per_page(qiwa, endpoint):

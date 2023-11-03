@@ -21,7 +21,7 @@ def test_token_generation_and_validation():
     token_data = validate_ott.json()
     ValidateToken.parse_obj(token_data)
     assert_that("sequence-number").as_("sequence-number").in_(list(token_data["payload"].keys()))
-    assert_that(token_data["payload"]).has("sequence-number")(data["sequence-number"])
+    assert_that(token_data["payload"]).has(**{"sequence-number": data["sequence-number"]})
 
 
 def test_token_revalidation():
@@ -42,7 +42,7 @@ def test_token_revalidation():
 
     token = re_validate_ott.json()
     GenerateToken.parse_obj(token)
-    assert_that(token).has("ott")("not_found")
+    assert_that(token).has(ott="not_found")
 
 
 def test_token_validation_without_generation():
@@ -54,4 +54,4 @@ def test_token_validation_without_generation():
 
     token = validate_ott.json()
     GenerateToken.parse_obj(token)
-    assert_that(token).has("ott")("not_found")
+    assert_that(token).has(ott="not_found")

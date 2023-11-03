@@ -12,8 +12,8 @@ def test_get_employee_by_personal_number(api, employee):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.employees_data.parse_obj(response.json())
-    assert_that(json.data).is_length(1)
-    assert_that(json.meta.total_count).equals_to(1)
+    assert_that(json.data).size_is(1)
+    assert_that(json.meta).has(total_count=1)
     assert_data(
         expected=employee.dict(exclude={"id"}),
         actual=json.data[0].attributes.dict(exclude={"id"})
@@ -25,8 +25,8 @@ def test_get_employee_by_wrong_personal_number(api):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.employees_data.parse_obj(response.json())
-    assert_that(json.data).is_length(0)
-    assert_that(json.meta.total_count).equals_to(0)
+    assert_that(json.data).size_is(0)
+    assert_that(json.meta).has(total_count=0)
 
 
 @pytest.mark.parametrize("per_page", [0, 1, 9, 11, 100, 1000])
@@ -35,7 +35,7 @@ def test_get_employees_per_page(api, per_page):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.employees_data.parse_obj(response.json())
-    assert_that(json.data).is_length(per_page)
+    assert_that(json.data).size_is(per_page)
 
 
 @pytest.mark.parametrize("page, count", [(1, 10), (11, 10), (-1, 0), (0, 0), (100000, 0)])
@@ -44,4 +44,4 @@ def test_get_employees_pagination(api, page, count):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.employees_data.parse_obj(response.json())
-    assert_that(json.data).is_length(count)
+    assert_that(json.data).size_is(count)

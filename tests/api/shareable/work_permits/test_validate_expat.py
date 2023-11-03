@@ -21,7 +21,7 @@ def test_validation_result(api, employee_to_validate, is_regular):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.expat_validation.parse_obj(response.json())
-    assert_that(json.expat_number).equals_to(employee_to_validate.personal_number)
+    assert_that(json).has(expat_number=employee_to_validate.personal_number)
 
 
 def test_validation_with_invalid_expat_number(api):

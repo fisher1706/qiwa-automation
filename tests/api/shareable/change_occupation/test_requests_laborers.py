@@ -23,9 +23,8 @@ def test_getting_by_laborer_name(qiwa):
     laborer = qiwa.change_occupation.get_random_laborer()
 
     json = qiwa.change_occupation.get_requests_laborers(laborer_name=laborer.laborer_name)
-    assert_that(len(json.data)).not_equals_to(0)
-    assert_that(json.data).is_length(json.meta.total_entities)
-    assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).is_length(json.meta.total_entities)
+    assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
+    assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).size_is(json.meta.total_entities)
 
 
 def test_getting_by_non_existent_laborer_name(qiwa):
@@ -38,9 +37,8 @@ def test_getting_by_laborer_id(qiwa):
     laborer = qiwa.change_occupation.get_random_laborer()
 
     json = qiwa.change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no)
-    assert_that(len(json.data)).not_equals_to(0)
-    assert_that(json.data).is_length(json.meta.total_entities)
-    assert_that(search_data_by_attributes(json, laborer_id_no=laborer.laborer_id_no)).is_length(json.meta.total_entities)
+    assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
+    assert_that(search_data_by_attributes(json, laborer_id_no=laborer.laborer_id_no)).size_is(json.meta.total_entities)
 
 
 def test_getting_by_non_existent_laborer_id(qiwa):

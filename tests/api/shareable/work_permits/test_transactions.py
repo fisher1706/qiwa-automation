@@ -12,7 +12,7 @@ def test_get_transactions(api):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.transactions_data.parse_obj(response.json())
-    assert_that(json.data).is_length(json.meta.total_count)
+    assert_that(json.data).size_is(json.meta.total_count)
 
 
 @pytest.mark.parametrize("status", WorkPermitStatus, ids=lambda param: param.name)
@@ -21,4 +21,4 @@ def test_get_transactions_by_status(api, status):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = work_permits.transactions_data_with_status(status).parse_obj(response.json())
-    assert_that(json.data).is_length(json.meta.total_count)
+    assert_that(json.data).size_is(json.meta.total_count)
