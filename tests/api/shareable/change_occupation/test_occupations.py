@@ -64,19 +64,14 @@ def test_getting_more_than_total_per_page(change_occupation):
     )
 
 
-def test_getting_zero_page(change_occupation):
-    response = change_occupation.api.get_occupations(page=0, per=10)
-    assert_that(response.status_code).equals_to(HTTPStatus.OK)
-    assert_that(response.json()).has(data=None)
-
-
 def test_getting_zero_per_page(change_occupation):
     response = change_occupation.api.get_occupations(page=1, per=0)
     assert_that(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
 
-def test_getting_negative_page(change_occupation):
-    response = change_occupation.api.get_occupations(page=-1, per=10)
+@pytest.mark.parametrize("page", [0, -1])
+def test_getting_zero_and_negative_page(page, change_occupation):
+    response = change_occupation.api.get_occupations(page=page, per=10)
     assert_that(response.status_code).equals_to(HTTPStatus.OK)
     assert_that(response.json()).has(data=None)
 
