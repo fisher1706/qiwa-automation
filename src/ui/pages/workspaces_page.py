@@ -16,7 +16,7 @@ class WorkspacesPage:
     option_language_en = s('//*[contains(text(), "English")]')
 
     account_cards = ss("[data-component='Tile']")
-    individual_account_card = account_cards.element_by(have.text("Individual account"))
+    individual_account_card = account_cards.element_by(have.text("Individual Account"))
     lo_agent_card = account_cards.element_by(have.text("LO agent"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")
@@ -40,6 +40,7 @@ class WorkspacesPage:
 
     @allure.step
     def select_individual_account(self) -> WorkspacesPage:
+        self.individual_account_card.wait_until(be.visible)
         self.individual_account_card.click()
         return self
 
