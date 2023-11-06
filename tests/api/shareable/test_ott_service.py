@@ -20,7 +20,7 @@ def test_token_generation_and_validation():
 
     token_data = validate_ott.json()
     ValidateToken.parse_obj(token_data)
-    assert_that("sequence-numberr").as_("sequence-numberr").in_(list(token_data["payload"].keys()))
+    assert_that("sequence-number").as_("sequence-number").in_(list(token_data["payload"].keys()))
     assert_that(token_data["payload"]).has(**{"sequence-number": data["sequence-number"]})
 
 
