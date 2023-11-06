@@ -22,7 +22,7 @@ def test_getting_empty_page(qiwa):
 def test_getting_by_laborer_name(qiwa):
     laborer = qiwa.change_occupation.get_random_laborer()
 
-    json = qiwa.change_occupation.get_requests_laborers(laborer_name=laborer.laborer_name)
+    json = qiwa.change_occupation.get_requests_laborers(laborer_name=laborer.laborer_name, per=1000)
     assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
     assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).size_is(json.meta.total_entities)
 
