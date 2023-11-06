@@ -30,7 +30,6 @@ from data.visa.constants import (
     VisaType,
 )
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert, soft_assert_text
 from utils.pdf_parser import (
@@ -41,7 +40,7 @@ from utils.pdf_parser import (
 from utils.selene import scroll_into_view_if_needed
 
 
-class PermWorkVisaPage(BasePage):
+class PermWorkVisaPage:
     other_visas_tab = s('//*[@data-testid="nav-Other visas"]')
     permanent_visas_tab = s('//*[@data-testid="nav-Permanent work visas requests"]')
     other_visas_section = s("#otherVisaRequestsSection")
@@ -99,6 +98,8 @@ class PermWorkVisaPage(BasePage):
     modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
     modal_window_x_button = modal_window.ss(".//button").first
     modal_window_close_button = modal_window.ss(".//button").second
+    page_navigation_chain = s("//nav")
+    page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
