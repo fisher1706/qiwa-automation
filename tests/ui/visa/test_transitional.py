@@ -382,7 +382,7 @@ def test_verify_perm_work_visa_card_expiration_balance(visa_mock, visa_db):
     qiwa.transitional.verify_no_balance_expiration_date_perm_visa_card()
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.verify_work_visa_page_open()
-    qiwa.work_visa.increase_quota_expansion_button.click()
+    qiwa.work_visa.increase_quota_button.click()
     ref_num = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
     qiwa.work_visa.return_to_transitional_page()
     qiwa.transitional.verify_balance_expiration_date_perm_visa_card()
@@ -408,7 +408,7 @@ def test_verify_perm_work_visa_request_expansion_pdf(visa_mock, visa_db):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.perm_work_visa_service_page_button.click()
-    qiwa.work_visa.increase_quota_expansion_button.click()
+    qiwa.work_visa.increase_quota_button.click()
     ref_num = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
     qiwa.work_visa.verify_perm_work_visa_request_pdf(ref_num, VisaType.EXPANSION)
     qiwa.work_visa.view_action.click()
@@ -461,7 +461,7 @@ def test_verify_statuses_exceptional_balance_requests_table_expansion_flow(visa_
     visa_mock.setup_company(visa_type=VisaType.EXPANSION)
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.perm_work_visa_service_page_button.click()
-    qiwa.work_visa.increase_quota_expansion_button.click()
+    qiwa.work_visa.increase_quota_button.click()
     ref_number = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_ACCEPTED)
 
@@ -536,18 +536,32 @@ def test_verify_allowed_quota_perm_work_visa_page(visa_mock):
 
 
 @case_id(25565)
-@allure.title('Test verifies allowed quota section on permanent work visa page')
+@allure.title('Test verifies buttons on permanent work visa page (expansion)')
 def test_validation_issue_visa_increase_allowed_quota_buttons_expansion(visa_mock):
     visa_mock.setup_company(visa_type=VisaType.EXPANSION,
                             estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE))
     qiwa.transitional.refresh_page().page_is_loaded()
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.verify_work_visa_page_open()
-    qiwa.work_visa.verify_buttons(issue_enabled=False, increase_enabled=False)
+    qiwa.work_visa.verify_buttons_expansion(issue_enabled=False, increase_enabled=False)
     visa_mock.setup_company(visa_type=VisaType.EXPANSION)
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_buttons(issue_enabled=True, increase_enabled=True)
+    qiwa.work_visa.verify_buttons_expansion(issue_enabled=True, increase_enabled=True)
     visa_mock.setup_company(visa_type=VisaType.EXPANSION,
                             expansion_balance_validation_code = join_codes(code=ERROR_CODE, times=Numbers.ONE))
     qiwa.work_visa.refresh_page()
-    qiwa.work_visa.verify_buttons(issue_enabled=True, increase_enabled=False)
+    qiwa.work_visa.verify_buttons_expansion(issue_enabled=True, increase_enabled=False)
+
+
+@case_id(41431)
+@allure.title('Test verifies buttons on permanent work visa page (establishing)')
+def test_validation_issue_visa_increase_allowed_quota_buttons_establishing(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE))
+    qiwa.transitional.refresh_page().page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_buttons_establishment(issue_enabled=False, increase_enabled=False)
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    qiwa.work_visa.refresh_page()
+    qiwa.work_visa.verify_buttons_establishment(issue_enabled=True, increase_enabled=True)
