@@ -1,11 +1,10 @@
 import allure
 from selene.api import be, s
 
-from src.ui.pages.visa_pages.base_page import BasePage
 from utils.pdf_parser import file_is_valid_pdf, get_downloaded_filename
 
 
-class BalanceRequest(BasePage):
+class BalanceRequest:
     request_details_section = s('//*[@data-testid="balanceDetailsPageContent"]')
     print_button = s('//button//p[contains(text(), "Print")]')
 
