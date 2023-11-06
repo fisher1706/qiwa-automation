@@ -6,6 +6,7 @@ from src.api.models.qiwa.raw.change_occupations.establishment_validate import (
     Rule,
     RuleCodesT,
 )
+from src.api.models.qiwa.raw.change_occupations.occupations import OccupationAttributes
 from src.api.models.qiwa.raw.change_occupations.requests import Request, RequestByID
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
@@ -20,3 +21,4 @@ requests_laborers = Data[str, Literal["requests-laborers"], RequestLaborer, Type
 change_occupation_count = Data[str, Literal["change-occupation-count"], RequestsCount, Type[None]]
 user = Data[Type[None], Literal["user"], User, Type[None]]
 rule = Data[RuleCodesT, Literal["rule"], Rule, Type[None]]
+Occupation = Data[Type[None], Literal["occupation"], OccupationAttributes, Type[None]]

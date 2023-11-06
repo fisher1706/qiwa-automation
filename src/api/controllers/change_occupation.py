@@ -12,14 +12,13 @@ from src.api.models.qiwa.change_occupation import (
     requests_data,
     requests_laborers_data,
     users_data,
+    OccupationsData,
 )
 from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
-from src.api.models.qiwa.raw.token import AuthorizationToken
 from src.api.payloads.raw.change_occupation import Laborer as LaborerToRequest
 from utils.assertion import assert_status_code
-from utils.crypto_manager import decode_authorization_token
 from utils.json_search import search_by_data
 
 
@@ -27,22 +26,25 @@ class ChangeOccupationController:
     def __init__(self, client: HTTPClient):
         self.api = ChangeOccupationApi(client)
 
+    @classmethod
     @allure.step
-    def pass_ott_authorization(self) -> None:
-        cookie = self.api.http.session.cookies.get("qiwa.authorization")
-        jwt = decode_authorization_token(cookie)
-        auth_token = AuthorizationToken.parse_obj(jwt)
-        response = self.api.get_ott_token(
-            auth_token.company_labor_office_id,
-            auth_token.company_sequence_number,
-            auth_token.user_personal_number,
+    def pass_ott_authorization(
+        cls, labor_office_id: str, sequence_number: str, personal_number: str
+    ) -> 'ChangeOccupationController':
+        client = HTTPClient()
+        controller = cls(client)
+        response = controller.api.get_ott_token(
+            labor_office_id,
+            sequence_number,
+            personal_number,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         redirect_url = response.json()["redirect_url"]
         parsed_url = parse.parse_qs(parse.urlparse(redirect_url).query)
         ott_token = parsed_url.get("ott-token")[0]
-        response = self.api.get_session(ott_token)
+        response = controller.api.get_session(ott_token)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return controller
 
     @allure.step
     def get_requests_laborers(
@@ -97,6 +99,12 @@ class ChangeOccupationController:
         response = self.api.get_users(page=page, per=per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return users_data.parse_obj(response.json())
+
+    @allure.step
+    def get_occupations(self, page: int = 1, per: int = 10) -> OccupationsData:
+        response = self.api.get_occupations(page, per)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return OccupationsData.parse_obj(response.json())
 
     @allure.step
     def get_random_request(self) -> Request:

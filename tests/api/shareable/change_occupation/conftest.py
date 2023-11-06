@@ -1,6 +1,5 @@
 import pytest
 
-from src.api.app import QiwaApi
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.controllers.change_occupation import ChangeOccupationController
 from src.api.models.qiwa.change_occupation import (
@@ -12,10 +11,11 @@ from src.api.payloads.raw.change_occupation import Laborer
 
 
 @pytest.fixture(scope="module")
-def qiwa() -> QiwaApi:
-    qiwa = QiwaApi.login_as_user("1048285405").select_company(sequence_number=136401)
-    qiwa.change_occupation.pass_ott_authorization()
-    return qiwa
+def change_occupation() -> ChangeOccupationController:
+    controller = ChangeOccupationController.pass_ott_authorization(
+        labor_office_id="1", sequence_number="136401", personal_number="1048285405"
+    )
+    return controller
 
 
 def pytest_generate_tests(metafunc):
@@ -45,12 +45,12 @@ def pytest_generate_tests(metafunc):
 
 
 @pytest.fixture
-def laborer(qiwa):
+def laborer(change_occupation):
     laborer = Laborer(personal_number="2037659303", occupation_code="712501")
-    requests = qiwa.change_occupation.get_requests_by_laborer(laborer.personal_number)
+    requests = change_occupation.get_requests_by_laborer(laborer.personal_number)
     for request in requests:
-        qiwa.change_occupation.api.cancel_request(request["request_number"])
+        change_occupation.api.cancel_request(request["request_number"])
     yield laborer
-    requests = qiwa.change_occupation.get_requests_by_laborer(laborer.personal_number)
+    requests = change_occupation.get_requests_by_laborer(laborer.personal_number)
     for request in requests:
-        qiwa.change_occupation.api.cancel_request(request["request_number"])
+        change_occupation.api.cancel_request(request["request_number"])
