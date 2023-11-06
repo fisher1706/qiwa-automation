@@ -28,6 +28,10 @@ class AssertionMixin(AssertionBase):
         self.assert_(self.actual, expected, AssertionTypes.CONTAINS, "contains")
         return self
 
+    def in_(self, expected: T) -> AssertionMixin:
+        self.assert_(expected, self.actual, AssertionTypes.CONTAINS, "in")
+        return self
+
     def size_is(self, expected: int) -> AssertionMixin:
         self.assert_(len(self.actual), expected, AssertionTypes.EQUAL, "size is")
         return self
