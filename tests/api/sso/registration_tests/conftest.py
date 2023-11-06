@@ -1,6 +1,6 @@
 import pytest
 
-from data.sso import users_data_constants as users_data
+from data.sso import account_data_constants as users_data
 from src.database.actions.auth_db_actions import (
     delete_account_activities_data,
     delete_account_data_from_db,

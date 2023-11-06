@@ -17,7 +17,7 @@ def assert_that(actual: T) -> AssertionMixin:
 
 def assert_status_code(code: int) -> AssertionMixin:
     assertion = AssertionMixin(actual=code)
-    return assertion.as_("status code")
+    return assertion.as_("status_code")
 
 
 @allure.step

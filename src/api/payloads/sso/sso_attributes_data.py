@@ -38,3 +38,11 @@ def login_attributes(attributes: Any) -> Root:
 
 def otp_attributes(attributes: Any) -> Root:
     return Root(data=Data(type="otp", attributes=attributes))
+
+
+def hsm(attributes: Any) -> Root:
+    return Root(data=Data(type="hsm", attributes=attributes))
+
+
+def restore_password(attributes: Any) -> Root:
+    return Root(data=Data(type="password", attributes=attributes))
