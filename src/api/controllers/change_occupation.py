@@ -8,11 +8,11 @@ from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
     CreatedRequestsData,
+    OccupationsData,
     request_by_id_data,
     requests_data,
     requests_laborers_data,
     users_data,
-    OccupationsData,
 )
 from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
@@ -30,7 +30,7 @@ class ChangeOccupationController:
     @allure.step
     def pass_ott_authorization(
         cls, labor_office_id: str, sequence_number: str, personal_number: str
-    ) -> 'ChangeOccupationController':
+    ) -> "ChangeOccupationController":
         client = HTTPClient()
         controller = cls(client)
         response = controller.api.get_ott_token(
