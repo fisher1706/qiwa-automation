@@ -29,7 +29,7 @@ class AssertionMixin(AssertionBase):
         return self
 
     def in_(self, expected: T) -> AssertionMixin:
-        self.assert_(expected, self.actual, AssertionTypes.CONTAINS, "in")
+        self.assert_(self.actual, expected, AssertionTypes.IN, "in")
         return self
 
     def size_is(self, expected: int) -> AssertionMixin:
