@@ -49,8 +49,8 @@ DESCRIPTION_ON_VERIFICATION_CODE_MODAL: str = (
 SMS_CODE_TEXT_ON_VERIFICATION_CODE_MODAL: str = "Please enter the code"
 TITLE_ON_DELEGATION_REQUEST: str = "Do you want to approve the delegation request?"
 DELEGATION_REQUEST_TEXT: str = (
-    "This is a request to delegate the employee, {}, {} with Employee ID {}, on behalf of "
-    "the establishment {} with CR number {}, to {} at {}."
+    "There is a request to delegate the employee {}, {} with Employee ID {}, on behalf of "
+    "the establishment {} with CR number {} to {} at {}."
 )
 MESSAGE_ON_DELEGATION_REQUEST: str = (
     "The delegation is valid for {} after approval by all partners. It will be "
