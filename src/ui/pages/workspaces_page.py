@@ -16,7 +16,7 @@ class WorkspacesPage:
     option_language_en = s('//*[contains(text(), "English")]')
 
     account_cards = ss("[data-component='Tile']")
-    individual_account_card = account_cards.element_by(have.text("Individual Account"))
+    individual_account_card = account_cards.element_by(have.text("Individual account"))
     lo_agent_card = account_cards.element_by(have.text("LO agent"))
     admin_account_card = account_cards.element_by(have.text("Qiwa Admin"))
     business_account_list = ss("[data-component='TabPanel'] button")

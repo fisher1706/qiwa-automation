@@ -152,3 +152,73 @@ def test_individual_filter_appointments_history():
         AppointmentsHistoryStatus.SHOW_ALL['index']
     )
     qiwa.labor_office_appointments_page.should_search_history_be_visible()
+
+
+@allure.title("Appointments[Individual]: Multiple filter appointments in appointments history")
+@case_id(39219)
+def test_individual_multiple_filter_appointments_history():
+    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.EXPIRED['index']
+    )
+    qiwa.labor_office_appointments_page.search_appointments(
+        IndividualUser.APPOINTMENT_EXPIRED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=IndividualUser.APPOINTMENT_EXPIRED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED['value']
+    )
+    qiwa.labor_office_appointments_page.click_clear_search()
+
+    # check cancelled appointments multiple filter
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.CANCELLED['index']
+    )
+    qiwa.labor_office_appointments_page.search_appointments(
+        IndividualUser.APPOINTMENT_CANCELLED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=IndividualUser.APPOINTMENT_CANCELLED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED['value']
+    )
+    qiwa.labor_office_appointments_page.click_clear_search()
+
+    # check attended appointments multiple filter
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.ATTENDED['index']
+    )
+    qiwa.labor_office_appointments_page.search_appointments(
+        IndividualUser.APPOINTMENT_ATTENDED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=IndividualUser.APPOINTMENT_ATTENDED
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.ATTENDED['value']
+    )
+    qiwa.labor_office_appointments_page.click_clear_search()
+
+    # check done appointments multiple filter
+    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
+        AppointmentsHistoryStatus.DONE['index']
+    )
+    qiwa.labor_office_appointments_page.search_appointments(
+        IndividualUser.APPOINTMENT_DONE
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=2, value=IndividualUser.APPOINTMENT_DONE
+    )
+    qiwa.labor_office_appointments_page.should_history_search_results_have(
+        by_index=6, value=AppointmentsHistoryStatus.DONE['value']
+    )
