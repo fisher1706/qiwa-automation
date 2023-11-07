@@ -96,12 +96,12 @@ lo_sc_platinum_nitaqat = User(
     name="",
 )
 
-successful_issuing_message = (
+SUCCESSFUL_ISSUING_MESSAGE = (
     "Saudization Certificate issued successfully - "
     "below are the details of the Saudization Certificate."
 )
 
-unsuccessful_issuing_message_red_nitaqat = (
+UNSUCCESSFUL_ISSUING_MESSAGE_RED_NITAQAT = (
     "Nitaqat level is too low Your Nitaqat level must be at least Low Green or higher to request this service. "
     "Please select a different one or contact our support team."
 )

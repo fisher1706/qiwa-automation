@@ -126,7 +126,6 @@ PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
 ESTABLISHMENT_FUND = "Establishment fund"
 RECRUITMENT_QUOTA = "Recruitment quota"
 ESTABLISHMENT_PHASE = "Establishment phase"
-ESTABLISHMENT_PHASE = "Establishment phase"
 EXPANSION = "Expansion"
 RECRUITMENT_QUOTA_TIER = "Recruitment quota tier"
 ALLOWANCE_PERIOD_START_DATE = "Allowance period start date"

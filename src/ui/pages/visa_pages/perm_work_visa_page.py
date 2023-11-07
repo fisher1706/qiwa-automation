@@ -30,7 +30,6 @@ from data.visa.constants import (
     VisaType,
 )
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert, soft_assert_text
 from utils.pdf_parser import (
@@ -38,9 +37,10 @@ from utils.pdf_parser import (
     get_downloaded_filename,
     verify_text_in_pdf,
 )
+from utils.selene import scroll_into_view_if_needed
 
 
-class PermWorkVisaPage(BasePage):
+class PermWorkVisaPage:
     other_visas_tab = s('//*[@data-testid="nav-Other visas"]')
     permanent_visas_tab = s('//*[@data-testid="nav-Permanent work visas requests"]')
     other_visas_section = s("#otherVisaRequestsSection")
@@ -75,7 +75,7 @@ class PermWorkVisaPage(BasePage):
     establishment_fund_left_cell = establishment_fund_table.cell(row=1, column=1)
     establishment_fund_right_cell = establishment_fund_table.cell(row=1, column=2)
     increase_quota_establishment_button = s('//*[@data-testid="establishmentPhase"]//button')
-    increase_quota_expansion_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
+    increase_quota_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
     nav_link_to_transitional_page = ss("//nav//li").second
     allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
     exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
@@ -95,10 +95,11 @@ class PermWorkVisaPage(BasePage):
     recruitment_quota_table_expansion = Table('//*[@data-testid="expansionPhase"]')
     recruitment_quota_table_establishment = Table('//*[@data-testid="establishmentPhase"]')
     issue_visa_button = s('//*[@data-testid="issueVisaBtn"]')
-    increase_recruitment_quota_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
     modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
     modal_window_x_button = modal_window.ss(".//button").first
     modal_window_close_button = modal_window.ss(".//button").second
+    page_navigation_chain = s("//nav")
+    page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -382,17 +383,17 @@ class PermWorkVisaPage(BasePage):
         )
 
     @allure.step(
-        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled"
+        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in expansion flow"
     )
-    def verify_buttons(self, issue_enabled: bool, increase_enabled: bool) -> None:
+    def verify_buttons_expansion(self, issue_enabled: bool, increase_enabled: bool) -> None:
         if issue_enabled:
             self.verify_issue_visa_button_enabled()
         else:
             self.verify_issue_visa_button_disabled()
         if increase_enabled:
-            self.verify_increase_recruitment_quota_button_enabled()
+            self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
         else:
-            self.verify_increase_recruitment_quota_button_disabled()
+            self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
 
     def verify_issue_visa_button_enabled(self) -> None:
         self.issue_visa_button.should(be.visible).should(be.clickable)
@@ -417,25 +418,27 @@ class PermWorkVisaPage(BasePage):
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
 
-    def verify_increase_recruitment_quota_button_enabled(self) -> None:
-        self.increase_recruitment_quota_button.should(be.visible).should(be.clickable)
-        self.increase_recruitment_quota_button.s(self.ICON).should(be.hidden)
+    def verify_increase_recruitment_quota_button_enabled(self, button: Element) -> None:
+        scroll_into_view_if_needed(button)
+        button.should(be.visible).should(be.clickable)
+        button.s(self.ICON).should(be.hidden)
         curr_url = browser.driver.current_url
-        self.increase_recruitment_quota_button.click()
+        button.click()
         soft_assert(
             curr_url != browser.driver.current_url,
-            "Increase recruitment quota button not redirected to another page",
+            f"{str(button)} not redirected to another page",
         )
         browser.driver.back()
 
-    def verify_increase_recruitment_quota_button_disabled(self) -> None:
-        self.increase_recruitment_quota_button.should(be.visible).should(be.clickable)
-        self.increase_recruitment_quota_button.s(self.ICON).should(be.visible)
-        self.increase_recruitment_quota_button.click()
+    def verify_increase_recruitment_quota_button_disabled(self, button: Element) -> None:
+        scroll_into_view_if_needed(button)
+        button.should(be.visible).should(be.clickable)
+        button.s(self.ICON).should(be.visible)
+        button.click()
         self.verify_modal_error_window()
         self.modal_window_x_button.click()
         self.modal_window.should(be.hidden)
-        self.increase_recruitment_quota_button.click()
+        button.click()
         self.verify_modal_error_window()
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
@@ -444,3 +447,22 @@ class PermWorkVisaPage(BasePage):
         self.modal_window.should(be.visible)
         self.modal_window_x_button.should(be.visible).should(be.clickable)
         self.modal_window_close_button.should(be.visible).should(be.clickable)
+
+    @allure.step(
+        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in establishment flow"
+    )
+    def verify_buttons_establishment(self, issue_enabled: bool, increase_enabled: bool) -> None:
+        if issue_enabled:
+            self.verify_issue_visa_button_enabled()
+        else:
+            self.verify_issue_visa_button_disabled()
+        if increase_enabled:
+            self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+            self.verify_increase_recruitment_quota_button_enabled(
+                self.increase_quota_establishment_button
+            )
+        else:
+            self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+            self.verify_increase_recruitment_quota_button_disabled(
+                self.increase_quota_establishment_button
+            )

@@ -51,7 +51,7 @@ def test_verify_user_can_issue_saudi_certificate(user: User):
         .validate_dashboard_sub_title()
 
     qiwa.email_popup.proceed_otp_code().click_on_proceed_button()
-    qiwa.lo_saudization_certificate_page.check_expected_success_message(successful_issuing_message)
+    qiwa.lo_saudization_certificate_page.check_expected_success_message(SUCCESSFUL_ISSUING_MESSAGE)
 
     # get cr and unified number for an establishment
     est_details = IBMApiController().get_cr_unified_numbers_for_establishment(user)
@@ -132,7 +132,7 @@ def test_if_establishment_has_red_nitaqat():
 
     # validate on the error message
     qiwa.labor_office_appointments_create_confirmation_page.validate_error_message(
-        unsuccessful_issuing_message_red_nitaqat)
+        UNSUCCESSFUL_ISSUING_MESSAGE_RED_NITAQAT)
 
 
 @allure.title('AS-373, AS-374 Check UI OTP modal elements')

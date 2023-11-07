@@ -1,15 +1,15 @@
 from time import sleep
 
 import allure
-from selene.api import be, command, query, s, ss
+from selene.api import be, command, have, not_, query, s, ss
 
 from data.visa.constants import Numbers
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.base_page import BasePage
+from src.ui.pages.visa_pages.payment_gateway_page import PaymentGateWay
 from utils.assertion.selene_conditions import have_any_number
 
 
-class IncreaseQuotaPage(BasePage):
+class IncreaseQuotaPage:
     loader = s('//*[@data-testid="skeleton"]')
     TIER_CHECK_BOX = '//*[@id="tier-{}"]//following-sibling::span'
     tier_4_input_field = s('//*[@data-testid="TierNumberFieldValue"]')
@@ -40,6 +40,17 @@ class IncreaseQuotaPage(BasePage):
     next_step_visas_amount_button = s(
         '//*[@data-testid="numberOfExceptionalVisasActiveNextStepBtn"]'
     )
+    visit_date_input = s('//*[@data-testid="estabAddressSectionVisitDate"]')
+    visit_date_calendar = s('//*[@data-testid="estabAddressSectionVisitDate"]')
+    floating_popup = s('//*[@class="tippy-box"]')
+    calendar_days = floating_popup.ss('//td[@role="gridcell"]/div[@role="button"]')
+    selectable_days_not = calendar_days.by(have.attribute("aria-disabled"))
+    selectable_days = calendar_days.by(not_(have.attribute("aria-disabled")))
+    visit_time_input = s('//*[@data-testid="estabAddressSectionVisitTimeSelect"]')
+    visit_time_options_box = s("#tippy-5")
+    visit_time_options = visit_time_options_box.ss(".//ul/li")
+    last_name = s("#person-name")
+    payment = PaymentGateWay()
 
     def get_to_tier(self, visa_db, tier, num_visas=0):
         s(self.TIER_CHECK_BOX.format(tier)).click()
@@ -52,7 +63,7 @@ class IncreaseQuotaPage(BasePage):
         self.next_step_button_agreement.click()
         self.select_location()
         self.goto_payment_button.click()
-        self.pay_successfully(visa_db)
+        self.payment.pay_successfully(visa_db)
         self.verify_created_request()
         self.back_to_perm_work_visa_button.click()
         self.history_tier_upgrades_table.row(1).should(be.visible)
@@ -69,7 +80,7 @@ class IncreaseQuotaPage(BasePage):
         self.select_location()
         self.terms_agree_checkbox.click()
         self.goto_payment_button.click()
-        self.pay_successfully(visa_db)
+        self.payment.pay_successfully(visa_db)
         self.payment_request_sent.should(have_any_number())
         self.back_to_perm_work_visa_button.click()
         ref_number = self.balanse_request_table.cell(row=Numbers.ONE, column="Request number").get(
