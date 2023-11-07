@@ -46,10 +46,10 @@ def pytest_generate_tests(metafunc):
 
 @pytest.fixture
 def laborer(change_occupation):
-    laborer = Laborer(personal_number="2037659303", occupation_code="712501")
+    laborer = Laborer(personal_number="2004776742", occupation_code="712501")
     requests = change_occupation.get_requests_by_laborer(laborer.personal_number)
     for request in requests:
-        change_occupation.api.cancel_request(request["request_number"])
+        change_occupation.api.cancel_request("1" + request["request_number"])
     yield laborer
     requests = change_occupation.get_requests_by_laborer(laborer.personal_number)
     for request in requests:

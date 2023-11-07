@@ -16,3 +16,4 @@ change_occupation_count_data = Root[
 users_data = Root[list[change_occupation.user], Type[None], Meta]
 validation_data = Root[list[change_occupation.rule], Type[None], establishment_validate.Meta]
 OccupationsData = Root[list[change_occupation.Occupation], Type[None], OccupationsMeta]
+MultiLangErrorsData = Root[list[change_occupation.MultiLangError], Type[None], Type[None]]
