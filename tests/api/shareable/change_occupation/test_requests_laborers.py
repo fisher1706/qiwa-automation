@@ -67,3 +67,7 @@ def test_getting_by_non_existent_status_id(change_occupation):
 
     json = Root.parse_obj(response.json())
     assert_that(json.data).is_empty()
+    assert_that(json.meta).has(
+        pages_count=0,
+        total_entities=0,
+    )
