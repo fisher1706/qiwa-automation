@@ -99,8 +99,8 @@ class IndividualPage:
 
     @allure.step("Wait Individual page to load")
     def wait_page_to_load(self) -> IndividualPage:
+        self.service_card.first.should(be.present)
         MeetQiwaPopup().close_meet_qiwa_popup()
-        self.service_card.first.should(be.visible)
         return self
 
     @allure.step("Click on See all services")
