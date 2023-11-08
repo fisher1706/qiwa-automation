@@ -53,7 +53,7 @@ def test_book_establishment_appointment(language):
 
 
 @allure.title(
-    "Appointments: View the Appointment details (from the 'Upcoming appointments' table)"
+    "Appointments: View the Appointment details from the 'Upcoming appointments' table"
 )
 @case_id(25509)
 def test_view_establishment_appointment_from_upcoming(language=Language.EN):
