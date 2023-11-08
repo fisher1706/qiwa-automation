@@ -11,8 +11,11 @@ class OttServiceApi:
     def __init__(self):
         self.client = HTTPClient()
 
-    def generate_token(self, data: dict) -> Response:
-        return self.client.post(self.url, f"{self.route}/generate", json=data)
+    def generate_token(self, sequence_number: int | str, labor_office_id: int = None) -> Response:
+        payload = {"sequence-number": sequence_number}
+        if labor_office_id:
+            payload["labor-office-id"] = labor_office_id
+        return self.client.post(self.url, f"{self.route}/generate", json=payload)
 
-    def validate_token(self, token: dict) -> Response:
-        return self.client.post(self.url, f"{self.route}/validate", json=token)
+    def validate_token(self, token: int | str) -> Response:
+        return self.client.post(self.url, f"{self.route}/validate", json={"ott": token})

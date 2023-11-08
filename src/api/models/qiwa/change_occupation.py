@@ -3,6 +3,7 @@ from typing import Type
 from src.api.models.qiwa.data import change_occupation
 from src.api.models.qiwa.raw.change_occupations import establishment_validate
 from src.api.models.qiwa.raw.change_occupations.meta import Meta
+from src.api.models.qiwa.raw.change_occupations.occupations import OccupationsMeta
 from src.api.models.qiwa.raw.root import Root
 
 CreatedRequestsData = Root[list[change_occupation.created_request], Type[None], Type[None]]
@@ -14,3 +15,5 @@ change_occupation_count_data = Root[
 ]
 users_data = Root[list[change_occupation.user], Type[None], Meta]
 validation_data = Root[list[change_occupation.rule], Type[None], establishment_validate.Meta]
+OccupationsData = Root[list[change_occupation.Occupation], Type[None], OccupationsMeta]
+MultiLangErrorsData = Root[list[change_occupation.MultiLangError], Type[None], Type[None]]
