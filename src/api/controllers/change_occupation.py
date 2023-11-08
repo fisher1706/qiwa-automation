@@ -4,6 +4,7 @@ from urllib import parse
 
 import allure
 
+from data.shareable.change_occupation import RequestStatus
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
@@ -48,9 +49,15 @@ class ChangeOccupationController:
 
     @allure.step
     def get_requests_laborers(
-        self, page: int = 1, per: int = 10, laborer_name: str = None, laborer_id: int = None
+        self,
+        page: int = 1,
+        per: int = 10,
+        laborer_name: str = None,
+        laborer_id: int = None,
+        request_status: RequestStatus = None,
     ) -> requests_laborers_data:
-        response = self.api.get_requests_laborers(page, per, laborer_name, laborer_id)
+        status = request_status.value if request_status else request_status
+        response = self.api.get_requests_laborers(page, per, laborer_name, laborer_id, status)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return requests_laborers_data.parse_obj(response.json())
 

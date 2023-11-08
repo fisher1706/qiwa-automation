@@ -30,7 +30,12 @@ class ChangeOccupationApi:
         return self.http.post(f"{self.url}/session", params={"ott-token": token})
 
     def get_requests_laborers(
-        self, page: int, per: int, laborer_name: str = None, laborer_id: int = None
+        self,
+        page: int,
+        per: int,
+        laborer_name: str = None,
+        laborer_id: int = None,
+        request_status: int = None,
     ) -> Response:
         params = dict(
             page=page,
@@ -40,6 +45,8 @@ class ChangeOccupationApi:
             params["q[laborer-name][eq]"] = laborer_name
         if laborer_id:
             params["q[laborer-id-no][eq]"] = laborer_id
+        if request_status:
+            params["q[status-list][eq][]"] = request_status
         return self.http.get(f"{self.url}/requests-laborers", params=params)
 
     def get_requests(self, page: int, per: int) -> Response:

@@ -1,6 +1,10 @@
 from http import HTTPStatus
 
+import pytest
+
+from data.shareable.change_occupation import RequestStatus
 from data.shareable.expected_json.change_occupation.requests_laborers import empty_data
+from src.api.models.qiwa.raw.root import Root
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_data, assert_that
 from utils.json_search import search_data_by_attributes
@@ -45,3 +49,21 @@ def test_getting_by_non_existent_laborer_id(change_occupation):
     response = change_occupation.api.get_requests_laborers(page=1, per=10, laborer_name="Non-exist name")
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_data(expected=empty_data(), actual=response.json())
+
+
+@pytest.mark.parametrize("status", list(RequestStatus))
+def test_getting_by_status_id(change_occupation, status):
+    response = change_occupation.api.get_requests_laborers(page=1, per=100, request_status=status.value)
+    assert_that(response).has(status_code=HTTPStatus.OK)
+
+    json = Root.parse_obj(response.json())
+    assert_that(json.data).size_is(json.meta["total_entities"])
+
+
+def test_getting_by_non_existent_status_id(change_occupation):
+    status = 1000
+    response = change_occupation.api.get_requests_laborers(page=1, per=100, request_status=status)
+    assert_that(response).has(status_code=HTTPStatus.OK)
+
+    json = Root.parse_obj(response.json())
+    assert_that(json.data).is_empty()
