@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 from http import HTTPStatus
 from urllib.parse import parse_qs, urlparse
 
@@ -8,12 +9,13 @@ from requests import Response
 
 import config
 from data.account import Account
-from src.api.assertions.response_validator import ResponseValidator
 from src.api.http_client import HTTPClient
 from src.api.payloads.raw.sso_oauth import Authorize
 from src.api.payloads.sso_oauth_payloads import (
     activate_sso_hsm_payload,
     email_verification_payload,
+    hsm_payload,
+    init_hsm_for_reset_password,
     init_sso_hsm_payload,
     login_payload,
     logout_payload,
@@ -21,10 +23,9 @@ from src.api.payloads.sso_oauth_payloads import (
     phone_verification_payload,
     registration_account_payload,
     request_with_otp_payload,
+    reset_password,
     security_question_payload,
     unlock_through_email_payload,
-    hsm_payload,
-    reset_password,
 )
 from utils.assertion import assert_status_code
 
@@ -105,6 +106,15 @@ class AuthApiSSO:
     def resend_absher_code_on_unlock_account_flow(self):
         response = self.api.post(url=self.url, endpoint="/session/high-security-mode/init/resend")
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+
+    @allure.step
+    def resend_absher_code_on_reset_password_flow(self, expected_code: int = 200):
+        # sleep is needed in the matter of the delay on the endpoint for resending the Absher code
+        time.sleep(30)
+        response = self.api.post(
+            url=self.url, endpoint="/reset-password/high-security-mode/resend"
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
 
     @allure.step
     def resend_otp_on_secure_otp_flow(self):
@@ -259,10 +269,14 @@ class AuthApiSSO:
         return response.json()
 
     @allure.step
-    def init_reset_password(self, personal_number: str, expected_code: int = 200) -> str:
+    def init_reset_password(self, personal_number: str, expected_code: int = 200):
         payload = init_sso_hsm_payload(personal_number)
         response = self.api.post(url=self.url, endpoint="/reset-password/init", json=payload)
         assert_status_code(response.status_code).equals_to(expected_code)
+        if expected_code == 200:
+            url_to_parse = urlparse(response.json()["url"])
+            token = parse_qs(url_to_parse.query)["token"][0]
+            return token
         return response.json()
 
     @allure.step
@@ -277,8 +291,20 @@ class AuthApiSSO:
         return self
 
     @allure.step
-    def reset_password(self, new_password: str, token: str, expected_code: int = 200):
-        payload = reset_password(new_password=new_password, token=token)
+    def reset_password(
+        self, new_password: str, confirm_password: str, token: str, expected_code: int = 200
+    ):
+        payload = reset_password(
+            new_password=new_password, confirm_password=confirm_password, token=token
+        )
         response = self.api.post(url=self.url, endpoint="/reset-password", json=payload)
         assert_status_code(response.status_code).equals_to(expected_code)
         return response.json()
+
+    @allure.step
+    def init_hsm_for_reset_password(self, token: str, expected_code: int = 200):
+        payload = init_hsm_for_reset_password(token=token)
+        response = self.api.post(
+            url=self.url, endpoint="/reset-password/high-security-mode/init", json=payload
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)

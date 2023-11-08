@@ -46,3 +46,7 @@ def hsm(attributes: Any) -> Root:
 
 def restore_password(attributes: Any) -> Root:
     return Root(data=Data(type="password", attributes=attributes))
+
+
+def init_hsm_for_restore_password(attributes: Any) -> Root:
+    return Root(data=Data(type="restore-password", attributes=attributes))

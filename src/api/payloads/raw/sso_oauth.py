@@ -61,6 +61,6 @@ class UnlockWiaEmail(QiwaBaseModel):
 
 
 class ResetPassword(QiwaBaseModel):
-    password: str
-    password_confirm: str
-    token: str
+    password: Optional[str]
+    password_confirm: Optional[str]
+    token: Optional[str]

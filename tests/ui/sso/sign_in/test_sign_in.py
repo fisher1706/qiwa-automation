@@ -1,7 +1,7 @@
 import pytest
 
-from data.sso import messages as messages
 from data.sso import account_data_constants as users_data
+from data.sso import messages as messages
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 from utils.random_manager import RandomManager
