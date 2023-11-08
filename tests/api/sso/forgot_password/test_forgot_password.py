@@ -31,9 +31,9 @@ def test_three_attempts_to_reset_the_password_with_invalid_absher_code(account_d
     qiwa = QiwaApi()
     token = qiwa.sso.init_reset_password(account_data.personal_number)
     qiwa.sso.init_hsm_for_reset_password(token=token)
-    qiwa.sso.hsm_on_reset_password(absher_code="123456", expected_code=422)
-    qiwa.sso.hsm_on_reset_password(absher_code="123456", expected_code=422)
-    qiwa.sso.hsm_on_reset_password(absher_code="123456", expected_code=422)
+    qiwa.sso.hsm_on_reset_password(absher_code=users_data.INVALID_ABSHER_CODE, expected_code=422)
+    qiwa.sso.hsm_on_reset_password(absher_code=users_data.INVALID_ABSHER_CODE, expected_code=422)
+    qiwa.sso.hsm_on_reset_password(absher_code=users_data.INVALID_ABSHER_CODE, expected_code=422)
 
 
 @case_id(42040)
@@ -55,7 +55,7 @@ def test_that_user_is_unable_to_reset_password_more_than_five_times(account_for_
 @case_id(42042)
 def test_init_reset_password_with_invalid_national_id():
     qiwa = QiwaApi()
-    qiwa.sso.init_reset_password(personal_number="12345678", expected_code=422)
+    qiwa.sso.init_reset_password(personal_number=users_data.INVALID_PERSONAL_NUMBER, expected_code=422)
 
 
 @case_id(42025)
@@ -92,5 +92,5 @@ def test_user_cant_reset_with_different_passwords(account_data):
     qiwa.sso.init_hsm_for_reset_password(token=token)
     qiwa.sso.hsm_on_reset_password() \
         .reset_password(new_password=users_data.CHANGED_PASSWORD,
-                        confirm_password="123456789aA@!",
+                        confirm_password=users_data.DEFAULT_PASSWORD,
                         token=token, expected_code=422)
