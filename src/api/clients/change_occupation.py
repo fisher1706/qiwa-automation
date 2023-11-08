@@ -72,7 +72,7 @@ class ChangeOccupationApi:
         return self.http.get(f"{self.url}/context")
 
     def validate_establishment(self) -> Response:
-        return self.http.get(f"{self.url}/establishment/validate")
+        return self.http.post(f"{self.url}/establishment/validate")
 
     def validate_laborer(self, personal_number: str | int, occupation_code: str | int) -> Response:
         payload = change_occupation(
