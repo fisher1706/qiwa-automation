@@ -31,8 +31,13 @@ def test_getting_by_laborer_name(change_occupation):
     assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).size_is(json.meta.total_entities)
 
 
-def test_getting_by_non_existent_laborer_name(change_occupation):
-    response = change_occupation.api.get_requests_laborers(page=1, per=10, laborer_name="Non-exist name")
+@pytest.mark.parametrize(
+    "query_parameter",
+    [{"laborer_id": 0000000000}, {"laborer_name": "Non-exist name"}],
+    ids=["laborer_name", "laborer_id"]
+)
+def test_getting_by_non_existent_value(change_occupation, query_parameter):
+    response = change_occupation.api.get_requests_laborers(page=1, per=10, **query_parameter)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_data(expected=empty_data(), actual=response.json())
 
@@ -43,12 +48,6 @@ def test_getting_by_laborer_id(change_occupation):
     json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no)
     assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
     assert_that(search_data_by_attributes(json, laborer_id_no=laborer.laborer_id_no)).size_is(json.meta.total_entities)
-
-
-def test_getting_by_non_existent_laborer_id(change_occupation):
-    response = change_occupation.api.get_requests_laborers(page=1, per=10, laborer_id=1234567890)
-    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_data(expected=empty_data(), actual=response.json())
 
 
 @pytest.mark.parametrize("status", list(RequestStatus))

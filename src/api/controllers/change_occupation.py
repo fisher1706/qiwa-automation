@@ -1,5 +1,4 @@
 import random
-from http import HTTPStatus
 from urllib import parse
 
 import allure
@@ -16,7 +15,6 @@ from src.api.models.qiwa.change_occupation import (
     requests_laborers_data,
     users_data,
 )
-from src.api.models.qiwa.data.change_occupation import ChangeOccupationCount
 from src.api.models.qiwa.raw.change_occupations.count import (
     ChangeOccupationCountAttributes,
 )
@@ -24,7 +22,7 @@ from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
 from src.api.payloads.raw.change_occupation import Laborer as LaborerToRequest
-from utils.assertion import assert_status_code, assert_that
+from utils.assertion import assert_that
 from utils.json_search import search_by_data
 
 
@@ -44,12 +42,12 @@ class ChangeOccupationController:
             sequence_number,
             personal_number,
         )
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         redirect_url = response.json()["redirect_url"]
         parsed_url = parse.parse_qs(parse.urlparse(redirect_url).query)
         ott_token = parsed_url.get("ott-token")[0]
         response = controller.api.get_session(ott_token)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return controller
 
     @allure.step
@@ -63,19 +61,19 @@ class ChangeOccupationController:
     ) -> requests_laborers_data:
         status = request_status.value if request_status else request_status
         response = self.api.get_requests_laborers(page, per, laborer_name, laborer_id, status)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return requests_laborers_data.parse_obj(response.json())
 
     @allure.step
     def get_requests(self, page: int = 1, per: int = 10) -> requests_data:
         response = self.api.get_requests(page=page, per=per)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return requests_data.parse_obj(response.json())
 
     @allure.step
     def get_request(self, request_id: int) -> request_by_id_data:
         response = self.api.get_request(request_id)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return request_by_id_data.parse_obj(response.json())
 
     @allure.step
@@ -103,19 +101,19 @@ class ChangeOccupationController:
     @allure.step
     def create_request(self, *laborers: LaborerToRequest) -> CreatedRequestsData:
         response = self.api.create_request(*laborers)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return CreatedRequestsData.parse_obj(response.json())
 
     @allure.step
     def get_users(self, page: int = 1, per: int = 10) -> users_data:
         response = self.api.get_users(page=page, per=per)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return users_data.parse_obj(response.json())
 
     @allure.step
     def get_occupations(self, page: int = 1, per: int = 10) -> OccupationsData:
         response = self.api.get_occupations(page, per)
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_that(response).has(status_code=200)
         return OccupationsData.parse_obj(response.json())
 
     @allure.step
@@ -123,15 +121,6 @@ class ChangeOccupationController:
         response = self.api.get_count()
         assert_that(response).has(status_code=200)
         return ChangeOccupationsCountData.parse_obj(response.json())
-
-    @allure.step
-    def get_not_zero_requests_count(self) -> list[ChangeOccupationCount]:
-        counts = self.get_requests_count()
-        expression = 'data[?attributes."requests-count" > `0`].attributes'
-        return [
-            ChangeOccupationCount.parse_obj(data)
-            for data in search_by_data(expression, counts.dict(exclude_unset=True))
-        ]
 
     @allure.step
     def get_requests_count_by_status(
