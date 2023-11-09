@@ -61,6 +61,7 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Select service {name}")
     def select_service(self, name: str) -> LaborOfficeAppointmentsCreatePage:
+        self.input_service.wait_until(be.visible)
         self.input_service.click()
         self.input_service.set(name)
         self.dropdown[0].click()
@@ -83,6 +84,7 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Select region")
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
+        self.input_region.wait_until(be.visible)
         self.input_region.double_click()  # investigate why one click does not work
         self.dropdown_select_region.select_by_text(name)
         return self
