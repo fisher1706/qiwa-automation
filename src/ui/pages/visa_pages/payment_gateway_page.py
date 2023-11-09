@@ -11,8 +11,8 @@ class PaymentGateWay:
     pay_by_card_option = s('//*[@id="card"]//following-sibling::span')
     cardholder_input_field = s('//*[@id="cardHolder-test"]')
     card_number_input_field = s('//*[@id="cardNumber-test"]')
-    card_month_input_field = s('//*[@id="1"]')
-    card_year_input_field = s('//*[@id="2"]')
+    card_month_input_field = s('//*[@id="date-test-0"]')
+    card_year_input_field = s('//*[@id="date-test-1"]')
     card_cvv_input_field = s('//*[@id="cvv-test"]')
     agree_payment_checkbox = s(
         '//*[@id="terms-checkbox"]//parent::label//following-sibling::span/span'
