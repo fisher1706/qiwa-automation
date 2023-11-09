@@ -8,6 +8,7 @@ from data.shareable.change_occupation import RequestStatus
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
+    ChangeOccupationsCountData,
     CreatedRequestsData,
     OccupationsData,
     request_by_id_data,
@@ -15,11 +16,15 @@ from src.api.models.qiwa.change_occupation import (
     requests_laborers_data,
     users_data,
 )
+from src.api.models.qiwa.data.change_occupation import ChangeOccupationCount
+from src.api.models.qiwa.raw.change_occupations.count import (
+    ChangeOccupationCountAttributes,
+)
 from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
 from src.api.payloads.raw.change_occupation import Laborer as LaborerToRequest
-from utils.assertion import assert_status_code
+from utils.assertion import assert_status_code, assert_that
 from utils.json_search import search_by_data
 
 
@@ -112,6 +117,29 @@ class ChangeOccupationController:
         response = self.api.get_occupations(page, per)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return OccupationsData.parse_obj(response.json())
+
+    @allure.step
+    def get_requests_count(self) -> ChangeOccupationsCountData:
+        response = self.api.get_count()
+        assert_that(response).has(status_code=200)
+        return ChangeOccupationsCountData.parse_obj(response.json())
+
+    @allure.step
+    def get_not_zero_requests_count(self) -> list[ChangeOccupationCount]:
+        counts = self.get_requests_count()
+        expression = 'data[?attributes."requests-count" > `0`].attributes'
+        return [
+            ChangeOccupationCount.parse_obj(data)
+            for data in search_by_data(expression, counts.dict(exclude_unset=True))
+        ]
+
+    @allure.step
+    def get_requests_count_by_status(
+        self, status: RequestStatus
+    ) -> ChangeOccupationCountAttributes:
+        counts = self.get_requests_count()
+        expression = f'data[?attributes."status_id"== `{status.value}`].attributes | [0]'
+        return ChangeOccupationCountAttributes.parse_obj(search_by_data(expression, counts.dict()))
 
     @allure.step
     def get_random_request(self) -> Request:

@@ -7,7 +7,7 @@ from data.shareable.expected_json.change_occupation.requests_laborers import emp
 from src.api.models.qiwa.raw.root import Root
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_data, assert_that
-from utils.json_search import search_data_by_attributes
+from utils.json_search import get_data_attribute, search_data_by_attributes
 
 
 def test_getting_empty_page(change_occupation):
@@ -46,18 +46,34 @@ def test_getting_by_laborer_id(change_occupation):
 
 
 def test_getting_by_non_existent_laborer_id(change_occupation):
-    response = change_occupation.api.get_requests_laborers(page=1, per=10, laborer_name="Non-exist name")
+    response = change_occupation.api.get_requests_laborers(page=1, per=10, laborer_id=1234567890)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_data(expected=empty_data(), actual=response.json())
 
 
 @pytest.mark.parametrize("status", list(RequestStatus))
-def test_getting_by_status_id(change_occupation, status):
+def test_getting_by_status_id_according_to_count(change_occupation, status):
+    count = change_occupation.get_requests_count_by_status(status).requests_count
+
     response = change_occupation.api.get_requests_laborers(page=1, per=100, request_status=status.value)
     assert_that(response).has(status_code=HTTPStatus.OK)
 
     json = Root.parse_obj(response.json())
-    assert_that(json.data).size_is(json.meta["total_entities"])
+    assert_that(json.data).size_is(count)
+    assert_that(json.meta).has(total_entities=count)
+
+
+@pytest.mark.parametrize("status", [
+    RequestStatus.DRAFT,
+    RequestStatus.PENDING_LABORER_APPROVAL,
+    RequestStatus.REJECTED_BY_LABORER,
+    RequestStatus.CANCELED_BY_EMPLOYER
+])
+def test_getting_by_status_id(change_occupation, status):
+    json = change_occupation.get_requests_laborers(request_status=status, per=100)
+    request_statuses = get_data_attribute(json, "request_status_id")
+
+    assert_that(set(request_statuses)).size_is(1).contains(status.value)
 
 
 def test_getting_by_non_existent_status_id(change_occupation):

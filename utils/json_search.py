@@ -15,6 +15,7 @@ def search_in_json(key, json_response):
 @allure.step
 def search_by_data(expression: str, data: Any) -> Any:
     result = jmespath.search(expression, data)
+    assert result, f"No result for {expression}"
     allure.attach(
         json.dumps(result, indent=2, ensure_ascii=False, default=str) if result else "None",
         "Search result",
@@ -32,4 +33,10 @@ def search_data_by_attributes(data: Root, **attributes) -> Any:
         for key in attributes
     ]
     expression = f"data[? {' && '.join(attrs)}]"
+    return search_by_data(expression, data=data.dict(exclude_unset=True))
+
+
+@allure.step
+def get_data_attribute(data: Root, attr: Any) -> list[Any]:
+    expression = f'data[].attributes."{attr}"'
     return search_by_data(expression, data=data.dict(exclude_unset=True))
