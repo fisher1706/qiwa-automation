@@ -23,7 +23,7 @@ class IssueVisaPage:
     request_created_banner = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]')
     visa_request_ref_number = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]//span')
     back_to_perm_work_visas = s('//*[@data-testid="backToWorkVisas"]')
-    popup = FeedbackPopup('[title="iframe"]')
+    popup = FeedbackPopup('//*[@data-component="Modal"]')
 
     @allure.step("Verify issue visa page is open")
     def verify_issue_visa_page_open(self):
