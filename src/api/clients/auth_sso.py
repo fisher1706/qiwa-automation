@@ -93,7 +93,7 @@ class AuthApiSSO:
     def unlock_account_through_email(self, unlock_key: str) -> AuthApiSSO:
         payload = unlock_through_email_payload(lockout_key=unlock_key)
         response = self.api.post(url=self.url, endpoint="/accounts/unlock-via-email", json=payload)
-        assert_status_code(response.status_code).equals_to(HTTPStatus)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return self
 
     @allure.step
