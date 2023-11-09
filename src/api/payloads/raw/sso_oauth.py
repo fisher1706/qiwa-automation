@@ -58,3 +58,9 @@ class Logout(QiwaBaseModel):
 
 class UnlockWiaEmail(QiwaBaseModel):
     account_lockout_key: str
+
+
+class ResetPassword(QiwaBaseModel):
+    password: Optional[str]
+    password_confirm: Optional[str]
+    token: Optional[str]

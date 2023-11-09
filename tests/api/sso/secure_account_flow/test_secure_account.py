@@ -1,4 +1,4 @@
-from data.sso import users_data_constants as users_data
+from data.sso import account_data_constants as users_data
 from src.api.app import QiwaApi
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
