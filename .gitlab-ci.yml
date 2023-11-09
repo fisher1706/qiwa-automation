@@ -239,84 +239,84 @@ sso_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
-    ALLURE_PROJECT_ID: sso-ui-daily
+    ALLURE_PROJECT_ID: aqa-sso-ui
   needs: [sso_ui_tests]
 
 um_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
-    ALLURE_PROJECT_ID: um-ui-daily
+    ALLURE_PROJECT_ID: aqa-um-ui
   needs: [um_ui_tests]
 
 dedicated_co_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 3
-    ALLURE_PROJECT_ID: co-ui-daily
+    ALLURE_PROJECT_ID: aqa-co-ui
   needs: [dedicated_co_ui_tests]
 
 visa_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 7
-    ALLURE_PROJECT_ID: visa-ui-tests
+    ALLURE_PROJECT_ID: aqa-visa-ui
   needs: [visa_ui_tests]
 
 dataportal_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
-    ALLURE_PROJECT_ID: dataportal-ui-daily
+    ALLURE_PROJECT_ID: aqa-dataportal-ui
   needs: [dataportal_ui_tests]
 
 lmi_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
-    ALLURE_PROJECT_ID: lmi-ui-daily
+    ALLURE_PROJECT_ID: aqa-lmi-ui
   needs: [lmi_ui_tests]
 
 sso_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 23
-    ALLURE_PROJECT_ID: sso-api-daily
+    ALLURE_PROJECT_ID: aqa-sso-api
   needs: [sso_api_tests]
 
 um_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 26
-    ALLURE_PROJECT_ID: um-api-daily
+    ALLURE_PROJECT_ID: aqa-um-api
   needs: [um_api_tests]
 
 lmi_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 15
-    ALLURE_PROJECT_ID: lmi-api-daily
+    ALLURE_PROJECT_ID: aqa-lmi-api
   needs: [lmi_api_tests]
 
 lo_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 16
-    ALLURE_PROJECT_ID: lo-ui-daily
+    ALLURE_PROJECT_ID: aqa-lo-ui
   needs: [lo_ui_tests]
 
 lo_api_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 16
-    ALLURE_PROJECT_ID: lo-api-daily
+    ALLURE_PROJECT_ID: aqa-lo-api
   needs: [lo_api_tests]
 
 delegation_ui_testmo_report:
   <<: *testmo_report
   variables:
     TESTMO_PROJECT_ID: 9
-    ALLURE_PROJECT_ID: delegation-daily
+    ALLURE_PROJECT_ID: aqa-delegation
   needs: [delegation_ui_tests]
 
 .allure_report_template: &allure_report
@@ -328,85 +328,85 @@ delegation_ui_testmo_report:
 sso_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: sso-ui-daily
+    ALLURE_PROJECT_ID: aqa-sso-ui
   needs: [sso_ui_tests]
 
 um_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: um-ui-daily
+    ALLURE_PROJECT_ID: aqa-um-ui
   needs: [um_ui_tests]
 
 dedicated_co_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: co-ui-daily
+    ALLURE_PROJECT_ID: aqa-co-ui
   needs: [dedicated_co_ui_tests]
 
 dedicated_et_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: et-ui-daily
+    ALLURE_PROJECT_ID: aqa-et-ui
   needs: [dedicated_et_ui_tests]
 
 dataportal_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: dataportal-ui-daily
+    ALLURE_PROJECT_ID: aqa-dataportal-ui
   needs: [dataportal_ui_tests]
 
 delegation_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: delegation-daily
+    ALLURE_PROJECT_ID: aqa-delegation
   needs: [delegation_ui_tests]
 
 lmi_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: lmi-ui-daily
+    ALLURE_PROJECT_ID: aqa-lmi-ui
   needs: [lmi_ui_tests]
 
 sso_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: sso-api-daily
+    ALLURE_PROJECT_ID: aqa-sso-api
   needs: [sso_api_tests]
 
 um_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: um-api-daily
+    ALLURE_PROJECT_ID: aqa-um-api
   needs: [um_api_tests]
 
 shareable_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: ss-api-stage
+    ALLURE_PROJECT_ID: aqa-ss-api-stage
   needs: [shareable_api_tests]
 
 lmi_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: lmi-api-daily
+    ALLURE_PROJECT_ID: aqa-lmi-api
   needs: [lmi_api_tests]
 
 lo_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: lo-api-daily
+    ALLURE_PROJECT_ID: aqa-lo-api
   needs: [lo_api_tests]
 
 lo_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: lo-ui-daily
+    ALLURE_PROJECT_ID: aqa-lo-ui
   needs: [lo_ui_tests]
 
 visa_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: visa-ui-tests
+    ALLURE_PROJECT_ID: aqa-visa-ui
   needs: [visa_ui_tests]
 
 .discord_notification_template: &discord_notification
