@@ -47,7 +47,9 @@ def test_getting_by_laborer_id(change_occupation):
 
     json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no)
     assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
-    assert_that(search_data_by_attributes(json, laborer_id_no=laborer.laborer_id_no)).size_is(json.meta.total_entities)
+
+    laborer_ids_from_json = get_data_attribute(json, "laborer_id_no")
+    assert_that(set(laborer_ids_from_json)).size_is(1).contains(laborer.laborer_id_no)
 
 
 @pytest.mark.parametrize("status", list(RequestStatus))
@@ -70,9 +72,9 @@ def test_getting_by_status_id_according_to_count(change_occupation, status):
 ])
 def test_getting_by_status_id(change_occupation, status):
     json = change_occupation.get_requests_laborers(request_status=status, per=100)
-    request_statuses = get_data_attribute(json, "request_status_id")
+    status_ids_from_json = get_data_attribute(json, "request_status_id")
 
-    assert_that(set(request_statuses)).size_is(1).contains(status.value)
+    assert_that(set(status_ids_from_json)).size_is(1).contains(status.value)
 
 
 def test_getting_by_non_existent_status_id(change_occupation):
