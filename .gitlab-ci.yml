@@ -328,7 +328,7 @@ delegation_ui_testmo_report:
 sso_ui_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: v1-sso-ui-daily
+    ALLURE_PROJECT_ID: sso-ui-daily
   needs: [sso_ui_tests]
 
 um_ui_allure_report:
@@ -370,7 +370,7 @@ lmi_ui_allure_report:
 sso_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: v1-sso-api-daily
+    ALLURE_PROJECT_ID: sso-api-daily
   needs: [sso_api_tests]
 
 um_api_allure_report:
