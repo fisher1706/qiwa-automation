@@ -4,13 +4,13 @@ from src.api.models.qiwa.change_occupation import MultiLangErrorsData
 from utils.assertion import assert_status_code, assert_that
 
 
-def test_successful_validation_without_warning(change_occupation, laborer):
+def test_validation_for_laborer_registered_in_portal(change_occupation, laborer):
     response = change_occupation.api.validate_laborer(laborer.personal_number, laborer.occupation_code)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_that(response.json()).has(valid=True)
 
 
-def test_successful_validation_with_warning(change_occupation, not_registered_in_portal_laborer):
+def test_validation_for_laborer_not_registered_in_portal(change_occupation, not_registered_in_portal_laborer):
     response = change_occupation.api.validate_laborer(
         not_registered_in_portal_laborer.personal_number,
         not_registered_in_portal_laborer.occupation_code
