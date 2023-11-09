@@ -21,7 +21,7 @@ def test_getting_by_laborer_name(change_occupation):
 def test_getting_by_laborer_id(change_occupation):
     laborer = change_occupation.get_random_laborer()
 
-    json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no)
+    json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no, per=100)
     assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
 
     laborer_ids_from_json = get_data_attribute(json, "laborer_id_no")

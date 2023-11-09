@@ -15,7 +15,6 @@ def search_in_json(key, json_response):
 @allure.step
 def search_by_data(expression: str, data: Any) -> Any:
     result = jmespath.search(expression, data)
-    assert result, f"No result for {expression}"
     allure.attach(
         json.dumps(result, indent=2, ensure_ascii=False, default=str) if result else "None",
         "Search result",

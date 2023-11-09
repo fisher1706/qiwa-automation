@@ -10,8 +10,11 @@ def test_successful_validation_without_warning(change_occupation, laborer):
     assert_that(response.json()).has(valid=True)
 
 
-def test_successful_validation_with_warning(change_occupation):
-    response = change_occupation.api.validate_laborer(personal_number=2037659303, occupation_code=712501)
+def test_successful_validation_with_warning(change_occupation, not_registered_in_portal_laborer):
+    response = change_occupation.api.validate_laborer(
+        not_registered_in_portal_laborer.personal_number,
+        not_registered_in_portal_laborer.occupation_code
+    )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = MultiLangErrorsData.parse_obj(response.json())
