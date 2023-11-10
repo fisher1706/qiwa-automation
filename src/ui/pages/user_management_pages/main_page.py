@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from selene import be, have, query
+from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
 from src.ui.components.raw.table import Table
@@ -52,6 +52,11 @@ class UserManagementMainPage:
 
     def wait_until_page_is_loaded(self) -> UserManagementMainPage:
         self.users_in_table.wait_until(be.visible)
+        return self
+
+    def check_page_is_displayed(self) -> UserManagementMainPage:
+        browser.driver.refresh()
+        self.users_in_table.should(be.visible)
         return self
 
     def click_subscribe_btn(self) -> UserManagementMainPage:
