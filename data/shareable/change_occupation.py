@@ -16,3 +16,7 @@ class RequestStatus(enum.Enum):
     REJECTED_BY_NIC = 12
     ASSOCIATED_WITH_TRANSFER_REQUEST = 13
     AUTO_CANCELED_DUE_NO_NIC_RESPONSE = 14
+
+    @classmethod
+    def values(cls) -> list[int]:
+        return [e.value for e in cls]
