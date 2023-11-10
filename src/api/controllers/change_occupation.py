@@ -65,14 +65,16 @@ class ChangeOccupationController:
         return RequestsLaborersData.parse_obj(response.json())
 
     @allure.step
-    def get_requests(self, page: int = 1, per: int = 10) -> RequestsData:
-        response = self.api.get_requests(page=page, per=per)
+    def get_requests(
+        self, page: int = 1, per: int = 10, employee_name: str = None, request_id: str = None
+    ) -> RequestsData:
+        response = self.api.get_requests(page, per, employee_name, request_id)
         assert_status_code(response.status_code).equals_to(200)
         return RequestsData.parse_obj(response.json())
 
     @allure.step
-    def get_request(self, request_id: int) -> RequestByIdData:
-        response = self.api.get_request(request_id)
+    def get_request_by_id(self, request_id: str) -> RequestByIdData:
+        response = self.api.get_request_by_id(request_id)
         assert_status_code(response.status_code).equals_to(200)
         return RequestByIdData.parse_obj(response.json())
 

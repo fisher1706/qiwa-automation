@@ -64,10 +64,20 @@ class ChangeOccupationApi:
             ) = (to_date.year, to_date.month, to_date.day)
         return self.http.get(f"{self.url}/requests-laborers", params=params)
 
-    def get_requests(self, page: int, per: int) -> Response:
-        return self.http.get(f"{self.url}/requests", params={"page": page, "per": per})
+    def get_requests(
+        self, page: int = 1, per: int = 10, employee_name: str = None, request_id: str = None
+    ) -> Response:
+        params = dict(
+            page=page,
+            per=per,
+        )
+        if employee_name:
+            params["q[employee-name][eq]"] = employee_name
+        if request_id:
+            params["q[request-id][eq]"] = request_id
+        return self.http.get(f"{self.url}/requests", params=params)
 
-    def get_request(self, request_id: int) -> Response:
+    def get_request_by_id(self, request_id: str) -> Response:
         return self.http.get(f"{self.url}/requests/{request_id}")
 
     def create_request(self, *laborers: Laborer) -> Response:

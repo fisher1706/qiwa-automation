@@ -36,6 +36,6 @@ def search_data_by_attributes(data: Root, **attributes) -> Any:
 
 
 @allure.step
-def get_data_attribute(data: Root, attr: Any) -> list[Any]:
-    expression = f'data[].attributes."{attr}"'
+def get_data_attribute(data: Root, attr: Any, *args) -> list[Any]:
+    expression = f'data[].attributes."{attr}"{"".join(args)}'
     return search_by_data(expression, data=data.dict(exclude_unset=True))
