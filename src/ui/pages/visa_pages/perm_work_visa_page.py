@@ -15,6 +15,8 @@ from data.visa.constants import (
     ESTIMATED_RECRUITMENT_QUOTA,
     EXPANSION,
     FILTERS,
+    ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+    ISSUE_VISA_MODAL_TITLE_TEXT,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
     PERMANENT_VISAS_NO_RESULTS,
@@ -98,8 +100,11 @@ class PermWorkVisaPage:
     modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
     modal_window_x_button = modal_window.ss(".//button").first
     modal_window_close_button = modal_window.ss(".//button").second
+    modal_window_title = modal_window.s(".//p")
+    modal_window_content = modal_window.s(".//ol/li")
     page_navigation_chain = s("//nav")
     page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
+    banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -406,15 +411,17 @@ class PermWorkVisaPage:
         )
         browser.driver.back()
 
-    def verify_issue_visa_button_disabled(self) -> None:
+    def verify_issue_visa_button_disabled(
+        self, modal_title: str = None, modal_content: str = None
+    ) -> None:
         self.issue_visa_button.should(be.visible).should(be.clickable)
         self.issue_visa_button.s(self.ICON).should(be.visible)
         self.issue_visa_button.click()
-        self.verify_modal_error_window()
+        self.verify_modal_error_window(modal_title, modal_content)
         self.modal_window_x_button.click()
         self.modal_window.should(be.hidden)
         self.issue_visa_button.click()
-        self.verify_modal_error_window()
+        self.verify_modal_error_window(modal_title, modal_content)
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
 
@@ -443,10 +450,18 @@ class PermWorkVisaPage:
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
 
-    def verify_modal_error_window(self):
+    def verify_modal_error_window(self, title: str = None, content: str = None) -> None:
         self.modal_window.should(be.visible)
         self.modal_window_x_button.should(be.visible).should(be.clickable)
         self.modal_window_close_button.should(be.visible).should(be.clickable)
+        if title:
+            soft_assert_text(
+                self.modal_window_title, text=title, element_name="modal window title"
+            )
+        if content:
+            soft_assert_text(
+                self.modal_window_content, text=content, element_name="modal window content"
+            )
 
     @allure.step(
         "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in establishment flow"
@@ -525,3 +540,18 @@ class PermWorkVisaPage:
         self.recruitment_quota_table_establishment.cell(row=4, column=2).should(
             have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
         )
+
+    @allure.step("Check the error text above Recruitment quota title on the work visa dashboard.")
+    def verify_error_banner(self):
+        soft_assert_text(
+            self.banner,
+            text=ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+            element_name="Error banner",
+        )
+
+    @allure.step("Check buttons in the top block on the Instant work visa page [expansion]")
+    def verify_expansion_balance_zero_buttons_behavior(self):
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
