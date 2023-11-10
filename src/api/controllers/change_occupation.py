@@ -22,7 +22,7 @@ from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
 from src.api.payloads.raw.change_occupation import Laborer as LaborerToRequest
-from utils.assertion import assert_that, assert_status_code
+from utils.assertion import assert_status_code, assert_that
 from utils.json_search import search_by_data
 
 
