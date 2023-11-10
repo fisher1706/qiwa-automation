@@ -88,8 +88,8 @@ class ChangeOccupationApi:
         )
         return self.http.post(f"{self.url}", json=payload)
 
-    def cancel_request(self, request_id: int) -> Response:
-        return self.http.put(f"{self.url}/cancel/{request_id}")
+    def cancel_request(self, request_number: str) -> Response:
+        return self.http.put(f"{self.url}/cancel/{request_number}")
 
     def get_count(self) -> Response:
         return self.http.get(f"{self.url}/count")
