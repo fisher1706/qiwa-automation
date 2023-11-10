@@ -1,3 +1,5 @@
+from datetime import date
+
 from requests import Response
 
 import config
@@ -31,11 +33,12 @@ class ChangeOccupationApi:
 
     def get_requests_laborers(
         self,
-        page: int,
-        per: int,
+        page: int = 1,
+        per: int = 10,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: int = None,
+        date_range: tuple[date, date] = None,
     ) -> Response:
         params = dict(
             page=page,
@@ -47,6 +50,18 @@ class ChangeOccupationApi:
             params["q[laborer-id-no][eq]"] = laborer_id
         if request_status:
             params["q[status-list][eq][]"] = request_status
+        if date_range:
+            from_date, to_date = date_range
+            (
+                params["q[request-date-from][gte][y]"],
+                params["q[request-date-from][gte][m]"],
+                params["q[request-date-from][gte][d]"],
+            ) = (from_date.year, from_date.month, from_date.day)
+            (
+                params["q[request-date-to][lte][y]"],
+                params["q[request-date-to][lte][m]"],
+                params["q[request-date-to][lte][d]"],
+            ) = (to_date.year, to_date.month, to_date.day)
         return self.http.get(f"{self.url}/requests-laborers", params=params)
 
     def get_requests(self, page: int, per: int) -> Response:

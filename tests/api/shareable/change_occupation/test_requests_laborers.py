@@ -1,12 +1,13 @@
+from datetime import date, timedelta
 from http import HTTPStatus
 
 import pytest
 
 from data.shareable.change_occupation import RequestStatus
-from data.shareable.expected_json.change_occupation.requests_laborers import empty_data
+from src.api.models.qiwa.change_occupation import RequestsLaborersData
 from src.api.models.qiwa.raw.root import Root
 from utils.assertion import assert_status_code
-from utils.assertion.asserts import assert_data, assert_that
+from utils.assertion.asserts import assert_that
 from utils.json_search import get_data_attribute, search_data_by_attributes
 
 
@@ -46,34 +47,42 @@ def test_getting_by_status_id_according_to_count(change_occupation, status):
     count = change_occupation.get_requests_count_by_status(status).requests_count
 
     response = change_occupation.api.get_requests_laborers(page=1, per=100, request_status=status.value)
-    assert_that(response).has(status_code=HTTPStatus.OK)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = Root.parse_obj(response.json())
     assert_that(json.data).size_is(count)
     assert_that(json.meta).has(total_entities=count)
 
 
-def test_getting_empty_page(change_occupation):
-    requests_laborers = change_occupation.get_requests_laborers(per=10)
-    page = requests_laborers.meta.pages_count + 1
+def test_getting_by_request_date(change_occupation):
+    today = date.today()
+    yesterday = today - timedelta(weeks=2)
+    date_range = (yesterday, today)
 
-    response = change_occupation.api.get_requests_laborers(page=page, per=10)
+    response = change_occupation.api.get_requests_laborers(page=1, per=100, date_range=date_range)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_data(expected=empty_data(), actual=response.json())
 
-    response = change_occupation.api.get_requests_laborers(page=10000, per=10)
-    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-    assert_data(expected=empty_data(), actual=response.json())
+    json = RequestsLaborersData.parse_obj(response.json())
+    request_dates_from_json = get_data_attribute(json, "request_date")
+    assert_that(min(request_dates_from_json).date()).is_greater_or_equal(yesterday)
+    assert_that(max(request_dates_from_json).date()).is_less_or_equal(today)
 
 
 @pytest.mark.parametrize(
     "parameter",
-    [{"laborer_id": 2000000000}, {"laborer_name": "Non-exist name"}, {"request_status": 10000}],
-    ids=["laborer_id", "laborer_name", "request_status"]
+    [
+        {"page": 1000},
+        {"laborer_id": 2000000000},
+        {"laborer_name": "Non-exist name"},
+        {"request_status": 10000},
+        {"date_range": (date.today() + timedelta(days=1), date.today() + timedelta(days=2))},
+        {"date_range": (date.today() + timedelta(days=2), date.today() + timedelta(days=1))},
+    ],
+    ids=["page", "laborer_id", "laborer_name", "request_status", "future_date_range", "invalid_date_range"]
 )
-def test_getting_by_non_existent_parameter_value(change_occupation, parameter):
-    response = change_occupation.api.get_requests_laborers(page=1, per=10, **parameter)
-    assert_that(response).has(status_code=HTTPStatus.OK)
+def test_getting_by_invalid_parameter_value(change_occupation, parameter):
+    response = change_occupation.api.get_requests_laborers(**parameter)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = Root.parse_obj(response.json())
     assert_that(json.data).is_empty()
@@ -81,5 +90,8 @@ def test_getting_by_non_existent_parameter_value(change_occupation, parameter):
         pages_count=0,
         total_entities=0,
         total_count=0,
-        total_pages=0
+        total_pages=0,
+        current_page=0,
+        next_page=0,
+        prev_page=0
     )

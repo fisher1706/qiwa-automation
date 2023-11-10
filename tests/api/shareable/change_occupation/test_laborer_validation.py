@@ -26,7 +26,7 @@ def test_validation_for_laborer_not_registered_in_portal(change_occupation, not_
 
 
 def test_unsuccessful_validation(change_occupation, laborer):
-    response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=213201)
+    response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=216101)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
     json = MultiLangErrorsData.parse_obj(response.json())

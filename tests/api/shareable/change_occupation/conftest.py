@@ -3,9 +3,9 @@ import pytest
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.controllers.change_occupation import ChangeOccupationController
 from src.api.models.qiwa.change_occupation import (
-    requests_data,
-    requests_laborers_data,
-    users_data,
+    RequestsData,
+    RequestsLaborersData,
+    UsersData,
 )
 from src.api.payloads.raw.change_occupation import Laborer
 
@@ -23,17 +23,17 @@ def pytest_generate_tests(metafunc):
         params = {
             "/requests": (
                 ChangeOccupationApi.get_requests,
-                requests_data,
+                RequestsData,
                 ChangeOccupationController.get_requests,
             ),
             "/requests-laborers": (
                 ChangeOccupationApi.get_requests_laborers,
-                requests_laborers_data,
+                RequestsLaborersData,
                 ChangeOccupationController.get_requests_laborers,
             ),
             "/users": (
                 ChangeOccupationApi.get_users,
-                users_data,
+                UsersData,
                 ChangeOccupationController.get_users,
             ),
         }
