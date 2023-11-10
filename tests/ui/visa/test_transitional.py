@@ -635,3 +635,15 @@ def test_verify_allowance_period_block_perm_work_visa_request(visa_mock):
                             allowance_start_date=start_date.strftime(DateFormats.YYYYMMDD))
     browser.driver.refresh()
     qiwa.work_visa.verify_allowance_period_block_perm_work_visa_request(allowance_started=False)
+
+
+@case_id(46947)
+@allure.title("Test verifies errors appearance (internal error) on permanent work visa page [expansion]")
+def test_verify_internal_errors_perm_work_visa_page_expansion(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION, immediate_balance=Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_error_banner()
+    qiwa.work_visa.verify_expansion_balance_zero_buttons_behavior()
+
