@@ -466,3 +466,62 @@ class PermWorkVisaPage:
             self.verify_increase_recruitment_quota_button_disabled(
                 self.increase_quota_establishment_button
             )
+
+    @allure.step("Verify allowance period")
+    def verify_allowance_period_block_perm_work_visa_request(self, allowance_started):
+        if allowance_started:
+            self.verify_allowed_quota_section_establishment()
+        else:
+            self.verify_allowance_period_hidden_block_perm_work_visa_request()
+
+    def verify_allowance_period_hidden_block_perm_work_visa_request(self):
+        self.recruitment_quota_table_establishment.body.should(be.visible)
+        self.recruitment_quota_table_establishment.rows.should(have.size(Numbers.FOUR))
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=1),
+            text=RECRUITMENT_QUOTA_TIER,
+            element_name="Recruitment quota tier cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=1),
+            text=ESTIMATED_RECRUITMENT_QUOTA,
+            element_name="Estimated recruitment quota after allowance period ends cell (header)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=3, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=4, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.FOUR)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=2),
+            text=ESTABLISHING,
+            element_name="Establishing cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=2),
+            text=TIER.ONE,
+            element_name="Tier cell (value)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=4, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )

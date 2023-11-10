@@ -619,3 +619,19 @@ def test_validation_issue_visa_increase_allowed_quota_buttons_establishing(visa_
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
     browser.driver.refresh()
     qiwa.work_visa.verify_buttons_establishment(issue_enabled=True, increase_enabled=True)
+
+
+@case_id(46648)
+@allure.title('Test verifies allowance period block permanent work visa request')
+def test_verify_allowance_period_block_perm_work_visa_request(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_allowance_period_block_perm_work_visa_request(allowance_started=True)
+    start_date = datetime.date.today() + relativedelta(days=+1)
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            allowance_start_date=start_date.strftime(DateFormats.YYYYMMDD))
+    browser.driver.refresh()
+    qiwa.work_visa.verify_allowance_period_block_perm_work_visa_request(allowance_started=False)
