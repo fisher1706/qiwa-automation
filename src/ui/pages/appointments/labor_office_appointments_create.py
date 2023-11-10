@@ -85,14 +85,14 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Select region")
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_region.wait_until(be.visible)
-        self.input_region.double_click()  # investigate why one click does not work
+        self.input_region.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_region.select_by_text(name)
         return self
 
     @allure.step("Select office")
     def select_office(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_office.wait_until(be.enabled)
-        self.input_office.double_click()  # investigate why one click does not work
+        self.input_office.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_office.select_by_text(name)
         return self
 
