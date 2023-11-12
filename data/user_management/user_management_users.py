@@ -55,3 +55,28 @@ terminated_owner = User(
     sequence_number=59989,
     unified_number_id=121173,
 )
+
+user_1380 = User(
+    personal_number="1009999341",
+    user_id=1372659,
+    labor_office_id=9,
+    sequence_number=2619,
+    default_price=1200
+)
+
+
+user_1265 = User(
+    personal_number="1023450479",
+    user_id=33707906,
+    labor_office_id=17,
+    sequence_number=95885,
+    default_price=1100
+)
+
+user_11500 = User(
+    personal_number="1019974839",
+    user_id=2291009,
+    labor_office_id=9,
+    sequence_number=93886,
+    default_price=10000
+)

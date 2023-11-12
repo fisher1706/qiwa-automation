@@ -1,6 +1,7 @@
 import dataclasses
 
-from data.user_management.user_management_users import delegator_with_um, owner_account
+from data.user_management.user_management_users import delegator_with_um, owner_account, \
+    user_1380, user_1265, user_11500
 
 
 @dataclasses.dataclass
@@ -66,3 +67,13 @@ class Privileges:
 @dataclasses.dataclass
 class ErrorsMessage:
     user_doesnt_have_access_to_um = "Sorry! You need permission to enter this page"
+
+
+@dataclasses.dataclass
+class SubscriptionUsers:
+    subscription_users = [user_1380, user_1265, user_11500]
+
+
+@dataclasses.dataclass
+class DefaultPercentValue:
+    percent_value = 1.15
