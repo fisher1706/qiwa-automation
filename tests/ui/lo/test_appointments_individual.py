@@ -257,3 +257,50 @@ def test_individual_view_appointment_from_upcoming():
     qiwa.labor_office_appointments_view_page.verify_map_elements()
     qiwa.labor_office_appointments_view_page.verify_map_functions()
     qiwa.labor_office_appointments_view_page.verify_print_btn()
+
+
+@allure.title("Appointments[Individual]: Cancel Appointment (from the 'Upcoming appointments' table)")
+@case_id(41845)
+def test_individual_cancel_appointment_from_active_appointments():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+    qiwa.labor_office_appointments_page.upcoming_appointments_actions.click()
+    qiwa.labor_office_appointments_page.button_action_cancel_upcoming_appointment.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_close_btn.click()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+    qiwa.labor_office_appointments_page.upcoming_appointments_actions.click()
+    qiwa.labor_office_appointments_page.button_action_cancel_upcoming_appointment.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_back_btn.click()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+    qiwa.labor_office_appointments_page.upcoming_appointments_actions.click()
+    qiwa.labor_office_appointments_page.button_action_cancel_upcoming_appointment.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
+    qiwa.labor_office_appointments_page.button_close_modal.click()
+
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
