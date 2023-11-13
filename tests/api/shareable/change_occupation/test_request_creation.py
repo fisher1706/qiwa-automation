@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
+from data.shareable.change_occupation import RequestStatus
 from src.api.models.qiwa.change_occupation import MultiLangErrorsData
 from src.api.payloads.raw.change_occupation import Laborer
 from utils.assertion import assert_status_code, assert_that
@@ -17,10 +18,28 @@ def test_create_request(change_occupation, laborer):
     requests = change_occupation.get_requests_by_request_number(request_attributes.request_id)
     assert_that(requests).size_is(1)
     assert_that(requests[0]).has(
-        status_id=3,
+        status_id=RequestStatus.PENDING_LABORER_APPROVAL.value,
         employee_personal_number=laborer.personal_number,
         new_occupation_id=laborer.occupation_code
     )
+
+
+def test_create_for_two_laborers(change_occupation, laborer, laborer2):
+    json = change_occupation.create_request(laborer, laborer2)
+    assert_that(json.data).size_is(2)
+
+    request1, request2 = json.data
+
+    for request, laborer in ((request1, laborer), (request2, laborer2)):
+        assert_that(request.attributes).has(personal_number=laborer.personal_number)
+
+        requests = change_occupation.get_requests_by_request_number(request.attributes.request_id)
+        assert_that(requests).size_is(1)
+        assert_that(requests[0]).has(
+            status_id=RequestStatus.PENDING_LABORER_APPROVAL.value,
+            employee_personal_number=laborer.personal_number,
+            new_occupation_id=laborer.occupation_code
+        )
 
 
 def test_create_for_laborer_with_processing_request(change_occupation, laborer):

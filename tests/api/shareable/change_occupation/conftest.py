@@ -57,8 +57,8 @@ def laborer(change_occupation):  # TODO: select randomly
 
 
 @pytest.fixture
-def not_registered_in_portal_laborer(change_occupation):  # TODO: select randomly
-    laborer = Laborer(personal_number="2037659303", occupation_code="712501")
+def laborer2(change_occupation):  # TODO: select randomly
+    laborer = Laborer(personal_number="2037659303")
     requests = change_occupation.get_requests_by_laborer(laborer.personal_number)
     for request in requests:
         change_occupation.api.cancel_request("1" + request["request_number"])
