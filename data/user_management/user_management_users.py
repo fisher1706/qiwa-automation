@@ -56,7 +56,7 @@ terminated_owner = User(
     unified_number_id=121173,
 )
 
-user_1380 = User(
+establishment_type_five = User(
     personal_number="1009999341",
     user_id=1372659,
     labor_office_id=9,
@@ -64,8 +64,7 @@ user_1380 = User(
     default_price=1200,
 )
 
-
-user_1265 = User(
+establishment_type_one = User(
     personal_number="1023450479",
     user_id=33707906,
     labor_office_id=17,
@@ -73,7 +72,7 @@ user_1265 = User(
     default_price=1100,
 )
 
-user_11500 = User(
+establishment_type_four = User(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
