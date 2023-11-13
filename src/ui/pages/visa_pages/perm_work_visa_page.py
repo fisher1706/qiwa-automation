@@ -15,7 +15,9 @@ from data.visa.constants import (
     ESTIMATED_RECRUITMENT_QUOTA,
     EXPANSION,
     FILTERS,
+    ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT,
     ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+    ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT,
     ISSUE_VISA_MODAL_TITLE_TEXT,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
@@ -542,10 +544,10 @@ class PermWorkVisaPage:
         )
 
     @allure.step("Check the error text above Recruitment quota title on the work visa dashboard.")
-    def verify_error_banner(self):
+    def verify_error_banner(self, text):
         soft_assert_text(
             self.banner,
-            text=ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+            text=text,
             element_name="Error banner",
         )
 
@@ -555,3 +557,25 @@ class PermWorkVisaPage:
             ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT
         )
         self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+
+    @allure.step("Verify tier one, balance zero case validations")
+    def verify_issue_perm_work_visa_blocked(self):
+        self.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT)
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+
+    @allure.step("Verify tier four, balance more than zero case validations")
+    def verify_increase_perm_work_visa_quota_blocked(self):
+        self.banner.should(be.hidden)
+        self.verify_issue_visa_button_enabled()
+        self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+
+    @allure.step("Verify tier four, balance zero case validations")
+    def verify_increase_perm_work_visa_quota_and_issue_blocked(self):
+        self.banner.should(be.hidden)
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)

@@ -137,6 +137,10 @@ ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT = (
     "You have already used your recruitment quota in the current tier."
 )
 ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT = "You have already used your recruitment quota."
+ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
+    "You have already used your recruitment quota in the highest tier. "
+    "Please wait for the allowance period to end."
+)
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
