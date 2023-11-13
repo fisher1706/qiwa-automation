@@ -274,7 +274,7 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
-    qiwa.labor_office_appointments_page.check_active_appointment_not_exist()
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 
 @allure.title("Appointments: Cancel Appointment (form the 'Appointment details' page)")
@@ -319,7 +319,7 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
-    qiwa.labor_office_appointments_page.check_active_appointment_not_exist()
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 
 @allure.title("Appointments: As LO User I have possibility to Edit Appointment")
