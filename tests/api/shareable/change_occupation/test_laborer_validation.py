@@ -4,14 +4,17 @@ from src.api.models.qiwa.change_occupation import MultiLangErrorsData
 from utils.assertion import assert_status_code, assert_that
 
 
-def test_successful_validation_without_warning(change_occupation, laborer):
+def test_validation_for_laborer_registered_in_portal(change_occupation, laborer):
     response = change_occupation.api.validate_laborer(laborer.personal_number, laborer.occupation_code)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_that(response.json()).has(valid=True)
 
 
-def test_successful_validation_with_warning(change_occupation):
-    response = change_occupation.api.validate_laborer(personal_number=2037659303, occupation_code=712501)
+def test_validation_for_laborer_not_registered_in_portal(change_occupation, not_registered_in_portal_laborer):
+    response = change_occupation.api.validate_laborer(
+        not_registered_in_portal_laborer.personal_number,
+        not_registered_in_portal_laborer.occupation_code
+    )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = MultiLangErrorsData.parse_obj(response.json())
@@ -23,7 +26,7 @@ def test_successful_validation_with_warning(change_occupation):
 
 
 def test_unsuccessful_validation(change_occupation, laborer):
-    response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=213201)
+    response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=216101)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
     json = MultiLangErrorsData.parse_obj(response.json())

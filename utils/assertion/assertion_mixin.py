@@ -56,3 +56,13 @@ class AssertionMixin(AssertionBase):
         with self._step(self.description, "is not empty"):
             self.assert_(len(self.actual), 0, AssertionTypes.NOT_EQUAL)
         return self
+
+    def is_greater_or_equal(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "greater or equal", expected):
+            self.assert_(self.actual, expected, AssertionTypes.GREATER_OR_EQUAL)
+        return self
+
+    def is_less_or_equal(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "less or equal", expected):
+            self.assert_(self.actual, expected, AssertionTypes.LESS_OR_EQUAL)
+        return self

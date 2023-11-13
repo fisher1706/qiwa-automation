@@ -1,3 +1,5 @@
+from datetime import date
+
 from requests import Response
 
 import config
@@ -30,7 +32,13 @@ class ChangeOccupationApi:
         return self.http.post(f"{self.url}/session", params={"ott-token": token})
 
     def get_requests_laborers(
-        self, page: int, per: int, laborer_name: str = None, laborer_id: int = None
+        self,
+        page: int = 1,
+        per: int = 10,
+        laborer_name: str = None,
+        laborer_id: int = None,
+        request_status: int = None,
+        date_range: tuple[date, date] = None,
     ) -> Response:
         params = dict(
             page=page,
@@ -40,12 +48,36 @@ class ChangeOccupationApi:
             params["q[laborer-name][eq]"] = laborer_name
         if laborer_id:
             params["q[laborer-id-no][eq]"] = laborer_id
+        if request_status:
+            params["q[status-list][eq][]"] = request_status
+        if date_range:
+            from_date, to_date = date_range
+            (
+                params["q[request-date-from][gte][y]"],
+                params["q[request-date-from][gte][m]"],
+                params["q[request-date-from][gte][d]"],
+            ) = (from_date.year, from_date.month, from_date.day)
+            (
+                params["q[request-date-to][lte][y]"],
+                params["q[request-date-to][lte][m]"],
+                params["q[request-date-to][lte][d]"],
+            ) = (to_date.year, to_date.month, to_date.day)
         return self.http.get(f"{self.url}/requests-laborers", params=params)
 
-    def get_requests(self, page: int, per: int) -> Response:
-        return self.http.get(f"{self.url}/requests", params={"page": page, "per": per})
+    def get_requests(
+        self, page: int = 1, per: int = 10, employee_name: str = None, request_id: str = None
+    ) -> Response:
+        params = dict(
+            page=page,
+            per=per,
+        )
+        if employee_name:
+            params["q[employee-name][eq]"] = employee_name
+        if request_id:
+            params["q[request-id][eq]"] = request_id
+        return self.http.get(f"{self.url}/requests", params=params)
 
-    def get_request(self, request_id: int) -> Response:
+    def get_request_by_id(self, request_id: str) -> Response:
         return self.http.get(f"{self.url}/requests/{request_id}")
 
     def create_request(self, *laborers: Laborer) -> Response:
@@ -56,8 +88,8 @@ class ChangeOccupationApi:
         )
         return self.http.post(f"{self.url}", json=payload)
 
-    def cancel_request(self, request_id: int) -> Response:
-        return self.http.put(f"{self.url}/cancel/{request_id}")
+    def cancel_request(self, request_number: str) -> Response:
+        return self.http.put(f"{self.url}/cancel/{request_number}")
 
     def get_count(self) -> Response:
         return self.http.get(f"{self.url}/count")
@@ -72,7 +104,7 @@ class ChangeOccupationApi:
         return self.http.get(f"{self.url}/context")
 
     def validate_establishment(self) -> Response:
-        return self.http.get(f"{self.url}/establishment/validate")
+        return self.http.post(f"{self.url}/establishment/validate")
 
     def validate_laborer(self, personal_number: str | int, occupation_code: str | int) -> Response:
         payload = change_occupation(
