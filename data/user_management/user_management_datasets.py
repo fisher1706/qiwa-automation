@@ -2,10 +2,10 @@ import dataclasses
 
 from data.user_management.user_management_users import (
     delegator_with_um,
-    owner_account,
-    establishment_type_one,
-    establishment_type_four,
     establishment_type_five,
+    establishment_type_four,
+    establishment_type_one,
+    owner_account,
 )
 
 
@@ -76,11 +76,7 @@ class ErrorsMessage:
 
 @dataclasses.dataclass
 class SubscriptionUsers:
-    subscription_users = [
-        establishment_type_one,
-        establishment_type_four,
-        establishment_type_five
-    ]
+    subscription_users = [establishment_type_one, establishment_type_four, establishment_type_five]
 
 
 @dataclasses.dataclass
