@@ -10,6 +10,6 @@ class UmResponse:
     def validate_price_value_number_of_users(self, user, default_percent_value):
         assert (
             user.default_price * default_percent_value,
-            self.response_json.get('totalFeeAmount'),
+            self.response_json.get("totalFeeAmount"),
         )
         return self
