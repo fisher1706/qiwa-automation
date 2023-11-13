@@ -143,6 +143,7 @@ class ChangeOccupationController:
         return random.choice(requests.data).attributes
 
     @allure.step
-    def get_random_user(self) -> User:
+    def get_random_user(self, eligible: bool = True) -> User:
         users = self.get_users(per=1000)
-        return random.choice(users.data).attributes
+        expression = f"data[?attributes.\"eligibility\"== '{int(eligible)}'].attributes"
+        return User.parse_obj(random.choice(search_by_data(expression, users.dict())))

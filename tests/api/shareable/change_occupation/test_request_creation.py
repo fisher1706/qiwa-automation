@@ -42,6 +42,19 @@ def test_create_for_two_laborers(change_occupation, laborer, laborer2):
         )
 
 
+def test_create_for_two_laborers_but_one_not_eligible(change_occupation, laborer):
+    user = change_occupation.get_random_user(eligible=False)
+    laborer2 = Laborer(personal_number=user.personal_number)
+
+    response = change_occupation.api.create_request(laborer, laborer2)
+    assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
+
+    json = MultiLangErrorsData.parse_obj(response.json())
+    error = json.data[0]
+    assert_that(error.attributes.en_EN.details).is_not_empty()
+    assert_that(error.attributes.ar_SA.details).is_not_empty()
+
+
 def test_create_for_laborer_with_processing_request(change_occupation, laborer):
     change_occupation.create_request(laborer)
 
