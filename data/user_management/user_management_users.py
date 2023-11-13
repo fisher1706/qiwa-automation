@@ -61,7 +61,7 @@ user_1380 = User(
     user_id=1372659,
     labor_office_id=9,
     sequence_number=2619,
-    default_price=1200
+    default_price=1200,
 )
 
 
@@ -70,7 +70,7 @@ user_1265 = User(
     user_id=33707906,
     labor_office_id=17,
     sequence_number=95885,
-    default_price=1100
+    default_price=1100,
 )
 
 user_11500 = User(
@@ -78,5 +78,5 @@ user_11500 = User(
     user_id=2291009,
     labor_office_id=9,
     sequence_number=93886,
-    default_price=10000
+    default_price=10000,
 )

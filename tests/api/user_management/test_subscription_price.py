@@ -3,7 +3,7 @@ import pytest
 
 from data.user_management.user_management_datasets import (
     SubscriptionUsers,
-    DefaultPercentValue
+    DefaultPercentValue,
 )
 
 
