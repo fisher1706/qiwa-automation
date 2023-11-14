@@ -19,8 +19,7 @@ from data.dedicated.employee_trasfer.employee_transfer_users import (
     laborer_type_9,
     laborer_type_12,
 )
-from data.dedicated.enums import ServicesAndTools, RequestStatus
-from data.validation_message import SuccessMessage
+from data.dedicated.enums import RequestStatus, ServicesAndTools
 from src.api.clients.employee_transfer import employee_transfer_api
 from src.api.clients.ibm import ibm_api
 from src.api.controllers.ibm import ibm_api_controller

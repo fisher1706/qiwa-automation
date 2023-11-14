@@ -20,7 +20,7 @@ class RequestStatus(Enum):
     PENDING_FOR_LABORER_APPROVAL = "Pending for Laborer Approval"
     PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER = {
         Language.EN: "Pending Completing Transfer In Absher By New Employer",
-        Language.AR: ""
+        Language.AR: "",
     }
     APPROVED = "Approved"
     REJECTED_BY_NIC = "Rejected By NIC"
@@ -44,21 +44,12 @@ class RequestStatus(Enum):
 
 
 class ServicesAndTools(dict, Enum):
-    HOME_WORKERS_TRANSFER = {
-        Language.EN: "Home Workers Transfer",
-        Language.AR: "نقل عامل منزلي"
-    }
-    EMPLOYEE_TRANSFERS = {
-        Language.EN: "Employee Transfers",
-        Language.AR: "نقل عامل منزلي"
-    }
-    DEPENDENT_TRANSFER = {
-        Language.EN: "Dependent transfer",
-        Language.AR: "نقل تابع"
-    }
+    HOME_WORKERS_TRANSFER = {Language.EN: "Home Workers Transfer", Language.AR: "نقل عامل منزلي"}
+    EMPLOYEE_TRANSFERS = {Language.EN: "Employee Transfers", Language.AR: "نقل عامل منزلي"}
+    DEPENDENT_TRANSFER = {Language.EN: "Dependent transfer", Language.AR: "نقل تابع"}
     TRANSFER_LABORER_FROM_ANOTHER_ESTABLISHMENT = {
         Language.EN: "Transfer laborer from another establishment",
-        Language.AR: "نقل عامل من منشأة اخرى"
+        Language.AR: "نقل عامل من منشأة اخرى",
     }
 
 

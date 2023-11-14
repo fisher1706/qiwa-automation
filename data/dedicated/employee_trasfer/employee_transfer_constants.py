@@ -10,12 +10,12 @@ type_4 = TransferType(
 type_9 = TransferType(
     code="9",
     name_ar=ServicesAndTools.DEPENDENT_TRANSFER.value[Language.AR],
-    name_en=ServicesAndTools.DEPENDENT_TRANSFER.value[Language.EN]
+    name_en=ServicesAndTools.DEPENDENT_TRANSFER.value[Language.EN],
 )
 type_12 = TransferType(
     code="12",
     name_ar=ServicesAndTools.HOME_WORKERS_TRANSFER.value[Language.AR],
-    name_en=ServicesAndTools.HOME_WORKERS_TRANSFER.value[Language.EN]
+    name_en=ServicesAndTools.HOME_WORKERS_TRANSFER.value[Language.EN],
 )
 
 TRANSFER_REQUESTS = {Language.EN: "TRANSFER REQUESTS", Language.AR: "طلبات النقل"}
