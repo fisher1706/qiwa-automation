@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from data.user_management.user_management_datasets import (
-    DefaultPercentValue,
+    DefaultVatValue,
     SubscriptionUsers,
 )
 from src.api.app import QiwaApi
@@ -17,9 +17,9 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 
 
 @allure.title("Check that subscription price calculated according to number of Users")
-@case_id(16968)
+@case_id(16968, 16969, 16970, 16971, 41670, 41671, 41672, 41679)
 @pytest.mark.parametrize("users", SubscriptionUsers.subscription_users)
-def test_subscription_price(users):
+def test_subscription_price_discount(users):
     user = users
     qiwa = QiwaApi.login_as_user(user.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
@@ -29,12 +29,10 @@ def test_subscription_price(users):
         user_personal_number=user.personal_number,
     ).dict(by_alias=True)
 
-    resp = qiwa.user_management_api.get_subscription_price_number_of_users(
+    resp_api = qiwa.user_management_api.get_subscription_price_number_of_users(
         cookie=subscription_cookie,
     )
-    response = UmResponse(resp)
-    response.validate_response_schema(SubscriptionNumberOfUsers)\
-        .validate_price_value_number_of_users(
-        user=user,
-        default_percent_value=DefaultPercentValue.percent_value
-    )
+
+    response = UmResponse(resp_api)
+    response.validate_response_schema(SubscriptionNumberOfUsers)
+    response.validate_price_value_number_of_users(user=user, default_vat_value=DefaultVatValue.default_vat_value)

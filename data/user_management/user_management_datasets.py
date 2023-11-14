@@ -2,9 +2,12 @@ import dataclasses
 
 from data.user_management.user_management_users import (
     delegator_with_um,
-    establishment_type_five,
-    establishment_type_four,
-    establishment_type_one,
+    estab_disc_val_0,
+    estab_disc_val_10,
+    estab_disc_val_25,
+    estab_type_five,
+    estab_type_four,
+    estab_type_one,
     owner_account,
 )
 
@@ -76,9 +79,15 @@ class ErrorsMessage:
 
 @dataclasses.dataclass
 class SubscriptionUsers:
-    subscription_users = [establishment_type_one, establishment_type_four, establishment_type_five]
+    subscription_users = [
+        estab_disc_val_0,
+        estab_disc_val_10,
+        estab_disc_val_25,
+        estab_type_one,
+        estab_type_four,
+    ]
 
 
 @dataclasses.dataclass
-class DefaultPercentValue:
-    percent_value = 1.15
+class DefaultVatValue:
+    default_vat_value = 1.15

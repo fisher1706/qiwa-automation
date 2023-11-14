@@ -22,3 +22,4 @@ class User(BaseModel):
     Use for subscription price
     """
     default_price: Optional[int]
+    default_discount: Optional[float]

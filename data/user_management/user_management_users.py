@@ -56,26 +56,47 @@ terminated_owner = User(
     unified_number_id=121173,
 )
 
-establishment_type_five = User(
-    personal_number="1009999341",
-    user_id=1372659,
-    labor_office_id=9,
-    sequence_number=2619,
-    default_price=1200,
-)
-
-establishment_type_one = User(
+estab_type_one = User(
     personal_number="1023450479",
     user_id=33707906,
     labor_office_id=17,
     sequence_number=95885,
     default_price=1100,
+    default_discount=1.00,
 )
 
-establishment_type_four = User(
+estab_type_four = User(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
     sequence_number=93886,
     default_price=10000,
+    default_discount=1.00,
+)
+
+estab_disc_val_0 = User(
+    personal_number="1014851610",
+    user_id=2291008,
+    labor_office_id=1,
+    sequence_number=70289,
+    default_price=7000,
+    default_discount=1.00,
+)
+
+estab_disc_val_25 = User(
+    personal_number="1009999341",
+    user_id=1372659,
+    labor_office_id=9,
+    sequence_number=77683,
+    default_price=1100,
+    default_discount=0.25,
+)
+
+estab_disc_val_10 = User(
+    personal_number="1019974839",
+    user_id=2291009,
+    labor_office_id=9,
+    sequence_number=1680894,
+    default_price=7000,
+    default_discount=0.10,
 )
