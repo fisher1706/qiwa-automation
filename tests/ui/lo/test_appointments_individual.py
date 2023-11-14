@@ -304,3 +304,48 @@ def test_individual_cancel_appointment_from_active_appointments():
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
     qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
+
+
+@allure.title("Appointments[Individual]: Cancel Appointment (from the 'Appointment details' page)")
+@case_id(41854)
+def test_individual_cancel_appointment_from_details_appointments():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+    qiwa.labor_office_appointments_page.view_active_appointment()
+    qiwa.labor_office_appointments_view_page.cancel_btn.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_close_btn.click()
+    qiwa.labor_office_appointments_view_page.verify_general_info_row()
+
+    qiwa.labor_office_appointments_view_page.cancel_btn.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_back_btn.click()
+    qiwa.labor_office_appointments_view_page.verify_general_info_row()
+
+    qiwa.labor_office_appointments_view_page.cancel_btn.click()
+    qiwa.labor_office_appointments_page.verify_cancel_app_wrapper()
+    qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
+    qiwa.labor_office_appointments_page.button_close_modal.click()
+
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
