@@ -4,10 +4,12 @@ from http import HTTPStatus
 import allure
 
 import config
+from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.services import Service
 from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
+from src.api.payloads.contract_details import contract_details_payload
 from src.api.payloads.ibm.createnewappointment import (
     Body,
     CreateNewAppointmentRq,
@@ -17,17 +19,22 @@ from src.api.payloads.ibm.createnewappointment import (
     RequesterDetails,
     UserInfo,
 )
+from src.api.payloads.ibm.getestablishmentinformation import (
+    EstablishmentInformation,
+    GetEstablishmentInformationPayload,
+    GetEstablishmentInformationRq,
+)
 from utils.assertion import assert_status_code
 
 
-class CreateAppointment:
+class IbmApi:
     def __init__(self):
         self.client = HTTPClient()
         self.url = config.settings.ibm_url
         self.route = "/takamol/staging"
 
     @allure.step
-    def get_response_book_an_appointment(self, user: User, service: Service):
+    def create_new_appointment(self, user: User, service: Service) -> dict:
         header = Header(
             TransactionId="0",
             ChannelId="Qiwa",
@@ -68,3 +75,44 @@ class CreateAppointment:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
+
+    @allure.step
+    def get_establishment_information(self, user: User) -> dict:
+        header = Header(
+            TransactionId="0",
+            ChannelId="Qiwa",
+            SessionId="0",
+            RequestTime="2019-10-10 00:00:00.555",
+            MWRequestTime="2019-10-10 00:00:00.555",
+            ServiceCode="GEI00001",
+            DebugFlag="1",
+        )
+        body = EstablishmentInformation(
+            LaborOfficeId=user.labor_office_id,
+            EstablishmentSequanceNumber=user.sequence_number,
+        )
+        payload = GetEstablishmentInformationPayload(
+            GetEstablishmentInformationRq=GetEstablishmentInformationRq(Header=header, Body=body)
+        )
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwa/esb/getestablishmentinformation",
+            headers=HEADERS,
+            json=payload.dict(),
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+    @allure.step
+    def create_new_contract(self, laborer: Laborer, employer: User, establishment_id: str):
+        response = self.client.post(
+            url=self.url,
+            endpoint="/takamol/staging/contractmanagement/createnewcontract",
+            json=contract_details_payload(laborer, employer, establishment_id),
+            headers=HEADERS,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+
+ibm_api = IbmApi()
