@@ -29,10 +29,10 @@ def test_subscription_price_discount(users):
         user_personal_number=user.personal_number,
     ).dict(by_alias=True)
 
-    resp_api = qiwa.user_management_api.get_subscription_price_number_of_users(
+    subscription_price = qiwa.user_management_api.get_subscription_price_number_of_users(
         cookie=subscription_cookie,
     )
 
-    response = UmResponse(resp_api)
+    response = UmResponse(subscription_price)
     response.validate_response_schema(SubscriptionNumberOfUsers)
     response.validate_price_value_number_of_users(user=user, default_vat_value=DefaultVatValue.default_vat_value)
