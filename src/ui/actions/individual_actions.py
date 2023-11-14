@@ -18,3 +18,6 @@ class IndividualActions(IndividualPage):
 
     def proceed_steps_for_verifying_et_request(self) -> IndividualActions:
         return self
+
+
+individual_actions = IndividualActions()
