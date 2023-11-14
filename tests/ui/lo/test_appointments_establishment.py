@@ -87,7 +87,7 @@ def test_view_establishment_appointment_from_upcoming(language=Language.EN):
     qiwa.labor_office_appointments_view_page.verify_print_btn()
 
 
-@allure.title("Appointments: View the Appointment details (form the 'Appointment history' table)")
+@allure.title("Appointments: View the Appointment details (from the 'Appointment history' table)")
 @case_id(71435)
 def test_view_establishment_appointment_from_history(language=Language.EN):
     qiwa.login_as_user(login=SubscribedUser.ID)
@@ -277,7 +277,7 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 
-@allure.title("Appointments: Cancel Appointment (form the 'Appointment details' page)")
+@allure.title("Appointments: Cancel Appointment (from the 'Appointment details' page)")
 @case_id(32998)
 def test_cancel_appointment_from_details_appointments(language=Language.EN):
     qiwa.login_as_user(login=SubscribedUser.ID)
