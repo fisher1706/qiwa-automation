@@ -5,7 +5,6 @@ from data.user_management.user_management_users import (
     estab_disc_val_0,
     estab_disc_val_10,
     estab_disc_val_25,
-    estab_type_five,
     estab_type_four,
     estab_type_one,
     owner_account,
