@@ -22,7 +22,7 @@ def pre_test():
 @allure.title('AS-305 Verify that the list of debts is available for the user')
 @case_id(32976)
 def test_verify_that_the_list_of_debts_is_available_for_the_user():
-    appointment_id = IBMApiController().create_new_appointment(lo_wp_user_2, lo_work_permit)
+    appointment_id = IBMApiController().get_appointment_id(lo_wp_user_2, lo_work_permit)
     qiwa.login_as_user(login=lo_wp_user_2.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
@@ -41,7 +41,7 @@ def test_verify_that_the_list_of_debts_is_available_for_the_user():
               'number')
 @case_id(32977)
 def test_verify_that_the_user_can_generate_sadad_bill_only_for_debts_that_do_not_have_sadad_bill_number():
-    appointment_id = IBMApiController().create_new_appointment(lo_wp_user_2, lo_work_permit)
+    appointment_id = IBMApiController().get_appointment_id(lo_wp_user_2, lo_work_permit)
     qiwa.login_as_user(login=lo_wp_user_2.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
