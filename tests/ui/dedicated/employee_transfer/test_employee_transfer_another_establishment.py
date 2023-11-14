@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 from data.constants import Language
 from data.dedicated.employee_trasfer.employee_transfer_constants import (
@@ -12,6 +11,7 @@ from data.dedicated.employee_trasfer.employee_transfer_users import (
     current_sponsor,
     employer,
     laborer,
+    laborer_existing_contract,
     laborer_with_sponsor,
 )
 from data.dedicated.enums import ServicesAndTools
@@ -52,7 +52,6 @@ def test_user_able_to_submit_et_request_from_another_establishment():
 
 
 @allure.title("If laborer already has a contract, don't show redirection to CM button another establishment")
-@pytest.mark.skip("Find user with contract")
 @case_id(123660)
 def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_another_establishment():
     EmployeeTransferApi().post_prepare_laborer_for_et_request()
@@ -62,8 +61,8 @@ def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_another_establishment() \
         .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer.login_id) \
-        .fill_date_of_birth(laborer.birthdate) \
+        .fill_employee_iqama_number(laborer_existing_contract.login_id) \
+        .fill_date_of_birth(laborer_existing_contract.birthdate) \
         .click_btn_find_employee() \
         .click_btn_add_employee_to_transfer_request() \
         .check_existence_of_a_contract()
@@ -92,7 +91,7 @@ def test_laborer_able_to_approve_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
@@ -123,7 +122,7 @@ def test_laborer_able_to_reject_et_request():
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     # TODO(dp): Remove after fixing an issue with changing the language
@@ -163,7 +162,7 @@ def test_quota_should_be_decreased_after_submitting_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
@@ -201,7 +200,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     # TODO(dp): Remove after fixing an issue with changing the language
@@ -242,7 +241,7 @@ def test_current_sponsor_able_to_approve_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
@@ -290,7 +289,7 @@ def test_current_sponsor_able_to_reject_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
@@ -338,7 +337,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.AR]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
