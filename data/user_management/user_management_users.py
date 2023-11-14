@@ -33,11 +33,11 @@ delegator_with_um = User(
 )
 
 delegator_without_um = User(
-    personal_number="1070111305",
+    personal_number="1014157000",
     user_id=1668068,
-    labor_office_id=1,
-    sequence_number=1910,
-    unified_number_id=9086,
+    labor_office_id=9,
+    sequence_number=1196371,
+    unified_number_id=1315525,
 )
 
 owner_for_self = User(

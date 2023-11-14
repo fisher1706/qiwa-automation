@@ -9,7 +9,7 @@ from src.ui.pages.data_portal_pages.base_methods import base_methods
 attachment = (
     Path(__file__)
     .parent.parent.parent.parent.parent.joinpath("data/files")
-    .joinpath("admin_portal_test_attach.png")
+    .joinpath("{0}")
     .as_posix()
 )
 
@@ -21,7 +21,6 @@ class DataPortalAdmin:
     PAGE_TITLE = s(".page-title")
     VALIDATION_MESSAGE = s(".form-item--error-message")
     MESSAGE = s("#block-stark-page-title")
-    REPORT_NAME_FIELD = s("#edit-title-0-value")
     DURATION_READ_FIELD = s("#edit-field-duration-read-0-value")
     PUBLISH_CHECKBOX = s("#edit-status-value")
     SAVE = s("#edit-submit")
@@ -29,7 +28,7 @@ class DataPortalAdmin:
     IMAGE_PREVIEW = s(".image-preview__img-wrapper")
     SUCCESS_MESSAGE = s("#message-status-title")
     ADD_BUTTON = s(".local-actions__item")
-    NAME_FIELD = s("#edit-name-0-value")
+    NAME_FIELD = s("#edit-title-0-value")
     TITLE_NAME = s('//input[@name="title[0][value]"]')
     CONTENT_FIELD = s('//*[@role="textbox"]')
     SAVE_AND_GO_TO_LIST = s("#edit-overview:nth-child(2)")
@@ -101,6 +100,16 @@ class DataPortalAdmin:
     )
     ADD_TRANSLATION_BUTTON = s('//li[@class="add dropbutton__item dropbutton-action"]')
     DELETE_TRANSLATION_BUTTON = s("#edit-delete-translation")
+    CREATE_REPORT_TITLE = s("#block-claro-page-title>h1")
+    REQUIRED_FIELD = ss('//*[@class="form-item__label js-form-required form-required"]')
+    BLOCKS_DROPDOWN = s("#edit-field-blocks-actions-bundle>option:nth-child(1)")
+    ADD_NEW_BLOCK_BUTTON = s("#edit-field-blocks-actions-ief-add")
+    AUTHOR = s("#edit-meta-author>label")
+    ERROR_REPORT_MESSAGE = s("#message-error-title")
+    ALTERNATIVE_TEXT = s('[id^="edit-field-hero-image-0-alt"]')
+    IMAGE_TITLE = s('[id^="edit-field-hero-image-0-title"]')
+    IMAGE_VALIDATION = s('//*[@class="messages messages--error file-upload-js-error"]')
+    IMAGE_RESOLUTION_VALIDATION = s('//*[@class="form-item__error-message"]')
 
     def input_creds(self, login, password):
         self.USER_NAME.set_value(login)
@@ -128,9 +137,9 @@ class DataPortalAdmin:
         unpublished=False,
     ):
         self.ADD_BUTTON.click()
-        self.REPORT_NAME_FIELD.set_value(report_name)
+        self.NAME_FIELD.set_value(report_name)
         self.DURATION_READ_FIELD.set_value(1)
-        self.ATTACH_IMAGE.send_keys(attachment)
+        self.ATTACH_IMAGE.send_keys(attachment.format(Admin.PNG))
         self.IMAGE_PREVIEW.wait_until(be.visible)
         if unpublished:
             self.PUBLISH_CHECKBOX.click()
@@ -143,7 +152,7 @@ class DataPortalAdmin:
 
     def edit_report(self):
         s(self.EDIT_REPORT_BUTTON.format(Admin.AUTOMATION)).click()
-        self.REPORT_NAME_FIELD.set_value(Admin.AUTOMATION_EDIT)
+        self.NAME_FIELD.set_value(Admin.AUTOMATION_EDIT)
         self.SAVE.click()
         self.SUCCESS_MESSAGE.should(be.visible)
 
@@ -332,3 +341,103 @@ class DataPortalAdmin:
     def delete_translation(self):
         self.DELETE_TRANSLATION_BUTTON.click()
         self.SUCCESS_MESSAGE.should(be.visible)
+
+    def check_display_of_elements_on_report_editor_page(self):
+        self.ADD_BUTTON.click()
+        base_methods.check_element_on_the_page(self.CREATE_REPORT_TITLE, Admin.CREATE_REPORT_TITLE)
+        base_methods.check_elements_on_the_page(
+            self.REQUIRED_FIELD, Admin.CREATE_REPORT_REQUIRED_FIELDS
+        )
+        base_methods.check_element_attributes_value(self.ADD_NEW_TERM_BUTTON, Admin.ADD_NEW_TERM)
+        base_methods.check_element_attributes_value(
+            self.ADD_EXISTING_TERM_BUTTON, Admin.ADD_EXISTING_TERM
+        )
+        base_methods.check_element_on_the_page(self.BLOCKS_DROPDOWN, Admin.BLOCKS_DROPDOWN_TITLE)
+        base_methods.check_element_attributes_value(self.ADD_NEW_BLOCK_BUTTON, Admin.ADD_NEW_BLOCK)
+        base_methods.check_element_attributes_value(self.PUBLISH_CHECKBOX, Admin.PUBLISHED)
+
+    def create_report_without_values(self):
+        self.ADD_BUTTON.click()
+        self.SAVE.click()
+        validation_message_text = browser.execute_script(
+            'return document.querySelector("input:invalid").validationMessage'
+        )
+        assert validation_message_text == Admin.BROWSER_VALIDATION
+        self.SUCCESS_MESSAGE.should(be.not_.visible)
+
+    def create_report_without_duration(self):
+        self.ADD_BUTTON.click()
+        self.NAME_FIELD.set_value(Admin.AUTOMATION)
+        self.ATTACH_IMAGE.send_keys(attachment.format(Admin.PNG))
+        self.IMAGE_PREVIEW.wait_until(be.visible)
+        self.DURATION_READ_FIELD.clear()
+        self.SAVE.click()
+        validation_message_text = browser.execute_script(
+            'return document.querySelector("input:invalid").validationMessage'
+        )
+        assert validation_message_text == Admin.BROWSER_VALIDATION
+        self.SUCCESS_MESSAGE.should(be.not_.visible)
+
+    def create_report_without_file(self):
+        self.ADD_BUTTON.click()
+        self.NAME_FIELD.set_value(Admin.AUTOMATION)
+        self.DURATION_READ_FIELD.set_value(1)
+        self.SAVE.click()
+        self.ERROR_REPORT_MESSAGE.should(have.text(Admin.ERROR_MESSAGE))
+
+    def create_report_without_name(self):
+        self.ADD_BUTTON.click()
+        self.DURATION_READ_FIELD.set_value(1)
+        self.ATTACH_IMAGE.send_keys(attachment.format(Admin.PNG))
+        self.IMAGE_PREVIEW.wait_until(be.visible)
+        self.SAVE.click()
+        validation_message_text = browser.execute_script(
+            'return document.querySelector("input:invalid").validationMessage'
+        )
+        assert validation_message_text == Admin.BROWSER_VALIDATION
+        self.SUCCESS_MESSAGE.should(be.not_.visible)
+
+    def create_report_with_invalid_duration(self, value):
+        self.ADD_BUTTON.click()
+        self.NAME_FIELD.set_value(Admin.AUTOMATION)
+        self.ATTACH_IMAGE.send_keys(attachment.format(Admin.PNG))
+        self.IMAGE_PREVIEW.wait_until(be.visible)
+        self.DURATION_READ_FIELD.set_value(value)
+        self.SAVE.click()
+        validation_message_text = browser.execute_script(
+            'return document.querySelector("input:invalid").validationMessage'
+        )
+        assert validation_message_text == Admin.BROWSER_VALIDATION_DURATION
+        self.SUCCESS_MESSAGE.should(be.not_.visible)
+
+    def create_report_with_alternative_text_and_title(self):
+        self.ADD_BUTTON.click()
+        self.NAME_FIELD.set_value(Admin.AUTOMATION)
+        self.DURATION_READ_FIELD.set_value(1)
+        self.ATTACH_IMAGE.send_keys(attachment.format(Admin.PNG))
+        self.IMAGE_PREVIEW.wait_until(be.visible)
+        self.ALTERNATIVE_TEXT.set_value(Admin.AUTOMATION)
+        self.IMAGE_TITLE.set_value(Admin.AUTOMATION)
+        self.SAVE.click()
+        self.SUCCESS_MESSAGE.should(be.visible)
+
+    def check_ability_add_allowed_types_of_image(self, file_format):
+        self.ADD_BUTTON.click()
+        self.NAME_FIELD.set_value(Admin.AUTOMATION)
+        self.DURATION_READ_FIELD.set_value(1)
+        self.ATTACH_IMAGE.send_keys(attachment.format(file_format))
+        self.IMAGE_PREVIEW.wait_until(be.visible)
+        self.SAVE.click()
+        self.SUCCESS_MESSAGE.should(be.visible)
+
+    def check_inability_add_other_types_of_image(self, file_format):
+        self.ADD_BUTTON.click()
+        self.ATTACH_IMAGE.send_keys(attachment.format(file_format))
+        self.IMAGE_VALIDATION.should(have.text(Admin.IMAGE_VALIDATION_ERROR.format(file_format)))
+
+    def check_limitation_size_of_image(self, file_format):
+        self.ADD_BUTTON.click()
+        self.ATTACH_IMAGE.send_keys(attachment.format(file_format))
+        self.IMAGE_RESOLUTION_VALIDATION.should(
+            have.text(Admin.IMAGE_RESOLUTION_ERROR.format(file_format))
+        )

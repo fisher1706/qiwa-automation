@@ -33,6 +33,7 @@ class LaborOfficeAppointmentsPage:
     button_book_appointment = s('//*[@href="/create"]')
     button_next_step = s('//button[@type="submit"]')
     button_action_view_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//a[1]')
+    button_action_edit_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//a[2]')
     button_action_cancel_upcoming_appointment = s('//*[@data-component="ActionsMenu"]//button')
     button_close_modal = s('//button[@aria-label="Close modal"]')
     button_back_to_appointments = s("(//button)[1]")
@@ -150,27 +151,48 @@ class LaborOfficeAppointmentsPage:
 
         return self
 
-    @allure.step("Check active appointment not exist")
-    def check_active_appointment_not_exist(self) -> LaborOfficeAppointmentsPage:
+    @allure.step("Check active appointment exist")
+    def check_active_appointment_exist(self, exist=True) -> LaborOfficeAppointmentsPage:
         browser.driver.refresh()
-        self.upcoming_appointment_row.should(be.not_.visible)
+        if exist:
+            self.upcoming_appointment_row.should(be.visible)
+        elif not exist:
+            self.upcoming_appointment_row.should(be.not_.visible)
 
         return self
 
     @allure.step("View active appointment")
     def view_active_appointment(self) -> LaborOfficeAppointmentsPage:
-        # todo: investigate possibility to remove this sleep
-        time.sleep(1)
+        time.sleep(1)  # todo: investigate possibility to remove this sleep
         if self.upcoming_appointment_row.matching(be.visible):
             self.upcoming_appointments_actions.click()
             self.button_action_view_upcoming_appointment.click()
 
         return self
 
+    @allure.step("Edit active appointment")
+    def edit_active_appointment(self) -> LaborOfficeAppointmentsPage:
+        time.sleep(1)  # todo: investigate possibility to remove this sleep
+        if self.upcoming_appointment_row.matching(be.visible):
+            self.upcoming_appointments_actions.click()
+            self.button_action_edit_upcoming_appointment.click()
+
+        return self
+
+    @allure.step("Check context menu of upcoming app")
+    def check_context_action_menu_from_upcoming(self):
+        time.sleep(1)  # todo: investigate possibility to remove this sleep
+        if self.upcoming_appointment_row.matching(be.visible):
+            self.upcoming_appointments_actions.click()
+            self.button_action_view_upcoming_appointment.should(be.visible)
+            self.button_action_edit_upcoming_appointment.should(be.visible)
+            self.button_action_cancel_upcoming_appointment.should(be.visible)
+
+        return self
+
     @allure.step("View appointment from history")
     def view_appointment_from_history_last(self) -> LaborOfficeAppointmentsPage:
-        # todo: investigate possibility to remove this sleep
-        time.sleep(1)
+        time.sleep(1)  # todo: investigate possibility to remove this sleep
         self.view_appointment_details_from_history_last.click()
 
         return self

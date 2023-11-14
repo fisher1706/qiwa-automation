@@ -2,10 +2,10 @@ import allure
 from selene.api import be, command, have, query, s, ss
 
 from data.visa.constants import ISSUE_VISA_REQUEST_TITLE, Numbers
-from src.ui.pages.visa_pages.base_page import BasePage
+from src.ui.components.feedback_pop_up import FeedbackPopup
 
 
-class IssueVisaPage(BasePage):
+class IssueVisaPage:
     loading = ss(
         '//*[@class="react-loading-skeleton" or starts-with(@class, "Loader__LoaderWrapper")]'
     )
@@ -23,6 +23,7 @@ class IssueVisaPage(BasePage):
     request_created_banner = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]')
     visa_request_ref_number = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]//span')
     back_to_perm_work_visas = s('//*[@data-testid="backToWorkVisas"]')
+    popup = FeedbackPopup('//*[@data-component="Modal"]')
 
     @allure.step("Verify issue visa page is open")
     def verify_issue_visa_page_open(self):
@@ -45,7 +46,7 @@ class IssueVisaPage(BasePage):
         self.accept_checkbox.should(be.visible)
         self.accept_checkbox.click()
         self.submit_button.click()
-        self.close_quiz_popup()
+        self.popup.close_feedback()
         self.request_created_banner.should(be.visible)
         ref_number = self.visa_request_ref_number.get(query.text)
         self.back_to_perm_work_visas.click()

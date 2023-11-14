@@ -10,6 +10,7 @@ from src.api.payloads.sso_oauth_payloads import (
     oauth_callback_payload,
     oauth_init_payload,
 )
+from utils.assertion import assert_status_code
 
 
 class OAuthApi:
@@ -21,7 +22,7 @@ class OAuthApi:
 
     def init(self) -> dict:
         init = self.client.post(self.url, f"{self.route}/init", json=oauth_init_payload())
-        assert init.status_code == HTTPStatus.OK
+        assert_status_code(init.status_code).equals_to(HTTPStatus.OK)
         redirect_uri = urlparse(init.json()["data"]["attributes"]["redirect-uri"])
         redirect_uri_query = parse_qs(redirect_uri.query)
         return redirect_uri_query
@@ -32,7 +33,7 @@ class OAuthApi:
             f"{self.route}/callback",
             json=oauth_callback_payload(state=state, code=auth_code),
         )
-        assert response.status_code == HTTPStatus.OK
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response
 
     def get_context(self) -> RequestsCookieJar:
@@ -40,7 +41,7 @@ class OAuthApi:
             url=self.url,
             endpoint="/context",
         )
-        assert response.status_code == HTTPStatus.OK
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.cookies
 
     def delete_context(self):
@@ -48,11 +49,11 @@ class OAuthApi:
         delete_context = self.client.delete(
             self.url, endpoint="/context", headers={"Origin": f"{self.url}"}
         )
-        assert delete_context.status_code == HTTPStatus.OK
+        assert_status_code(delete_context.status_code).equals_to(HTTPStatus.OK)
 
     def init_logout(self):
         init = self.client.post(self.url, f"{self.route}/init", json=oauth_init_payload())
-        assert init.status_code == HTTPStatus.OK
+        assert_status_code(init.status_code).equals_to(HTTPStatus.OK)
         logout_token = urlparse(init.json()["data"]["attributes"]["redirect-uri"])
         logout_token = parse_qs(logout_token.query)["logout_token"][0]
         return logout_token

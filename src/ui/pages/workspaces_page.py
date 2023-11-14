@@ -40,6 +40,7 @@ class WorkspacesPage:
 
     @allure.step
     def select_individual_account(self) -> WorkspacesPage:
+        self.individual_account_card.wait_until(be.visible)
         self.individual_account_card.click()
         return self
 
