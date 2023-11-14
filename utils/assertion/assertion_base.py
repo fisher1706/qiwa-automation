@@ -12,10 +12,11 @@ class AssertionBase:
         self.actual = actual
         self.description: str = ""
 
-    def assert_(self, actual: T, expected: T, assertion: AssertionTypes) -> AssertionBase:
+    def assert_(self, actual: T, expected: T, assertion: AssertionTypes, step) -> AssertionBase:
         operator, context = assertion.value
         error_message = self._error_template(actual, expected, context)
-        assert operator(actual, expected), error_message
+        with step:
+            assert operator(actual, expected), error_message
         return self
 
     def _error_template(self, actual: T, expected: T, context: str) -> str:
