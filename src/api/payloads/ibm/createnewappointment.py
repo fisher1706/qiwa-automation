@@ -1,6 +1,6 @@
-from typing import Optional
-
 from pydantic import BaseModel
+
+from src.api.payloads.ibm.header import Header
 
 
 class UserInfo(BaseModel):
@@ -17,17 +17,6 @@ class RequesterDetails(BaseModel):
     RequesterIdNo: str
     RequesterName: str
     RequesterUserId: str
-
-
-class Header(BaseModel):
-    TransactionId: str
-    ChannelId: Optional[str]
-    SessionId: Optional[str]
-    RequestTime: str
-    MWRequestTime: Optional[str]
-    ServiceCode: str
-    DebugFlag: Optional[str]
-    UserInfo: Optional[UserInfo]
 
 
 class Body(BaseModel):
