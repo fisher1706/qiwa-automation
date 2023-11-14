@@ -10,10 +10,10 @@ def test_validation_for_laborer_registered_in_portal(change_occupation, laborer)
     assert_that(response.json()).has(valid=True)
 
 
-def test_validation_for_laborer_not_registered_in_portal(change_occupation, not_registered_in_portal_laborer):
+def test_validation_for_laborer_not_registered_in_portal(change_occupation, laborer2):
     response = change_occupation.api.validate_laborer(
-        not_registered_in_portal_laborer.personal_number,
-        not_registered_in_portal_laborer.occupation_code
+        laborer2.personal_number,
+        laborer2.occupation_code
     )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
