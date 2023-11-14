@@ -41,20 +41,18 @@ def test_book_establishment_appointment(language):
         sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
-        establishment=SubscribedUser.ESTABLISHMENT[language]
+        establishment=SubscribedUser.ESTABLISHMENT[language],
     )
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
         service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
-        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
 
 
-@allure.title(
-    "Appointments: View the Appointment details (from the 'Upcoming appointments' table)"
-)
+@allure.title("Appointments: View the Appointment details from the 'Upcoming appointments' table")
 @case_id(25509)
 def test_view_establishment_appointment_from_upcoming(language=Language.EN):
     qiwa.login_as_user(login=SubscribedUser.ID)
@@ -74,7 +72,7 @@ def test_view_establishment_appointment_from_upcoming(language=Language.EN):
         sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
-        establishment=SubscribedUser.ESTABLISHMENT[language]
+        establishment=SubscribedUser.ESTABLISHMENT[language],
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -137,28 +135,28 @@ def test_view_appointments_list():
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.click_clear_search()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.EXPIRED['index']
+        AppointmentsHistoryStatus.EXPIRED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.EXPIRED['value']
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.CANCELLED['index']
+        AppointmentsHistoryStatus.CANCELLED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.CANCELLED['value']
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.ATTENDED['index']
+        AppointmentsHistoryStatus.ATTENDED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.ATTENDED['value']
+        by_index=6, value=AppointmentsHistoryStatus.ATTENDED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.DONE['index']
+        AppointmentsHistoryStatus.DONE["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.DONE['value']
+        by_index=6, value=AppointmentsHistoryStatus.DONE["value"]
     )
     qiwa.labor_office_appointments_page.navigate_to_knowledge_center()
     qiwa.labor_office_appointments_page.should_new_tab_knowledge_center_be_opened()
@@ -251,7 +249,7 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
         sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
-        establishment=SubscribedUser.ESTABLISHMENT[language]
+        establishment=SubscribedUser.ESTABLISHMENT[language],
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -276,7 +274,7 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
-    qiwa.labor_office_appointments_page.check_active_appointment_not_exist()
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 
 @allure.title("Appointments: Cancel Appointment (form the 'Appointment details' page)")
@@ -298,7 +296,7 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
         sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
-        establishment=SubscribedUser.ESTABLISHMENT[language]
+        establishment=SubscribedUser.ESTABLISHMENT[language],
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -321,4 +319,58 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
-    qiwa.labor_office_appointments_page.check_active_appointment_not_exist()
+    qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
+
+
+@allure.title("Appointments: As LO User I have possibility to Edit Appointment")
+@case_id(22172)
+def test_edit_establishment_appointment(language=Language.EN):
+    qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.language = language
+    qiwa.labor_office_appointments_view_page.language = language
+
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(language)
+    qiwa.workspace_page.select_company_account_with_sequence_number(SubscribedUser.SEQUENCE_NUMBER)
+    qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        region=OfficesInfo.REGION_MADINAH[language],
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
+        establishment=SubscribedUser.ESTABLISHMENT[language],
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.check_context_action_menu_from_upcoming()
+    qiwa.labor_office_appointments_page.edit_active_appointment()
+
+    qiwa.labor_office_appointments_edit_page.open_knowledge_center()
+    qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
+    qiwa.labor_office_appointments_edit_page.verify_edit_page_typical()
+    qiwa.labor_office_appointments_edit_page.change_details_fields(
+        region=OfficesInfo.REGION_MADINAH[language], office=OfficesInfo.OFFICE_NAME_TEST_OFFICE
+    )
+    qiwa.labor_office_appointments_edit_page.next_step_btn_click()
+
+    qiwa.labor_office_appointments_edit_page.verify_summary_table()
+    qiwa.labor_office_appointments_edit_page.book_app_btn_click()
+
+    qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
+        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
+    )
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.check_active_appointment_exist()
+
+    qiwa.labor_office_appointments_page.view_active_appointment()
+    qiwa.labor_office_appointments_view_page.verify_general_info_row()
+    qiwa.labor_office_appointments_view_page.verify_general_table()
+    qiwa.labor_office_appointments_view_page.verify_requester_info()

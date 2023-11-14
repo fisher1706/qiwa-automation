@@ -110,6 +110,7 @@ def test_manager_cannt_edit_his_subscription(users):
 
 @allure.title("Check that user without UM privileges can't open UM service")
 @case_id(7872, 7882)
+# TODO: update test based on test case 7882
 def test_error_for_user_without_um_service():
     user = delegator_without_um
     user_management = UserManagementActions()
@@ -117,9 +118,9 @@ def test_error_for_user_without_um_service():
     qiwa.main_page.wait_until_page_is_loaded().check_error_message_for_um_page_without_permission(
         ErrorsMessage.user_doesnt_have_access_to_um
     ).click_header_main_menu_btn().click_change_workspace_btn()
-    qiwa.workspace_page.select_company_account_with_sequence_number(sequence_number="11871")
+    qiwa.workspace_page.select_company_account_with_sequence_number(sequence_number="157949")
     qiwa.open_user_management_page()
-    qiwa.main_page.wait_until_page_is_loaded()
+    qiwa.main_page.check_page_is_displayed()
 
 
 @allure.title("Check AR localization for Establishment Delegator details page")

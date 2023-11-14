@@ -20,6 +20,9 @@ from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.pages.admin_page import AdminPage
+from src.ui.pages.appointments.labor_office_appointment_edit import (
+    LaborOfficeAppointmentsEditPage,
+)
 from src.ui.pages.appointments.labor_office_appointment_view import (
     LaborOfficeAppointmentsViewPage,
 )
@@ -100,6 +103,7 @@ class QiwaUiClient:
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
+    labor_office_appointments_edit_page = LaborOfficeAppointmentsEditPage()
     employee_transfer_page = EmployeeTransferV2Page()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()

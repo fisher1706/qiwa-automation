@@ -1,4 +1,4 @@
-from data.sso import users_data_constants as users_data
+from data.sso import account_data_constants as users_data
 from data.sso.messages import TOO_MANY_ABSHER_ATTEMPTS
 from src.api.app import QiwaApi
 from tests.api.sso.unlock_account_tests.conftest import get_unlock_account_key

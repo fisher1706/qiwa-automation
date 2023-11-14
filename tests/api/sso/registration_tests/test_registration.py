@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 from data.account import Account
-from data.sso import users_data_constants as users_data
+from data.sso import account_data_constants as users_data
 from src.api.app import QiwaApi
 from src.database.actions.account_db_action import update_account_email
 from utils.allure import TestmoProject, project

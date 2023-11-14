@@ -15,6 +15,7 @@ from data.visa.constants import (
     BR_TERMINATED,
     BR_WAITING,
     ERROR_CODE,
+    ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
     WORK_VISA_CARD_ZERO_QUOTA_ERROR,
     DateFormats,
     Numbers,
@@ -619,3 +620,48 @@ def test_validation_issue_visa_increase_allowed_quota_buttons_establishing(visa_
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
     browser.driver.refresh()
     qiwa.work_visa.verify_buttons_establishment(issue_enabled=True, increase_enabled=True)
+
+
+@case_id(46648)
+@allure.title('Test verifies allowance period block permanent work visa request')
+def test_verify_allowance_period_block_perm_work_visa_request(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_allowance_period_block_perm_work_visa_request(allowance_started=True)
+    start_date = datetime.date.today() + relativedelta(days=+1)
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            allowance_start_date=start_date.strftime(DateFormats.YYYYMMDD))
+    browser.driver.refresh()
+    qiwa.work_visa.verify_allowance_period_block_perm_work_visa_request(allowance_started=False)
+
+
+@case_id(46947)
+@allure.title("Test verifies errors appearance (internal error) on permanent work visa page [expansion]")
+def test_verify_internal_errors_perm_work_visa_page_expansion(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION, immediate_balance=Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT)
+    qiwa.work_visa.verify_expansion_balance_zero_buttons_behavior()
+
+@case_id(46945)
+@allure.title("Test verifies errors appearance (internal error) on permanent work visa page [establishing]")
+def test_verify_internal_tier_balance_validations_perm_work_visa_page(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    visa_mock.change_visa_quantity(Numbers.ONE, Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_issue_perm_work_visa_blocked()
+    qiwa.work_visa.increase_quota_establishment_button.click()
+    ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
+    visa_mock.change_balance_request(ref_number, Numbers.ONE, Numbers.ONE)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_increase_perm_work_visa_quota_blocked()
+    visa_mock.change_visa_quantity(Numbers.FOUR, Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_increase_perm_work_visa_quota_and_issue_blocked()

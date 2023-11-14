@@ -36,7 +36,7 @@ def test_copy_past_link_into_another_browser(login_to_data_portal_admin):
 
 @pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
 @allure.title('Create report with mandatory fields')
-@case_id(74930, 46616, 46617)
+@case_id(74930, 46616, 46617, 46630, 46632)
 def test_create_report_using_mandatory_fields(login_to_data_portal_admin, clear_reports):
     data_portal.data_portal_admin.create_report()
 
@@ -287,3 +287,77 @@ def test_ability_to_delete_translation(login_to_data_portal_admin, clear_takeawa
     data_portal.open_data_portal_admin_takeaway_page()
     data_portal.data_portal_admin.add_translation()
     data_portal.data_portal_admin.delete_translation()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify the display of elements on the report editor page.')
+@case_id(46631)
+def test_display_of_elements_on_report_editor_page(login_to_data_portal_admin):
+    data_portal.data_portal_admin.check_display_of_elements_on_report_editor_page()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to create report without any fields')
+@case_id(46640)
+def test_create_report_without_values(login_to_data_portal_admin):
+    data_portal.data_portal_admin.create_report_without_values()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to create report without name')
+@case_id(46640)
+def test_create_report_without_name(login_to_data_portal_admin):
+    data_portal.data_portal_admin.create_report_without_name()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to create report without duration')
+@case_id(46640)
+def test_create_report_without_duration(login_to_data_portal_admin):
+    data_portal.data_portal_admin.create_report_without_duration()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to create report without file')
+@case_id(46640)
+def test_create_report_without_file(login_to_data_portal_admin):
+    data_portal.data_portal_admin.create_report_without_file()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to create report with invalid duration')
+@pytest.mark.parametrize('value', AdminData.invalid_duration)
+@case_id(46890)
+def test_create_report_without_duration(login_to_data_portal_admin, value):
+    data_portal.data_portal_admin.create_report_with_invalid_duration(value=value)
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify ability to add Alternative text and title into the Hero image')
+@case_id(46642)
+def test_create_report_with_alternative_text_and_title(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.create_report_with_alternative_text_and_title()
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify ability to add allowed types of image.')
+@pytest.mark.parametrize('file_format', AdminData.file_format)
+@case_id(46647, 46868, 46869)
+def test_ability_add_allowed_types_of_image(login_to_data_portal_admin, clear_reports, file_format):
+    data_portal.data_portal_admin.check_ability_add_allowed_types_of_image(file_format=file_format)
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify inability to add other types of image.')
+@pytest.mark.parametrize('other_file_format', AdminData.other_file_format)
+@case_id(46647)
+def test_inability_add_other_types_of_image(login_to_data_portal_admin, other_file_format):
+    data_portal.data_portal_admin.check_inability_add_other_types_of_image(file_format=other_file_format)
+
+
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2664')
+@allure.title('Verify limitation of the size for Hero images')
+@pytest.mark.parametrize('file_format_less_1280', AdminData.file_format_less_1280)
+@case_id(46868)
+def test_limitation_size_of_image(login_to_data_portal_admin, file_format_less_1280):
+    data_portal.data_portal_admin.check_limitation_size_of_image(file_format=file_format_less_1280)

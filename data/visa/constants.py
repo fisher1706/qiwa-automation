@@ -132,6 +132,15 @@ ALLOWANCE_PERIOD_START_DATE = "Allowance period start date"
 ALLOWANCE_PERIOD_END_DATE = "Allowance period end date"
 ESTIMATED_RECRUITMENT_QUOTA = "Estimated recruitment quota after allowance period ends"
 ESTABLISHING = "Establishing"
+ISSUE_VISA_MODAL_TITLE_TEXT = "Sorry, currently you cannot issue Permanent work visas"
+ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT = (
+    "You have already used your recruitment quota in the current tier."
+)
+ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT = "You have already used your recruitment quota."
+ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
+    "You have already used your recruitment quota in the highest tier. "
+    "Please wait for the allowance period to end."
+)
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
