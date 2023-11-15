@@ -11,7 +11,6 @@ from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
 
-
 case_id = project(TestmoProject.USER_MANAGEMENT)
 
 

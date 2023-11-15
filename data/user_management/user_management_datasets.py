@@ -1,7 +1,6 @@
 import dataclasses
 
 from data.user_management import privileges_data
-
 from data.user_management.user_management_users import (
     delegator_with_um,
     establishment_discount_val_0,
