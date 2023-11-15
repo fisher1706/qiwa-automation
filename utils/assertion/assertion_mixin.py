@@ -19,7 +19,7 @@ class AssertionMixin(AssertionBase):
         is_dict = isinstance(self.actual, Mapping)
         for key, value in kwargs.items():
             actual = self.actual[key] if is_dict else getattr(self.actual, key)
-            step = self._step(key, "=", value)
+            step = self._step(f"{self.description} {key}".lstrip(), "=", value)
             self.assert_(actual, value, AssertionTypes.EQUAL, step)
 
     def equals_to(self, expected: T) -> AssertionMixin:
