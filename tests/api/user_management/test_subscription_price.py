@@ -6,12 +6,10 @@ from data.user_management.user_management_datasets import (
     SubscriptionUsers,
 )
 from src.api.app import QiwaApi
-from src.api.clients.user_management_response import UmResponse
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
-from src.api.payloads.raw.user_management.um_response_schemas import (
-    SubscriptionNumberOfUsers,
-)
 from utils.allure import TestmoProject, project
+from utils.assertion import assert_that
+from src.api.controllers.user_management import UmValidateApiResponse
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
 
@@ -33,6 +31,6 @@ def test_subscription_price_discount(users):
         cookie=subscription_cookie,
     )
 
-    response = UmResponse(subscription_price)
-    response.validate_response_schema(SubscriptionNumberOfUsers)
-    response.validate_price_value_number_of_users(user=user, default_vat_value=DefaultVatValue.default_vat_value)
+    assert_that(
+        UmValidateApiResponse.dround(user.default_price * DefaultVatValue.default_vat_value * user.default_discount)
+    ).equals_to(subscription_price)

@@ -17,9 +17,3 @@ class User(BaseModel):
 
     user_id: Optional[int]
     unified_number_id: Optional[int]
-
-    """
-    Use for subscription price
-    """
-    default_price: Optional[int]
-    default_discount: Optional[float]

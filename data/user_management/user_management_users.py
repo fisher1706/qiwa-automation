@@ -1,4 +1,5 @@
 from data.dedicated.models.user import User
+from data.user_management.um_user import UmUser
 
 owner_account = User(
     personal_number="1001530987",
@@ -64,7 +65,7 @@ terminated_owner = User(
     unified_number_id=121173,
 )
 
-estab_type_one = User(
+estab_type_one = UmUser(
     personal_number="1023450479",
     user_id=33707906,
     labor_office_id=17,
@@ -73,7 +74,7 @@ estab_type_one = User(
     default_discount=1.00,
 )
 
-estab_type_four = User(
+estab_type_four = UmUser(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
@@ -82,7 +83,7 @@ estab_type_four = User(
     default_discount=1.00,
 )
 
-estab_disc_val_0 = User(
+estab_disc_val_0 = UmUser(
     personal_number="1014851610",
     user_id=2291008,
     labor_office_id=1,
@@ -91,7 +92,7 @@ estab_disc_val_0 = User(
     default_discount=1.00,
 )
 
-estab_disc_val_25 = User(
+estab_disc_val_25 = UmUser(
     personal_number="1009999341",
     user_id=1372659,
     labor_office_id=9,
@@ -100,7 +101,7 @@ estab_disc_val_25 = User(
     default_discount=0.25,
 )
 
-estab_disc_val_10 = User(
+estab_disc_val_10 = UmUser(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
