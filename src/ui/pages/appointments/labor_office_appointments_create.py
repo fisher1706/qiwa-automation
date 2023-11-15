@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
@@ -85,6 +87,7 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Select region")
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_region.wait_until(be.visible)
+        time.sleep(0.5)  # todo: investigate to remove this sleep
         self.input_region.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_region.select_by_text(name)
         return self
@@ -92,6 +95,7 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Select office")
     def select_office(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_office.wait_until(be.enabled)
+        time.sleep(0.5)  # todo: investigate to remove this sleep
         self.input_office.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_office.select_by_text(name)
         return self
