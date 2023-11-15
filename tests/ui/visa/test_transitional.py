@@ -665,3 +665,13 @@ def test_verify_internal_tier_balance_validations_perm_work_visa_page(visa_mock,
     visa_mock.change_visa_quantity(Numbers.FOUR, Numbers.ZERO)
     browser.driver.refresh()
     qiwa.work_visa.verify_increase_perm_work_visa_quota_and_issue_blocked()
+
+@case_id(134714)
+@allure.title("Test verifies autocomplete component to use lazy loading and search")
+def test_verify_autocomplete_component_lazy_loading_and_search(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_issue_visa.click()
+    qiwa.issue_visa.verify_issue_visa_page_open()
+    qiwa.issue_visa.verify_lazy_loading()
