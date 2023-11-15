@@ -45,5 +45,5 @@ class TransferBetweenMyEstablishmentsPage:
         return self
 
     def check_existence_of_a_contract(self) -> TransferBetweenMyEstablishmentsPage:
-        self.table.cell(row=1, column=4).should(have.exact_text("Yes"))
+        self.table.cell(row=1, column="Contract created").should(have.exact_text("Yes"))
         return self

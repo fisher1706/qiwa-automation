@@ -31,6 +31,7 @@ current_sponsor_type_12 = User(personal_number="1046395800")
 
 laborer = Laborer(login_id=2449079728, birthdate="11-07-1993", transfer_type=type_9)
 laborer_with_sponsor = Laborer(login_id=2178708182, birthdate="29-01-1958", transfer_type=type_4)
+laborer_existing_contract = Laborer(login_id=2341193031, birthdate="15-09-1987")
 laborer_type_12 = Laborer(login_id=2493081331, birthdate="03-01-1990", transfer_type=type_12)
 laborer_type_9 = Laborer(login_id=2021014218, birthdate="18-10-1982", transfer_type=type_9)
 laborer_type_4_freedom_transfer = Laborer(

@@ -21,7 +21,7 @@ def login(user: User, service: Service):
     api.visits_api.cancel_active_visit(user.personal_number)
 
     # create a new appointment
-    booking_id = IBMApiController().create_new_appointment(user, service)
+    booking_id = IBMApiController().get_appointment_id(user, service)
 
     # login in UI
     qiwa.login_as_user(lo_sc_agent.personal_number)

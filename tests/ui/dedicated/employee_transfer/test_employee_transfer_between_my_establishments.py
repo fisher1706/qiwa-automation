@@ -70,7 +70,7 @@ def test_bme_laborer_able_to_approve_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.EN]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()
@@ -138,7 +138,7 @@ def test_bme_quota_should_be_decreased_after_submitting_et_request():
     # TODO(dp): Remove after fixing an issue with changing the language
     qiwa.header.change_local(Language.EN)
 
-    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFER.value) \
+    qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.EN]) \
         .click_agree_checkbox()
 
     individual_actions = IndividualActions()

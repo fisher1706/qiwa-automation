@@ -74,10 +74,13 @@ class EmployeeTransferActions:
             .select_terms_checkbox()
             .click_btn_next_step()
         )
-
-        qiwa.employee_transfer_page.click_btn_next_step().select_terms_checkbox().click_btn_submit()
-
-        qiwa.employee_transfer_page.check_success_msg().check_request_status()
+        (
+            qiwa.employee_transfer_page.click_btn_next_step()
+            .select_terms_checkbox()
+            .click_btn_submit()
+            .check_success_msg()
+            .check_request_status()
+        )
         return self
 
     @allure.step
@@ -108,8 +111,14 @@ class EmployeeTransferActions:
             .select_terms_checkbox()
             .click_btn_next_step()
         )
-
-        qiwa.employee_transfer_page.click_btn_next_step().select_terms_checkbox().click_btn_submit_request()
-
-        qiwa.employee_transfer_page.check_success_msg().check_request_status()
+        (
+            qiwa.employee_transfer_page.click_btn_next_step()
+            .select_terms_checkbox()
+            .click_btn_submit_request()
+            .check_success_msg()
+            .check_request_status()
+        )
         return self
+
+
+employee_transfer_actions = EmployeeTransferActions()

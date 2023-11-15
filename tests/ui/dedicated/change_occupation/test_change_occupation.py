@@ -45,7 +45,7 @@ def pre_test(request):
 
 @pytest.fixture()
 def login():
-    booking_id = IBMApiController().create_new_appointment(lo_co_user, change_occupation)
+    booking_id = IBMApiController().get_appointment_id(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_user.name).change_local(Language.EN)
@@ -201,7 +201,7 @@ def test_check_if_co_submitted_on_saudization_occupations(navigate_to_co):
 def test_check_if_co_submitted_on_home_occupations():
     api = QiwaApi.login_as_user(lo_co_ho_user.personal_number)
     api.visits_api.cancel_active_visit(lo_co_ho_user.personal_number)
-    booking_id = IBMApiController().create_new_appointment(lo_co_ho_user, change_occupation)
+    booking_id = IBMApiController().get_appointment_id(lo_co_ho_user, change_occupation)
     qiwa.login_as_user(lo_co_ho_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_ho_user.personal_number).change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()

@@ -1,6 +1,5 @@
 import math
 from datetime import datetime, timedelta
-from typing import Dict
 
 import allure
 import jmespath
