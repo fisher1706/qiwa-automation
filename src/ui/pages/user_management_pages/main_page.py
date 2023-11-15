@@ -26,8 +26,8 @@ class UserManagementMainPage:
     users_in_table = s("//div[contains(@data-testid, 'user-table')]//tbody")
     title_in_users_in_company_tab = s("//div[contains(@role, 'tablist')]//button[1]/div/p")
     users_in_subscribed_table_tr = ss("[data-testid='user-table'] tbody tr")
-    action_btn_table = ss("td button[data-testid='row-actions']")
     action_btn_for_owner = s("tr:nth-child(1) td button[data-testid='row-actions']")
+    action_btn_table = "td button[data-testid='row-actions']"
     user_role_in_table = users_in_table.s("//tr[1]/td[4]")
     view_details_btn = s("button[data-testid='view-action'] p")
     view_detail_for_renew_btn = s("button[data-testid='renew-action'] p")
@@ -104,7 +104,15 @@ class UserManagementMainPage:
         return self
 
     def click_view_details_in_table(self) -> UserManagementMainPage:
-        self.action_btn_table.first.should(be.visible).click()
+        ss(self.action_btn_table).first.should(be.visible).click()
+        return self
+
+    def click_view_details_in_table_for_selected_user(
+        self, user_nid: str
+    ) -> UserManagementMainPage:
+        self.table.rows.element_by(have.text(user_nid)).s(self.action_btn_table).should(
+            be.visible
+        ).click()
         return self
 
     def navigate_to_view_details(self) -> UserManagementMainPage:
