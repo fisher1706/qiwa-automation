@@ -29,6 +29,7 @@ class Numbers:  # pylint: disable=R0903
     TEN = 10
     NINE = 9
     SIX = 6
+    LAZYLOADING_PACK_SIZE = 60
 
 
 class VisaUser:  # pylint: disable=R0903
