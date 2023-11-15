@@ -6,10 +6,11 @@ from data.user_management.user_management_datasets import (
     SubscriptionUsers,
 )
 from src.api.app import QiwaApi
+from src.api.controllers.user_management import UmValidateApiResponse
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
-from src.api.controllers.user_management import UmValidateApiResponse
+
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
 

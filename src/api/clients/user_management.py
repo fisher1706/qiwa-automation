@@ -48,9 +48,7 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         owner_subscription_price = str(response.json()["totalFeeAmount"])
         return owner_subscription_price
 
-    def get_subscription_price_number_of_users(
-        self, cookie: dict, id_no: str = 555
-    ) -> float:
+    def get_subscription_price_number_of_users(self, cookie: dict, id_no: str = 555) -> float:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.get(
             url=self.url,

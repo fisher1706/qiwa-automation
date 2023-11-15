@@ -65,7 +65,15 @@ terminated_owner = User(
     unified_number_id=121173,
 )
 
-estab_type_one = UmUser(
+user_type_three_employee = User(
+    personal_number="1070111305",
+    user_id=1668068,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+)
+
+establishment_type_one = UmUser(
     personal_number="1023450479",
     user_id=33707906,
     labor_office_id=17,
@@ -74,7 +82,7 @@ estab_type_one = UmUser(
     default_discount=1.00,
 )
 
-estab_type_four = UmUser(
+establishment_type_four = UmUser(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
@@ -83,7 +91,7 @@ estab_type_four = UmUser(
     default_discount=1.00,
 )
 
-estab_disc_val_0 = UmUser(
+establishment_discount_val_0 = UmUser(
     personal_number="1014851610",
     user_id=2291008,
     labor_office_id=1,
@@ -92,7 +100,7 @@ estab_disc_val_0 = UmUser(
     default_discount=1.00,
 )
 
-estab_disc_val_25 = UmUser(
+establishment_discount_val_25 = UmUser(
     personal_number="1009999341",
     user_id=1372659,
     labor_office_id=9,
@@ -101,7 +109,7 @@ estab_disc_val_25 = UmUser(
     default_discount=0.25,
 )
 
-estab_disc_val_10 = UmUser(
+establishment_discount_val_10 = UmUser(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,

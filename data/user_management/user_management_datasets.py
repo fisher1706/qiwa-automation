@@ -1,16 +1,16 @@
 import dataclasses
 
+from data.user_management import privileges_data
+
 from data.user_management.user_management_users import (
     delegator_with_um,
-    estab_disc_val_0,
-    estab_disc_val_10,
-    estab_disc_val_25,
-    estab_type_four,
-    estab_type_one,
+    establishment_discount_val_0,
+    establishment_discount_val_10,
+    establishment_discount_val_25,
+    establishment_type_four,
+    establishment_type_one,
     owner_account,
 )
-
-from data.user_management import privileges_data
 
 
 @dataclasses.dataclass
@@ -153,11 +153,13 @@ class ErrorsMessage:
 @dataclasses.dataclass
 class SubscriptionUsers:
     subscription_users = [
-        estab_disc_val_0,
-        estab_disc_val_10,
-        estab_disc_val_25,
-        estab_type_one,
-        estab_type_four,
+        delegator_with_um,
+        establishment_discount_val_0,
+        establishment_discount_val_10,
+        establishment_discount_val_25,
+        establishment_type_four,
+        establishment_type_one,
+        owner_account,
     ]
 
 
