@@ -28,13 +28,6 @@ class LOAdmin:
 
 
 @dataclass
-class AppointmentsUser:
-    ID = "1006586984"
-    APPOINTMENT_TO_SEARCH_IN_HISTORY = "34132"
-    NON_EXISTING_APPOINTMENT = "0000000000"
-
-
-@dataclass
 class IndividualService:
     APPOINTMENTS = "Appointments in Labor Office"
 
@@ -43,6 +36,12 @@ class IndividualService:
 class IndividualUser:
     ID = "1080910035"
     ID_2 = "1037855416"
+    APPOINTMENT_TO_SEARCH_IN_HISTORY = "2136"
+
+    APPOINTMENT_EXPIRED = "33644"
+    APPOINTMENT_CANCELLED = "36112"
+    APPOINTMENT_ATTENDED = "34848"
+    APPOINTMENT_DONE = "35552"
 
 
 @dataclass
@@ -105,11 +104,16 @@ class LOSysAdmin:
     SEQUENCE_NUMBER_EDIT = 1049676
 
 
-class AppointmentsHistoryStatus(Enum):
-    Expired = 1  # pylint: disable=invalid-name
-    Cancelled = 2  # pylint: disable=invalid-name
-    Attended = 3  # pylint: disable=invalid-name
-    Done = 4  # pylint: disable=invalid-name
+@dataclass
+class AppointmentsHistoryStatus:
+    SHOW_ALL = {"index": 0, "value": "Show all"}
+    EXPIRED = {"index": 1, "value": "Expired"}
+    CANCELLED = {"index": 2, "value": "Cancelled"}
+    ATTENDED = {"index": 3, "value": "Attended"}
+    DONE = {"index": 4, "value": "Done"}
+    UNDER_PROGRESS = {"index": 5, "value": "Under Progress"}
+    PENDING = {"index": 6, "value": "Pending"}
+    CLOSED = {"index": 7, "value": "Closed"}
 
 
 @dataclass
@@ -202,6 +206,9 @@ class ServicesInfo:
     EDIT_SERVICE_SUCCESS_MESSAGE = "Service edited successfully"
     EDIT_SUB_SERVICE_SUCCESS_MESSAGE = "Subservice edited successfully"
     SERVICE_STATUS_SUCCESS_MESSAGE = "Service status changed successfully"
+
+    SAUDI_CERTIFICATE_SERVICE = "Saudization Certificate"
+    SAUDI_CERTIFICATE_SUB_SERVICE = "Create Saudi Certificate"
 
 
 @dataclass

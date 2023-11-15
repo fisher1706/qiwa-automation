@@ -10,6 +10,8 @@ from data.user_management.user_management_users import (
     owner_account,
 )
 
+from data.user_management import privileges_data
+
 
 @dataclasses.dataclass
 class Texts:
@@ -69,6 +71,78 @@ class UsersTypes:
 @dataclasses.dataclass
 class Privileges:
     default_privileges = [1, 5, 8, 11, 13, 16, 20, 23, 29, 31]
+    groups_data = [
+        {
+            "title": privileges_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
+            "privileges": [
+                privileges_data.PROFESSIONAL_VERIFICATION_SERVICE,
+                privileges_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
+                privileges_data.WAGE_PROTECTION_CERTIFICATE,
+                privileges_data.CHANGE_OCCUPATION,
+                privileges_data.EMPLOYEE_TRANSFER,
+                privileges_data.ISSUE_AND_RENEW_WORKING_PERMITS,
+                privileges_data.VISA_ISSUANCE_SERVICE,
+                privileges_data.AJEER_PROGRAM,
+                privileges_data.WAGE_DISBURSEMENT,
+                privileges_data.EMPLOYEE_INFORMATION,
+                privileges_data.CONTRACT_MANAGEMENT,
+                privileges_data.TRAINING_MANAGEMENT,
+                privileges_data.RECRUITMENT_SERVICE,
+                privileges_data.DEBT_CERTIFICATE,
+            ],
+        },
+        {
+            "title": privileges_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE,
+            "privileges": [
+                privileges_data.SAUDIZATION_CERTIFICATE,
+                privileges_data.ESTABLISHMENT_DASHBOARD,
+                privileges_data.BOOK_APPOINTMENT_SERVICE,
+                privileges_data.LABOR_POLICIES,
+                privileges_data.ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS,
+                privileges_data.SALARY_CERTIFICATE,
+                privileges_data.GOVERNMENT_CONTRACTS_MANAGEMENT,
+                privileges_data.ESTABLISHMENT_FILE_MANAGEMENT,
+                privileges_data.CLOSE_ESTABLISHMENT_ACTIVITY,
+                privileges_data.CHANGE_ESTABLISHMENT_ACTIVITY,
+            ],
+        },
+        {
+            "title": privileges_data.ESTABLISHMENT_PERFORMANCE_GROUP_TITLE,
+            "privileges": [
+                privileges_data.NITAGAT_CALCULATOR,
+                privileges_data.EADVISOR,
+                privileges_data.LABOR_AWARD,
+                privileges_data.LABOR_MARKET_INDEX,
+                privileges_data.ESTABLISHMENT_PERFORMANCE_REPORT,
+            ],
+        },
+        {
+            "title": privileges_data.WORKSPACES_MANAGEMENT_GROUP_TITLE,
+            "privileges": [
+                privileges_data.USER_MANAGEMENT,
+                privileges_data.QIWA_WALLET,
+                privileges_data.DELEGATIONS,
+            ],
+        },
+    ]
+    default_ui_privileges = [
+        privileges_data.PROFESSIONAL_VERIFICATION_SERVICE,
+        privileges_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
+        privileges_data.WAGE_PROTECTION_CERTIFICATE,
+        privileges_data.SAUDIZATION_CERTIFICATE,
+        privileges_data.ESTABLISHMENT_DASHBOARD,
+        privileges_data.BOOK_APPOINTMENT_SERVICE,
+        privileges_data.NITAGAT_CALCULATOR,
+        privileges_data.EADVISOR,
+        privileges_data.LABOR_AWARD,
+        privileges_data.LABOR_MARKET_INDEX,
+    ]
+
+    ineligible_ui_privileges = [
+        privileges_data.USER_MANAGEMENT,
+        privileges_data.QIWA_WALLET,
+        privileges_data.DELEGATIONS,
+    ]
 
 
 @dataclasses.dataclass

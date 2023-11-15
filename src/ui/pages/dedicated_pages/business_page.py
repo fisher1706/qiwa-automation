@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from datetime import datetime
 
+import allure
 from selene import have, query
-from selene.support.shared.jquery_style import ss
+from selene.support.shared.jquery_style import s, ss
 
 
 class BusinessPage:
@@ -14,6 +15,7 @@ class BusinessPage:
     QIWA_SERVICES = ss(".service-item")
     CHANGE_OCCUPATION = QIWA_SERVICES.element_by(have.text("Change Occupation"))
     LO_WORK_PERMIT = QIWA_SERVICES.element_by(have.text("Work Permit"))
+    LO_SAUDI_CERTIFICATE = s(".service-item .btn")
 
     def check_establishment_status(self, status: str) -> BusinessPage:
         self.ESTABLISHMENT_STATUS.should(have.exact_text(status))
@@ -29,4 +31,9 @@ class BusinessPage:
 
     def select_work_permit(self) -> BusinessPage:
         self.LO_WORK_PERMIT.s(".btn").click()
+        return self
+
+    @allure.step("click on saudi certificate btn")
+    def select_saudization_certificate(self) -> BusinessPage:
+        self.LO_SAUDI_CERTIFICATE.click()
         return self

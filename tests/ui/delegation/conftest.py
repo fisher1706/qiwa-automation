@@ -82,13 +82,18 @@ def create_delegation_and_get_request(
     delegation_id = qiwa_api.delegation_api.create_delegation(
         headers=headers, employee_nid=employee_nid, duration=duration
     )["id"]
-    partner_phone_number = qiwa_api.delegation_api.get_delegation_by_id(
+    delegation_details = qiwa_api.delegation_api.get_delegation_by_id(
         headers=headers, delegation_id=delegation_id
-    ).partner_list[0]["partnerPhoneNumber"]
+    )
     delegation_request = get_delegation_request(delegation_id=delegation_id, status=status)
     delegation_data = {
         "delegationId": delegation_id,
-        "formattedPartnerPhone": partner_phone_number,
+        "hiddenPartnerPhone": delegation_details.partner_list[0]["partnerPhoneNumber"],
+        "employeeName": delegation_details.delegate_name,
+        "employeeJob": delegation_details.delegate_occupation,
+        "employeeNid": delegation_details.delegate_nid,
+        "delegationPermission": delegation_details.permission,
+        "entityName": delegation_details.entity_name_en,
         "requestId": delegation_request.id,
         "partnerPhoneNumber": delegation_request.partner_phone_number,
     }
@@ -107,11 +112,9 @@ def reject_delegation_request_by_partner(
     qiwa_api.delegation_api.get_otp_code(
         headers=headers_for_public_pages, request_id=delegation_request_id
     )
-    otp_code = (
-        DelegationRequests()
-        .get_delegation_request(delegation_id=delegation_id, status=general_data.PENDING)
-        .otp_code
-    )
+    otp_code = get_delegation_request(
+        delegation_id=delegation_id, status=general_data.PENDING
+    ).otp_code
     headers_for_public_pages.update({"Otp-Code": otp_code})
     qiwa_api.delegation_api.reject_delegation_request(
         headers=headers_for_public_pages, request_id=delegation_request_id
@@ -124,14 +127,21 @@ def check_sms_after_resend_action(
     delegation_id: str,
     establishment_name: str,
     request_id: str,
-    formatted_phone_number: str,
+    partner_phone_for_url: str,
 ) -> str:
     sms_text = DelegationRequests().get_sms_request(phone_number)
-    link = general_data.SMS_LINK.format(request_id, formatted_phone_number)
-    expected_sms_text = f"""{general_data.SMS_TEXT.format(delegation_id, establishment_name)}
+    link = general_data.SMS_LINK.format(request_id, partner_phone_for_url)
+    expected_sms_text = f"""{general_data.DELEGATION_REQUEST_SMS_TEXT.format(delegation_id, establishment_name)}
 {link}"""
     assert_that(sms_text).equals_to(expected_sms_text)
     return link
+
+
+@allure.step
+def check_sms_after_sending_otp_code(phone_number: str, otp_code: str):
+    sms_text = DelegationRequests().get_sms_request(phone_number)
+    expected_sms_text = general_data.OTP_SMS_TEXT.format(otp_code)
+    assert_that(sms_text).equals_to(expected_sms_text)
 
 
 @allure.step
@@ -139,8 +149,8 @@ def open_url_from_sms(url: str):
     browser.open(url)
 
 
-def get_old_url_after_resend_action(request_id: str, formatted_phone_number: str) -> str:
-    return general_data.SMS_LINK.format(request_id, formatted_phone_number)
+def get_partner_approval_url(request_id: str, phone_number_for_url: str) -> str:
+    return general_data.SMS_LINK.format(request_id, phone_number_for_url)
 
 
 def get_dates_on_delegation_pages(status: str, start_date: str, end_date: str):
@@ -150,3 +160,7 @@ def get_dates_on_delegation_pages(status: str, start_date: str, end_date: str):
     else:
         dates.update({"start_date": "-", "expire_date": "-"})
     return dates
+
+
+def get_formatted_phone_number(phone_number: str) -> str:
+    return f"{phone_number[:4]} {phone_number[4:6]} {phone_number[6:9]} {phone_number[9:]}"

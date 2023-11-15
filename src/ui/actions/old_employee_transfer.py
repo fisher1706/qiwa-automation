@@ -6,19 +6,23 @@ from selene.core.exceptions import TimeoutException
 from selene.support.shared.jquery_style import s
 from selenium.common import NoSuchElementException
 
-from data.constants import (
-    ContractManagement,
-    EmployeeTransfer,
-    EService,
-    Language,
-    UserInfo,
+from data.constants import EService, Language, UserInfo
+from data.dedicated.contract_management.contract_management_constants import (
+    VERIFICATION_CODE,
 )
-from data.dedicated.employee_trasfer.employee_transfer import (
-    Entity,
-    Laborer,
-    employer_old,
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    DASHBOARD,
+    DESCRIPTION,
+    EMPLOYEE_TRANSFER,
+    ESTABLISHMENT_ID_LABEL,
+    ESTABLISHMENT_NAME_LABEL,
+    TERMS_POPUP_BTN_APPROVE,
+    TERMS_POPUP_DESCRIPTION,
+    TERMS_POPUP_TITLE,
 )
+from data.dedicated.employee_trasfer.employee_transfer_users import Laborer, employer
 from data.dedicated.enums import RowsPerPage, TransferType
+from data.dedicated.models.user import User
 from data.validation_message import SuccessMessage
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.old_contract_management import OldContractManagementActions
@@ -53,14 +57,14 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
                 time.sleep(1)
         return self
 
-    def navigate_to_et_service(self, entity: Entity):
-        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
-        self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
+    def navigate_to_et_service(self, user: User):
+        qiwa.login_as_user(user.personal_number, UserInfo.PASSWORD)
+        self.workspace_actions.select_company_account_with_sequence_number(user.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.EMPLOYEE_TRANSFER)
         self.__switch_tab_with_timeout()
         time.sleep(3)
-        self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, Language.EN)
+        self.verify_title_employee_transfer(EMPLOYEE_TRANSFER, Language.EN)
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
         match transfer_type:
@@ -102,7 +106,7 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         self.verify_redirections_popup()
         self.click_popup_btn_proceed()
         self.contract_management_actions.wait_until_title_verification_code_appears(
-            ContractManagement.VERIFICATION_CODE, Language.EN
+            VERIFICATION_CODE, Language.EN
         )
         self.contract_management_actions.refresh_if_not_employee_details(str(laborer_id))
         self.contract_management_actions.fill_contract_info()
@@ -114,15 +118,15 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
     def confirm_creation_of_contract(
         self,
         entity_laborer: Laborer,
-        entity: Entity = employer_old,
+        user: User = employer,
         transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
         is_get_balance_value: bool = False,
         is_verify_popup: bool = False,
     ):
-        self.navigate_to_et_service(entity)
+        self.navigate_to_et_service(user)
         self.request_new_contract(
             transfer_type=transfer_type,
-            establishment_number=entity.establishment_number,
+            establishment_number=user.establishment_number,
             entity_laborer=entity_laborer,
             is_get_balance_value=is_get_balance_value,
         )
@@ -137,30 +141,30 @@ class EmployeeTransferActionsOld(EmployeeTransferPage):
         assert_that(self.get_actual_balance()).equals_to(expected_value)
 
     def verify_info_banner(self, locale: str):
-        self.verify_breadcrumb(EmployeeTransfer.DASHBOARD, locale)
-        self.verify_title_employee_transfer(EmployeeTransfer.EMPLOYEE_TRANSFER, locale)
-        self.verify_description(EmployeeTransfer.DESCRIPTION, locale)
-        self.verify_establishment_id_label(EmployeeTransfer.ESTABLISHMENT_ID_LABEL, locale)
+        self.verify_breadcrumb(DASHBOARD, locale)
+        self.verify_title_employee_transfer(EMPLOYEE_TRANSFER, locale)
+        self.verify_description(DESCRIPTION, locale)
+        self.verify_establishment_id_label(ESTABLISHMENT_ID_LABEL, locale)
         self.verify_establishment_id_value(
-            f"{employer_old.labor_office_id}-{employer_old.sequence_number}"
+            f"{employer.labor_office_id}-{employer.sequence_number}"
         )
-        self.verify_establishment_name_label(EmployeeTransfer.ESTABLISHMENT_NAME_LABEL, locale)
-        self.verify_establishment_name_value(employer_old.establishment_name_ar)
+        self.verify_establishment_name_label(ESTABLISHMENT_NAME_LABEL, locale)
+        self.verify_establishment_name_value(employer.establishment_name_ar)
         self.btn_request_employee_transfer_should_be_enabled()
 
     def verify_terms_conditions_popup(self, locale: str):
         self.click_btn_request_employee_transfer()
-        self.verify_terms_popup_title(EmployeeTransfer.TERMS_POPUP_TITLE, locale)
-        self.verify_terms_popup_description(EmployeeTransfer.TERMS_POPUP_DESCRIPTION, locale)
+        self.verify_terms_popup_title(TERMS_POPUP_TITLE, locale)
+        self.verify_terms_popup_description(TERMS_POPUP_DESCRIPTION, locale)
         self.verify_terms_popup_close_icon()
         self.click_btn_request_employee_transfer()
         self.click_terms_popup_redirections_link()
         self.contract_management_actions.wait_until_title_verification_code_appears(
-            ContractManagement.VERIFICATION_CODE, locale
+            VERIFICATION_CODE, locale
         )
         self.navigate_to_employee_transfer_by_link()
         self.click_btn_request_employee_transfer()
-        self.verify_terms_popup_btn_approve(EmployeeTransfer.TERMS_POPUP_BTN_APPROVE, locale)
+        self.verify_terms_popup_btn_approve(TERMS_POPUP_BTN_APPROVE, locale)
         self.close_terms_popup()
 
     def verify_sent_requests_tab(self, locale: str):

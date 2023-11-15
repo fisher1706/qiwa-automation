@@ -22,7 +22,7 @@ def pre_test():
 @allure.title('AS-269 Dashboard')
 @case_id(32963)
 def test_dashboard():
-    appointment_id = IBMApiController().create_new_appointment(lo_wp_user_1, lo_work_permit)
+    appointment_id = IBMApiController().get_appointment_id(lo_wp_user_1, lo_work_permit)
     qiwa.login_as_user(login=lo_wp_user_1.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \

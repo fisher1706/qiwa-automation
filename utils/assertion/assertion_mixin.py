@@ -12,38 +12,57 @@ T = TypeVar("T")
 
 
 class AssertionMixin(AssertionBase):
-    def __assert(self, expected: T, method: AssertionTypes) -> AssertionMixin:
-        operator, context = method.value
-        step_name = f'Assert that {self._description} {context} "{expected}"'
-        with allure.step(step_name):
-            template = self._error_template(expected, context)
-            assert operator(self.actual, expected), template
-            return self
+    def _step(self, left: Any, operation: str, right: Any = "") -> Callable:
+        return allure.step(f"Assert that {left} {operation} {right}")
 
-    def has(self, key: T) -> Callable:
+    def has(self, **kwargs) -> None:
         is_dict = isinstance(self.actual, Mapping)
-
-        def _wrapper(val: Any) -> AssertionMixin:
+        for key, value in kwargs.items():
             actual = self.actual[key] if is_dict else getattr(self.actual, key)
-            self.__class__(actual).as_(
-                f'"{self._description} {key}"' if self._description else f'"{key}"'
-            ).equals_to(val)
-            return self
-
-        return _wrapper
+            with self._step(key, "=", value):
+                self.assert_(actual, value, AssertionTypes.EQUAL)
 
     def equals_to(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.EQUAL)
+        with self._step(self.description, "equals", expected):
+            self.assert_(self.actual, expected, AssertionTypes.EQUAL)
+        return self
 
-    def not_equals_to(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.NOT_EQUAL)
+    def not_equals(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "not equals", expected):
+            self.assert_(self.actual, expected, AssertionTypes.NOT_EQUAL)
+        return self
+
+    def contains(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "contains", expected):
+            self.assert_(self.actual, expected, AssertionTypes.CONTAINS)
+        return self
 
     def in_(self, expected: T) -> AssertionMixin:
-        return self.__assert(expected, AssertionTypes.IN_)
+        with self._step(self.description, "in", expected):
+            self.assert_(self.actual, expected, AssertionTypes.IN)
+        return self
 
-    def is_length(self, length: int) -> AssertionMixin:
-        if not hasattr(self.actual, "__len__"):
-            raise NotImplementedError(
-                f'The expected value "{self.actual}" {type(self.actual)} has no length attribute'
-            )
-        return self.__assert(length, AssertionTypes.LENGTH)
+    def size_is(self, expected: int) -> AssertionMixin:
+        with self._step(self.description, "size is", expected):
+            self.assert_(len(self.actual), expected, AssertionTypes.EQUAL)
+        return self
+
+    def is_empty(self) -> AssertionMixin:
+        with self._step(self.description, "is empty"):
+            self.assert_(len(self.actual), 0, AssertionTypes.EQUAL)
+        return self
+
+    def is_not_empty(self) -> AssertionMixin:
+        with self._step(self.description, "is not empty"):
+            self.assert_(len(self.actual), 0, AssertionTypes.NOT_EQUAL)
+        return self
+
+    def is_greater_or_equal(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "greater or equal", expected):
+            self.assert_(self.actual, expected, AssertionTypes.GREATER_OR_EQUAL)
+        return self
+
+    def is_less_or_equal(self, expected: T) -> AssertionMixin:
+        with self._step(self.description, "less or equal", expected):
+            self.assert_(self.actual, expected, AssertionTypes.LESS_OR_EQUAL)
+        return self

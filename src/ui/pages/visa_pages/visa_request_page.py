@@ -3,12 +3,11 @@ from selene.api.shared import browser
 
 from data.visa.constants import VISA_REQUEST_PAGE_TITLE_TEXT, VisaUser
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.soft_assertions import soft_assert_text
 from utils.pdf_parser import get_downloaded_filename, verify_text_in_pdf
 
 
-class VisaRequestPage(BasePage):
+class VisaRequestPage:
     loader = s('//*[@data-testid="viewVisaRequestSkeleton"]')
     visa_request_details = s('//*[@data-testid="visaRequestDetailsBox"]')
     visa_request_number = s('//*[@data-testid="visaRequestDetailsTableRowrequestNumberValue"]')
@@ -16,6 +15,8 @@ class VisaRequestPage(BasePage):
     visa_request_table = Table(s('//*[@data-testid="borderNumbersTable"]//table'))
     visa_request_statuses = ".//p[1]"
     visa_request_print_button = s('//*[@data-testid="printBtn"]')
+    page_navigation_chain = s("//nav")
+    page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
 
     def verify_visa_request_page_open(self):
         self.loader.wait_until(be.visible)

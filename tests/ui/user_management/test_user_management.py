@@ -1,15 +1,20 @@
 import allure
 import pytest
 
+from data.user_management import privileges_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
+    Privileges,
     Texts,
     UsersTypes,
 )
 from data.user_management.user_management_users import (
+    delegator_with_um,
     delegator_without_um,
     owner_account,
+    owner_account_with_another_company,
     owner_for_self,
+    user_type_three_employee,
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
@@ -110,6 +115,7 @@ def test_manager_cannt_edit_his_subscription(users):
 
 @allure.title("Check that user without UM privileges can't open UM service")
 @case_id(7872, 7882)
+# TODO: update test based on test case 7882
 def test_error_for_user_without_um_service():
     user = delegator_without_um
     user_management = UserManagementActions()
@@ -117,9 +123,9 @@ def test_error_for_user_without_um_service():
     qiwa.main_page.wait_until_page_is_loaded().check_error_message_for_um_page_without_permission(
         ErrorsMessage.user_doesnt_have_access_to_um
     ).click_header_main_menu_btn().click_change_workspace_btn()
-    qiwa.workspace_page.select_company_account_with_sequence_number(sequence_number="11871")
+    qiwa.workspace_page.select_company_account_with_sequence_number(sequence_number="157949")
     qiwa.open_user_management_page()
-    qiwa.main_page.wait_until_page_is_loaded()
+    qiwa.main_page.check_page_is_displayed()
 
 
 @allure.title("Check AR localization for Establishment Delegator details page")
@@ -130,3 +136,31 @@ def test_ar_localization_for_delegator_details_page():
     user_management.log_in_and_navigate_to_um(
         owner.personal_number, owner.sequence_number
     ).check_localization_for_details_page()
+
+
+@allure.title("Check privileges data on Select Privileges modal")
+@case_id(7921, 7922, 7923)
+def test_privileges_data():
+    user_management = UserManagementActions()
+    owner = owner_account
+    user = delegator_with_um
+    user_management.log_in_and_navigate_to_um(
+        owner.personal_number, owner.sequence_number
+    ).navigate_to_view_details_page(user.personal_number)\
+        .open_select_privileges_modal().check_privileges_are_grouped() \
+        .check_default_privileges_are_selected(Privileges.default_ui_privileges) \
+        .check_ineligible_privileges_cannot_be_selected(Privileges.ineligible_ui_privileges)
+
+
+@allure.title("Check that user can select/unselect privileges")
+@case_id(7924)
+def test_select_and_unselect_privileges():
+    user_management = UserManagementActions()
+    owner = owner_account_with_another_company
+    user = user_type_three_employee
+    user_management.log_in_and_navigate_to_um(
+        owner.personal_number, owner.sequence_number
+    ).navigate_to_view_details_page(user.personal_number)\
+        .open_select_privileges_modal()\
+        .select_all_privileges().unselect_the_privilege(privileges_data.VISA_ISSUANCE_SERVICE)\
+        .select_all_privileges().unselect_all_privileges()

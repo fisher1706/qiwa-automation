@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from data.constants import EmployeeTransfer
+from data.dedicated.employee_trasfer.employee_transfer_constants import REJECT_REASON
 from src.ui.pages.individual_page import IndividualPage
 
 
@@ -10,7 +10,7 @@ class IndividualActions(IndividualPage):
         self.click_btn_modal_accept_the_request()
         return self
 
-    def reject_request(self, reason: str = EmployeeTransfer.REJECT_REASON) -> IndividualActions:
+    def reject_request(self, reason: str = REJECT_REASON) -> IndividualActions:
         self.click_btn_reject_the_request()
         self.select_rejection_reason(reason)
         self.click_btn_modal_reject_the_request()
@@ -18,3 +18,6 @@ class IndividualActions(IndividualPage):
 
     def proceed_steps_for_verifying_et_request(self) -> IndividualActions:
         return self
+
+
+individual_actions = IndividualActions()

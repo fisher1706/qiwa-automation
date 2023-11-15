@@ -1,5 +1,7 @@
 from enum import Enum
 
+from data.constants import Language
+
 
 class RowsPerPage(Enum):
     TEN = "10"
@@ -16,9 +18,10 @@ class RequestStatus(Enum):
     DRAFT = "Draft"
     PENDING_FOR_CURRENT_EMPLOYER_APPROVAL = "Pending For Current Employer Approval"
     PENDING_FOR_LABORER_APPROVAL = "Pending for Laborer Approval"
-    PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER = (
-        "Pending Completing Transfer In Absher By New Employer"
-    )
+    PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER = {
+        Language.EN: "Pending Completing Transfer In Absher By New Employer",
+        Language.AR: "",
+    }
     APPROVED = "Approved"
     REJECTED_BY_NIC = "Rejected By NIC"
     PENDING_FOR_NOTICE_PERIOD_COMPLETION = "Pending For Notice Period Completion"
@@ -40,9 +43,14 @@ class RequestStatus(Enum):
         return [var.value for var in RequestStatus]
 
 
-class ServicesAndTools(str, Enum):
-    HOME_WORKER_TRANSFER = "Home Worker Transfer"
-    EMPLOYEE_TRANSFER = "Employee Transfers"
+class ServicesAndTools(dict, Enum):
+    HOME_WORKERS_TRANSFER = {Language.EN: "Home Workers Transfer", Language.AR: "نقل عامل منزلي"}
+    EMPLOYEE_TRANSFERS = {Language.EN: "Employee Transfers", Language.AR: "نقل عامل منزلي"}
+    DEPENDENT_TRANSFER = {Language.EN: "Dependent transfer", Language.AR: "نقل تابع"}
+    TRANSFER_LABORER_FROM_ANOTHER_ESTABLISHMENT = {
+        Language.EN: "Transfer laborer from another establishment",
+        Language.AR: "نقل عامل من منشأة اخرى",
+    }
 
 
 class TransferType(str, Enum):

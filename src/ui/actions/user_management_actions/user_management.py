@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import allure
 
-from data.user_management.user_management_datasets import ArabicTranslations, Texts
+from data.user_management.user_management_datasets import (
+    ArabicTranslations,
+    Privileges,
+    Texts,
+)
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
@@ -38,9 +42,12 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def navigate_to_view_details_page(self) -> UserManagementActions:
+    def navigate_to_view_details_page(self, user_nid: str = None) -> UserManagementActions:
         self.wait_until_page_is_loaded()
-        self.click_view_details_in_table()
+        if user_nid is None:
+            self.click_view_details_in_table()
+        else:
+            self.click_view_details_in_table_for_selected_user(user_nid)
         self.navigate_to_view_details()
         self.check_user_details_title(Texts.establishment_user_details)
         self.check_users_info_block()
@@ -93,4 +100,36 @@ class UserManagementActions(
             ArabicTranslations.actions,
             ArabicTranslations.establishment_delegator_details_breadcrumbs,
         )
+        return self
+
+    @allure.step
+    def open_select_privileges_modal(self) -> UserManagementActions:
+        self.select_no_access_tab()
+        self.click_add_access_button()
+        self.check_select_privileges_modal_is_displayed()
+        return self
+
+    @allure.step
+    def check_privileges_are_grouped(self) -> UserManagementActions:
+        self.click_show_more_privileges_btn_for_groups()
+        self.check_privileges_group_names(Privileges.groups_data)
+        return self
+
+    @allure.step
+    def select_all_privileges(self) -> UserManagementActions:
+        self.wait_until_privilege_list_is_displayed()
+        self.click_all_privileges_checkbox()
+        self.check_privileges_are_selected()
+        return self
+
+    @allure.step
+    def unselect_the_privilege(self, privilege_name: str) -> UserManagementActions:
+        self.click_privilege_from_the_list(privilege_name)
+        self.check_all_privileges_checkbox_is_unselected()
+        return self
+
+    @allure.step
+    def unselect_all_privileges(self) -> UserManagementActions:
+        self.click_all_privileges_checkbox()
+        self.check_non_default_privileges_are_unselected()
         return self

@@ -6,8 +6,8 @@ from pydantic import BaseModel
 class User(BaseModel):
     personal_number: str
 
-    labor_office_id: str
-    sequence_number: str
+    labor_office_id: Optional[str]
+    sequence_number: Optional[str]
 
     office_id: Optional[str]
     establishment_name_ar: Optional[str]

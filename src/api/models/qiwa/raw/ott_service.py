@@ -1,13 +1,14 @@
-from pydantic import BaseModel
+from src.api.models.qiwa.base import QiwaBaseModel
 
 
-class GenerateToken(BaseModel):
+class GenerateToken(QiwaBaseModel):
     ott: str
 
 
-class _Payload(BaseModel):
+class _Payload(QiwaBaseModel):
+    sequence_number: int
     set_at: int
 
 
-class ValidateToken(BaseModel):
+class ValidateToken(QiwaBaseModel):
     payload: _Payload

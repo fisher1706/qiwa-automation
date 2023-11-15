@@ -23,7 +23,7 @@ def visa_mock():
 @pytest.fixture(scope="function", autouse=True)
 def pre_test():
     qiwa.login_as_user(VisaUser.NAME, VisaUser.PASSWORD)
-    qiwa.transitional.select_language(Languages.ENGLISH)
+    qiwa.header.change_local("en")
     qiwa.workspace_page.select_company_account_with_sequence_number(VisaUser.ESTABLISHMENT_ID)
     qiwa.open_visa_page()
 

@@ -14,7 +14,8 @@ class EmployeeTransferActions:
     def navigate_to_et_service(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
         qiwa.workspace_page.should_have_workspace_list_appear()
-        qiwa.header.check_personal_number_or_name(user.name).change_local(Language.EN)
+        personal_info = user.name if user.name else user.personal_number
+        qiwa.header.check_personal_number_or_name(personal_info).change_local(Language.EN)
         qiwa.workspace_page.select_company_account_with_sequence_number(user.sequence_number)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
@@ -73,8 +74,51 @@ class EmployeeTransferActions:
             .select_terms_checkbox()
             .click_btn_next_step()
         )
-
-        qiwa.employee_transfer_page.click_btn_next_step().select_terms_checkbox().click_btn_submit()
-
-        qiwa.employee_transfer_page.check_success_msg().check_request_status()
+        (
+            qiwa.employee_transfer_page.click_btn_next_step()
+            .select_terms_checkbox()
+            .click_btn_submit()
+            .check_success_msg()
+            .check_request_status()
+        )
         return self
+
+    @allure.step
+    def create_et_request_between_my_establishment(
+        self, laborer: Laborer
+    ) -> EmployeeTransferActions:
+        (
+            qiwa.employee_transfer_page.click_btn_transfer_employee()
+            .select_own_establishment()
+            .click_btn_next_step()
+            .search_by_iqama_number(laborer.login_id)
+            .select_first_employee(laborer.login_id)
+            .click_btn_next_step()
+            .click_link_create_contract()
+            .click_btn_proceed_to_contract_management()
+        )
+        qiwa.code_verification.fill_in_code().click_confirm_button()
+
+        contract_management_actions = ContractManagementActions()
+        (
+            contract_management_actions.click_btn_next_step()
+            .fill_establishment_details()
+            .click_btn_next_step()
+            .fill_employee_details()
+            .click_btn_next_step()
+            .fill_contract_details(laborer.transfer_type)
+            .click_btn_next_step()
+            .select_terms_checkbox()
+            .click_btn_next_step()
+        )
+        (
+            qiwa.employee_transfer_page.click_btn_next_step()
+            .select_terms_checkbox()
+            .click_btn_submit_request()
+            .check_success_msg()
+            .check_request_status()
+        )
+        return self
+
+
+employee_transfer_actions = EmployeeTransferActions()

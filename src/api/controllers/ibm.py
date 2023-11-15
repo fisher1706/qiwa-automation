@@ -2,12 +2,16 @@ from datetime import datetime
 from http import HTTPStatus
 
 import allure
-import pytest
 
 import config
 import src
-from data.dedicated.change_occupation import User
 from data.dedicated.models.services import Service
+from data.dedicated.models.user import User
+from data.shareable.saudization_certificate.saudi_certificate import (
+    AppointmentStatus,
+    SaudiEstValidation,
+)
+from src.api.clients.ibm import ibm_api
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.change_occupation import NonEligibilityReasons
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
@@ -16,24 +20,11 @@ from src.api.models.ibm.getsaudicert import GetSaudiCertificateRsBody
 from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.ibm.root import IBMResponse, IBMResponseData
 from src.api.models.ibm.usereligibleservices import ResponseUserEligibleServices
-from src.api.payloads.ibm.createnewappointment import (
-    Body,
-    CreateNewAppointmentRq,
-    CreateNewAppointmentRqPayload,
-    EstablishmentDetails,
-    Header,
-    RequesterDetails,
-    UserInfo,
-)
+from src.api.payloads.ibm.createnewappointment import Body, Header
 from src.api.payloads.ibm.getchangeoccupationlaborerslist import (
     GetChangeOccupationLaborersListBody,
     GetChangeOccupationLaborersListRq,
     GetChangeOccupationLaborersListRqPayload,
-)
-from src.api.payloads.ibm.getestablishmentinformation import (
-    EstablishmentInformation,
-    GetEstablishmentInformationPayload,
-    GetEstablishmentInformationRq,
 )
 from src.api.payloads.ibm.getusereligibleservices import (
     GetUserEligibleServicesRq,
@@ -144,80 +135,12 @@ class IBMApiController:
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
 
     @allure.step
-    def create_new_appointment(self, user: User, service: Service) -> int:
-        header = Header(
-            TransactionId="0",
-            ChannelId="Qiwa",
-            SessionId="0",
-            RequestTime="2023-08-03 09:00:00.555",
-            ServiceCode="CNA00001",
-            DebugFlag="1",
-            UserInfo=UserInfo(UserId=user.personal_number, IDNumber=user.personal_number),
+    def get_appointment_id(self, user: User, service: Service) -> AppointmentStatus:
+        response = ibm_api.create_new_appointment(user, service)
+        appointment_id = AppointmentStatus.validate(
+            response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
         )
-
-        body = Body(
-            EstablishmentDetails=EstablishmentDetails(
-                LaborOfficeId=user.labor_office_id,
-                SequenceNumber=user.sequence_number,
-            ),
-            OfficeID=user.office_id,
-            ClientServiceId=service.client_service_id,
-            RequesterDetails=RequesterDetails(
-                RequesterIdNo=user.personal_number,
-                RequesterName="",
-                RequesterUserId=user.personal_number,
-            ),
-            Time="93",
-            Date=datetime.today().strftime("%Y-%m-%d"),
-            RegionId="1",
-            RequesterTypeId="2",
-            SubServiceId=service.sub_service_id,
-            VisitReasonId="1",
-        )
-        payload = CreateNewAppointmentRqPayload(
-            CreateNewAppointmentRq=CreateNewAppointmentRq(Header=header, Body=body)
-        )
-        response = self.client.post(
-            url=self.url,
-            endpoint=self.route + "/qiwalo/createnewappointment",
-            headers=HEADERS,
-            json=payload.dict(exclude_none=True),
-        )
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        response = response.json()
-        try:
-            return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
-        except KeyError:
-            pytest.fail(reason=str(response))
-        return 0
-
-    @allure.step
-    def get_economic_activity_id(self, user: User) -> str:
-        header = Header(
-            TransactionId="0",
-            ChannelId="Qiwa",
-            SessionId="0",
-            RequestTime="2019-10-10 00:00:00.555",
-            ServiceCode="GEI00001",
-            DebugFlag="1",
-        )
-        body = EstablishmentInformation(
-            LaborOfficeId=user.labor_office_id,
-            EstablishmentSequanceNumber=user.sequence_number,
-        )
-        payload = GetEstablishmentInformationPayload(
-            GetEstablishmentInformationRq=GetEstablishmentInformationRq(Header=header, Body=body)
-        )
-        response = self.client.post(
-            url=self.url,
-            endpoint=self.route + "/qiwa/esb/getestablishmentinformation",
-            headers=HEADERS,
-            json=payload.dict(),
-        )
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        return response.json()["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"][
-            "EconomicActivityId"
-        ]
+        return appointment_id
 
     @allure.step
     def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
@@ -353,3 +276,30 @@ class IBMApiController:
 
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
+
+    @allure.step
+    def get_economic_activity_id(self, user: User) -> str:
+        return ibm_api.get_establishment_information(user)["GetEstablishmentInformationRs"][
+            "Body"
+        ]["EstablishmentDetails"]["EconomicActivityId"]
+
+    @allure.step
+    def get_cr_unified_numbers_for_establishment(self, user: User) -> SaudiEstValidation:
+        response = ibm_api.get_establishment_information(user)
+        return SaudiEstValidation(
+            cr_number=response["GetEstablishmentInformationRs"]["Body"]["EstablishmentDetails"][
+                "CRNumber"
+            ],
+            unified_number_id=response["GetEstablishmentInformationRs"]["Body"][
+                "EstablishmentDetails"
+            ]["UnifiedNationalNumber"],
+        )
+
+    @allure.step
+    def get_establishment_id(self, employer: User) -> str:
+        return ibm_api.get_establishment_information(employer)["GetEstablishmentInformationRs"][
+            "Body"
+        ]["EstablishmentDetails"]["EstablishmentId"]
+
+
+ibm_api_controller = IBMApiController()

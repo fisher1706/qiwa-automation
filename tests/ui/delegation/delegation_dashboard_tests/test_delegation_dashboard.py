@@ -15,7 +15,7 @@ from tests.ui.delegation.conftest import (
     check_sms_after_resend_action,
     get_dates_on_delegation_pages,
     get_delegation_request,
-    get_old_url_after_resend_action,
+    get_partner_approval_url,
     login_and_open_delegation_dashboard_page,
     login_as_establishment_owner,
     open_delegation_dashboard_page,
@@ -121,7 +121,7 @@ def test_resend_action_on_delegation_dashboard():
                                             delegation_id=delegation_data["delegationId"],
                                             establishment_name=general_data.ESTABLISHMENT_NAME,
                                             request_id=updated_delegation_request.id,
-                                            formatted_phone_number=delegation_data["formattedPartnerPhone"])
+                                            partner_phone_for_url=delegation_data["hiddenPartnerPhone"])
     open_url_from_sms(sms_url)
     qiwa.delegation_localisation.select_english_localisation_for_public_pages()
     qiwa.delegation_partner_approval_page.wait_partner_approval_page_to_load()
@@ -138,9 +138,9 @@ def test_old_link_is_not_active_after_resending():
     resend_rejected_delegation_request(qiwa_api=qiwa_api, delegation_id=delegation_data["delegationId"])
     delegation_request = get_delegation_request(delegation_id=delegation_data["delegationId"],
                                                 status=general_data.REJECTED)
-    url_from_sms = get_old_url_after_resend_action(request_id=delegation_request.id,
-                                                   formatted_phone_number=delegation_data["formattedPartnerPhone"])
-    open_url_from_sms(url_from_sms)
+    unavailable_flow_url = get_partner_approval_url(request_id=delegation_request.id,
+                                                    phone_number_for_url=delegation_data["hiddenPartnerPhone"])
+    open_url_from_sms(unavailable_flow_url)
     qiwa.delegation_localisation.select_english_localisation_for_public_pages()
     qiwa.delegation_partner_approval_page.should_partner_approval_flow_be_not_available()
 
