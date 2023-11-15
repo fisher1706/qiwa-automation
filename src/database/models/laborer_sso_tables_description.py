@@ -1,5 +1,7 @@
 # disabled because it is DB table descriptions
 # pylint: disable = too-few-public-methods
+from datetime import datetime, timezone
+
 from sqlalchemy import (
     JSON,
     VARCHAR,
@@ -214,3 +216,34 @@ class AccountLoginFailures(Base):
 
     id = Column("id", BigInteger, primary_key=True, nullable=False)
     number = Column("number", Integer, nullable=False)
+
+
+class AccountPasswordResetKeys(Base):
+    __tablename__ = "account_password_reset_keys"
+
+    id = Column("id", BigInteger, primary_key=True, nullable=False)
+    key = Column("key", Text, nullable=False)
+    deadline = Column(
+        "deadline", DateTime(timezone=False), nullable=False, default=datetime.now(tz=timezone.utc)
+    )
+    last_sent = Column(
+        "last_sent", DateTime(timezone=False), nullable=False, default=datetime.now()
+    )
+
+
+class ResetPasswordActivityTrails(Base):
+    __tablename__ = "reset_password_activity_trails"
+
+    id = Column("id", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("personal_number", Text)
+    send_otp_counter = Column("send_otp_counter", Integer, default=0)
+    wrong_otp_entered_attempts = Column("wrong_otp_entered_attempts", Integer, default=0)
+    last_sent_otp_time = Column("last_sent_otp_time", DateTime(timezone=False))
+    success_reset_password_counter = Column("success_reset_password_counter", Integer)
+    success_reset_password_first_time = Column(
+        "success_reset_password_first_time", DateTime(timezone=False)
+    )
+    send_otp_locked_until = Column("send_otp_locked_until", DateTime(timezone=False))
+    wrong_otp_locked_until = Column("wrong_otp_locked_until", DateTime(timezone=False))
+    created_at = Column("created_at", DateTime(timezone=False))
+    updated_at = Column("updated_at", DateTime(timezone=False))

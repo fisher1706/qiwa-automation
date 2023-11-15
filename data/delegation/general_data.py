@@ -1,4 +1,5 @@
 ACTIVE: str = "ACTIVE"
+APPROVED: str = "APPROVED"
 REJECTED: str = "REJECTED"
 EXPIRED: str = "EXPIRED"
 REVOKED: str = "REVOKED"
@@ -13,14 +14,18 @@ ENGLISH_LOCAL: str = "EN"
 ARABIC_LOCAL: str = "ع"
 REJECT_REASON: str = "Rejected reason"
 
-SMS_TEXT: str = "يوجد طلب تفويض برقم {} لشركة {}  يتطلب موافقتك للتفاصيل "
+DELEGATION_REQUEST_SMS_TEXT: str = "يوجد طلب تفويض برقم {} لشركة {}  يتطلب موافقتك للتفاصيل "
 SMS_LINK: str = "https://delegation.qiwa.info/otp?id={}&n={}"
+OTP_SMS_TEXT: str = """رمز التحقق:{}
+لمراجعة طلب تفويض"""
 RESEND_MESSAGE: str = "Delegation request has been resent."
 REVOKE_MESSAGE: str = "Delegation has been revoked."
 ESTABLISHMENT_NAME: str = "فرع الشركه السعوديه للحاسبات الالكترونيه المحدوده"
+ESTABLISHMENT_CR_NUMBER: str = "1010868964"
 EMPLOYEE_NID_IN_WORKSPACE_WITH_PARTNERS: str = "2178509200"
 EMPLOYEE_NID_IN_WORKSPACE_WITH_NO_PARTNERS: str = "2410113779"
 TWELVE_MONTHS_DURATION: int = 12
+TWELVE_MONTHS_DURATION_STR: str = "12 months"
 RESEND_MODAL_TITLE: str = "Are you sure you want to resend a delegation request?"
 RESEND_MODAL_DESCRIPTION: str = "The new request will be sent to all partners who rejected it."
 RESEND_MODAL_MESSAGE: str = "The request can be resent only once."
@@ -38,3 +43,30 @@ TITLE_ON_PARTNER_APPROVAL: str = "Verification code"
 TITLE_ON_UNAVAILABLE_FLOW: str = "The delegation request is no longer valid"
 SUBTITLE_ON_UNAVAILABLE_FLOW: str = "The delegation request has already been approved or rejected."
 DESCRIPTION_ON_UNAVAILABLE_FLOW: str = "You can close this page now."
+DESCRIPTION_ON_VERIFICATION_CODE_MODAL: str = (
+    "To complete the process, please enter the 4-digit code sent to the " "number:"
+)
+SMS_CODE_TEXT_ON_VERIFICATION_CODE_MODAL: str = "Please enter the code"
+TITLE_ON_DELEGATION_REQUEST: str = "Do you want to approve the delegation request?"
+DELEGATION_REQUEST_TEXT: str = (
+    "There is a request to delegate the employee {}, {} with Employee ID {}, on behalf of "
+    "the establishment {} with CR number {} to {} at {}."
+)
+MESSAGE_ON_DELEGATION_REQUEST: str = (
+    "The delegation is valid for {} after approval by all partners. It will be "
+    "terminated if the delegate is no longer an employee of the establishment "
+    "or can be terminated by an authorized user."
+)
+APPROVE_TEXT: str = "Approve"
+REJECT_TEXT: str = "Reject"
+TEXT_AFTER_RESEND_SMS: str = "The SMS code has been sent again."
+TITLE_ON_CONFIRMATION_MODAL_PARTNER_FLOW: str = (
+    "Are you sure you want to {} the delegation request?"
+)
+REASON_TEXT: str = "*Reason for rejection"
+REJECT_REASON_DESCRIPTION: str = "Please specify the reason for rejecting the request."
+CHARACTERS_COUNTER: str = "{}/255"
+CHARACTERS_LIMIT_REACHED_COUNTER: str = "{}/255 Character limit reached"
+TITLE_AFTER_REJECT_FLOW: str = "The delegation request was rejected"
+TITLE_AFTER_APPROVE_FLOW: str = "The delegation request was successfully approved"
+DESCRIPTION_AFTER_PARTNER_FLOW: str = "You can close this page now."

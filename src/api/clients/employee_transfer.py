@@ -3,7 +3,7 @@ import json
 import allure
 
 import config
-from data.dedicated.employee_trasfer.employee_transfer import employer_old, laborer
+from data.dedicated.employee_trasfer.employee_transfer_users import employer, laborer
 from src.api.assertions.response_validator import ResponseValidator
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
@@ -20,8 +20,8 @@ class EmployeeTransferApi:
     def post_create_new_contract(
         self,
         laborer_id_no: int = laborer.login_id,
-        labor_office_id: str = employer_old.labor_office_id,
-        sequence_number: str = employer_old.establishment_number,
+        labor_office_id: str = employer.labor_office_id,
+        sequence_number: str = employer.establishment_number,
         expect_code=200,
     ):
         json_body = load_json_schema("create_contract.json")

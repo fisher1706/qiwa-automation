@@ -1,13 +1,22 @@
 import time
 from typing import Optional
 
-from data.constants import ContractManagement, EService, Language, UserInfo, UserType
-from data.dedicated.contract_details import (
+from data.constants import EService, Language, UserInfo
+from data.dedicated.contract_management.contract_management_constants import (
+    CONTRACT_TYPE,
+    TITLE,
+    VERIFICATION_CODE,
+    SuccessMessages,
+)
+from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
+from data.dedicated.models.contract_details import (
     ContractDetails,
     EmployeeDetails,
     EstablishmentDetails,
 )
-from data.dedicated.models.laborer import Entity, Laborer
+from data.dedicated.models.laborer import Laborer
+from data.dedicated.models.transfer_type import TransferType
+from data.dedicated.models.user import User
 from src.ui.actions.e_services import EServiceActions
 from src.ui.components.footer import Footer
 from src.ui.pages.dedicated_pages.old_contract_management_page import (
@@ -25,16 +34,16 @@ class OldContractManagementActions(OldContractManagementPage):
         self.e_services_action = EServiceActions()
         self.footer = Footer()
 
-    def fill_establishment_details(self, user_type: UserType):
+    def fill_establishment_details(self, transfer_type: TransferType):
         establishment_details = EstablishmentDetails()
-        if user_type == UserType.EXPAT:
+        if transfer_type.code != type_4.code:
             self.fill_field_company_email(establishment_details.company_email)
             self.fill_field_role(establishment_details.role)
         self.fill_field_work_location(establishment_details.work_location)
 
-    def fill_employee_details(self, user_type: UserType, laborer: Laborer):
+    def fill_employee_details(self, transfer_type: TransferType, laborer: Laborer):
         employee_details = EmployeeDetails()
-        if user_type == UserType.EXPAT:
+        if transfer_type.code != type_4.code:
             employee_details.passport_no = str(laborer.login_id)
             employee_details.date_of_birth = laborer.birthdate
             self.fill_field_name(employee_details.name)
@@ -52,11 +61,11 @@ class OldContractManagementActions(OldContractManagementPage):
         self.fill_field_mobile_number(employee_details.mobile_number)
         self.fill_field_email(employee_details.email)
 
-    def fill_contract_details(self, user_type: UserType):
+    def fill_contract_details(self, transfer_type: TransferType):
         contract_details = ContractDetails()
-        if user_type == UserType.EXPAT:
+        if transfer_type.code != type_4.code:
             self.fill_field_occupation(contract_details.occupation)
-        elif user_type == UserType.USER:
+        elif transfer_type.code != type_4.code:
             self.fill_field_occupation(contract_details.occupation)
             self.fill_field_iban_number(contract_details.iban_number)
         else:
@@ -67,21 +76,21 @@ class OldContractManagementActions(OldContractManagementPage):
         self.fill_field_contract_period(contract_details.contract_period[0])
         self.fill_field_basic_salary(contract_details.basic_salary)
 
-    def fill_contract_info(self, laborer: Optional[Laborer] = None, user_type: UserType = None):
-        self.fill_establishment_details(user_type)
-        self.fill_employee_details(user_type, laborer)
-        self.fill_contract_details(user_type)
+    def fill_contract_info(
+        self, laborer: Optional[Laborer] = None, transfer_type: TransferType = None
+    ):
+        self.fill_establishment_details(transfer_type)
+        self.fill_employee_details(transfer_type, laborer)
+        self.fill_contract_details(transfer_type)
 
-    def navigate_to_cm_service(self, entity: Entity):
-        qiwa.login_as_user(entity.login_id, UserInfo.PASSWORD)
-        self.workspace_actions.select_company_account_with_sequence_number(entity.sequence_number)
+    def navigate_to_cm_service(self, user: User):
+        qiwa.login_as_user(user.personal_number, UserInfo.PASSWORD)
+        self.workspace_actions.select_company_account_with_sequence_number(user.sequence_number)
         self.footer.click_on_lang_button(Language.EN)
         self.e_services_action.select_e_service(e_service_name=EService.CONTRACT_MANAGEMENT)
-        self.wait_until_title_verification_code_appears(
-            ContractManagement.VERIFICATION_CODE, Language.EN
-        )
+        self.wait_until_title_verification_code_appears(VERIFICATION_CODE, Language.EN)
         self.proceed_2fa().click_btn_verify()
-        self.verify_title(ContractManagement.TITLE, Language.EN)
+        self.verify_title(TITLE, Language.EN)
 
     def find_employee(self, laborer: Laborer):
         for _ in range(5):
@@ -94,7 +103,7 @@ class OldContractManagementActions(OldContractManagementPage):
 
     def create_template(self):
         self.click_btn_create_template()
-        self.verify_title_contract_type(ContractManagement.CONTRACT_TYPE, Language.EN)
+        self.verify_title_contract_type(CONTRACT_TYPE, Language.EN)
         self.fill_field_template_name()
         self.fill_field_description()
         self.click_btn_next()
@@ -106,5 +115,5 @@ class OldContractManagementActions(OldContractManagementPage):
         self.click_btn_next()
         self.click_btn_save_template()
         self.verify_success_template_creation(
-            ContractManagement.MSG_SUCCESS_TEMPLATE_CREATION, Language.EN
+            SuccessMessages.MSG_SUCCESS_TEMPLATE_CREATION, Language.EN
         )

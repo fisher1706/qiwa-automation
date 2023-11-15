@@ -1,30 +1,50 @@
+import datetime
 from time import sleep
 
 import allure
+from dateutil.relativedelta import relativedelta
 from selene.api import Element, be, command, have, query, s, ss
+from selene.support.shared import browser
 
 from data.visa.constants import (
+    ALLOWANCE_PERIOD_END_DATE,
+    ALLOWANCE_PERIOD_START_DATE,
+    ESTABLISHING,
+    ESTABLISHMENT_FUND,
+    ESTABLISHMENT_PHASE,
+    ESTIMATED_RECRUITMENT_QUOTA,
+    EXPANSION,
     FILTERS,
+    ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT,
+    ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+    ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT,
+    ISSUE_VISA_MODAL_TITLE_TEXT,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
+    RECRUITMENT_QUOTA,
+    RECRUITMENT_QUOTA_TIER,
+    TIER,
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
     ColName,
+    DateFormats,
+    Numbers,
     VisaType,
 )
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.base_page import BasePage
+from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert, soft_assert_text
 from utils.pdf_parser import (
     file_is_valid_pdf,
     get_downloaded_filename,
     verify_text_in_pdf,
 )
+from utils.selene import scroll_into_view_if_needed
 
 
-class PermWorkVisaPage(BasePage):
+class PermWorkVisaPage:
     other_visas_tab = s('//*[@data-testid="nav-Other visas"]')
     permanent_visas_tab = s('//*[@data-testid="nav-Permanent work visas requests"]')
     other_visas_section = s("#otherVisaRequestsSection")
@@ -54,8 +74,12 @@ class PermWorkVisaPage(BasePage):
     print_action = s('//button/p[contains(text(), "Print")]')
     view_action = s('//button/p[contains(text(), "View details")]')
     establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
+    establishment_fund_section_title = establishment_fund_section.ss("./div").first
+    establishment_fund_table = Table(establishment_fund_section.s(".//table"))
+    establishment_fund_left_cell = establishment_fund_table.cell(row=1, column=1)
+    establishment_fund_right_cell = establishment_fund_table.cell(row=1, column=2)
     increase_quota_establishment_button = s('//*[@data-testid="establishmentPhase"]//button')
-    increase_quota_expansion_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
+    increase_quota_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
     nav_link_to_transitional_page = ss("//nav//li").second
     allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
     exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
@@ -65,7 +89,24 @@ class PermWorkVisaPage(BasePage):
     learn_more_section = s('//*[@id="knowledgeSection"]//p')
     recruitment_quota_section = s("#allowedQuotaSection")
     recruitment_quota_tab = s('//*[@data-testid="nav-Recruitment quota"]')
+    increase_fund_modal = s('//*[@data-testid="absherFundsModal"]')
+    increase_fund_modal_x_button = increase_fund_modal.ss(".//button").first
+    increase_fund_modal_close_button = increase_fund_modal.ss(".//button").second
+    LINK = ".//a"
+    ICON = './/*[name()="svg"]'
+    increase_fund_modal_link = increase_fund_modal.s(LINK)
     navigation_list = s("#navigationList")
+    recruitment_quota_table_expansion = Table('//*[@data-testid="expansionPhase"]')
+    recruitment_quota_table_establishment = Table('//*[@data-testid="establishmentPhase"]')
+    issue_visa_button = s('//*[@data-testid="issueVisaBtn"]')
+    modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
+    modal_window_x_button = modal_window.ss(".//button").first
+    modal_window_close_button = modal_window.ss(".//button").second
+    modal_window_title = modal_window.s(".//p")
+    modal_window_content = modal_window.s(".//ol/li")
+    page_navigation_chain = s("//nav")
+    page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
+    banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -198,3 +239,343 @@ class PermWorkVisaPage(BasePage):
             top_y <= element_y < top_y + 100,
             error_message=f"Element {element} is not scrolled properly",
         )
+
+    @allure.step("Verify establishment section")
+    def verify_absher_balance_section(self) -> None:
+        self.establishment_fund_tab.click()
+        soft_assert_text(
+            self.establishment_fund_section_title,
+            ESTABLISHMENT_FUND,
+            element_name="Establishment title section",
+        )
+        self.establishment_fund_left_cell.should(have_any_number())
+        self.establishment_fund_left_cell.s("./a").should(be.visible)
+        self.establishment_fund_right_cell.should(have_in_text_number(Numbers.TEN_THOUSAND))
+        self.open_increase_fund_modal()
+        self.verify_increase_fund_modal()
+        self.increase_fund_modal_x_button.click()
+        self.increase_fund_modal.should(be.hidden)
+        self.establishment_fund_left_cell.s("./a").click()
+        self.verify_increase_fund_modal()
+        self.increase_fund_modal_close_button.click()
+        self.increase_fund_modal.should(be.hidden)
+
+    def verify_increase_fund_modal(self) -> None:
+        self.increase_fund_modal.should(be.visible)
+        self.increase_fund_modal_x_button.should(be.visible).should(be.clickable)
+        self.increase_fund_modal_close_button.should(be.visible).should(be.clickable)
+        self.increase_fund_modal_link.should(be.visible)
+
+    def open_increase_fund_modal(self) -> None:
+        self.establishment_fund_left_cell.s("./a").click()
+
+    @allure.step("Verify allowed quota section (expansion)")
+    def verify_allowed_quota_section_expansion(self) -> None:
+        self.recruitment_quota_table_expansion.body.should(be.visible)
+        self.recruitment_quota_table_expansion.rows.should(have.size(Numbers.TWO))
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        self.recruitment_quota_table_expansion.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_expansion.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        self.recruitment_quota_table_expansion.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        soft_assert_text(
+            self.recruitment_quota_table_expansion.cell(row=2, column=2),
+            text=EXPANSION,
+            element_name="Establishment phase cell (value)",
+        )
+
+    @allure.step("Verify allowed quota section (establishment)")
+    def verify_allowed_quota_section_establishment(self) -> None:
+        self.recruitment_quota_table_establishment.body.should(be.visible)
+        self.recruitment_quota_table_establishment.rows.should(have.size(Numbers.SIX))
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=1),
+            text=RECRUITMENT_QUOTA_TIER,
+            element_name="Recruitment quota tier cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=1),
+            text=ALLOWANCE_PERIOD_START_DATE,
+            element_name="Allowance period start date cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=1),
+            text=ALLOWANCE_PERIOD_END_DATE,
+            element_name="Allowance period end date cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=6, column=1),
+            text=ESTIMATED_RECRUITMENT_QUOTA,
+            element_name="Estimated recruitment quota after allowance period ends cell (header)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=3, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=4, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=5, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=6, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.FOUR)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=2),
+            text=ESTABLISHING,
+            element_name="Establishing cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=2),
+            text=TIER.ONE,
+            element_name="Tier cell (value)",
+        )
+        today = datetime.date.today()
+        start_date = today + relativedelta(months=-6)
+        end_date = today + relativedelta(months=+6)
+        left = end_date - today
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=2),
+            text=start_date.strftime(DateFormats.DD_MM_YYYY),
+            element_name="Start date cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=2),
+            text=end_date.strftime(DateFormats.DD_MM_YYYY),
+            element_name="End date cell (date value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=5, column=2),
+            text=f"{left.days} days left",
+            element_name="End date cell (days left value)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=5, column=2).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=6, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )
+
+    @allure.step(
+        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in expansion flow"
+    )
+    def verify_buttons_expansion(self, issue_enabled: bool, increase_enabled: bool) -> None:
+        if issue_enabled:
+            self.verify_issue_visa_button_enabled()
+        else:
+            self.verify_issue_visa_button_disabled()
+        if increase_enabled:
+            self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+        else:
+            self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+
+    def verify_issue_visa_button_enabled(self) -> None:
+        self.issue_visa_button.should(be.visible).should(be.clickable)
+        self.issue_visa_button.s(self.ICON).should(be.hidden)
+        curr_url = browser.driver.current_url
+        self.issue_visa_button.click()
+        soft_assert(
+            curr_url != browser.driver.current_url,
+            "Issue visa button not redirected to another page",
+        )
+        browser.driver.back()
+
+    def verify_issue_visa_button_disabled(
+        self, modal_title: str = None, modal_content: str = None
+    ) -> None:
+        self.issue_visa_button.should(be.visible).should(be.clickable)
+        self.issue_visa_button.s(self.ICON).should(be.visible)
+        self.issue_visa_button.click()
+        self.verify_modal_error_window(modal_title, modal_content)
+        self.modal_window_x_button.click()
+        self.modal_window.should(be.hidden)
+        self.issue_visa_button.click()
+        self.verify_modal_error_window(modal_title, modal_content)
+        self.modal_window_close_button.click()
+        self.modal_window.should(be.hidden)
+
+    def verify_increase_recruitment_quota_button_enabled(self, button: Element) -> None:
+        scroll_into_view_if_needed(button)
+        button.should(be.visible).should(be.clickable)
+        button.s(self.ICON).should(be.hidden)
+        curr_url = browser.driver.current_url
+        button.click()
+        soft_assert(
+            curr_url != browser.driver.current_url,
+            f"{str(button)} not redirected to another page",
+        )
+        browser.driver.back()
+
+    def verify_increase_recruitment_quota_button_disabled(self, button: Element) -> None:
+        scroll_into_view_if_needed(button)
+        button.should(be.visible).should(be.clickable)
+        button.s(self.ICON).should(be.visible)
+        button.click()
+        self.verify_modal_error_window()
+        self.modal_window_x_button.click()
+        self.modal_window.should(be.hidden)
+        button.click()
+        self.verify_modal_error_window()
+        self.modal_window_close_button.click()
+        self.modal_window.should(be.hidden)
+
+    def verify_modal_error_window(self, title: str = None, content: str = None) -> None:
+        self.modal_window.should(be.visible)
+        self.modal_window_x_button.should(be.visible).should(be.clickable)
+        self.modal_window_close_button.should(be.visible).should(be.clickable)
+        if title:
+            soft_assert_text(
+                self.modal_window_title, text=title, element_name="modal window title"
+            )
+        if content:
+            soft_assert_text(
+                self.modal_window_content, text=content, element_name="modal window content"
+            )
+
+    @allure.step(
+        "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in establishment flow"
+    )
+    def verify_buttons_establishment(self, issue_enabled: bool, increase_enabled: bool) -> None:
+        if issue_enabled:
+            self.verify_issue_visa_button_enabled()
+        else:
+            self.verify_issue_visa_button_disabled()
+        if increase_enabled:
+            self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+            self.verify_increase_recruitment_quota_button_enabled(
+                self.increase_quota_establishment_button
+            )
+        else:
+            self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+            self.verify_increase_recruitment_quota_button_disabled(
+                self.increase_quota_establishment_button
+            )
+
+    @allure.step("Verify allowance period")
+    def verify_allowance_period_block_perm_work_visa_request(self, allowance_started):
+        if allowance_started:
+            self.verify_allowed_quota_section_establishment()
+        else:
+            self.verify_allowance_period_hidden_block_perm_work_visa_request()
+
+    def verify_allowance_period_hidden_block_perm_work_visa_request(self):
+        self.recruitment_quota_table_establishment.body.should(be.visible)
+        self.recruitment_quota_table_establishment.rows.should(have.size(Numbers.FOUR))
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=1, column=1),
+            text=RECRUITMENT_QUOTA,
+            element_name="Recruitment quota cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=1),
+            text=ESTABLISHMENT_PHASE,
+            element_name="Establishment phase cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=1),
+            text=RECRUITMENT_QUOTA_TIER,
+            element_name="Recruitment quota tier cell (header)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=4, column=1),
+            text=ESTIMATED_RECRUITMENT_QUOTA,
+            element_name="Estimated recruitment quota after allowance period ends cell (header)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=1, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=2, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=3, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=4, column=1).s(self.LINK).should(
+            be.visible
+        ).should(be.clickable)
+        self.recruitment_quota_table_establishment.cell(row=1, column=2).should(
+            have_in_text_number(Numbers.FOUR)
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=2, column=2),
+            text=ESTABLISHING,
+            element_name="Establishing cell (value)",
+        )
+        soft_assert_text(
+            self.recruitment_quota_table_establishment.cell(row=3, column=2),
+            text=TIER.ONE,
+            element_name="Tier cell (value)",
+        )
+        self.recruitment_quota_table_establishment.cell(row=4, column=2).should(
+            have_in_text_number(Numbers.NINE_HUNDRED_NINETY_NINE)
+        )
+
+    @allure.step("Check the error text above Recruitment quota title on the work visa dashboard.")
+    def verify_error_banner(self, text):
+        soft_assert_text(
+            self.banner,
+            text=text,
+            element_name="Error banner",
+        )
+
+    @allure.step("Check buttons in the top block on the Instant work visa page [expansion]")
+    def verify_expansion_balance_zero_buttons_behavior(self):
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+
+    @allure.step("Verify tier one, balance zero case validations")
+    def verify_issue_perm_work_visa_blocked(self):
+        self.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT)
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+
+    @allure.step("Verify tier four, balance more than zero case validations")
+    def verify_increase_perm_work_visa_quota_blocked(self):
+        self.banner.should(be.hidden)
+        self.verify_issue_visa_button_enabled()
+        self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+
+    @allure.step("Verify tier four, balance zero case validations")
+    def verify_increase_perm_work_visa_quota_and_issue_blocked(self):
+        self.banner.should(be.hidden)
+        self.verify_issue_visa_button_disabled(
+            ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT
+        )
+        self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)

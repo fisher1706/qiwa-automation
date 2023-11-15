@@ -5,7 +5,20 @@ from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
 import config
-from data.constants import EmployeeTransfer, Language
+from data.constants import Language
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    EXPECTED_DATE,
+    HEADER_TITLES_LIST,
+    PLACEHOLDER_SEARCH,
+    POPUP_REDIRECTION_BODY,
+    POPUP_REDIRECTION_TITLE,
+    RECEIVED_REQUESTS,
+    REQUEST_SUBMITTED,
+    SENT_REQUESTS,
+    TITLE_FROM_ANOTHER_BUSINESS_OWNER,
+    TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS,
+    TRANSFER_REQUESTS,
+)
 from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
 from utils.assertion import assert_that
@@ -152,15 +165,13 @@ class EmployeeTransferPage:
     # Transfer Requests section on Dashboard page
 
     def verify_title_transfer_request(self, locale: str):
-        self.title_transfer_request.should(
-            have.exact_text(EmployeeTransfer.TRANSFER_REQUESTS[locale])
-        )
+        self.title_transfer_request.should(have.exact_text(TRANSFER_REQUESTS[locale]))
 
     def verify_title_tab_sent_requests(self, locale: str):
-        self.sent_requests.should(have.text(EmployeeTransfer.SENT_REQUESTS[locale]))
+        self.sent_requests.should(have.text(SENT_REQUESTS[locale]))
 
     def verify_title_tab_received_requests(self, locale: str):
-        self.received_requests.should(have.text(EmployeeTransfer.RECEIVED_REQUESTS[locale]))
+        self.received_requests.should(have.text(RECEIVED_REQUESTS[locale]))
 
     def click_sent_requests_tab(self):
         self.sent_requests.click()
@@ -175,15 +186,13 @@ class EmployeeTransferPage:
         self.received_requests.should(have.attribute("aria-selected").value("true"))
 
     def verify_table_headers(self, locale: str):
-        for row, header in zip(self.header_rows, EmployeeTransfer.HEADER_TITLES_LIST):
+        for row, header in zip(self.header_rows, HEADER_TITLES_LIST):
             row.should(have.text(header[locale]))
 
     def verify_placeholder_search(self, locale: str):
         list_of_search_elements = self.header_rows.all("input")
         for search_field in list_of_search_elements[:-1]:
-            search_field.should(
-                have.attribute("placeholder").value(EmployeeTransfer.PLACEHOLDER_SEARCH[locale])
-            )
+            search_field.should(have.attribute("placeholder").value(PLACEHOLDER_SEARCH[locale]))
 
     def verify_statuses_in_dropdown(self):
         self.dropdown_status.click()
@@ -193,9 +202,7 @@ class EmployeeTransferPage:
         self.table_body.row(1).s("img").click()
 
     def verify_expected_dates(self):
-        self.table_body.row(2).ss("li p + p").should(
-            have.exact_texts(EmployeeTransfer.EXPECTED_DATE)
-        )
+        self.table_body.row(2).ss("li p + p").should(have.exact_texts(EXPECTED_DATE))
 
     def verify_count_of_rows(self, count: int):
         self.all_table_rows.should(have.size(count))
@@ -220,9 +227,7 @@ class EmployeeTransferPage:
 
     def verify_first_row_on_focus(self):
         self.select_first_row()
-        self.table_body.row(2).s("div p").should(
-            have.exact_text(EmployeeTransfer.REQUEST_SUBMITTED[Language.EN])
-        )
+        self.table_body.row(2).s("div p").should(have.exact_text(REQUEST_SUBMITTED[Language.EN]))
 
     def select_rows_per_page(self, count: str):
         self.row_per_page.click()
@@ -289,12 +294,12 @@ class EmployeeTransferPage:
 
     def verify_title_from_another_business_owner(self):
         self.title_employee_transfer_request_form.should(
-            have.text(EmployeeTransfer.TITLE_FROM_ANOTHER_BUSINESS_OWNER)
+            have.text(TITLE_FROM_ANOTHER_BUSINESS_OWNER)
         )
 
     def verify_title_transfer_laborer_between_my_establishments(self):
         self.title_employee_transfer_request_form.should(
-            have.text(EmployeeTransfer.TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS)
+            have.text(TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS)
         )
 
     def select_transfer_type(self, transfer_type: TransferType):
@@ -346,8 +351,8 @@ class EmployeeTransferPage:
         s(self.btn_select_to_transfer).click()
 
     def verify_redirections_popup(self):
-        s(self.popup_title).should(have.exact_text(EmployeeTransfer.POPUP_REDIRECTION_TITLE))
-        s(self.popup_body).should(have.exact_text(EmployeeTransfer.POPUP_REDIRECTION_BODY))
+        s(self.popup_title).should(have.exact_text(POPUP_REDIRECTION_TITLE))
+        s(self.popup_body).should(have.exact_text(POPUP_REDIRECTION_BODY))
 
     def click_popup_btn_proceed(self):
         s(self.popup_btn_proceed).click()

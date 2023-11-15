@@ -19,7 +19,8 @@ class Numbers:  # pylint: disable=R0903
     TEN_THOUSAND = 10000
     ONE_THOUSAND = 1000
     ONE_HUNDRED = 100
-    NINTY_NINE = 99
+    NINETY_NINE = 99
+    NINE_HUNDRED_NINETY_NINE = 999
     TWO = 2
     ONE = 1
     ZERO = 0
@@ -27,6 +28,8 @@ class Numbers:  # pylint: disable=R0903
     THREE = 3
     TEN = 10
     NINE = 9
+    SIX = 6
+    LAZYLOADING_PACK_SIZE = 60
 
 
 class VisaUser:  # pylint: disable=R0903
@@ -120,6 +123,24 @@ TRANSACTIONID = "transactionId"
 PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
     "You cannot issue visas because you don’t meet the {} mandatory requirements.\n"
     "See unmet requirements"
+)
+ESTABLISHMENT_FUND = "Establishment fund"
+RECRUITMENT_QUOTA = "Recruitment quota"
+ESTABLISHMENT_PHASE = "Establishment phase"
+EXPANSION = "Expansion"
+RECRUITMENT_QUOTA_TIER = "Recruitment quota tier"
+ALLOWANCE_PERIOD_START_DATE = "Allowance period start date"
+ALLOWANCE_PERIOD_END_DATE = "Allowance period end date"
+ESTIMATED_RECRUITMENT_QUOTA = "Estimated recruitment quota after allowance period ends"
+ESTABLISHING = "Establishing"
+ISSUE_VISA_MODAL_TITLE_TEXT = "Sorry, currently you cannot issue Permanent work visas"
+ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT = (
+    "You have already used your recruitment quota in the current tier."
+)
+ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT = "You have already used your recruitment quota."
+ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
+    "You have already used your recruitment quota in the highest tier. "
+    "Please wait for the allowance period to end."
 )
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"

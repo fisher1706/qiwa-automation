@@ -25,13 +25,12 @@ from data.visa.constants import (
     DateFormats,
     Numbers,
 )
-from src.ui.pages.visa_pages.base_page import BasePage
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert_list, soft_assert_text
 from utils.helpers import get_session_variable
 
 
-class TransitionalPage(BasePage):
+class TransitionalPage:
     cards_loading = s('//*[@data-testid="cardSkeleton"]')
     absher_loading = s('//*[@data-testid="abshereFundsSkeleton"]')
     absher_value = s('//*[@data-testid="absherFundsAmount"]')
@@ -116,12 +115,6 @@ class TransitionalPage(BasePage):
     temp_work_visa_card = s('//*[@data-testid="visit-visa"]')
     seasonal_work_visa_card = s('//*[@data-testid="seasonal-visa"]')
     perm_work_visa_card_exp_date = s('//*[@data-testid="workVisaEligibilityExpirationDateValue"]')
-    seasonal_work_recruitment_quota = s(
-        '//*[@data-testid="seasonalVisaEligibilityAllowedQuotaValue"]'
-    )
-    seasonal_work_available_visas = s(
-        '//*[@data-testid="seasonalVisaEligibilityAvailableUnusedVisasValue"]'
-    )
 
     def page_is_loaded(self):
         self.cards_loading.should(be.hidden)
@@ -454,7 +447,9 @@ class TransitionalPage(BasePage):
             element_name="Temp recruitment quota",
         )
         soft_assert_text(
-            self.temp_work_available_visas, Numbers.NINTY_NINE, element_name="Temp available visas"
+            self.temp_work_available_visas,
+            Numbers.NINETY_NINE,
+            element_name="Temp available visas",
         )
         soft_assert_text(
             self.temp_work_expire_date,

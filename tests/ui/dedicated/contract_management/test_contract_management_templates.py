@@ -1,9 +1,13 @@
 import allure
 import pytest
 
-from data.constants import ContractManagement, Language
-from data.dedicated.contract_details import ContractDetails, EmployeeDetails
-from data.dedicated.contract_management import employer
+from data.constants import Language
+from data.dedicated.contract_management.contract_management_constants import (
+    CONTRACT_TYPE,
+    SuccessMessages,
+)
+from data.dedicated.contract_management.contract_management_users import employer
+from data.dedicated.models.contract_details import ContractDetails, EmployeeDetails
 from src.ui.actions.old_contract_management import OldContractManagementActions
 
 
@@ -28,7 +32,7 @@ class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-m
         self.contract_management_actions.navigate_to_cm_service(employer)
         self.contract_management_actions.click_btn_contract_templates()
         self.contract_management_actions.click_btn_create_template()
-        self.contract_management_actions.verify_title_contract_type(ContractManagement.CONTRACT_TYPE, Language.EN)
+        self.contract_management_actions.verify_title_contract_type(CONTRACT_TYPE, Language.EN)
         self.contract_management_actions.fill_field_template_name()
         self.contract_management_actions.fill_field_description()
         self.contract_management_actions.click_btn_next()
@@ -103,7 +107,7 @@ class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-m
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.click_btn_save_template()
         self.contract_management_actions.verify_success_template_creation(
-            ContractManagement.MSG_SUCCESS_TEMPLATE_CREATION,
+            SuccessMessages.MSG_SUCCESS_TEMPLATE_CREATION,
             Language.EN
         )
 
@@ -113,7 +117,7 @@ class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-m
         self.contract_management_actions.navigate_to_cm_service(employer)
         self.contract_management_actions.click_btn_contract_templates()
         self.contract_management_actions.click_btn_create_template()
-        self.contract_management_actions.verify_title_contract_type(ContractManagement.CONTRACT_TYPE, Language.EN)
+        self.contract_management_actions.verify_title_contract_type(CONTRACT_TYPE, Language.EN)
         self.contract_management_actions.fill_field_template_name()
         self.contract_management_actions.fill_field_description()
         self.contract_management_actions.select_arabic_only()
@@ -184,7 +188,7 @@ class TestContractManagementTemplates:  # pylint: disable=unused-argument, too-m
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.click_btn_save_template()
         self.contract_management_actions.verify_success_template_creation(
-            ContractManagement.MSG_SUCCESS_TEMPLATE_CREATION,
+            SuccessMessages.MSG_SUCCESS_TEMPLATE_CREATION,
             Language.EN
         )
 

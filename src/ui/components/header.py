@@ -39,6 +39,7 @@ class Header:
 
     @allure.step
     def check_personal_number_or_name(self, personal_number: str) -> Header:
+        self.profile.wait_until(be.visible)
         self.profile.should(have.text(personal_number))
         return self
 

@@ -672,3 +672,15 @@ class AdminData:
         (Admin.LOGIN, Admin.INVALID_PASSWORD),
         (Admin.INVALID_LOGIN, Admin.INVALID_PASSWORD),
     )
+
+    invalid_duration = (0, -1, 0.9)
+
+    file_format = (Admin.PNG, Admin.GIF, Admin.JPG, Admin.JPEG, Admin.WEBP)
+    other_file_format = (Admin.DOC, Admin.ICO, Admin.TXT, Admin.PDF)
+    file_format_less_1280 = (
+        Admin.PNG_640,
+        Admin.GIF_640,
+        Admin.JPG_640,
+        Admin.JPEG_640,
+        Admin.WEBP_640,
+    )

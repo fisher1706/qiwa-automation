@@ -2,23 +2,31 @@ from __future__ import annotations
 
 from typing import TypeVar
 
+from utils.assertion.assertion_types import AssertionTypes
+
 T = TypeVar("T")
 
 
 class AssertionBase:
     def __init__(self, actual: T):
         self.actual = actual
-        self._description: str = ""
+        self.description: str = ""
 
-    def _error_template(self, expected: T, context: str) -> str:
+    def assert_(self, actual: T, expected: T, assertion: AssertionTypes) -> AssertionBase:
+        operator, context = assertion.value
+        error_message = self._error_template(actual, expected, context)
+        assert operator(actual, expected), error_message
+        return self
+
+    def _error_template(self, actual: T, expected: T, context: str) -> str:
         return f"""
-        Checking: {self._description}
-        Expected: {expected} {type(expected)}
-        Actual: {self.actual} {type(self.actual)}
-
-        Expression: assert {self.actual} {context} {expected}
-        """
+            Checking: {self.description}
+            Expected: {expected} {type(expected)}
+            Actual: {actual} {type(actual)}
+    
+            Expression: assert {actual} {context} {expected}
+            """
 
     def as_(self, description: str) -> AssertionBase:
-        self._description = description
+        self.description = description
         return self

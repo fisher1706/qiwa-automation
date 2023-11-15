@@ -1,20 +1,15 @@
 import operator
 from enum import Enum
-from typing import Any
 
 
-def contains(left: Any, right: Any) -> bool:
-    """Same as ``left in right``"""
-    return left in right
-
-
-def length(left: Any, right: Any) -> bool:
-    """Same as ``len(left) == len(right)``"""
-    return len(left) == right
+def in_(a, b):
+    return a in b
 
 
 class AssertionTypes(Enum):
     EQUAL = operator.eq, "=="
     NOT_EQUAL = operator.ne, "!="
-    IN_ = contains, "is in"
-    LENGTH = length, "length is"
+    GREATER_OR_EQUAL = operator.ge, ">="
+    LESS_OR_EQUAL = operator.le, "<="
+    CONTAINS = operator.contains, "contains"
+    IN = in_, "in"

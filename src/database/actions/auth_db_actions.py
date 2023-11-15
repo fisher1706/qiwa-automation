@@ -1,6 +1,9 @@
 from src.database.sql_requests.account_lockouts import AccountLockoutsRequest
 from src.database.sql_requests.account_request import AccountRequests
 from src.database.sql_requests.accounts_emails import AccountsEmailsRequest
+from src.database.sql_requests.accounts_password_reset_keys import (
+    AccountPasswordResetRequest,
+)
 from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
 from src.database.sql_requests.activities_request import ActivityRequest
 from src.database.sql_requests.logins import LoginRequest
@@ -22,6 +25,13 @@ def delete_account_data_from_db(personal_number: str):
     AccountsPhonesRequest().delete_account_phone_data(phone_id=phone_id, account_id=account_id)
     if phone_id is not None:
         AccountsPhonesRequest().delete_phone(phone_id=phone_id)
+    try:
+        AccountPasswordResetRequest().delete_account_password_reset_keys(account_id=account_id)
+        AccountPasswordResetRequest().delete_reset_password_activities(
+            personal_number=personal_number
+        )
+    finally:
+        pass
     LoginRequest().delete_login_data_request(account_id=account_id)
     AccountRequests().delete_account_previous_password_hashes(account_id=account_id)
     AccountRequests().delete_accounts_password_hashes(account_id=account_id)

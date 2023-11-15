@@ -33,6 +33,8 @@ class EmployeeTransferV2Page(
     sent_requests_table = Table(sent_requests_section.s("table"))
     received_requests_table = Table(received_requests_section.s("table"))
 
+    field_rejection_reason = s("#rejectReason")
+
     pagination_info = '[data-component="Table"] + div > div > p'
     sent_requests_pagination_info = sent_requests_section.s(pagination_info)
     received_requests_pagination_info = received_requests_section.s(pagination_info)
@@ -94,6 +96,10 @@ class EmployeeTransferV2Page(
 
     def click_btn_reject(self) -> EmployeeTransferV2Page:
         self.received_requests_table.cell(row=1, column=5).all("button").second.click()
+        return self
+
+    def fill_rejection_reason(self) -> EmployeeTransferV2Page:
+        self.field_rejection_reason.type("Rejection reason")
         return self
 
     def click_btn_accept_request(self) -> EmployeeTransferV2Page:

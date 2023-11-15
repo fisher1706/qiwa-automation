@@ -11,9 +11,7 @@ from data.lo.constants import AppointmentsView as Av
 class LaborOfficeAppointmentsViewPage:
     language = Language.EN
 
-    appointments_view_pagination = s(
-        "//*[@id='root']/div/span/div[1]/div/span[1]/div/div/div/div[1]/nav/ol"
-    )
+    appointments_view_pagination = s("//*[@data-component='Breadcrumbs']//ol")
 
     appointment_reference_number = s(
         "//*[@id='root']/div/span/div[1]/div/span[2]"
@@ -209,7 +207,7 @@ class LaborOfficeAppointmentsViewPage:
     def verify_print_btn(self):
         self.print_btn.should(be.visible)
 
-    @allure.step("Verify general info row text and valuers exists")
+    @allure.step("Verify general info row text and values exists")
     def verify_general_info_row(self):
         self.verify_pagination(Av.PAGINATION, self.language)
         self.verify_info_row_text(Av.INFO_ROW_TEXT, self.language)

@@ -7,6 +7,10 @@ class BaseMethods:
         element.should(have.text(text))
 
     @staticmethod
+    def check_element_attributes_value(element, value):
+        element.should(have.attribute("value").value(value))
+
+    @staticmethod
     def check_elements_on_the_page(elements, list_text):
         elements_list = []
         for element in elements:

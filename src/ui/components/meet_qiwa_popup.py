@@ -9,7 +9,7 @@ class MeetQiwaPopup:
     popup = s("#modalBodyWrapper")
     close_icon = s('[aria-label="Close modal"]')
 
-    @allure.step
+    @allure.step("Close Meet Qiwa popup")
     def close_meet_qiwa_popup(self) -> None:
         if self.popup.matching(be.visible):
             self.close_icon.click()

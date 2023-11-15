@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be
+from selene import be, have
 from selene.support.shared.jquery_style import s
 
 from src.ui.pages.appointments.labor_office_appointments import (
@@ -14,6 +14,7 @@ class LaborOfficeCreateConfirmationPage:
     confirmation_service_name = '(//tr)[2]//p[contains(text(), "{}")]'
     confirmation_sub_service_name = '(//tr)[3]//p[contains(text(), "{}")]'
     confirmation_office_name = '(//tr)[4]//p[contains(text(), "{}")]'
+    sub_service_error = s("#subService-error")
 
     # buttons
     button_back_to_appointments = s("(//button)[1]")
@@ -60,3 +61,7 @@ class LaborOfficeCreateConfirmationPage:
         self.should_confirmation_service_name_be(service)
         self.should_confirmation_sub_service_name_be(sub_service)
         self.should_confirmation_office_name_be(office)
+
+    def validate_error_message(self, expected_error_msg: str) -> LaborOfficeCreateConfirmationPage:
+        self.sub_service_error.should(be.visible).should(have.exact_text(expected_error_msg))
+        return self

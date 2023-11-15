@@ -6,8 +6,9 @@ import pytest
 
 import config
 import src
-from data.dedicated.change_occupation import User
 from data.dedicated.models.services import Service
+from data.dedicated.models.user import User
+from data.shareable.saudization_certificate.saudi_certificate import SaudiEstValidation
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.change_occupation import NonEligibilityReasons
 from src.api.constants.ibm import IBMServicesRequest, IBMServicesResponse
@@ -167,7 +168,8 @@ class IBMApiController:
                 RequesterName="",
                 RequesterUserId=user.personal_number,
             ),
-            Time="93",
+            # FIXME: check if time could be changed without affecting other testcases
+            Time="90",
             Date=datetime.today().strftime("%Y-%m-%d"),
             RegionId="1",
             RequesterTypeId="2",
@@ -353,3 +355,37 @@ class IBMApiController:
 
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
+
+    @allure.step
+    def get_cr_unified_numbers_for_establishment(self, user: User) -> SaudiEstValidation:
+        header = Header(
+            TransactionId="0",
+            ChannelId="Qiwa",
+            SessionId="0",
+            RequestTime="2019-10-10 00:00:00.555",
+            MWRequestTime="2019-10-10 00:00:00.555",
+            ServiceCode="GEI00001",
+            DebugFlag="1",
+        )
+        body = EstablishmentInformation(
+            LaborOfficeId=user.labor_office_id,
+            EstablishmentSequanceNumber=user.sequence_number,
+        )
+        payload = GetEstablishmentInformationPayload(
+            GetEstablishmentInformationRq=GetEstablishmentInformationRq(Header=header, Body=body)
+        )
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwa/esb/getestablishmentinformation",
+            headers=HEADERS,
+            json=payload.dict(),
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return SaudiEstValidation(
+            cr_number=response.json()["GetEstablishmentInformationRs"]["Body"][
+                "EstablishmentDetails"
+            ]["CRNumber"],
+            unified_number_id=response.json()["GetEstablishmentInformationRs"]["Body"][
+                "EstablishmentDetails"
+            ]["UnifiedNationalNumber"],
+        )

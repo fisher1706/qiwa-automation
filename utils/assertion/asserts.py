@@ -1,9 +1,9 @@
 import json
-from datetime import date, datetime
-from typing import Any, TypeVar
+from typing import Any, Optional, TypeVar
 
 import allure
 from deepdiff import DeepDiff
+from pytest_check import check
 
 from utils.assertion.assertion_mixin import AssertionMixin
 
@@ -11,39 +11,41 @@ T = TypeVar("T")
 
 
 def assert_that(actual: T) -> AssertionMixin:
-    assertion = AssertionMixin(actual=actual)
+    assertion = AssertionMixin(actual)
+    assertion.assert_ = check.check_func(assertion.assert_)  # pylint: disable=no-member
     return assertion
 
 
 def assert_status_code(code: int) -> AssertionMixin:
     assertion = AssertionMixin(actual=code)
-    return assertion.as_("status code")
+    return assertion.as_("status_code")
 
 
-@allure.step
-def assert_data(*, expected: Any, actual: Any) -> None:
-    class SetEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, (datetime, date)):
-                return str(obj)
-            return list(obj)
+@check.check_func  # pylint: disable=no-member
+def assert_data(*, expected: Any, actual: Any, title: Optional[str] = None) -> None:
+    exclude = ["dictionary_item_added", "dictionary_item_removed", "attribute_added"]
+    with allure.step(f"Assert {title or 'data'}"):
+        difference = DeepDiff(expected, actual)
 
-    difference = DeepDiff(expected, actual)
-
-    allure.attach(
-        json.dumps(expected, indent=2, ensure_ascii=False, cls=SetEncoder),
-        "Expected",
-        allure.attachment_type.JSON,
-    )
-    allure.attach(
-        json.dumps(actual, indent=2, ensure_ascii=False, cls=SetEncoder),
-        "Actual",
-        allure.attachment_type.JSON,
-    )
-    if "values_changed" in difference.keys():
         allure.attach(
-            json.dumps(difference["values_changed"], indent=2, ensure_ascii=False, cls=SetEncoder),
-            "Difference",
+            json.dumps(expected, indent=2, ensure_ascii=False, default=str),
+            "Expected",
             allure.attachment_type.JSON,
         )
-        raise AssertionError(difference["values_changed"])
+        allure.attach(
+            json.dumps(actual, indent=2, ensure_ascii=False, default=str),
+            "Actual",
+            allure.attachment_type.JSON,
+        )
+        if difference:
+            for rule in exclude:
+                if rule in difference.keys():
+                    difference.pop(rule)
+
+            if difference:
+                allure.attach(
+                    json.dumps(difference, indent=2, ensure_ascii=False, default=str),
+                    "Difference",
+                    allure.attachment_type.JSON,
+                )
+                raise AssertionError(difference)

@@ -1,20 +1,24 @@
 import allure
 import pytest
 
-from data.constants import ContractManagement, Language, UserType
-from data.dedicated.contract_management import (
+from data.constants import Language
+from data.dedicated.contract_management.contract_management_constants import (
+    SuccessMessages,
+)
+from data.dedicated.contract_management.contract_management_users import (
     employer,
     laborer_expatriate,
     laborer_expatriate_not_in_the_establishment,
     laborer_saudi,
     laborer_saudi_not_in_the_establishment,
 )
+from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
 
 
 @allure.feature('Contract Management Contract Creation')
-@pytest.mark.usefixtures("go_to_auth_page")
+@pytest.mark.skip("Deprecated")
 class TestContractManagementContractCreation:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
@@ -34,12 +38,12 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
         self.contract_management_actions.click_agree_checkbox()
         self.contract_management_actions.click_btn_submit()
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION,
             Language.EN
         )
         self.footer.click_on_lang_button(Language.AR)
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION,
             Language.AR
         )
 
@@ -50,12 +54,12 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
         self.contract_management_actions.click_btn_create_contract()
         self.contract_management_actions.select_outside_saudi_arabia()
         self.contract_management_actions.click_btn_next()
-        self.contract_management_actions.fill_contract_info(laborer=laborer_expatriate, user_type=UserType.EXPAT)
+        self.contract_management_actions.fill_contract_info(laborer=laborer_expatriate, transfer_type=type_4)
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.click_agree_checkbox()
         self.contract_management_actions.click_btn_submit()
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.EN)
 
     @allure.title('Create a new contract for an Expatriate Laborer not in the establishment')
@@ -65,12 +69,12 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
         self.contract_management_actions.click_btn_create_contract()
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.fill_contract_info(laborer=laborer_expatriate_not_in_the_establishment,
-                                                            user_type=UserType.EXPAT)
+                                                            transfer_type=type_4)
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.click_agree_checkbox()
         self.contract_management_actions.click_btn_submit()
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.EN)
 
     @allure.title('Create a new contract for a Saudi Laborer not in the establishment')
@@ -80,16 +84,16 @@ class TestContractManagementContractCreation:  # pylint: disable=unused-argument
         self.contract_management_actions.click_btn_create_contract()
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.find_employee(laborer_saudi_not_in_the_establishment)
-        self.contract_management_actions.fill_contract_info(user_type=UserType.USER)
+        self.contract_management_actions.fill_contract_info(transfer_type=type_4)
         self.contract_management_actions.click_btn_next()
         self.contract_management_actions.click_agree_checkbox()
         self.contract_management_actions.click_btn_submit()
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.EN
         )
         self.footer.click_on_lang_button(Language.AR)
         self.contract_management_actions.verify_success_contract_creation(
-            ContractManagement.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
+            SuccessMessages.MSG_SUCCESS_CONTRACT_CREATION_SAUDI_NOT_IN_ESTABLISHMENT,
             Language.AR
         )

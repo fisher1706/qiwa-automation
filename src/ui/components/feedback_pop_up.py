@@ -6,9 +6,8 @@ from selene.support.shared import browser
 
 
 class FeedbackPopup:
-    popup = browser.element(".modal")
-
-    def __init__(self):
+    def __init__(self, parent_locator=".modal"):
+        self.popup = browser.element(parent_locator)
         self._iframe = None
 
     @property

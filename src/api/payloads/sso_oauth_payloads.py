@@ -5,6 +5,7 @@ from src.api.payloads.raw.sso_oauth import (
     Hsm,
     Logout,
     OauthInit,
+    ResetPassword,
     SecurityQuestion,
     UnlockWiaEmail,
     VerifyEmail,
@@ -12,12 +13,15 @@ from src.api.payloads.raw.sso_oauth import (
 )
 from src.api.payloads.sso.sso_attributes_data import (
     account_attributes,
+    hsm,
+    init_hsm_for_restore_password,
     login_attributes,
     oauth_callback,
     oauth_init,
     otp_attributes,
     password,
     registration,
+    restore_password,
     session,
     user_email,
 )
@@ -92,6 +96,23 @@ def logout_payload(logout_token: str) -> dict:
     return session(attributes).dict(by_alias=True)
 
 
-def unlock_through_email_payload(lockout_key):
+def unlock_through_email_payload(lockout_key: str) -> dict:
     attributes = UnlockWiaEmail(account_lockout_key=lockout_key)
     return user_email(attributes).dict(by_alias=True)
+
+
+def hsm_payload(absher_code: str) -> dict:
+    attributes = Hsm(otp=absher_code)
+    return hsm(attributes).dict(exclude_unset=True)
+
+
+def reset_password(new_password: str, confirm_password: str, token: str) -> dict:
+    attributes = ResetPassword(
+        password=new_password, password_confirm=confirm_password, token=token
+    )
+    return restore_password(attributes).dict(by_alias=True)
+
+
+def init_hsm_for_reset_password(token: str) -> dict:
+    attributes = ResetPassword(token=token)
+    return init_hsm_for_restore_password(attributes).dict(exclude_unset=True)

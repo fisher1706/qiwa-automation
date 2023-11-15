@@ -18,6 +18,7 @@ class LaborOfficeAppointmentsCreatePage:
     available_dates = ss('//*[@role="button" and not(@aria-disabled)]')
     appointment_reason_section = s("#reason")
     radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
+    in_person_appointment = s('//fieldset//label[4]//p[@id="1-label"]')
 
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
@@ -60,6 +61,7 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Select service {name}")
     def select_service(self, name: str) -> LaborOfficeAppointmentsCreatePage:
+        self.input_service.wait_until(be.visible)
         self.input_service.click()
         self.input_service.set(name)
         self.dropdown[0].click()
@@ -82,14 +84,15 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Select region")
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
-        self.input_region.double_click()  # investigate why one click does not work
+        self.input_region.wait_until(be.visible)
+        self.input_region.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_region.select_by_text(name)
         return self
 
     @allure.step("Select office")
     def select_office(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_office.wait_until(be.enabled)
-        self.input_office.double_click()  # investigate why one click does not work
+        self.input_office.double_click()  # todo: investigate why one click does not work
         self.dropdown_select_office.select_by_text(name)
         return self
 
@@ -139,3 +142,13 @@ class LaborOfficeAppointmentsCreatePage:
         self.select_time()
         self.click_next_step_button()
         self.click_next_step_button()
+
+    @allure.step
+    def select_establishment_by_seq_number(self, labor_office_id: str, sequence_number: str):
+        s(f"//div[@for='{labor_office_id}-{sequence_number}']").click()
+        return self
+
+    @allure.step
+    def select_in_person_appointments(self):
+        self.in_person_appointment.click()
+        return self
