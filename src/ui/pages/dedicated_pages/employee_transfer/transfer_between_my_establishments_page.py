@@ -12,6 +12,7 @@ class TransferBetweenMyEstablishmentsPage:
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")
     terms_checkbox = s("#terms")
+    late_fees_checkbox = s("#late_fees_checkbox")
     btn_submit_request = s("//button[.='Submit request']")
     btn_submit = s("//button[.='Submit']")
 
@@ -30,6 +31,10 @@ class TransferBetweenMyEstablishmentsPage:
 
     def select_terms_checkbox(self) -> TransferBetweenMyEstablishmentsPage:
         self.terms_checkbox.press(Keys.SPACE)
+        return self
+
+    def select_late_fees_checkbox(self) -> TransferBetweenMyEstablishmentsPage:
+        self.late_fees_checkbox.press(Keys.SPACE)
         return self
 
     def click_btn_submit_request(self) -> TransferBetweenMyEstablishmentsPage:
