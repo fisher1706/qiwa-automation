@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import allure
 from selene import command, have
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 
 from src.ui.components.raw.table import Table
+from utils.allure import add_allure_step_for_all_methods
 
 
+@add_allure_step_for_all_methods(allure.step)
 class TransferBetweenMyEstablishmentsPage:
     table = Table()
     btn_next_step = s("//button[.='Next step']")

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 
+import allure
 from selene import command, have
 from selene.support.shared.jquery_style import s, ss
 
@@ -9,8 +10,10 @@ from data.constants import Titles
 from data.dedicated.change_occupation.change_occupation_constants import Label
 from data.dedicated.enums import ChangeOccupationWarning
 from src.ui.components.raw.table import Table
+from utils.allure import add_allure_step_for_all_methods
 
 
+@add_allure_step_for_all_methods(allure.step)
 class ChangeOccupationPage:
     title = s(".c-service-heading__text")
     field_search = s(".c-search-input-group__input")

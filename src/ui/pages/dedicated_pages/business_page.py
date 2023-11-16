@@ -6,7 +6,10 @@ import allure
 from selene import have, query
 from selene.support.shared.jquery_style import s, ss
 
+from utils.allure import add_allure_step_for_all_methods
 
+
+@add_allure_step_for_all_methods(allure.step)
 class BusinessPage:
     ESTABLISHMENT_INFORMATION = ss(".q-page-box__list dd")
     ESTABLISHMENT_STATUS = ESTABLISHMENT_INFORMATION[3]
@@ -33,7 +36,6 @@ class BusinessPage:
         self.LO_WORK_PERMIT.s(".btn").click()
         return self
 
-    @allure.step("click on saudi certificate btn")
     def select_saudization_certificate(self) -> BusinessPage:
         self.LO_SAUDI_CERTIFICATE.click()
         return self

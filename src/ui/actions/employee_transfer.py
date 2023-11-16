@@ -7,10 +7,11 @@ from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.ui.actions.contract_management import contract_management_actions
 from src.ui.qiwa import qiwa
+from utils.allure import add_allure_step_for_all_methods
 
 
+@add_allure_step_for_all_methods(allure.step)
 class EmployeeTransferActions:
-    @allure.step
     def navigate_to_et_service(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
         qiwa.workspace_page.should_have_workspace_list_appear()
@@ -24,7 +25,6 @@ class EmployeeTransferActions:
         qiwa.e_services_page.select_employee_transfer()
         return self
 
-    @allure.step
     def navigate_to_et_service_current_sponsor(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
         qiwa.workspace_page.should_have_workspace_list_appear()
@@ -37,14 +37,12 @@ class EmployeeTransferActions:
         qiwa.e_services_page.select_employee_transfer()
         return self
 
-    @allure.step
     def navigate_to_individual(self, user_id: int) -> EmployeeTransferActions:
         qiwa.login_as_user(user_id, UserInfo.PASSWORD)
         qiwa.header.change_local(Language.EN)
         qiwa.workspace_page.select_individual_account()
         return self
 
-    @allure.step
     def create_et_request_from_another_establishment(
         self, laborer: Laborer
     ) -> EmployeeTransferActions:
@@ -74,7 +72,6 @@ class EmployeeTransferActions:
         )
         return self
 
-    @allure.step
     def create_et_request_between_my_establishment(
         self, laborer: Laborer
     ) -> EmployeeTransferActions:

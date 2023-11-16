@@ -1,394 +1,118 @@
-import re
-import time
+from __future__ import annotations
 
-from selene import be, browser, command, have, query
+import allure
+from selene import have, query
+from selene.core.entity import Element
 from selene.support.shared.jquery_style import s, ss
 
-import config
-from data.constants import Language
-from data.dedicated.employee_trasfer.employee_transfer_constants import (
-    EXPECTED_DATE,
-    HEADER_TITLES_LIST,
-    PLACEHOLDER_SEARCH,
-    POPUP_REDIRECTION_BODY,
-    POPUP_REDIRECTION_TITLE,
-    RECEIVED_REQUESTS,
-    REQUEST_SUBMITTED,
-    SENT_REQUESTS,
-    TITLE_FROM_ANOTHER_BUSINESS_OWNER,
-    TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS,
-    TRANSFER_REQUESTS,
-)
-from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
-from utils.assertion import assert_that
+from src.ui.pages.dedicated_pages.employee_transfer.summary_page import SummaryPage
+from src.ui.pages.dedicated_pages.employee_transfer.transfer_between_my_establishments_page import (
+    TransferBetweenMyEstablishmentsPage,
+)
+from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_company_page import (
+    TransferFromExternalCompanyPage,
+)
+from utils.allure import add_allure_step_for_all_methods
 
 
-class EmployeeTransferPage:
-    MESSAGE_LOCATOR = {
-        "et request": "#q-content svg + p",
-        "et laborer request": ".is-top div div",
-        "et sponsor request": ".Toastify__toast-body div",
-    }
-    breadcrumb = '[data-testid="router-link"]'
+@add_allure_step_for_all_methods(allure.step)
+class EmployeeTransferPage(
+    TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage, SummaryPage
+):
+    btn_transfer_employee = s("//button[.='Transfer employee']")
 
-    info_banner = s('[data-testid="section-with-styles"]')
-    title_employee_transfer = info_banner.s("h2")
-    description = info_banner.ss("p").first
-    establishment_id = s('[data-testid="establishment-id"]').ss("p")
-    establishment_id_label = establishment_id.first
-    establishment_id_value = establishment_id.second
-    establishment_name = s('[data-testid="establishment-name"]')
-    btn_request_employee_transfer = info_banner.s("button")
+    tiles = ss('[data-testid="tile-desktop"] button')
+    own_establishment = tiles.first
+    another_establishment = tiles.second
 
-    title_transfer_request = ss('[data-testid="box-content"] h2').second
-    tabs = s('[role="tablist"]')
-    sent_requests = tabs.s("button")
-    received_requests = tabs.s("button + button")
-    btn_clear_filter = s('//button[.="Clear all filters"]')
+    recruitment_quota = ss('[data-testid="desktop_wrapper"] p').second
 
-    table_body = Table(s(".employee-transfer-MuiTable-root"))
-    header_rows = table_body.header.s("tr").all("th")
-    dropdown_status = header_rows.element(5).s(".statusSelect__control")
-    list_of_statuses = ss(".statusSelect__option")
-    all_table_rows = table_body.rows
-    spinner = ".employee-transfer-MuiCircularProgress-root"
-    rows_per_page = ".employee-transfer-MuiSelect-select"
-    pagination_text = ".employee-transfer-MuiTablePagination-displayedRows"
-    table_row_status = '[data-testid="row-value-status-id"]'
-    row_per_page = s(".employee-transfer-MuiTablePagination-select")
-    dropdown_row_per_page = ss(".employee-transfer-MuiList-root li")
+    btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
-    next_arrow = s('[title="Go to next page"]')
+    sent_requests_section = s("#requests-sent-by-you + div + div")
+    received_requests_section = s("#received-requests + div + div")
 
-    btn_approve = '//div[.="Approve"]'
-    btn_cancel = '//div[.="Cancel"]'
-    btn_next = '//div[.="Next"]'
+    sent_requests_table = Table(sent_requests_section.s("table"))
+    received_requests_table = Table(received_requests_section.s("table"))
 
-    # Rate popup
-    rate_popup = '[title="Close"] + div'
-    iframe = s('[title="adaaSurvey"]')
-    rate_icon_close = ".demo__shutter"
+    field_rejection_reason = s("#rejectReason")
 
-    # Terms popup
-    terms_popup = s('[data-testid="modal"]')
-    terms_popup_icon_close = terms_popup.ss("button").first
-    terms_popup_title = terms_popup.s("h2")
-    terms_popup_description = terms_popup.ss("li")
-    terms_popup_link = terms_popup.s("a")
-    terms_popup_btn_approve = s('[data-testid="dialog-buttonText-btn"]')
+    pagination_info = '[data-component="Table"] + div > div > p'
+    sent_requests_pagination_info = sent_requests_section.s(pagination_info)
+    received_requests_pagination_info = received_requests_section.s(pagination_info)
 
-    # Popup
-    btn_accept = '//div[.="Accept"]'
-    btn_accept_request = '//div[.="Accept request"]'
-    btn_verify = '//div[.="Verify"]'
-    btn_reject = '//div[.="Reject"]'
-    btn_reject_request = '//div[.="Reject request"]'
-    field_rejection_reason = 'input[name="reason"]'
-    field_verification_code = 'input[type="password"]'
+    search_sent_requests = sent_requests_section.s("#sent")
+    search_received_requests = received_requests_section.s("#received")
 
-    # Transfer type & company
-    title_employee_transfer_request_form = s('[data-testid="box-content"] div div')
-    from_another_business_owner = s('[data-testid="dependent-section"]')
-    between_my_establishments = s('[data-testid="sponsor-section"]')
-    check_balance = '//p[.="Check balance"]'
-    value_balance = '//span[.="Eligible"]/../../../td/div/button/../div'
-
-    # Add Employee
-    filter_iqama_number = ss('[placeholder="Search"]').second
-    field_iqama_number = 'input[name="iqama"]'
-    field_date_of_birth = 'input[data-testid="calendar-input"]'
-    btn_search = '//div[.="Search"]'
-    btn_select_to_transfer = '//div[.="Select to transfer"]'
-    btn_create_contract = '//div[.="Create contract"]'
-
-    # Warning popup
-    warning_popup_description = s('[title="Close"] + div div')
-    warning_popup_description_second_p = warning_popup_description.ss("p").second
-    warning_popup_btn_agree = s('[data-testid="confirmation-modal-agree-button"]')
-
-    # Redirection Popup
-    popup_title = ".sc-gUAEMC.cMylqu h2"
-    popup_body = ".sc-fWjsSh.gwVkNi p"
-    popup_btn_proceed = '//div[.="Proceed"]'
-
-    checkbox_agree = ".employee-transfer-PrivateSwitchBase-input"
-    btn_place_the_request = '//div[.="Place the request"]'
-
-    def __init__(self):
-        super().__init__()
-        self.et_url = config.qiwa_urls.employee_transfer
+    btn_accept_request = s("//button[.='Accept request']")
+    btn_reject_request = s("//button[.='Reject request']")
 
     @staticmethod
-    def __extract_number_inside_parentheses(text: str) -> str:
-        return str(re.search(r"\((.*?)\)", text).group(1))
+    def _get_count_of_requests(web_element: Element) -> int:
+        return int(web_element.get(query.text).split()[2])
 
-    def navigate_to_employee_transfer_by_link(self):
-        browser.open(self.et_url)
-
-    def wait_spinner_to_disappear(self):
-        s(self.spinner).should(be.not_.visible)
-
-    def verify_expected_status(self, status: dict, locale: str):
-        self.table_body.cells(row=1).element_by_its(
-            self.table_row_status, have.text(status[locale])
-        )
-
-    def verify_breadcrumb(self, text: dict, locale: str):
-        s(self.breadcrumb).should(have.exact_text(text[locale]))
-
-    def verify_title_employee_transfer(self, text: dict, locale: str):
-        self.title_employee_transfer.should(have.exact_text(text[locale]))
-
-    def verify_description(self, text: dict, locale: str):
-        self.description.should(have.exact_text(text[locale]))
-
-    def verify_establishment_id_label(self, text: dict, locale: str):
-        self.establishment_id_label.should(have.exact_text(text[locale]))
-
-    def verify_establishment_id_value(self, text: str):
-        self.establishment_id_value.should(have.exact_text(text))
-
-    def verify_establishment_name_label(self, text: dict, locale: str):
-        self.establishment_name.should(have.text(text[locale]))
-
-    def verify_establishment_name_value(self, text: str):
-        self.establishment_name.should(have.text(text))
-
-    def btn_request_employee_transfer_should_be_enabled(self):
-        self.btn_request_employee_transfer.should(be.enabled)
-
-    def click_btn_request_employee_transfer(self):
-        self.btn_request_employee_transfer.click()
+    def click_btn_transfer_employee(self) -> EmployeeTransferPage:
+        self.btn_transfer_employee.click()
         return self
 
-    # Transfer Requests section on Dashboard page
+    def select_own_establishment(self) -> EmployeeTransferPage:
+        self.own_establishment.click()
+        return self
 
-    def verify_title_transfer_request(self, locale: str):
-        self.title_transfer_request.should(have.exact_text(TRANSFER_REQUESTS[locale]))
+    def select_another_establishment(self) -> EmployeeTransferPage:
+        self.another_establishment.click()
+        return self
 
-    def verify_title_tab_sent_requests(self, locale: str):
-        self.sent_requests.should(have.text(SENT_REQUESTS[locale]))
+    def get_recruitment_quota(self) -> int:
+        return int(self.recruitment_quota.get(query.text))
 
-    def verify_title_tab_received_requests(self, locale: str):
-        self.received_requests.should(have.text(RECEIVED_REQUESTS[locale]))
+    def click_btn_proceed_to_contract_management(self) -> EmployeeTransferPage:
+        self.btn_proceed_to_contract_management.click()
+        return self
 
-    def click_sent_requests_tab(self):
-        self.sent_requests.click()
-
-    def click_received_requests_tab(self):
-        self.received_requests.click()
-
-    def verify_tab_sent_requests_is_active(self):
-        self.sent_requests.should(have.attribute("aria-selected").value("true"))
-
-    def verify_tab_received_requests_is_active(self):
-        self.received_requests.should(have.attribute("aria-selected").value("true"))
-
-    def verify_table_headers(self, locale: str):
-        for row, header in zip(self.header_rows, HEADER_TITLES_LIST):
-            row.should(have.text(header[locale]))
-
-    def verify_placeholder_search(self, locale: str):
-        list_of_search_elements = self.header_rows.all("input")
-        for search_field in list_of_search_elements[:-1]:
-            search_field.should(have.attribute("placeholder").value(PLACEHOLDER_SEARCH[locale]))
-
-    def verify_statuses_in_dropdown(self):
-        self.dropdown_status.click()
-        self.list_of_statuses.should(have.exact_texts(RequestStatus.get_list_of_variable_values()))
-
-    def select_first_row(self):
-        self.table_body.row(1).s("img").click()
-
-    def verify_expected_dates(self):
-        self.table_body.row(2).ss("li p + p").should(have.exact_texts(EXPECTED_DATE))
-
-    def verify_count_of_rows(self, count: int):
-        self.all_table_rows.should(have.size(count))
-
-    def get_count_of_total_requests(self):
-        return int(s(self.pagination_text).get(query.text).split()[-1])
-
-    def verify_general_number_of_requests(self, amount: str):
-        s(self.pagination_text).should(have.text(amount))
-
-    def get_first_row(self) -> list:
-        return [value.get(query.text) for value in self.table_body.cells(row=1)]
-
-    def get_rows_per_page(self):
-        return int(s(self.rows_per_page).get(query.text))
-
-    def verify_next_arrow_is_clickable(self):
-        self.next_arrow.should(be.clickable)
-
-    def click_next_arrow(self):
-        self.next_arrow.click()
-
-    def verify_first_row_on_focus(self):
-        self.select_first_row()
-        self.table_body.row(2).s("div p").should(have.exact_text(REQUEST_SUBMITTED[Language.EN]))
-
-    def select_rows_per_page(self, count: str):
-        self.row_per_page.click()
-        self.dropdown_row_per_page.element_by(have.attribute("data-value").value(count)).click()
-
-    def verify_filters(self):
-        for expected_item, header in zip(self.get_first_row()[:5], self.header_rows):
-            header.s("input").perform(command.js.set_value("")).type(expected_item)
-            index = None
-            for i, item in enumerate(self.header_rows):
-                if str(item) == str(header):
-                    index = i
-                    break
-            assert_that(self.get_first_row()[index]).equals_to(expected_item)
-
-    def fill_req_number(self, text: str):
-        self.header_rows.element(0).s("input").perform(command.js.set_value("")).type(
-            text
-        ).press_enter()
-
-    def click_clear_filter_btn(self):
-        time.sleep(1)
-        self.btn_clear_filter.should(be.clickable).click()
-
-    def verify_disabling_filters_fields(self):
-        for element in self.header_rows[:5]:
-            assert not element.s("input").get(query.value), (
-                f"Element value {element.s('input').get(query.value)} " f"is not empty"
-            )
-
-    def click_btn_approve(self):
-        s(self.btn_approve).click()
-
-    def click_btn_cancel(self):
-        s(self.btn_cancel).click()
-
-    def click_btn_next(self):
-        s(self.btn_next).click()
-
-    # Terms popup
-
-    def close_terms_popup(self):
-        self.terms_popup_icon_close.click()
-
-    def verify_terms_popup_title(self, text: dict, locale: str):
-        self.terms_popup_title.should(have.exact_text(text[locale]))
-
-    def verify_terms_popup_description(self, text: list, locale: str):
-        for element, expected_text in zip(self.terms_popup_description, text):
-            element.should(have.exact_text(expected_text[locale]))
-
-    def verify_terms_popup_close_icon(self):
-        self.close_terms_popup()
-        self.terms_popup.should(be.not_.visible)
-
-    def click_terms_popup_redirections_link(self):
-        self.terms_popup_link.click()
-
-    def verify_terms_popup_btn_approve(self, text: dict, locale: str):
-        self.terms_popup_btn_approve.should(have.exact_text(text[locale]))
-
-    # Employee Transfer Request page
-    # Transfer type & company
-
-    def verify_title_from_another_business_owner(self):
-        self.title_employee_transfer_request_form.should(
-            have.text(TITLE_FROM_ANOTHER_BUSINESS_OWNER)
+    def check_count_of_sent_request_rows(self) -> None:
+        requests = EmployeeTransferPage._get_count_of_requests(
+            self.sent_requests_pagination_info
         )
+        rows = requests if requests < 10 else 10
+        self.sent_requests_table.rows.should(have.size(rows))
 
-    def verify_title_transfer_laborer_between_my_establishments(self):
-        self.title_employee_transfer_request_form.should(
-            have.text(TITLE_TRANSFER_LABORER_BETWEEN_MY_ESTABLISHMENTS)
+    def check_count_of_received_request_rows(self) -> None:
+        requests = EmployeeTransferPage._get_count_of_requests(
+            self.received_requests_pagination_info
         )
+        rows = requests if requests < 10 else 10
+        self.received_requests_table.rows.should(have.size(rows))
 
-    def select_transfer_type(self, transfer_type: TransferType):
-        element = (
-            self.from_another_business_owner
-            if transfer_type == TransferType.FROM_ANOTHER_BUSINESS_OWNER
-            else self.between_my_establishments
-        )
-        element.click()
+    def search_sent_request(self, iqama_number: str) -> EmployeeTransferPage:
+        self.search_sent_requests.type(iqama_number)
+        return self
 
-    def select_target_company(self, establishment_number: str):
-        self.all_table_rows.second.should(be.visible)
-        self.all_table_rows.element_by(have.text(establishment_number)).s("input").click()
+    def search_received_request(self, iqama_number: str) -> EmployeeTransferPage:
+        self.search_received_requests.type(iqama_number)
+        return self
 
-    def click_check_balance(self):
-        s(self.check_balance).click()
+    def click_btn_approve(self) -> EmployeeTransferPage:
+        self.received_requests_table.cell(row=1, column=5).all("button").first.click()
+        return self
 
-    def get_actual_balance(self) -> int:
-        return int(s(self.value_balance).get(query.text))
+    def click_btn_reject(self) -> EmployeeTransferPage:
+        self.received_requests_table.cell(row=1, column=5).all("button").second.click()
+        return self
 
-    # Add Employee
+    def fill_rejection_reason(self) -> EmployeeTransferPage:
+        self.field_rejection_reason.type("Rejection reason")
+        return self
 
-    def filter_by_iqama_number(self, number: int):
-        self.filter_iqama_number.perform(command.js.set_value("")).type(number)
+    def click_btn_accept_request(self) -> EmployeeTransferPage:
+        self.btn_accept_request.click()
+        return self
 
-    def select_employee(self):
-        self.table_body.row(1).s("input").click()
+    def click_btn_reject_request(self) -> EmployeeTransferPage:
+        self.btn_reject_request.click()
+        return self
 
-    def fill_field_iqama_number(self, number: int):
-        s(self.field_iqama_number).perform(command.js.set_value("")).type(number)
-
-    def select_field_date_of_birth(self, date: str):
-        s(self.field_date_of_birth).perform(command.js.set_value("")).type(date)
-
-    def click_btn_search(self):
-        s(self.btn_search).click()
-
-    def get_value_warning_popup(self):
-        return int(
-            self.__extract_number_inside_parentheses(
-                self.warning_popup_description_second_p.get(query.text)
-            )
-        )
-
-    def click_warning_popup_btn_agree(self):
-        self.warning_popup_btn_agree.click()
-
-    def click_btn_select_to_transfer(self):
-        s(self.btn_select_to_transfer).click()
-
-    def verify_redirections_popup(self):
-        s(self.popup_title).should(have.exact_text(POPUP_REDIRECTION_TITLE))
-        s(self.popup_body).should(have.exact_text(POPUP_REDIRECTION_BODY))
-
-    def click_popup_btn_proceed(self):
-        s(self.popup_btn_proceed).click()
-
-    def click_btn_create_contract(self):
-        s(self.btn_create_contract).click()
-
-    def click_agree_checkbox(self):
-        s(self.checkbox_agree).click()
-
-    def click_btn_place_the_request(self):
-        s(self.btn_place_the_request).click()
-
-    def click_btn_accept(self):
-        s(self.btn_accept).click()
-
-    def click_btn_accept_request(self):
-        s(self.btn_accept_request).click()
-
-    def click_btn_verify(self):
-        s(self.btn_verify).click()
-
-    def fill_verification_code(self, code: str = "0000"):
-        s(self.field_verification_code).perform(command.js.set_value("")).type(code)
-
-    def click_btn_reject(self):
-        s(self.btn_reject).click()
-
-    def fill_field_rejection_reason(self, data: str = "Reject reason"):
-        s(self.field_rejection_reason).perform(command.js.set_value("")).type(data)
-
-    def click_btn_reject_request(self):
-        s(self.btn_reject_request).click()
-
-    def close_rate_popup(self):
-        if s(self.rate_popup).matching(be.visible):
-            browser.driver.switch_to.frame(self.iframe())
-            s(self.rate_icon_close).click()
-            browser.switch_to.default_content()
+    def check_sponsor_request_status(self, status: str) -> EmployeeTransferPage:
+        self.received_requests_table.cell(row=1, column=5).should(have.exact_text(status))
+        return self

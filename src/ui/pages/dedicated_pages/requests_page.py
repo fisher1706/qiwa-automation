@@ -1,10 +1,13 @@
+import allure
 from selene import have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Titles
 from src.ui.components.raw.table import Table
+from utils.allure import add_allure_step_for_all_methods
 
 
+@add_allure_step_for_all_methods(allure.step)
 class RequestsPage:
     header = s(".c-change-requests__heading")
     change_occupation_requests = Table(s(".table"))
