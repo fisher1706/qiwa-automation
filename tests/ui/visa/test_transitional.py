@@ -675,3 +675,18 @@ def test_verify_autocomplete_component_lazy_loading_and_search(visa_mock):
     qiwa.transitional.perm_work_visa_issue_visa.click()
     qiwa.issue_visa.verify_issue_visa_page_open()
     qiwa.issue_visa.verify_lazy_loading()
+
+
+@case_id(134797, 134798, 134799)
+@allure.title("Test verifies links on permanent work visa page")
+def test_verify_links_on_work_visa_page(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_knowledge_center_links()
+    browser.driver.refresh()
+    qiwa.work_visa.increase_quota_button.click()
+    qiwa.increase_quota.sign_agreement(Numbers.TWO)
+    qiwa.issue_visa.verify_establishment_address_location_link()

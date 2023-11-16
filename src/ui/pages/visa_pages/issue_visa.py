@@ -1,8 +1,13 @@
 import allure
 from selene.api import be, command, have, query, s, ss
 
-from data.visa.constants import ISSUE_VISA_REQUEST_TITLE, Numbers
+from data.visa.constants import (
+    ESTABLISHMENT_LOCATION_MANAGEMENT_URL,
+    ISSUE_VISA_REQUEST_TITLE,
+    Numbers,
+)
 from src.ui.components.feedback_pop_up import FeedbackPopup
+from utils.helpers import verify_new_tab_url_contains
 
 
 class IssueVisaPage:
@@ -27,6 +32,7 @@ class IssueVisaPage:
     request_created_banner = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]')
     visa_request_ref_number = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]//span')
     back_to_perm_work_visas = s('//*[@data-testid="backToWorkVisas"]')
+    add_new_location_link = s('//*[@data-testid="estabAddressSectionestablishmentLocation"]/a')
     popup = FeedbackPopup('//*[@data-component="Modal"]')
 
     @allure.step("Verify issue visa page is open")
@@ -73,3 +79,9 @@ class IssueVisaPage:
         self.dropdown_options.should(have.size(2 * Numbers.LAZYLOADING_PACK_SIZE))
         dropdown.click()
         self.dropdown_options.should(have.size(Numbers.ZERO))
+
+    @allure.step("Verify establishment address location link")
+    def verify_establishment_address_location_link(self):
+        self.add_new_location_link.should(be.visible)
+        self.add_new_location_link.click()
+        verify_new_tab_url_contains(ESTABLISHMENT_LOCATION_MANAGEMENT_URL)

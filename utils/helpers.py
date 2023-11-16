@@ -2,6 +2,7 @@ from typing import Union
 from urllib import parse
 
 from requests.cookies import RequestsCookieJar
+from selene.api import have
 from selene.support.shared import browser
 
 from data.visa.constants import ENV_VARIABLES
@@ -56,3 +57,10 @@ def get_session_variable(variable):
             f"was removed by mistake. Thera are should be available variables: {ENV_VARIABLES}"
         )
     return env
+
+
+def verify_new_tab_url_contains(url):
+    browser.driver.switch_to.window(browser.driver.window_handles[-1])
+    browser.should(have.url_containing(url))
+    browser.driver.close()
+    browser.driver.switch_to.window(browser.driver.window_handles[0])
