@@ -5,7 +5,7 @@ import allure
 from data.constants import Language, UserInfo
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
-from src.ui.actions.contract_management import ContractManagementActions
+from src.ui.actions.contract_management import contract_management_actions
 from src.ui.qiwa import qiwa
 
 
@@ -62,20 +62,11 @@ class EmployeeTransferActions:
 
         qiwa.code_verification.fill_in_code().click_confirm_button()
 
-        contract_management_actions = ContractManagementActions()
-        (
-            contract_management_actions.click_btn_next_step()
-            .fill_establishment_details()
-            .click_btn_next_step()
-            .fill_employee_details()
-            .click_btn_next_step()
-            .fill_contract_details(laborer.transfer_type)
-            .click_btn_next_step()
-            .select_terms_checkbox()
-            .click_btn_next_step()
-        )
+        contract_management_actions.create_contract(laborer)
+
         (
             qiwa.employee_transfer_page.click_btn_next_step()
+            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit()
             .check_success_msg()
@@ -99,20 +90,11 @@ class EmployeeTransferActions:
         )
         qiwa.code_verification.fill_in_code().click_confirm_button()
 
-        contract_management_actions = ContractManagementActions()
-        (
-            contract_management_actions.click_btn_next_step()
-            .fill_establishment_details()
-            .click_btn_next_step()
-            .fill_employee_details()
-            .click_btn_next_step()
-            .fill_contract_details(laborer.transfer_type)
-            .click_btn_next_step()
-            .select_terms_checkbox()
-            .click_btn_next_step()
-        )
+        contract_management_actions.create_contract(laborer)
+
         (
             qiwa.employee_transfer_page.click_btn_next_step()
+            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit_request()
             .check_success_msg()
