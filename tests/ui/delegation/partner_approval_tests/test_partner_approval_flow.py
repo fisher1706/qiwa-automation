@@ -83,7 +83,7 @@ def test_delegation_request_data():
         .should_delegation_request_data_be_correct(employee_name=prepared_data["employeeName"],
                                                    employee_job=prepared_data["employeeJob"],
                                                    employee_nid=prepared_data["employeeNid"],
-                                                   establishment_name=general_data.ESTABLISHMENT_NAME,
+                                                   establishment_name=general_data.WORKSPACE_WITH_ONE_PARTNER,
                                                    cr_number=general_data.ESTABLISHMENT_CR_NUMBER)
 
 
