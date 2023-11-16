@@ -13,8 +13,8 @@ from data.dedicated.employee_trasfer.employee_transfer_users import (
     laborer_between_my_establishments_existing_contract,
 )
 from data.dedicated.enums import ServicesAndTools
-from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.ui.actions.employee_transfer import EmployeeTransferActions
+from src.api.clients.employee_transfer import EmployeeTransferApi, employee_transfer_api
+from src.ui.actions.employee_transfer import EmployeeTransferActions, employee_transfer_actions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
@@ -26,9 +26,8 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 @allure.title('Verify user able to submit ET request from my own establishment')
 @case_id(123677)
 def test_bme_user_able_to_submit_et_request():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer) \
         .create_et_request_between_my_establishment(laborer_between_my_establishments)
 
@@ -36,7 +35,7 @@ def test_bme_user_able_to_submit_et_request():
 @allure.title("If laborer already has a contract, don't show redirection to CM button from my own establishment")
 @case_id(123678)
 def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
-    EmployeeTransferActions().navigate_to_et_service(employer)
+    employee_transfer_actions.navigate_to_et_service(employer)
 
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_own_establishment() \
@@ -50,9 +49,8 @@ def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
 @allure.title('Verify Laborer is able to approve the ET request')
 @case_id(123679, 123680)
 def test_bme_laborer_able_to_approve_et_request():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer) \
         .create_et_request_between_my_establishment(laborer_between_my_establishments)
 
@@ -84,9 +82,8 @@ def test_bme_laborer_able_to_approve_et_request():
 @allure.title('Verify Laborer is able to reject the ET request')
 @case_id(123681, 123682)
 def test_bme_laborer_able_to_reject_et_request():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer) \
         .create_et_request_between_my_establishment(laborer_between_my_establishments)
 
@@ -115,9 +112,8 @@ def test_bme_laborer_able_to_reject_et_request():
 @allure.title('Quota (Establishment Balance) Should be decreased after submitting ET request')
 @case_id(123683)
 def test_bme_quota_should_be_decreased_after_submitting_et_request():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
@@ -155,9 +151,8 @@ def test_bme_quota_should_be_decreased_after_submitting_et_request():
 @allure.title('Quota (Establishment Balance) increased after rejection of ET request by Laborer')
 @case_id(123684)
 def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
@@ -194,9 +189,8 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
 @case_id(123685)
 @pytest.mark.skip("Renew laborers work permits for employer and find laborer with same unified number")
 def test_quota_not_decrease_between_my_establishments_same_unified_number():
-    EmployeeTransferApi().post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
 
-    employee_transfer_actions = EmployeeTransferActions()
     employee_transfer_actions.navigate_to_et_service(employer_between_my_establishments)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
