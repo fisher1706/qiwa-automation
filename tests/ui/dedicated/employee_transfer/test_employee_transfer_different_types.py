@@ -32,7 +32,6 @@ from src.ui.qiwa import qiwa
 
 
 @allure.title('[Type 12] Approval by laborer and approval by current sponsor | Home Worker Transfer')
-@pytest.mark.skip("Find appropriate current sponsor")
 def test_type_12_approval_by_laborer_and_approval_by_current_sponsor():
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.login_id)
     establishment_id = ibm_api_controller.get_establishment_id(employer)
@@ -87,7 +86,6 @@ def test_type_12_approval_by_laborer_and_approval_by_current_sponsor():
 
 
 @allure.title('[Type 12] Approval by laborer and rejection by current sponsor | Home Worker Transfer')
-@pytest.mark.skip("Find appropriate current sponsor")
 def test_type_12_approval_by_laborer_and_rejection_by_current_sponsor():
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.login_id)
     establishment_id = ibm_api_controller.get_establishment_id(employer)
@@ -229,8 +227,12 @@ def test_transfer_type_approval_by_laborer(laborer, status):
         .click_btn_next_step() \
         .fill_employee_iqama_number(laborer.login_id) \
         .fill_date_of_birth(laborer.birthdate) \
-        .click_btn_find_employee() \
-        .click_btn_add_employee_to_transfer_request() \
+        .click_btn_find_employee()
+
+    if laborer == laborer_type_4_absent:
+        qiwa.employee_transfer_page.select_late_fees_checkbox()
+
+    qiwa.employee_transfer_page.click_btn_add_employee_to_transfer_request() \
         .check_existence_of_a_contract() \
         .click_btn_next_step() \
         .click_btn_next_step() \
