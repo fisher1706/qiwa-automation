@@ -33,6 +33,7 @@ class ArabicTranslations:
     terminate_text = "سيتم إزالة هذا المستخدم من جميع المنشآت التابعة للرقم الموحد, وسيتم إنهاء الاشتراك الخاص به"
     search = "بحث"
     establishment_table_title = "جميع المنشآت التابعة للرقم الموحد"
+    # # pylint: disable=anomalous-backslash-in-string
     establishment_table_text = (
         "الرجاء اختيار المنشأة\المنشآت التي سيتم تعديل صلاحيات المستخدم عليها"
     )

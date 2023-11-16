@@ -72,9 +72,7 @@ class EmployeeTransferPage(
         return self
 
     def check_count_of_sent_request_rows(self) -> None:
-        requests = EmployeeTransferPage._get_count_of_requests(
-            self.sent_requests_pagination_info
-        )
+        requests = EmployeeTransferPage._get_count_of_requests(self.sent_requests_pagination_info)
         rows = requests if requests < 10 else 10
         self.sent_requests_table.rows.should(have.size(rows))
 

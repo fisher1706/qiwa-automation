@@ -27,7 +27,9 @@ class ContractManagementActions:
         employee_details = EmployeeDetails()
         contract_details = ContractDetails()
 
-        qiwa.contract_management_page.select_dropdown_education_level(employee_details.education_level)
+        qiwa.contract_management_page.select_dropdown_education_level(
+            employee_details.education_level
+        )
         qiwa.contract_management_page.fill_field_major(employee_details.major)
         qiwa.contract_management_page.fill_field_iban_number(contract_details.iban_number)
         qiwa.contract_management_page.fill_field_mobile_number(employee_details.mobile_number)
