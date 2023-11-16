@@ -152,3 +152,19 @@ class DelegationAPI:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
+
+    def get_delegation_letter(
+        self, headers: dict, delegation_id: str | int, locale: str
+    ) -> Response:
+        response = self.client.get(
+            url=self.url, endpoint=f"/proxy/pdf/{delegation_id}/{locale}", headers=headers
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response
+
+    def revoke_delegation(self, headers: dict, delegation_id: str | int) -> Response:
+        response = self.client.patch(
+            url=self.url, endpoint=f"/proxy/delegations/{delegation_id}", headers=headers
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response

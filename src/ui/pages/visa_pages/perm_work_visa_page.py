@@ -15,10 +15,13 @@ from data.visa.constants import (
     ESTIMATED_RECRUITMENT_QUOTA,
     EXPANSION,
     FILTERS,
+    HOW_TO_INCREASE_ESTABLISHMENT_FUNDS,
+    INCREASE_ABSHER_MODAL_TITLE,
     ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT,
     ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
     ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT,
     ISSUE_VISA_MODAL_TITLE_TEXT,
+    KNOWLEDGE_CENTER_URL,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
     PERMANENT_VISAS_NO_RESULTS,
@@ -36,6 +39,7 @@ from data.visa.constants import (
 from src.ui.components.raw.table import Table
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert, soft_assert_text
+from utils.helpers import verify_new_tab_url_contains
 from utils.pdf_parser import (
     file_is_valid_pdf,
     get_downloaded_filename,
@@ -55,7 +59,7 @@ class PermWorkVisaPage:
     permanent_visas_table = permanent_visas_section.element(
         './/*[@data-testid="visaRequestsTable"]'
     )
-    button = ".//button"
+    BUTTON = ".//button"
     no_results = './/*[@data-testid="tableNoResults"]'
     no_results_icon = './/*[name()="svg"]'
     table = ".//table"
@@ -86,7 +90,8 @@ class PermWorkVisaPage:
     tier_upgrades_requests_table = s('//*[@data-testid="TierHistoryTable"]')
     establishment_fund_tab = s('//*[@data-testid="nav-Establishment fund"]')
     learn_more_tab = s('//*[@data-testid="nav-Learn more"]')
-    learn_more_section = s('//*[@id="knowledgeSection"]//p')
+    learn_more_section = s('//*[@id="knowledgeSection"]')
+    learn_more_section_title = learn_more_section.s(".//p")
     recruitment_quota_section = s("#allowedQuotaSection")
     recruitment_quota_tab = s('//*[@data-testid="nav-Recruitment quota"]')
     increase_fund_modal = s('//*[@data-testid="absherFundsModal"]')
@@ -107,6 +112,7 @@ class PermWorkVisaPage:
     page_navigation_chain = s("//nav")
     page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
     banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
+    increase_fund_modal_title = increase_fund_modal.s(".//p")
 
     @allure.step("Verify work visa page is opened")
     def verify_work_visa_page_open(self):
@@ -126,10 +132,10 @@ class PermWorkVisaPage:
             element_name="Other visas title",
         )
         self.other_visas_table.should(be.visible)
-        self.other_visas_table.s(self.button).should(be.visible)
-        self.other_visas_table.s(self.button).should(be.clickable)
+        self.other_visas_table.s(self.BUTTON).should(be.visible)
+        self.other_visas_table.s(self.BUTTON).should(be.clickable)
         soft_assert_text(
-            self.other_visas_table.s(self.button),
+            self.other_visas_table.s(self.BUTTON),
             text=FILTERS,
             element_name="Other visas filters button",
         )
@@ -147,10 +153,10 @@ class PermWorkVisaPage:
             element_name="Permanent visas title",
         )
         self.permanent_visas_table.should(be.visible)
-        self.permanent_visas_table.s(self.button).should(be.visible)
-        self.permanent_visas_table.s(self.button).should(be.clickable)
+        self.permanent_visas_table.s(self.BUTTON).should(be.visible)
+        self.permanent_visas_table.s(self.BUTTON).should(be.clickable)
         soft_assert_text(
-            self.permanent_visas_table.s(self.button),
+            self.permanent_visas_table.s(self.BUTTON),
             text=FILTERS,
             element_name="Other visas filters button",
         )
@@ -224,7 +230,7 @@ class PermWorkVisaPage:
         self.other_visas_tab.click()
         self.verify_section_visible(self.other_visas_section)
         self.learn_more_tab.click()
-        self.verify_section_visible(self.learn_more_section)
+        self.verify_section_visible(self.learn_more_section_title)
         self.recruitment_quota_tab.click()
         self.verify_section_visible(self.allowed_quota_section)
 
@@ -262,6 +268,12 @@ class PermWorkVisaPage:
 
     def verify_increase_fund_modal(self) -> None:
         self.increase_fund_modal.should(be.visible)
+        soft_assert_text(
+            self.increase_fund_modal_title,
+            text=INCREASE_ABSHER_MODAL_TITLE,
+            element_name="Increase establishment modal title",
+        )
+        self.verify_go_to_knowledge_center_open_page(self.increase_fund_modal.s(self.LINK))
         self.increase_fund_modal_x_button.should(be.visible).should(be.clickable)
         self.increase_fund_modal_close_button.should(be.visible).should(be.clickable)
         self.increase_fund_modal_link.should(be.visible)
@@ -579,3 +591,21 @@ class PermWorkVisaPage:
             ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT
         )
         self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
+
+    @allure.step("Verify knowledge center links")
+    def verify_knowledge_center_links(self):
+        soft_assert_text(
+            self.establishment_fund_section.s(self.LINK),
+            text=HOW_TO_INCREASE_ESTABLISHMENT_FUNDS,
+            element_name="Link to modal window",
+        )
+        self.establishment_fund_section.s(self.LINK).click()
+        self.verify_increase_fund_modal()
+        self.increase_fund_modal_close_button.click()
+        command.js.scroll_into_view(self.other_visas_section)
+        self.verify_go_to_knowledge_center_open_page(self.learn_more_section.s(self.BUTTON))
+
+    @allure.step("Verify knowledge center page open")
+    def verify_go_to_knowledge_center_open_page(self, link):
+        link.click()
+        verify_new_tab_url_contains(KNOWLEDGE_CENTER_URL)

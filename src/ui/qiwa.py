@@ -51,6 +51,9 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
 )
 from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
 from src.ui.pages.delegations_pages.partner_approval_page import PartnerApprovalPage
+from src.ui.pages.delegations_pages.verify_delegation_letter_page import (
+    VerifyDelegationLetterPage,
+)
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.lo_saudi_certificate_page import LoSaudiCertificatePage
@@ -89,6 +92,7 @@ class QiwaUiClient:
     delegation_dashboard_page = DelegationDashboardPage()
     delegation_details_page = DelegationDetailsPage()
     delegation_partner_approval_page = PartnerApprovalPage()
+    delegation_letter_verify_page = VerifyDelegationLetterPage()
     add_delegation_page = AddDelegationPage()
     admin_spaces_page = AdminSpacesPage()
     lo_work_permit_page = LoWorkPermitPage()
@@ -175,6 +179,11 @@ class QiwaUiClient:
     @allure.step
     def open_add_new_delegation_page(self) -> QiwaUiClient:
         browser.open(f"{config.qiwa_urls.delegation_service}/create-delegation")
+        return self
+
+    @allure.step
+    def open_verify_delegation_letter_page(self) -> QiwaUiClient:
+        browser.open(f"{config.qiwa_urls.delegation_service}/verify")
         return self
 
     @allure.step

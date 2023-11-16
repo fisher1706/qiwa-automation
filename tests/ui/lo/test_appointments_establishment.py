@@ -358,7 +358,9 @@ def test_edit_establishment_appointment(language=Language.EN):
     )
     qiwa.labor_office_appointments_edit_page.next_step_btn_click()
 
-    qiwa.labor_office_appointments_edit_page.verify_summary_table()
+    qiwa.labor_office_appointments_edit_page.verify_summary_table(
+        office_name=OfficesInfo.OFFICE_NAME_TEST_OFFICE, type_value='In-person'
+    )
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(

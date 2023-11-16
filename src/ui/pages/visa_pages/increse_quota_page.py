@@ -55,14 +55,7 @@ class IncreaseQuotaPage:
     payment = PaymentGateWay()
 
     def get_to_tier(self, visa_db, tier, num_visas=0):
-        s(self.TIER_CHECK_BOX.format(tier)).click()
-        if tier == Numbers.FOUR:
-            self.tier_4_input_field.type(num_visas)
-            self.agree_checkbox.click()
-        self.next_step_button_tier_select.click()
-        command.js.scroll_into_view(self.program_agreement_section)
-        self.agree_agreement_checkbox.click()
-        self.next_step_button_agreement.click()
+        self.sign_agreement(tier, num_visas)
         self.select_location()
         self.select_inspection()
         self.next_step_button_location.click()
@@ -120,3 +113,13 @@ class IncreaseQuotaPage:
         self.visit_time_input.click()
         self.visit_time_options_box.should(be.visible)
         self.visit_time_options.element(option - 1).click()
+
+    def sign_agreement(self, tier, num_visas=0):
+        s(self.TIER_CHECK_BOX.format(tier)).click()
+        if tier == Numbers.FOUR:
+            self.tier_4_input_field.type(num_visas)
+            self.agree_checkbox.click()
+        self.next_step_button_tier_select.click()
+        command.js.scroll_into_view(self.program_agreement_section)
+        self.agree_agreement_checkbox.click()
+        self.next_step_button_agreement.click()
