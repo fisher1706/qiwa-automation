@@ -142,6 +142,7 @@ ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
     "You have already used your recruitment quota in the highest tier. "
     "Please wait for the allowance period to end."
 )
+HOW_TO_INCREASE_ESTABLISHMENT_FUNDS = "How to increase establishment funds?"
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
@@ -153,3 +154,6 @@ ENV_VARIABLES = [
     FIRST_TIER_ACTIVE,
     IS_INSPECTOR_VISIT_FLOW_AVAILABLE,
 ]
+
+KNOWLEDGE_CENTER_URL = "knowledge-center.qiwa.info"
+ESTABLISHMENT_LOCATION_MANAGEMENT_URL = "establishment-location-management"
