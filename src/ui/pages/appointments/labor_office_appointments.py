@@ -5,6 +5,7 @@ import time
 import allure
 from selene import be, browser, have
 from selene.support.shared.jquery_style import s
+from selenium.webdriver import Keys
 
 import config
 from data.constants import Language
@@ -187,7 +188,7 @@ class LaborOfficeAppointmentsPage:
             self.button_action_view_upcoming_appointment.should(be.visible)
             self.button_action_edit_upcoming_appointment.should(be.visible)
             self.button_action_cancel_upcoming_appointment.should(be.visible)
-
+            self.upcoming_appointments_actions.press(Keys.ESCAPE)
         return self
 
     @allure.step("View appointment from history")
