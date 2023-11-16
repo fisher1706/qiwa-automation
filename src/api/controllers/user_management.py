@@ -32,10 +32,3 @@ class UserManagementControllers(UserManagementApi):
         )
         self.cron_job_for_expiry_subscription()
         return self
-
-
-class UmValidateApiResponse:
-    @staticmethod
-    def dround(amount: float, num: int = 2):
-        quantize = f'.{"1".zfill(num)}'
-        return Decimal(f"{amount}").quantize(Decimal(quantize), rounding=ROUND_HALF_UP)

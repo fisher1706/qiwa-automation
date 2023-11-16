@@ -3,10 +3,10 @@ import pytest
 
 from data.user_management.user_management_datasets import (
     DefaultVatValue,
-    SubscriptionUsers,
+    SubscriptionData,
 )
 from src.api.app import QiwaApi
-from src.api.controllers.user_management import UmValidateApiResponse
+from utils.helpers import dround
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
@@ -16,9 +16,8 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 
 @allure.title("Check that subscription price calculated according to number of Users")
 @case_id(16968, 16969, 16970, 16971, 41670, 41671, 41672, 41679)
-@pytest.mark.parametrize("users", SubscriptionUsers.subscription_users)
-def test_subscription_price_discount(users):
-    user = users
+@pytest.mark.parametrize("user, price, discount", SubscriptionData.subscription_data)
+def test_subscription_price_discount(user, price, discount):
     qiwa = QiwaApi.login_as_user(user.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=user.user_id,
@@ -32,5 +31,5 @@ def test_subscription_price_discount(users):
     )
 
     assert_that(
-        UmValidateApiResponse.dround(user.default_price * DefaultVatValue.default_vat_value * user.default_discount)
+        dround(price * DefaultVatValue.default_vat_value * discount)
     ).equals_to(subscription_price)

@@ -1,5 +1,4 @@
 from data.dedicated.models.user import User
-from data.user_management.um_user import UmUser
 
 owner_account = User(
     personal_number="1001530987",
@@ -73,47 +72,37 @@ user_type_three_employee = User(
     unified_number_id=9086,
 )
 
-establishment_type_one = UmUser(
+establishment_type_one = User(
     personal_number="1023450479",
     user_id=33707906,
     labor_office_id=17,
     sequence_number=95885,
-    default_price=1100,
-    default_discount=1.00,
 )
 
-establishment_type_four = UmUser(
+establishment_type_four = User(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
     sequence_number=93886,
-    default_price=10000,
-    default_discount=1.00,
 )
 
-establishment_discount_val_0 = UmUser(
+establishment_discount_val_0 = User(
     personal_number="1014851610",
     user_id=2291008,
     labor_office_id=1,
     sequence_number=70289,
-    default_price=7000,
-    default_discount=1.00,
 )
 
-establishment_discount_val_25 = UmUser(
+establishment_discount_val_25 = User(
     personal_number="1009999341",
     user_id=1372659,
     labor_office_id=9,
     sequence_number=77683,
-    default_price=1100,
-    default_discount=0.25,
 )
 
-establishment_discount_val_10 = UmUser(
+establishment_discount_val_10 = User(
     personal_number="1019974839",
     user_id=2291009,
     labor_office_id=9,
     sequence_number=1680894,
-    default_price=7000,
-    default_discount=0.10,
 )

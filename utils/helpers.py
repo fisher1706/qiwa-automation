@@ -1,3 +1,4 @@
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Union
 from urllib import parse
 
@@ -56,3 +57,8 @@ def get_session_variable(variable):
             f"was removed by mistake. Thera are should be available variables: {ENV_VARIABLES}"
         )
     return env
+
+
+def dround(amount: float, num: int = 2):
+    quantize = f'.{"1".zfill(num)}'
+    return Decimal(f"{amount}").quantize(Decimal(quantize), rounding=ROUND_HALF_UP)
