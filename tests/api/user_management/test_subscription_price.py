@@ -6,10 +6,10 @@ from data.user_management.user_management_datasets import (
     SubscriptionData,
 )
 from src.api.app import QiwaApi
-from utils.helpers import dround
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
+from utils.helpers import dround
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
 

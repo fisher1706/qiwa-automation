@@ -1,6 +1,10 @@
 import dataclasses
 
 from data.user_management import privileges_data
+from data.user_management.subscriptions_price_discount import (
+    SubscriptionDiscount,
+    SubscriptionDefaultPrice,
+)
 from data.user_management.user_management_users import (
     delegator_with_um,
     establishment_discount_val_0,
@@ -10,8 +14,6 @@ from data.user_management.user_management_users import (
     establishment_type_one,
     owner_account,
 )
-
-from data.user_management.subscriptions_price_discount import SubscriptionDiscount, SubscriptionDefaultPrice
 
 
 @dataclasses.dataclass
@@ -154,26 +156,31 @@ class ErrorsMessage:
 @dataclasses.dataclass
 class SubscriptionData:
     subscription_data = [
-        (establishment_discount_val_0,
-         SubscriptionDefaultPrice.default_price_val_7000,
-         SubscriptionDiscount.discount_val_100
-         ),
-        (establishment_discount_val_10,
-         SubscriptionDefaultPrice.default_price_val_7000,
-         SubscriptionDiscount.discount_val_25
-         ),
-        (establishment_discount_val_25,
-         SubscriptionDefaultPrice.default_price_val_1100,
-         SubscriptionDiscount.discount_val_10
-         ),
-        (establishment_type_four,
-         SubscriptionDefaultPrice.default_price_val_10000,
-         SubscriptionDiscount.discount_val_100
-         ),
-        (establishment_type_one,
-         SubscriptionDefaultPrice.default_price_val_1100,
-         SubscriptionDiscount.discount_val_100
-         ),
+        (
+            establishment_discount_val_0,
+            SubscriptionDefaultPrice.default_price_val_7000,
+            SubscriptionDiscount.discount_val_100,
+        ),
+        (
+            establishment_discount_val_10,
+            SubscriptionDefaultPrice.default_price_val_7000,
+            SubscriptionDiscount.discount_val_25,
+        ),
+        (
+            establishment_discount_val_25,
+            SubscriptionDefaultPrice.default_price_val_1100,
+            SubscriptionDiscount.discount_val_10
+        ),
+        (
+            establishment_type_four,
+            SubscriptionDefaultPrice.default_price_val_10000,
+            SubscriptionDiscount.discount_val_100
+        ),
+        (
+            establishment_type_one,
+            SubscriptionDefaultPrice.default_price_val_1100,
+            SubscriptionDiscount.discount_val_100
+        ),
     ]
 
 
