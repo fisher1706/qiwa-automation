@@ -18,7 +18,6 @@ class Settings(BaseSettings):
     sso_auth_db_url: Optional[str]
     ibm_url: Optional[HttpUrl]
     um_db_url: Optional[str]
-    delegation_db_url: Optional[str]
     # Driver settings
     browser_name: Literal["chrome", "firefox", "opera"] = "chrome"
     timeout: int = 20

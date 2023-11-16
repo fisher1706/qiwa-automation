@@ -1,6 +1,8 @@
+from pathlib import Path
 from typing import Union
 from urllib import parse
 
+from requests import Response
 from requests.cookies import RequestsCookieJar
 from selene.api import have
 from selene.support.shared import browser
@@ -9,7 +11,6 @@ from data.visa.constants import ENV_VARIABLES
 from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
-
 
 GET_SESSION_VARS_JS = """var ls = window.sessionStorage, items = {};
                          for (var i = 0, k; i < ls.length; ++i)  
@@ -64,3 +65,10 @@ def verify_new_tab_url_contains(url):
     browser.should(have.url_containing(url))
     browser.driver.close()
     browser.driver.switch_to.window(browser.driver.window_handles[0])
+
+
+def save_pdf_file_from_response(response: Response, file_name: str):
+    file_path = Path(__file__).parent.parent.joinpath("data/files").joinpath(f"{file_name}.pdf")
+    with open(file_path, "wb") as pdf_file:
+        pdf_file.write(response.content)
+    return file_path
