@@ -3,6 +3,8 @@ from __future__ import annotations
 from http import HTTPStatus
 from urllib import parse
 
+from requests import Response
+
 import config
 from src.api.http_client import HTTPClient
 from src.api.payloads.raw.user_management.edit_privileges import Privileges
@@ -45,6 +47,17 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         owner_subscription_price = str(response.json()["totalFeeAmount"])
         return owner_subscription_price
+
+    def get_subscription_price_number_of_users(self, cookie: dict, id_no: str = 555) -> float:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.get(
+            url=self.url,
+            endpoint="/api/bff/subscriptions/price",
+            params={"idno": id_no},
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json().get("totalFeeAmount")
 
     def get_thank_you_page(self, cookie: dict, transaction_id: int) -> UserManagementApi:
         coded_cookie = code_um_cookie(cookie)

@@ -71,3 +71,38 @@ user_type_three_employee = User(
     sequence_number=1910,
     unified_number_id=9086,
 )
+
+establishment_type_one = User(
+    personal_number="1023450479",
+    user_id=33707906,
+    labor_office_id=17,
+    sequence_number=95885,
+)
+
+establishment_type_four = User(
+    personal_number="1019974839",
+    user_id=2291009,
+    labor_office_id=9,
+    sequence_number=93886,
+)
+
+establishment_discount_val_0 = User(
+    personal_number="1014851610",
+    user_id=2291008,
+    labor_office_id=1,
+    sequence_number=70289,
+)
+
+establishment_discount_val_25 = User(
+    personal_number="1009999341",
+    user_id=1372659,
+    labor_office_id=9,
+    sequence_number=77683,
+)
+
+establishment_discount_val_10 = User(
+    personal_number="1019974839",
+    user_id=2291009,
+    labor_office_id=9,
+    sequence_number=1680894,
+)

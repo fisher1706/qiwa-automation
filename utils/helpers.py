@@ -1,3 +1,4 @@
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from typing import Union
 from urllib import parse
@@ -72,3 +73,8 @@ def save_pdf_file_from_response(response: Response, file_name: str):
     with open(file_path, "wb") as pdf_file:
         pdf_file.write(response.content)
     return file_path
+
+
+def dround(amount: float, num: int = 2):
+    quantize = f'.{"1".zfill(num)}'
+    return Decimal(f"{amount}").quantize(Decimal(quantize), rounding=ROUND_HALF_UP)
