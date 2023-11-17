@@ -5,11 +5,11 @@ from selene import command
 from selene.support.shared.jquery_style import s
 
 from src.ui.components.raw.table import Table
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 from utils.selene import scroll_into_view_if_needed
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class TransferFromExternalCompanyPage:
     table = Table()
     btn_next_step = s("//button[.='Next step']")

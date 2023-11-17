@@ -1,5 +1,6 @@
 import enum
 import functools
+import types
 from typing import Any, Callable
 
 import allure
@@ -41,11 +42,8 @@ def project(project_id: TestmoProject) -> Callable:
     return testcase
 
 
-def add_allure_step_for_all_methods(decorator):
-    def decorate(cls):
-        for attr in cls.__dict__:
-            if callable(getattr(cls, attr)) and not attr.startswith("_"):
-                setattr(cls, attr, decorator(getattr(cls, attr)))
-        return cls
-
-    return decorate
+def allure_steps(cls):
+    for attr in cls.__dict__:
+        if isinstance(getattr(cls, attr), types.FunctionType) and not attr.startswith("_"):
+            setattr(cls, attr, allure.step(getattr(cls, attr)))
+    return cls

@@ -6,10 +6,10 @@ from selene.support.shared.jquery_style import s, ss
 
 import config
 from data.dedicated.enums import SearchingType
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class AppointmentRequestPage:
     input_otp_code = s(".otp-input")
     input_otp_code_modal = s("#singleOtpInput input")

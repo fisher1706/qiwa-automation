@@ -22,11 +22,10 @@ from data.dedicated.employee_trasfer.employee_transfer_constants import (
 )
 from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 from utils.assertion import assert_that
 
 
-@add_allure_step_for_all_methods(allure.step)
 class OldEmployeeTransferPage:
     MESSAGE_LOCATOR = {
         "et request": "#q-content svg + p",

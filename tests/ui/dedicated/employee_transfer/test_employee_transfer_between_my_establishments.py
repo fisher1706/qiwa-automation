@@ -13,8 +13,8 @@ from data.dedicated.employee_trasfer.employee_transfer_users import (
     laborer_between_my_establishments_existing_contract,
 )
 from data.dedicated.enums import ServicesAndTools
-from src.api.clients.employee_transfer import EmployeeTransferApi, employee_transfer_api
-from src.ui.actions.employee_transfer import EmployeeTransferActions, employee_transfer_actions
+from src.api.clients.employee_transfer import employee_transfer_api
+from src.ui.actions.employee_transfer import employee_transfer_actions
 from src.ui.actions.individual_actions import IndividualActions
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project

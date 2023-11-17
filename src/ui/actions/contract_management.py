@@ -11,10 +11,10 @@ from data.dedicated.models.contract_details import (
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.transfer_type import TransferType
 from src.ui.qiwa import qiwa
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class ContractManagementActions:
     def fill_establishment_details(self) -> ContractManagementActions:
         establishment_details = EstablishmentDetails()

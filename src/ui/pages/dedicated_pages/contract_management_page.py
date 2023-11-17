@@ -5,11 +5,11 @@ from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 from utils.selene import scroll_into_view_if_needed
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class ContractManagementPage:
     otp_form = s("#otp-form")
     title_verification_code = otp_form.s("h2")

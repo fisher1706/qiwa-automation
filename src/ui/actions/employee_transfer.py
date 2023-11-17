@@ -7,10 +7,10 @@ from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.ui.actions.contract_management import contract_management_actions
 from src.ui.qiwa import qiwa
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class EmployeeTransferActions:
     def navigate_to_et_service(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)

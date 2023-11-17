@@ -6,10 +6,10 @@ import allure
 from selene import have, query
 from selene.support.shared.jquery_style import s, ss
 
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class BusinessPage:
     ESTABLISHMENT_INFORMATION = ss(".q-page-box__list dd")
     ESTABLISHMENT_STATUS = ESTABLISHMENT_INFORMATION[3]

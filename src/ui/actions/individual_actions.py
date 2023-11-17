@@ -4,10 +4,10 @@ import allure
 
 from data.dedicated.employee_trasfer.employee_transfer_constants import REJECT_REASON
 from src.ui.pages.individual_page import IndividualPage
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class IndividualActions(IndividualPage):
     def approve_request(self) -> IndividualActions:
         self.click_btn_accept_the_request()

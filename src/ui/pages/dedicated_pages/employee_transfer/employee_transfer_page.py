@@ -13,10 +13,10 @@ from src.ui.pages.dedicated_pages.employee_transfer.transfer_between_my_establis
 from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_company_page import (
     TransferFromExternalCompanyPage,
 )
-from utils.allure import add_allure_step_for_all_methods
+from utils.allure import allure_steps
 
 
-@add_allure_step_for_all_methods(allure.step)
+@allure_steps
 class EmployeeTransferPage(
     TransferBetweenMyEstablishmentsPage, TransferFromExternalCompanyPage, SummaryPage
 ):
