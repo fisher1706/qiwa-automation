@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import allure
-
 from data.constants import Language, UserInfo
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
@@ -54,6 +52,7 @@ class EmployeeTransferActions:
             .fill_date_of_birth(laborer.birthdate)
             .click_btn_find_employee()
             .click_btn_add_employee_to_transfer_request()
+            .click_btn_next_step()
             .click_link_create_contract_another_establishment()
             .click_btn_proceed_to_contract_management()
         )
@@ -91,7 +90,6 @@ class EmployeeTransferActions:
 
         (
             qiwa.employee_transfer_page.click_btn_next_step()
-            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit_request()
             .check_success_msg()

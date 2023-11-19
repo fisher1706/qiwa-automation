@@ -39,7 +39,7 @@ class TransferFromExternalCompanyPage:
         return self
 
     def click_link_create_contract_another_establishment(self) -> TransferFromExternalCompanyPage:
-        link = self.table.cell(row=1, column=7).ss("a").first
+        link = self.table.cell(row=1, column="Actions")
         scroll_into_view_if_needed(link)
         link.click()
         return self

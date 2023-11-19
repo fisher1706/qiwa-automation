@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import allure
-from selene import command, have
+from selene import command, have, be
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 
 from src.ui.components.raw.table import Table
 from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -20,6 +20,8 @@ class TransferBetweenMyEstablishmentsPage:
     btn_submit = s("//button[.='Submit']")
 
     def click_btn_next_step(self) -> TransferBetweenMyEstablishmentsPage:
+        self.btn_next_step.should(be.visible)
+        scroll_into_view_if_needed(self.btn_next_step)
         self.btn_next_step.click()
         return self
 

@@ -204,15 +204,15 @@ def test_transfer_types_rejection_by_laborer(laborer):
     "laborer, status",
     [
         (laborer_type_9, LABORER_TYPE_9_STATUS_APPROVE),
-        # (laborer_type_4_freedom_transfer, LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE),
-        # (laborer_type_4_direct_transfer, LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE),
-        # (laborer_type_4_absent, RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value)
+        (laborer_type_4_freedom_transfer, LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE),
+        (laborer_type_4_direct_transfer, LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE),
+        (laborer_type_4_absent, RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value)
     ],
     ids=[
         "[Type 9] Approval by laborer | Dependent Transfer",
-        # "[Type 4 Freedom Transfer] Verify that after Approval by Laborer status changes",
-        # "[Type 4 Direct Transfer] Verify that after Approval by Laborer status changes",
-        # "[Type 4 Absent Laborer] Verify that after Approval by Laborer status changes",
+        "[Type 4 Freedom Transfer] Verify that after Approval by Laborer status changes",
+        "[Type 4 Direct Transfer] Verify that after Approval by Laborer status changes",
+        "[Type 4 Absent Laborer] Verify that after Approval by Laborer status changes",
     ]
 )
 def test_transfer_type_approval_by_laborer(laborer, status):
