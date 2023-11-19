@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import allure
 from selene import browser
 from selene.support.shared.jquery_style import s, ss
 

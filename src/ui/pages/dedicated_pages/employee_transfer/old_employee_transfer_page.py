@@ -1,7 +1,6 @@
 import re
 import time
 
-import allure
 from selene import be, browser, command, have, query
 from selene.support.shared.jquery_style import s, ss
 
@@ -22,7 +21,6 @@ from data.dedicated.employee_trasfer.employee_transfer_constants import (
 )
 from data.dedicated.enums import RequestStatus, TransferType
 from src.ui.components.raw.table import Table
-from utils.allure import allure_steps
 from utils.assertion import assert_that
 
 

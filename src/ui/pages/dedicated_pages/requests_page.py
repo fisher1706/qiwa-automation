@@ -1,4 +1,3 @@
-import allure
 from selene import have
 from selene.support.shared.jquery_style import s, ss
 

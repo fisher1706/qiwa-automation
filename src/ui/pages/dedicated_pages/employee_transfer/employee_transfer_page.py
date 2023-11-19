@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import allure
 from selene import have, query
 from selene.core.entity import Element
 from selene.support.shared.jquery_style import s, ss

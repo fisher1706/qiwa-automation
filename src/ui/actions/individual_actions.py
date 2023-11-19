@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import allure
-
 from data.dedicated.employee_trasfer.employee_transfer_constants import REJECT_REASON
 from src.ui.pages.individual_page import IndividualPage
 from utils.allure import allure_steps

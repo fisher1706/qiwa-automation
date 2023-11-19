@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import allure
 from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import allure
-
 from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.contract_details import (
     ContractDetails,
