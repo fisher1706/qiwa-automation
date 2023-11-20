@@ -1,4 +1,3 @@
-import allure
 import pytest
 
 from data.constants import Language
@@ -26,9 +25,11 @@ from src.api.controllers.ibm import ibm_api_controller
 from src.ui.actions.employee_transfer import employee_transfer_actions
 from src.ui.actions.individual_actions import individual_actions
 from src.ui.qiwa import qiwa
+from utils.allure import project, TestmoProject
+
+case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 
 
-@allure.title('[Type 12] Approval by laborer and approval by current sponsor | Home Worker Transfer')
 @pytest.mark.parametrize(
     'status', [SPONSOR_STATUS_APPROVE, SPONSOR_STATUS_REJECT],
     ids=[
@@ -36,6 +37,7 @@ from src.ui.qiwa import qiwa
         '[Type 12] Approval by laborer and rejection by current sponsor | Home Worker Transfer'
     ]
 )
+@case_id(134165, 134166)
 def test_type_12_current_sponsor(status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.login_id)
     establishment_id = ibm_api_controller.get_establishment_id(employer)
@@ -83,11 +85,11 @@ def test_type_12_current_sponsor(status):
 
     qiwa.employee_transfer_page.search_received_request(laborer_type_12.login_id)
 
-    employee_transfer_actions.make_decision_as_current_sponsor(status)
+    employee_transfer_actions.make_a_decision_as_current_sponsor(status)
 
-    individual_actions.verify_expected_status(status, Language.EN)
+    individual_actions.verify_expected_status(status[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(status, Language.AR)
+    individual_actions.verify_expected_status(status[Language.AR])
 
 
 @pytest.mark.parametrize(
@@ -106,6 +108,7 @@ def test_type_12_current_sponsor(status):
         '[Type 4 Absent Laborer] Verify that after Rejection by Laborer status changes'
     ]
 )
+@case_id(134167, 134168, 134170, 134172, 134174)
 def test_transfer_types_rejection_by_laborer(laborer):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
     establishment_id = ibm_api_controller.get_establishment_id(employer)
@@ -165,6 +168,7 @@ def test_transfer_types_rejection_by_laborer(laborer):
         "[Type 4 Absent Laborer] Verify that after Approval by Laborer status changes",
     ]
 )
+@case_id(134169, 134171, 134173, 134175)
 def test_transfer_type_approval_by_laborer(laborer, status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
     establishment_id = ibm_api_controller.get_establishment_id(employer)
