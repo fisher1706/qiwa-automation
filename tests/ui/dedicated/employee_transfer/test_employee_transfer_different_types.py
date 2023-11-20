@@ -25,7 +25,7 @@ from src.api.controllers.ibm import ibm_api_controller
 from src.ui.actions.employee_transfer import employee_transfer_actions
 from src.ui.actions.individual_actions import individual_actions
 from src.ui.qiwa import qiwa
-from utils.allure import project, TestmoProject
+from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 
