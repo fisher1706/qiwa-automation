@@ -1,21 +1,27 @@
 from __future__ import annotations
 
-from selene import command, have
+from selene import be, command, have
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 
 from src.ui.components.raw.table import Table
+from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
+@allure_steps
 class TransferBetweenMyEstablishmentsPage:
     table = Table()
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")
     terms_checkbox = s("#terms")
+    late_fees_checkbox = s("#late_fees_checkbox")
     btn_submit_request = s("//button[.='Submit request']")
     btn_submit = s("//button[.='Submit']")
 
     def click_btn_next_step(self) -> TransferBetweenMyEstablishmentsPage:
+        self.btn_next_step.should(be.visible)
+        scroll_into_view_if_needed(self.btn_next_step)
         self.btn_next_step.click()
         return self
 
@@ -30,6 +36,10 @@ class TransferBetweenMyEstablishmentsPage:
 
     def select_terms_checkbox(self) -> TransferBetweenMyEstablishmentsPage:
         self.terms_checkbox.press(Keys.SPACE)
+        return self
+
+    def select_late_fees_checkbox(self) -> TransferBetweenMyEstablishmentsPage:
+        self.late_fees_checkbox.press(Keys.SPACE)
         return self
 
     def click_btn_submit_request(self) -> TransferBetweenMyEstablishmentsPage:

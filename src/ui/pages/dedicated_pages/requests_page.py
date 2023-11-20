@@ -3,8 +3,10 @@ from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Titles
 from src.ui.components.raw.table import Table
+from utils.allure import allure_steps
 
 
+@allure_steps
 class RequestsPage:
     header = s(".c-change-requests__heading")
     change_occupation_requests = Table(s(".table"))

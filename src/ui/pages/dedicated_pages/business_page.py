@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime
 
-import allure
 from selene import have, query
 from selene.support.shared.jquery_style import s, ss
 
+from utils.allure import allure_steps
 
+
+@allure_steps
 class BusinessPage:
     ESTABLISHMENT_INFORMATION = ss(".q-page-box__list dd")
     ESTABLISHMENT_STATUS = ESTABLISHMENT_INFORMATION[3]
@@ -33,7 +35,6 @@ class BusinessPage:
         self.LO_WORK_PERMIT.s(".btn").click()
         return self
 
-    @allure.step("click on saudi certificate btn")
     def select_saudization_certificate(self) -> BusinessPage:
         self.LO_SAUDI_CERTIFICATE.click()
         return self

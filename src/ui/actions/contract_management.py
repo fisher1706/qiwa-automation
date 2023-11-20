@@ -6,37 +6,54 @@ from data.dedicated.models.contract_details import (
     EmployeeDetails,
     EstablishmentDetails,
 )
+from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.transfer_type import TransferType
-from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
+from src.ui.qiwa import qiwa
+from utils.allure import allure_steps
 
 
-class ContractManagementActions(ContractManagementPage):
+@allure_steps
+class ContractManagementActions:
     def fill_establishment_details(self) -> ContractManagementActions:
         establishment_details = EstablishmentDetails()
-        self.fill_field_role(establishment_details.role)
-        self.fill_field_email(establishment_details.company_email)
-        self.fill_field_work_location(establishment_details.work_location)
+        qiwa.contract_management_page.fill_field_role(establishment_details.role)
+        qiwa.contract_management_page.fill_field_email(establishment_details.company_email)
+        qiwa.contract_management_page.fill_field_work_location(establishment_details.work_location)
         return self
 
     def fill_employee_details(self) -> ContractManagementActions:
         employee_details = EmployeeDetails()
         contract_details = ContractDetails()
 
-        self.select_dropdown_education_level(employee_details.education_level)
-        self.fill_field_major(employee_details.major)
-        self.fill_field_iban_number(contract_details.iban_number)
-        self.fill_field_mobile_number(employee_details.mobile_number)
-        self.fill_field_email(employee_details.email)
+        qiwa.contract_management_page.select_dropdown_education_level(
+            employee_details.education_level
+        )
+        qiwa.contract_management_page.fill_field_major(employee_details.major)
+        qiwa.contract_management_page.fill_field_iban_number(contract_details.iban_number)
+        qiwa.contract_management_page.fill_field_mobile_number(employee_details.mobile_number)
+        qiwa.contract_management_page.fill_field_email(employee_details.email)
         return self
 
     def fill_contract_details(self, transfer_type: TransferType) -> ContractManagementActions:
         contract_details = ContractDetails()
 
         if transfer_type.code != type_4.code:
-            self.fill_field_occupation(contract_details.occupation)
-        self.fill_field_job_title_en(contract_details.job_title_en)
-        self.fill_field_job_title_ar(contract_details.job_title_ar)
-        self.fill_field_employee_number(contract_details.employee_number)
-        self.fill_field_contract_period()
-        self.fill_field_basic_salary(contract_details.basic_salary)
+            qiwa.contract_management_page.fill_field_occupation(contract_details.occupation)
+        qiwa.contract_management_page.fill_field_job_title_en(contract_details.job_title_en)
+        qiwa.contract_management_page.fill_field_job_title_ar(contract_details.job_title_ar)
+        qiwa.contract_management_page.fill_field_employee_number(contract_details.employee_number)
+        qiwa.contract_management_page.fill_field_contract_period()
+        qiwa.contract_management_page.fill_field_basic_salary(contract_details.basic_salary)
         return self
+
+    def create_contract(self, laborer: Laborer):
+        qiwa.contract_management_page.click_btn_next_step()
+        self.fill_establishment_details()
+        qiwa.contract_management_page.click_btn_next_step()
+        self.fill_employee_details()
+        qiwa.contract_management_page.click_btn_next_step()
+        self.fill_contract_details(laborer.transfer_type)
+        qiwa.contract_management_page.click_btn_next_step().select_terms_checkbox().click_btn_next_step()
+
+
+contract_management_actions = ContractManagementActions()

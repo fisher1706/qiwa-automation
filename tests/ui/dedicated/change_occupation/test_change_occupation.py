@@ -27,7 +27,7 @@ from data.dedicated.models.services import change_occupation
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import EmployeeTransferApi
 from src.api.controllers.ibm import IBMApiController
-from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
+from src.ui.actions.old_employee_transfer import OldEmployeeTransferActionsOld
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -137,7 +137,7 @@ def test_check_if_co_submitted_while_there_is_st(http_client, navigate_to_co):
     employee_transfer_api = EmployeeTransferApi(http_client)
     employee_transfer_api.post_prepare_laborer_for_et_request()
     employee_transfer_api.post_create_new_contract()
-    EmployeeTransferActionsOld().confirm_creation_of_contract(laborer)
+    OldEmployeeTransferActionsOld().confirm_creation_of_contract(laborer)
 
     qiwa.change_occupation_page.find_expected_employee(laborer.personal_number) \
         .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)
