@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from data.constants import Language, UserInfo
+from data.dedicated.employee_trasfer.employee_transfer_constants import (
+    SPONSOR_STATUS_APPROVE,
+)
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.ui.actions.contract_management import contract_management_actions
+from src.ui.actions.individual_actions import individual_actions
 from src.ui.qiwa import qiwa
 from utils.allure import allure_steps
 
@@ -95,6 +99,14 @@ class EmployeeTransferActions:
             .check_success_msg()
             .check_request_status()
         )
+        return self
+
+    def make_decision_as_current_sponsor(self, status: dict):
+        if status == SPONSOR_STATUS_APPROVE:
+            qiwa.employee_transfer_page.click_btn_approve().click_btn_accept_request()
+        else:
+            qiwa.employee_transfer_page.click_btn_reject().fill_rejection_reason().click_btn_reject_request()
+
         return self
 
 
