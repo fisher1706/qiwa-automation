@@ -16,6 +16,14 @@ owner_account_with_another_company = User(
     unified_number_id=9086,
 )
 
+owner_account_for_expire_subscription = User(
+    personal_number="1017836568",
+    user_id=2292101,
+    labor_office_id=9,
+    sequence_number=1196371,
+    unified_number_id=1315525,
+)
+
 delegator_for_owner_new_flow = User(
     personal_number="1615428222",
     user_id=1082,
@@ -29,6 +37,22 @@ delegator_for_edit_flow = User(
     user_id=1666054,
     labor_office_id=1,
     sequence_number=1910,
+    unified_number_id=9086,
+)
+
+delegator_for_add_and_terminate_subscription_flow = User(
+    personal_number="1028056867",
+    user_id=91912,
+    labor_office_id=9,
+    sequence_number=11871,
+    unified_number_id=9086,
+)
+
+delegator_for_full_terminate_flow = User(
+    personal_number="1100824174",
+    user_id=2082702,
+    labor_office_id=9,
+    sequence_number=11871,
     unified_number_id=9086,
 )
 

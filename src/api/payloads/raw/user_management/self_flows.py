@@ -1,7 +1,9 @@
+from typing import Optional
+
 from src.api.models.qiwa.base import QiwaBaseModel
 
 
 class SelfSubscription(QiwaBaseModel):
-    totalFeeAmount: int
+    totalFeeAmount: float
     lang: str = "en"
-    paymentMethod: str = "CARD"
+    paymentMethod: Optional[str]
