@@ -119,13 +119,8 @@ class LaborOfficeAppointmentsViewPage:
     map_title = map_text_row.first
     map_text = map_text_row.second
     map_body = s("//*[@id='modalBodyWrapper']/div[2]/div[2]")
-    map_blue_pin_btn = s(
-        "//*[@id='modalBodyWrapper']/div[2]/div[2]/div/div/div[2]/div[2]/div/div[3]/div"
-    )
-    map_addres_detailes_form = s(
-        "//*[@id='modalBodyWrapper']/div[2]/div[2]/div/div/div[2]/div[2]/div/"
-        "div[4]/div/div/div/div[1]"
-    )
+    map_blue_pin_btn = s("//div[@aria-label='Map']//div[@role='button']")
+    map_address_details_form = s("//div[@aria-label='Map']//div[@role='dialog']")
     copy_map_form_text = s("//*[@id='root']/div[3]/div/div/div/div")
 
     print_btn = s(
@@ -254,7 +249,7 @@ class LaborOfficeAppointmentsViewPage:
     def verify_map_functions(self):
         self.open_map()
         self.map_blue_pin_btn.click()
-        self.map_addres_detailes_form.should(be.visible)
+        self.map_address_details_form.should(be.visible)
         self.map_get_link_btn.click()
         self.verify_copy_map_form_text(Av.COPY_MAP_TEXT, self.language)
         self.close_map_btn.click()
