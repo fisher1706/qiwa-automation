@@ -1,7 +1,7 @@
 import pytest
 
-from src.ui.qiwa import qiwa
 from src.api.app import QiwaApi
+from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 from utils.helpers import set_cookies_for_browser
 
