@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
@@ -37,28 +38,30 @@ def test_view_appointments_page():
 
 
 @allure.title("Appointments[Individual]: Book appointment")
-@case_id(39180)
-def test_book_individual_appointment():
+@case_id(39180, 54992)
+@pytest.mark.parametrize("language", (Language.EN, Language.AR))
+def test_book_individual_appointment(language):
     qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.workspace_page.language = language
     qiwa.workspace_page.should_have_workspace_list_appear()
-    qiwa.header.change_local(Language.EN)
-    qiwa.workspace_page.select_individual_account()
+    qiwa.header.change_local(language)
+    qiwa.open_labor_office_appointments_page_individual()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[language])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
-        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language],
+        region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()

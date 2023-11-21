@@ -203,6 +203,12 @@ class QiwaUiClient:
         return self
 
     @allure.step
+    def open_labor_office_appointments_page_individual(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.appointment_booking_individual)
+        self.individual_page.wait_page_to_load()
+        return self
+
+    @allure.step
     def open_employee_transfer_v2_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.employee_transfer_v2)
         return self
