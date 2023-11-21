@@ -11,7 +11,6 @@ case_id = project(TestmoProject.QIWA_SSO)
 
 @case_id(41924)
 def test_user_sign_in_into_qiwa(first_account_data):
-    account = first_account_data
     qiwa.open_login_page()
     qiwa.header.change_local("en")
     qiwa.login_page.wait_login_page_to_load() \
