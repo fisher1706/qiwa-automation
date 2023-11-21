@@ -29,7 +29,10 @@ class LOAdmin:
 
 @dataclass
 class IndividualService:
-    APPOINTMENTS = "Appointments in Labor Office"
+    APPOINTMENTS = {
+        Language.EN: "Appointments in Labor Office",
+        Language.AR: "المواعيد بمكتب العمل",
+    }
 
 
 @dataclass
@@ -172,8 +175,11 @@ class ServicesInfo:
     SERVICE_RANDOM_NAME_AR = "اختبار الأتمتة" + f" {datetime.now().strftime('%Y.%m.%d %H.%M.%S')}"
     SERVICE_RANDOM_NAME_EN = random_name
 
-    SERVICE_NAME_INDIVIDUALS = "Individuals_10/08"
-    SUB_SERVICE_NAME_INDIVIDUALS = "subservices_10/08"
+    SERVICE_NAME_INDIVIDUALS = {Language.EN: "Individuals_10/08", Language.AR: "Individuals_10/08"}
+    SUB_SERVICE_NAME_INDIVIDUALS = {
+        Language.EN: "subservices_10/08",
+        Language.AR: "subservices_10/08",
+    }
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
 

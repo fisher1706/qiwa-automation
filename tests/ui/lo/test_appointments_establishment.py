@@ -23,7 +23,7 @@ case_id = project(TestmoProject.LABOR_OFFICE)
 
 
 @allure.title("Appointments: Book with visit type Establishment")
-@case_id(22132)
+@case_id(22132, 54971)
 @pytest.mark.parametrize("language", (Language.EN, Language.AR))
 def test_book_establishment_appointment(language):
     qiwa.login_as_user(login=SubscribedUser.ID)
