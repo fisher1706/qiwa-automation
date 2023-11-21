@@ -79,15 +79,13 @@ class LaborOfficeAppointmentsEditPage:
         '//*[@id="summary"]/div//*[contains(text(), "Request new service - in person")]'
     )
     summary_table_office_text = s('//*[@id="summary"]/div//*[contains(text(), "Office")]')
-    summary_table_office_value = s(
-        '//*[@id="summary"]/div//*[contains(text(), "Test office 125")]'
-    )
+    summary_table_office_value = '//*[@id="summary"]/div//*[contains(text(), "{office_name}")]'
     summary_table_date_text = s('//*[@id="summary"]/div//*[contains(text(), "Date")]')
     summary_table_date_value = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[3]/div[2]/p')
     summary_table_time_text = s('//*[@id="summary"]/div//*[contains(text(), "Time")]')
     summary_table_time_value = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[4]/div[2]/p')
     summary_table_type_text = s('//*[@id="summary"]/div//*[contains(text(), "Type")]')
-    summary_table_type_value = s('//*[@id="summary"]/div//*[contains(text(), "In-person")]')
+    summary_table_type_value = '//*[@id="summary"]/div//*[contains(text(), "{type_value}")]'
 
     book_app_btn = s('//*[@id="summary"]/div/div[2]/div[2]/button')
 
@@ -142,18 +140,18 @@ class LaborOfficeAppointmentsEditPage:
         self.next_step_btn.click()
 
     @allure.step("Verifying summary table")
-    def verify_summary_table(self):
+    def verify_summary_table(self, office_name: str, type_value: str):
         self.summary_table_title_text.should(be.visible)
         self.summary_table_reason_text.should(be.visible)
         self.summary_table_reason_value.should(be.visible)
         self.summary_table_office_text.should(be.visible)
-        self.summary_table_office_value.should(be.visible)
+        s(self.summary_table_office_value.format(office_name=office_name)).should(be.visible)
         self.summary_table_date_text.should(be.visible)
         self.summary_table_date_value.should(be.visible)
         self.summary_table_time_text.should(be.visible)
         self.summary_table_time_value.should(be.visible)
         self.summary_table_type_text.should(be.visible)
-        self.summary_table_type_value.should(be.visible)
+        s(self.summary_table_type_value.format(type_value=type_value)).should(be.visible)
 
     @allure.step("Clicking on book app button")
     def book_app_btn_click(self):

@@ -27,8 +27,8 @@ from data.validation_message import SuccessMessage
 from src.ui.actions.e_services import EServiceActions
 from src.ui.actions.old_contract_management import OldContractManagementActions
 from src.ui.components.footer import Footer
-from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
-    EmployeeTransferPage,
+from src.ui.pages.dedicated_pages.employee_transfer.old_employee_transfer_page import (
+    OldEmployeeTransferPage,
 )
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.workspaces_page import WorkspacesPage
@@ -37,7 +37,7 @@ from utils.assertion import assert_that
 
 
 # pylint: disable=duplicate-code
-class EmployeeTransferActionsOld(EmployeeTransferPage):
+class OldEmployeeTransferActionsOld(OldEmployeeTransferPage):
     def __init__(self):
         super().__init__()
         self.balance_value = None

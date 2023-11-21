@@ -9,8 +9,10 @@ from data.constants import Titles
 from data.dedicated.change_occupation.change_occupation_constants import Label
 from data.dedicated.enums import ChangeOccupationWarning
 from src.ui.components.raw.table import Table
+from utils.allure import allure_steps
 
 
+@allure_steps
 class ChangeOccupationPage:
     title = s(".c-service-heading__text")
     field_search = s(".c-search-input-group__input")

@@ -119,7 +119,7 @@ def test_resend_action_on_delegation_dashboard():
                                                         status=general_data.PENDING)
     sms_url = check_sms_after_resend_action(phone_number=delegation_data["partnerPhoneNumber"],
                                             delegation_id=delegation_data["delegationId"],
-                                            establishment_name=general_data.ESTABLISHMENT_NAME,
+                                            establishment_name=general_data.WORKSPACE_WITH_ONE_PARTNER,
                                             request_id=updated_delegation_request.id,
                                             partner_phone_for_url=delegation_data["hiddenPartnerPhone"])
     open_url_from_sms(sms_url)

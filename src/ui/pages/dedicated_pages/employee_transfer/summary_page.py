@@ -5,8 +5,10 @@ from selene.support.shared.jquery_style import s, ss
 
 from data.dedicated.enums import EmployeeTransferSuccessMsg
 from src.ui.components.raw.table import Table
+from utils.allure import allure_steps
 
 
+@allure_steps
 class SummaryPage:
     success_msg = ss('[role="banner"] + div p').first
     table = Table()

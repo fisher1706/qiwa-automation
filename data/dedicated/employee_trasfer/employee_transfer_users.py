@@ -40,7 +40,7 @@ laborer_type_4_freedom_transfer = Laborer(
 laborer_type_4_direct_transfer = Laborer(
     login_id=2198951952, birthdate="01-01-1959", transfer_type=type_4
 )
-laborer_type_4_absent = Laborer(login_id=2468727199, birthdate="01-01-1986", transfer_type=type_4)
+laborer_type_4_absent = Laborer(login_id=2145372690, birthdate="01-01-1974", transfer_type=type_4)
 
 laborer_between_my_establishments = Laborer(
     login_id=2016254472, birthdate="01-01-1976", transfer_type=type_4

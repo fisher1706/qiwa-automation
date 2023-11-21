@@ -20,7 +20,8 @@ OTP_SMS_TEXT: str = """رمز التحقق:{}
 لمراجعة طلب تفويض"""
 RESEND_MESSAGE: str = "Delegation request has been resent."
 REVOKE_MESSAGE: str = "Delegation has been revoked."
-ESTABLISHMENT_NAME: str = "فرع الشركه السعوديه للحاسبات الالكترونيه المحدوده"
+WORKSPACE_WITH_ONE_PARTNER: str = "فرع الشركه السعوديه للحاسبات الالكترونيه المحدوده"
+WORKSPACE_WITH_NO_PARTNERS: str = "ورشة اسرار الغربية للحدادة والالمنيوم"
 ESTABLISHMENT_CR_NUMBER: str = "1010868964"
 EMPLOYEE_NID_IN_WORKSPACE_WITH_PARTNERS: str = "2178509200"
 EMPLOYEE_NID_IN_WORKSPACE_WITH_NO_PARTNERS: str = "2410113779"
@@ -70,3 +71,11 @@ CHARACTERS_LIMIT_REACHED_COUNTER: str = "{}/255 Character limit reached"
 TITLE_AFTER_REJECT_FLOW: str = "The delegation request was rejected"
 TITLE_AFTER_APPROVE_FLOW: str = "The delegation request was successfully approved"
 DESCRIPTION_AFTER_PARTNER_FLOW: str = "You can close this page now."
+
+VERIFY_LETTER_TITLE: str = "Verify delegation letter"
+VERIFY_LETTER_DESCRIPTION: str = "Please scan the QR code to verify the delegation letter."
+DELEGATION_DETAILS_MODAL: str = "Delegation letter details"
+ERROR_MODAL_TITLE: str = "You cannot verify the delegation letter"
+ERROR_MODAL_DESCRIPTION: str = (
+    "The delegation letter has been revoked, and you cannot verify it anymore."
+)

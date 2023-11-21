@@ -40,8 +40,8 @@ from src.ui.pages.dedicated_pages.appointment_request_page import AppointmentReq
 from src.ui.pages.dedicated_pages.business_page import BusinessPage
 from src.ui.pages.dedicated_pages.change_occupation_page import ChangeOccupationPage
 from src.ui.pages.dedicated_pages.contract_management_page import ContractManagementPage
-from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_v2_page import (
-    EmployeeTransferV2Page,
+from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
+    EmployeeTransferPage,
 )
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
@@ -51,6 +51,9 @@ from src.ui.pages.delegations_pages.delegation_dashboard_page import (
 )
 from src.ui.pages.delegations_pages.delegation_details_page import DelegationDetailsPage
 from src.ui.pages.delegations_pages.partner_approval_page import PartnerApprovalPage
+from src.ui.pages.delegations_pages.verify_delegation_letter_page import (
+    VerifyDelegationLetterPage,
+)
 from src.ui.pages.e_services_page import EServicesPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.lo_saudi_certificate_page import LoSaudiCertificatePage
@@ -89,6 +92,7 @@ class QiwaUiClient:
     delegation_dashboard_page = DelegationDashboardPage()
     delegation_details_page = DelegationDetailsPage()
     delegation_partner_approval_page = PartnerApprovalPage()
+    delegation_letter_verify_page = VerifyDelegationLetterPage()
     add_delegation_page = AddDelegationPage()
     admin_spaces_page = AdminSpacesPage()
     lo_work_permit_page = LoWorkPermitPage()
@@ -104,7 +108,7 @@ class QiwaUiClient:
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
     labor_office_appointments_edit_page = LaborOfficeAppointmentsEditPage()
-    employee_transfer_page = EmployeeTransferV2Page()
+    employee_transfer_page = EmployeeTransferPage()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
 
@@ -175,6 +179,11 @@ class QiwaUiClient:
     @allure.step
     def open_add_new_delegation_page(self) -> QiwaUiClient:
         browser.open(f"{config.qiwa_urls.delegation_service}/create-delegation")
+        return self
+
+    @allure.step
+    def open_verify_delegation_letter_page(self) -> QiwaUiClient:
+        browser.open(f"{config.qiwa_urls.delegation_service}/verify")
         return self
 
     @allure.step

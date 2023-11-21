@@ -4,7 +4,7 @@ import pytest
 from data.constants import Language
 from data.dedicated.employee_trasfer.employee_transfer_users import employer
 from data.dedicated.models.transfer_requests import request
-from src.ui.actions.old_employee_transfer import EmployeeTransferActionsOld
+from src.ui.actions.old_employee_transfer import OldEmployeeTransferActionsOld
 from src.ui.components.footer import Footer
 
 
@@ -14,7 +14,7 @@ class TestEmployeeTransfer:  # pylint: disable=unused-argument
 
     @pytest.fixture(autouse=True)
     def pre_test(self):
-        self.employee_transfer_actions = EmployeeTransferActionsOld()
+        self.employee_transfer_actions = OldEmployeeTransferActionsOld()
         self.footer = Footer()
 
     @allure.title('Create the Dashboard page | Block 1 UI test')

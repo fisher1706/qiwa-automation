@@ -349,3 +349,57 @@ def test_individual_cancel_appointment_from_details_appointments():
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
     qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
+
+
+@allure.title("Appointments[Individual]: As LO User I have possibility to Edit Appointment")
+@case_id(43425)
+def test_individual_edit_appointment():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.check_context_action_menu_from_upcoming()
+    qiwa.labor_office_appointments_page.edit_active_appointment()
+
+    qiwa.labor_office_appointments_edit_page.open_knowledge_center()
+    qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
+    qiwa.labor_office_appointments_edit_page.change_details_fields(
+        region=OfficesInfo.REGION_MADINAH[Language.EN], office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+    )
+    qiwa.labor_office_appointments_edit_page.next_step_btn_click()
+
+    qiwa.labor_office_appointments_edit_page.verify_summary_table(
+        office_name=OfficesInfo.OFFICE_NAME_VEUM_HANE, type_value='In-person'
+    )
+    qiwa.labor_office_appointments_edit_page.book_app_btn_click()
+
+    qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
+    )
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.check_active_appointment_exist()
+
+    qiwa.labor_office_appointments_page.view_active_appointment()
+    qiwa.labor_office_appointments_view_page.verify_general_info_row()
+    qiwa.labor_office_appointments_view_page.verify_general_table()
+    qiwa.labor_office_appointments_view_page.verify_requester_info()
