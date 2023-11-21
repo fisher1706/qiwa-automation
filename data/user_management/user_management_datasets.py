@@ -164,12 +164,12 @@ class SubscriptionData:
         (
             establishment_discount_val_10,
             SubscriptionDefaultPrice.default_price_val_7000,
-            SubscriptionDiscount.discount_val_25,
+            SubscriptionDiscount.discount_val_10,
         ),
         (
             establishment_discount_val_25,
             SubscriptionDefaultPrice.default_price_val_1100,
-            SubscriptionDiscount.discount_val_10,
+            SubscriptionDiscount.discount_val_25,
         ),
         (
             establishment_type_four,
