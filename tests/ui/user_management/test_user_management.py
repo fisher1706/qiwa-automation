@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from data.user_management import privileges_data
+from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
     Privileges,
@@ -162,5 +162,5 @@ def test_select_and_unselect_privileges():
         owner.personal_number, owner.sequence_number
     ).navigate_to_view_details_page(user.personal_number)\
         .open_select_privileges_modal()\
-        .select_all_privileges().unselect_the_privilege(privileges_data.VISA_ISSUANCE_SERVICE)\
+        .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE)\
         .select_all_privileges().unselect_all_privileges()

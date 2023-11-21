@@ -1,6 +1,6 @@
 import dataclasses
 
-from data.user_management import privileges_data
+from data.user_management import user_management_data
 from data.user_management.subscriptions_price_discount import (
     SubscriptionDefaultPrice,
     SubscriptionDiscount,
@@ -77,75 +77,75 @@ class Privileges:
     default_privileges = [1, 5, 8, 11, 13, 16, 20, 23, 29, 31]
     groups_data = [
         {
-            "title": privileges_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
+            "title": user_management_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
             "privileges": [
-                privileges_data.PROFESSIONAL_VERIFICATION_SERVICE,
-                privileges_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
-                privileges_data.WAGE_PROTECTION_CERTIFICATE,
-                privileges_data.CHANGE_OCCUPATION,
-                privileges_data.EMPLOYEE_TRANSFER,
-                privileges_data.ISSUE_AND_RENEW_WORKING_PERMITS,
-                privileges_data.VISA_ISSUANCE_SERVICE,
-                privileges_data.AJEER_PROGRAM,
-                privileges_data.WAGE_DISBURSEMENT,
-                privileges_data.EMPLOYEE_INFORMATION,
-                privileges_data.CONTRACT_MANAGEMENT,
-                privileges_data.TRAINING_MANAGEMENT,
-                privileges_data.RECRUITMENT_SERVICE,
-                privileges_data.DEBT_CERTIFICATE,
+                user_management_data.PROFESSIONAL_VERIFICATION_SERVICE,
+                user_management_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
+                user_management_data.WAGE_PROTECTION_CERTIFICATE,
+                user_management_data.CHANGE_OCCUPATION,
+                user_management_data.EMPLOYEE_TRANSFER,
+                user_management_data.ISSUE_AND_RENEW_WORKING_PERMITS,
+                user_management_data.VISA_ISSUANCE_SERVICE,
+                user_management_data.AJEER_PROGRAM,
+                user_management_data.WAGE_DISBURSEMENT,
+                user_management_data.EMPLOYEE_INFORMATION,
+                user_management_data.CONTRACT_MANAGEMENT,
+                user_management_data.TRAINING_MANAGEMENT,
+                user_management_data.RECRUITMENT_SERVICE,
+                user_management_data.DEBT_CERTIFICATE,
             ],
         },
         {
-            "title": privileges_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE,
+            "title": user_management_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE,
             "privileges": [
-                privileges_data.SAUDIZATION_CERTIFICATE,
-                privileges_data.ESTABLISHMENT_DASHBOARD,
-                privileges_data.BOOK_APPOINTMENT_SERVICE,
-                privileges_data.LABOR_POLICIES,
-                privileges_data.ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS,
-                privileges_data.SALARY_CERTIFICATE,
-                privileges_data.GOVERNMENT_CONTRACTS_MANAGEMENT,
-                privileges_data.ESTABLISHMENT_FILE_MANAGEMENT,
-                privileges_data.CLOSE_ESTABLISHMENT_ACTIVITY,
-                privileges_data.CHANGE_ESTABLISHMENT_ACTIVITY,
+                user_management_data.SAUDIZATION_CERTIFICATE,
+                user_management_data.ESTABLISHMENT_DASHBOARD,
+                user_management_data.BOOK_APPOINTMENT_SERVICE,
+                user_management_data.LABOR_POLICIES,
+                user_management_data.ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS,
+                user_management_data.SALARY_CERTIFICATE,
+                user_management_data.GOVERNMENT_CONTRACTS_MANAGEMENT,
+                user_management_data.ESTABLISHMENT_FILE_MANAGEMENT,
+                user_management_data.CLOSE_ESTABLISHMENT_ACTIVITY,
+                user_management_data.CHANGE_ESTABLISHMENT_ACTIVITY,
             ],
         },
         {
-            "title": privileges_data.ESTABLISHMENT_PERFORMANCE_GROUP_TITLE,
+            "title": user_management_data.ESTABLISHMENT_PERFORMANCE_GROUP_TITLE,
             "privileges": [
-                privileges_data.NITAGAT_CALCULATOR,
-                privileges_data.EADVISOR,
-                privileges_data.LABOR_AWARD,
-                privileges_data.LABOR_MARKET_INDEX,
-                privileges_data.ESTABLISHMENT_PERFORMANCE_REPORT,
+                user_management_data.NITAGAT_CALCULATOR,
+                user_management_data.EADVISOR,
+                user_management_data.LABOR_AWARD,
+                user_management_data.LABOR_MARKET_INDEX,
+                user_management_data.ESTABLISHMENT_PERFORMANCE_REPORT,
             ],
         },
         {
-            "title": privileges_data.WORKSPACES_MANAGEMENT_GROUP_TITLE,
+            "title": user_management_data.WORKSPACES_MANAGEMENT_GROUP_TITLE,
             "privileges": [
-                privileges_data.USER_MANAGEMENT,
-                privileges_data.QIWA_WALLET,
-                privileges_data.DELEGATIONS,
+                user_management_data.USER_MANAGEMENT,
+                user_management_data.QIWA_WALLET,
+                user_management_data.DELEGATIONS,
             ],
         },
     ]
     default_ui_privileges = [
-        privileges_data.PROFESSIONAL_VERIFICATION_SERVICE,
-        privileges_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
-        privileges_data.WAGE_PROTECTION_CERTIFICATE,
-        privileges_data.SAUDIZATION_CERTIFICATE,
-        privileges_data.ESTABLISHMENT_DASHBOARD,
-        privileges_data.BOOK_APPOINTMENT_SERVICE,
-        privileges_data.NITAGAT_CALCULATOR,
-        privileges_data.EADVISOR,
-        privileges_data.LABOR_AWARD,
-        privileges_data.LABOR_MARKET_INDEX,
+        user_management_data.PROFESSIONAL_VERIFICATION_SERVICE,
+        user_management_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
+        user_management_data.WAGE_PROTECTION_CERTIFICATE,
+        user_management_data.SAUDIZATION_CERTIFICATE,
+        user_management_data.ESTABLISHMENT_DASHBOARD,
+        user_management_data.BOOK_APPOINTMENT_SERVICE,
+        user_management_data.NITAGAT_CALCULATOR,
+        user_management_data.EADVISOR,
+        user_management_data.LABOR_AWARD,
+        user_management_data.LABOR_MARKET_INDEX,
     ]
 
     ineligible_ui_privileges = [
-        privileges_data.USER_MANAGEMENT,
-        privileges_data.QIWA_WALLET,
-        privileges_data.DELEGATIONS,
+        user_management_data.USER_MANAGEMENT,
+        user_management_data.QIWA_WALLET,
+        user_management_data.DELEGATIONS,
     ]
 
 
@@ -188,3 +188,10 @@ class SubscriptionData:
 @dataclasses.dataclass
 class DefaultVatValue:
     default_vat_value = 1.15
+
+
+@dataclasses.dataclass
+class SubscriptionStatuses:
+    active = 1
+    expired = 2
+    terminated = 3

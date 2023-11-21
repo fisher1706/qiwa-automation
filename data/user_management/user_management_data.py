@@ -37,3 +37,5 @@ WORKSPACES_MANAGEMENT_GROUP_TITLE: str = "Workspaces Management"
 USER_MANAGEMENT: str = "User Management"
 QIWA_WALLET: str = "Qiwa Wallet"
 DELEGATIONS: str = "Delegations"
+
+PAST_EXPIRY_DATE: str = "2023-11-18 00:00:00.000"

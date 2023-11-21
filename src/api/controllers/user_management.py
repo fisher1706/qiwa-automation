@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from decimal import ROUND_HALF_UP, Decimal
 
 import allure
 
+from data.dedicated.models.user import User
+from data.user_management.user_management_datasets import Privileges
 from src.api.clients.user_management import UserManagementApi
 from src.database.sql_requests.user_management.user_management_requests import (
     UserManagementRequests,
@@ -32,3 +33,53 @@ class UserManagementControllers(UserManagementApi):
         )
         self.cron_job_for_expiry_subscription()
         return self
+
+    @allure.step
+    def terminate_user_subscription(
+        self, cookie: dict, users_personal_number: str, requester_id_number: str
+    ) -> int:
+        self.patch_terminate_subscription(
+            cookie=cookie, users_personal_number=users_personal_number
+        )
+        subscription_status = UserManagementRequests().get_subscription_status(
+            personal_number=users_personal_number, requester_id_number=requester_id_number
+        )
+        return subscription_status
+
+    def renew_owner_subscription(
+        self, cookie: dict, subscribed_user: User, subscription_type: str
+    ) -> int:
+        subscription_price = float(
+            self.get_owner_subscription_price(
+                cookie=cookie, subscribed_user_personal_number=subscribed_user.personal_number
+            )
+        )
+        return int(
+            self.post_owner_subscription_flow(
+                cookie=cookie,
+                subscription_type=subscription_type,
+                subscription_price=subscription_price,
+                labor_office_id=subscribed_user.labor_office_id,
+                sequence_number=subscribed_user.sequence_number,
+                privilege_ids=Privileges.default_privileges,
+                subscribed_user_personal_number=subscribed_user.personal_number,
+            )
+        )
+
+    def renew_self_subscription(self, cookie: dict, user: User, subscription_type: str) -> int:
+        self_price = float(
+            self.get_self_subscription_price(
+                cookie=cookie,
+                labor_office_id=user.labor_office_id,
+                sequence_number=user.sequence_number,
+            )
+        )
+        return int(
+            self.post_self_flow(
+                cookie=cookie,
+                labor_office_id=user.labor_office_id,
+                sequence_number=user.sequence_number,
+                subscription_price=self_price,
+                subscription_type=subscription_type,
+            )
+        )

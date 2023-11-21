@@ -3,13 +3,16 @@ from __future__ import annotations
 from http import HTTPStatus
 from urllib import parse
 
-from requests import Response
+import allure
 
 import config
 from src.api.http_client import HTTPClient
 from src.api.payloads.raw.user_management.edit_privileges import Privileges
 from src.api.payloads.raw.user_management.self_flows import SelfSubscription
-from src.api.payloads.user_management import owner_subscription_payload
+from src.api.payloads.user_management import (
+    owner_subscription_payload,
+    owner_subscription_payload_for_new_subscription_type,
+)
 from utils.assertion import assert_status_code
 from utils.crypto_manager import code_um_cookie
 
@@ -75,9 +78,9 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         cookie: dict,
         labor_office_id: str,
         sequence_number: str,
-        subscription_price: str,
+        subscription_price: float,
         subscription_type: str,
-    ) -> str:
+    ) -> bytes:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.post(
             url=self.url,
@@ -96,24 +99,34 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         self,
         cookie: dict,
         subscription_type: str,
-        subscription_price: str,
+        subscription_price: float,
         subscribed_user_personal_number: str,
         labor_office_id: str,
         sequence_number: str,
         privilege_ids: list,
-    ) -> str:
+    ) -> bytes:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
-        response = self.client.post(
-            url=self.url,
-            endpoint=f"/api/bff/subscriptions/owner/{subscription_type}",
-            headers=headers,
-            json=owner_subscription_payload(
+        if subscription_type == "new":
+            json = owner_subscription_payload_for_new_subscription_type(
                 subscription_price,
                 subscribed_user_personal_number,
                 labor_office_id,
                 sequence_number,
                 privilege_ids,
-            ),
+            )
+        else:
+            json = owner_subscription_payload(
+                subscription_price,
+                subscribed_user_personal_number,
+                labor_office_id,
+                sequence_number,
+                privilege_ids,
+            )
+        response = self.client.post(
+            url=self.url,
+            endpoint=f"/api/bff/subscriptions/owner/{subscription_type}",
+            headers=headers,
+            json=json,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         payment_url = response.json()["paymentUrl"]
@@ -121,7 +134,8 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         payment_id = parsed_url.strip("/").split("/")[0]
         return payment_id
 
-    def get_user_privileges(self, cookie: dict, users_personal_number: str) -> list:
+    @allure.step
+    def get_user_privileges(self, cookie: dict, users_personal_number: str) -> dict:
         headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
         response = self.client.get(
             url=self.url,
@@ -129,8 +143,7 @@ class UserManagementApi:  # pylint: disable=duplicate-code
             headers=headers,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        list_of_privileges = response.json()[0]["privilegeIds"]
-        return list_of_privileges
+        return response.json()[0]
 
     def post_update_privileges(
         self,
@@ -166,10 +179,84 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         return expired_date
 
     def cron_job_for_expiry_subscription(self) -> UserManagementApi:
-        headers = {"Authorization Bearer": "18353afa-2144-437e-89d5-458d788c6549"}
+        headers = {"Authorization": "Bearer 18353afa-2144-437e-89d5-458d788c6549"}
         self.client.post(
             url=self.url,
             endpoint="/api/private/trigger-expire-job",
             headers=headers,
         )
         return self
+
+    @allure.step
+    def post_subscribe_user_to_establishment(
+        self,
+        cookie: dict,
+        users_personal_number: str,
+        labor_office_id: str,
+        sequence_number: str,
+        privileges: list,
+    ) -> UserManagementApi:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.post(
+            url=self.url,
+            endpoint=f"/api/bff/users/{users_personal_number}/establishments",
+            headers=headers,
+            json=Privileges(
+                laborOfficeId=labor_office_id,
+                sequenceNumber=sequence_number,
+                privilegeIds=privileges,
+            ).dict(),
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return self
+
+    @allure.step
+    def patch_remove_establishment_from_user(
+        self,
+        cookie: dict,
+        users_personal_number: str,
+        labor_office_id: str,
+        sequence_number: str,
+    ) -> UserManagementApi:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.patch(
+            url=self.url,
+            endpoint=f"/api/bff/users/{users_personal_number}/establishments",
+            headers=headers,
+            json=[
+                Privileges(
+                    laborOfficeId=labor_office_id,
+                    sequenceNumber=sequence_number,
+                ).dict(exclude={"privilegeIds"})
+            ],
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return self
+
+    def get_user_subscribed_establishments(
+        self,
+        cookie: dict,
+        users_personal_number: str,
+        subscribed_state: bool,
+    ) -> list:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.get(
+            url=self.url,
+            endpoint=f"/api/bff/users/{users_personal_number}/establishments?active={subscribed_state}",
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()["content"]
+
+    def patch_terminate_subscription(
+        self,
+        cookie: dict,
+        users_personal_number: str,
+    ):
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.patch(
+            url=self.url,
+            endpoint=f"/api/bff/subscriptions/{users_personal_number}",
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)

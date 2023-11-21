@@ -1,5 +1,15 @@
 # pylint: disable = too-few-public-methods
-from sqlalchemy import VARCHAR, BigInteger, Boolean, Column, DateTime, Integer, Text
+from sqlalchemy import (
+    NVARCHAR,
+    VARCHAR,
+    BigInteger,
+    Boolean,
+    Column,
+    DateTime,
+    Integer,
+    Text,
+)
+from sqlalchemy.dialects.mssql import BIT
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -48,9 +58,10 @@ class UMSubscriptions(Base):
     __tablename__ = "UM_Subscriptions"
 
     unified_number = Column("FK_UnifiedNumber", BigInteger, primary_key=True, nullable=False)
-    personal_number = Column("FK_Idno", VARCHAR(20))
+    personal_number = Column("FK_Idno", VARCHAR(20), primary_key=True)
     subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
     expiry_date = Column("ExpireDate", DateTime)
+    requester_id_number = Column("RequesterIdNo", NVARCHAR(150))
 
 
 class UserPrivileges(Base):
@@ -85,3 +96,14 @@ class Users(Base):
 
     id = Column("ID", BigInteger, primary_key=True, nullable=False)
     personal_number = Column("IDNO", VARCHAR(150))
+
+
+class UMPrivilegesAuditLog(Base):
+    __tablename__ = "UM_Privileges_Audit_Log"
+
+    id = Column("ID", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("FK_Idno", NVARCHAR(20))
+    sequence_number = Column("FK_SequenceNumber", BigInteger)
+    service_id = Column("FK_ServiceId", BigInteger)
+    deleted_status = Column("Deleted", BIT)
+    log_create_date = Column("LogCreatedOn", DateTime)

@@ -8,6 +8,7 @@ from data.user_management.user_management_users import (
 from src.api.app import QiwaApi
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from utils.allure import TestmoProject, project
+from utils.assertion import assert_that
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
 
@@ -45,9 +46,10 @@ def test_check_users_privileges():
         company_labor_office_id=owner.labor_office_id,
         user_personal_number=owner.personal_number,
     ).dict(by_alias=True)
-    qiwa.user_management_api.get_user_privileges(
+    privileges = qiwa.user_management_api.get_user_privileges(
         cookie=subscription_cookie, users_personal_number=subscribed_user.personal_number
-    )
+    )["privilegeIds"]
+    assert_that(privileges).is_not_empty()
 
 
 @allure.title("Check expire date")
