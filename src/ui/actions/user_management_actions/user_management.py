@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import allure
 
+from data.constants import Language
 from data.user_management.user_management_datasets import (
     ArabicTranslations,
     Privileges,
@@ -19,6 +20,8 @@ class UserManagementActions(
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
         qiwa.login_as_user(login=user)
+        qiwa.workspace_page.should_have_workspace_list_appear()
+        qiwa.header.change_local(Language.EN)
         qiwa.workspace_page.select_company_account_with_sequence_number(
             sequence_number=sequence_number
         )
@@ -103,7 +106,7 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def open_select_privileges_modal(self) -> UserManagementActions:
+    def open_select_privileges_modal_for_no_access_workspace(self) -> UserManagementActions:
         self.select_no_access_tab()
         self.click_add_access_button()
         self.check_select_privileges_modal_is_displayed()

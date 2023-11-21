@@ -147,7 +147,7 @@ def test_privileges_data():
     user_management.log_in_and_navigate_to_um(
         owner.personal_number, owner.sequence_number
     ).navigate_to_view_details_page(user.personal_number)\
-        .open_select_privileges_modal().check_privileges_are_grouped() \
+        .open_select_privileges_modal_for_no_access_workspace().check_privileges_are_grouped() \
         .check_default_privileges_are_selected(Privileges.default_ui_privileges) \
         .check_ineligible_privileges_cannot_be_selected(Privileges.ineligible_ui_privileges)
 
@@ -161,6 +161,6 @@ def test_select_and_unselect_privileges():
     user_management.log_in_and_navigate_to_um(
         owner.personal_number, owner.sequence_number
     ).navigate_to_view_details_page(user.personal_number)\
-        .open_select_privileges_modal()\
+        .open_select_privileges_modal_for_no_access_workspace()\
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE)\
         .select_all_privileges().unselect_all_privileges()
