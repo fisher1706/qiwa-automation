@@ -57,6 +57,11 @@ class AssertionMixin(AssertionBase):
         self.assert_(len(self.actual), 0, AssertionTypes.NOT_EQUAL, step)
         return self
 
+    def is_greater(self, expected: T) -> AssertionMixin:
+        step = self._step(self.description, "greater", expected)
+        self.assert_(self.actual, expected, AssertionTypes.GREATER, step)
+        return self
+
     def is_greater_or_equal(self, expected: T) -> AssertionMixin:
         step = self._step(self.description, "greater or equal", expected)
         self.assert_(self.actual, expected, AssertionTypes.GREATER_OR_EQUAL, step)
