@@ -30,6 +30,12 @@ class LoginPage:
         return self
 
     @allure.step
+    def check_login_page_is_displayed(self):
+        self.identity_number_field.should(be.visible)
+        self.password_field.should(be.visible)
+        self.login_button.should(be.visible)
+
+    @allure.step
     def enter_login(self, login: str) -> LoginPage:
         self.identity_number_field.perform(command.js.set_value("")).type(login)
         return self
