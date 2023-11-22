@@ -159,28 +159,28 @@ class SubscriptionData:
     subscription_data = [
         (
             establishment_discount_val_0,
-            SubscriptionDefaultPrice.default_price_val_7000,
-            SubscriptionDiscount.discount_val_100,
+            SubscriptionDefaultPrice.DEFAULT_PRICE_VAL_7000,
+            SubscriptionDiscount.DISCOUNT_VAL_100,
         ),
         (
             establishment_discount_val_10,
-            SubscriptionDefaultPrice.default_price_val_7000,
-            SubscriptionDiscount.discount_val_10,
+            SubscriptionDefaultPrice.DEFAULT_PRICE_VAL_7000,
+            SubscriptionDiscount.DISCOUNT_VAL_10,
         ),
         (
             establishment_discount_val_25,
-            SubscriptionDefaultPrice.default_price_val_1100,
-            SubscriptionDiscount.discount_val_25,
+            SubscriptionDefaultPrice.DEFAULT_PRICE_VAL_1100,
+            SubscriptionDiscount.DISCOUNT_VAL_25,
         ),
         (
             establishment_type_four,
-            SubscriptionDefaultPrice.default_price_val_10000,
-            SubscriptionDiscount.discount_val_100,
+            SubscriptionDefaultPrice.DEFAULT_PRICE_VAL_10000,
+            SubscriptionDiscount.DISCOUNT_VAL_100,
         ),
         (
             establishment_type_one,
-            SubscriptionDefaultPrice.default_price_val_1100,
-            SubscriptionDiscount.discount_val_100,
+            SubscriptionDefaultPrice.DEFAULT_PRICE_VAL_1100,
+            SubscriptionDiscount.DISCOUNT_VAL_100,
         ),
     ]
 
