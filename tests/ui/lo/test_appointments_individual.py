@@ -25,7 +25,7 @@ def test_view_appointments_page():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.should_history_table_headers_have_correct_titles()
     qiwa.labor_office_appointments_page.click_appointments_history_next_page()
@@ -77,7 +77,7 @@ def test_individual_view_appointment_from_history():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
 
     qiwa.labor_office_appointments_page.search_appointments("35778")
@@ -99,7 +99,7 @@ def test_individual_filter_appointments_history():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.search_appointments(
         IndividualUser.APPOINTMENT_TO_SEARCH_IN_HISTORY
@@ -166,7 +166,7 @@ def test_individual_multiple_filter_appointments_history():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
         AppointmentsHistoryStatus.EXPIRED['index']
@@ -236,7 +236,7 @@ def test_individual_view_appointment_from_upcoming():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
 
     qiwa.labor_office_appointments_page.cancel_active_appointment()
@@ -244,8 +244,8 @@ def test_individual_view_appointment_from_upcoming():
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
@@ -271,15 +271,15 @@ def test_individual_cancel_appointment_from_active_appointments():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
@@ -318,15 +318,15 @@ def test_individual_cancel_appointment_from_details_appointments():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
@@ -363,15 +363,15 @@ def test_individual_edit_appointment():
     qiwa.workspace_page.select_individual_account()
     qiwa.individual_page.wait_page_to_load()
     qiwa.individual_page.click_see_all_services()
-    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS)
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
@@ -394,8 +394,8 @@ def test_individual_edit_appointment():
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS,
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
