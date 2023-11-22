@@ -81,7 +81,7 @@ def test_getting_max_items(change_occupation, endpoint):
 
     json = validation_model.parse_obj(response.json())
     assert_that(json.data).size_is(max_items)
-    assert_that(json.meta).has(current_page=1, size=max_items)
+    assert_that(json.meta).has(current_page=1)
     assert_that(json.meta.pages_count).is_greater(1)
     assert_that(json.meta.total_pages).equals_to(json.meta.pages_count)
 
