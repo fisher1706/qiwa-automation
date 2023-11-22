@@ -37,9 +37,7 @@ def pytest_generate_tests(metafunc):
                 ChangeOccupationController.get_users,
             ),
         }
-        if metafunc.function.__name__ == "test_getting_total_items":
-            params.pop("/users")  # exclude /users from test
-        elif metafunc.function.__name__ == "test_getting_empty_page":
+        if metafunc.function.__name__ == "test_getting_empty_page":
             params.pop("/requests-laborers")  # exclude /requests-laborers from test
         metafunc.parametrize("endpoint", params.values(), ids=params.keys())
 

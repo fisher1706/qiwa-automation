@@ -70,34 +70,20 @@ def test_getting_per_page(change_occupation, endpoint, per_page):
     assert_that(json.meta).has(size=per_page)
 
 
-def test_getting_max_items(change_occupation):
-    total_users = 103
+def test_getting_max_items(change_occupation, endpoint):
     max_items = 100
-
-    json = change_occupation.get_users(page=1, per=total_users)
-    assert_that(json.data).size_is(max_items)
-    assert_that(json.meta).has(pages_count=2, total_pages=2, size=max_items)
-
-
-def test_getting_total_items(change_occupation, endpoint):
     tested_endpoint, validation_model, data = endpoint
-
     data = data(change_occupation)
     total_entities = data.meta.total_entities
-    per_page = total_entities + 1
 
-    response = tested_endpoint(change_occupation.api, page=1, per=per_page)
+    response = tested_endpoint(change_occupation.api, page=1, per=total_entities)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = validation_model.parse_obj(response.json())
-    assert_that(json.data).size_is(total_entities)
-    assert_that(json.meta).has(
-        total_entities=total_entities,
-        pages_count=1,
-        total_pages=1,
-        from_=0
-    )
-    assert_that(json.meta.total).has(value=total_entities)
+    assert_that(json.data).size_is(max_items)
+    assert_that(json.meta).has(current_page=1)
+    assert_that(json.meta.pages_count).is_greater(1)
+    assert_that(json.meta.total_pages).equals_to(json.meta.pages_count)
 
 
 def test_getting_zero_per_page(change_occupation, endpoint):

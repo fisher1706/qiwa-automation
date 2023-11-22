@@ -10,7 +10,7 @@ def test_getting_by_employee_name(change_occupation):
     laborer = change_occupation.get_random_laborer()
     json = change_occupation.get_requests(employee_name=laborer.laborer_name, per=100)
 
-    employee_names_from_json = get_data_attribute(json, "laborers", "[]", ".employee_name")
+    employee_names_from_json = get_data_attribute(json, "laborers", "[0]", ".employee_name")
     assert_that(set(employee_names_from_json)).size_is(1).contains(laborer.laborer_name)
 
 

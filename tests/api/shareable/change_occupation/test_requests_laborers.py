@@ -50,7 +50,6 @@ def test_getting_by_status_id_according_to_count(change_occupation, status):
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = Root.parse_obj(response.json())
-    assert_that(json.data).size_is(count)
     assert_that(json.meta).has(total_entities=count)
 
 

@@ -25,8 +25,10 @@ def test_validation_for_laborer_not_registered_in_portal(change_occupation, labo
     assert_that(error.attributes).has(code="WARNING")
 
 
-def test_unsuccessful_validation(change_occupation, laborer):
-    response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=216101)
+def test_validation_laborer_not_eligible(change_occupation):
+    not_eligible_user = change_occupation.get_random_user(eligible=False)
+
+    response = change_occupation.api.validate_laborer(not_eligible_user.personal_number, occupation_code=216101)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
     json = MultiLangErrorsData.parse_obj(response.json())
@@ -35,7 +37,7 @@ def test_unsuccessful_validation(change_occupation, laborer):
     assert_that(error.attributes.ar_SA.details).is_not_empty()
 
 
-def test_validation_for_employee_with_request(change_occupation, laborer):
+def test_validation_for_laborer_with_request(change_occupation, laborer):
     change_occupation.create_request(laborer)
     response = change_occupation.api.validate_laborer(laborer.personal_number, laborer.occupation_code)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
@@ -46,7 +48,7 @@ def test_validation_for_employee_with_request(change_occupation, laborer):
     assert_that(error.attributes.ar_SA.details).is_not_empty()
 
 
-def test_validation_for_non_existent_laborer(change_occupation):
+def test_validation_with_non_existent_personal_number(change_occupation):
     response = change_occupation.api.validate_laborer(personal_number=12341512312, occupation_code=712501)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
@@ -56,7 +58,7 @@ def test_validation_for_non_existent_laborer(change_occupation):
     assert_that(error.attributes.ar_SA.details).is_not_empty()
 
 
-def test_validation_for_non_existent_occupation(change_occupation, laborer):
+def test_validation_with_non_existent_occupation_code(change_occupation, laborer):
     response = change_occupation.api.validate_laborer(laborer.personal_number, occupation_code=11111)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
