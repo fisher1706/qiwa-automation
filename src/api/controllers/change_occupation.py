@@ -1,10 +1,11 @@
 import random
-from urllib import parse
 
 import allure
 
+import config
 from data.shareable.change_occupation import RequestStatus
 from src.api.clients.change_occupation import ChangeOccupationApi
+from src.api.clients.ott_service import OttServiceApi
 from src.api.http_client import HTTPClient
 from src.api.models.qiwa.change_occupation import (
     ChangeOccupationsCountData,
@@ -33,19 +34,14 @@ class ChangeOccupationController:
     @classmethod
     @allure.step
     def pass_ott_authorization(
-        cls, labor_office_id: str, sequence_number: str, personal_number: str
+        cls, labor_office_id: str, sequence_number: str
     ) -> "ChangeOccupationController":
+        ott_service = OttServiceApi()
+        response = ott_service.generate_token(sequence_number, labor_office_id)
+        assert_that(response).has(status_code=200)
+        ott_token = response.json().get("ott")
         client = HTTPClient()
         controller = cls(client)
-        response = controller.api.get_ott_token(
-            labor_office_id,
-            sequence_number,
-            personal_number,
-        )
-        assert_that(response).has(status_code=200)
-        redirect_url = response.json()["redirect_url"]
-        parsed_url = parse.parse_qs(parse.urlparse(redirect_url).query)
-        ott_token = parsed_url.get("ott-token")[0]
         response = controller.api.get_session(ott_token)
         assert_that(response).has(status_code=200)
         return controller
