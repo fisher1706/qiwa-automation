@@ -14,20 +14,6 @@ class ChangeOccupationApi:
     def __init__(self, client: HTTPClient):
         self.http = client
 
-    def get_ott_token(
-        self, labor_office_id: str, sequence_number: str, personal_number: str
-    ) -> Response:
-        payload = {
-            "labor-office-id": labor_office_id,
-            "sequence-number": sequence_number,
-            "personal-number": personal_number,
-            "service-code": "change_occupation",
-            "platform-id": 1,
-            "channel-id": "Qiwa",
-            "language": "en",
-        }
-        return self.http.post(f"{self.url}/ott-token", json=payload)
-
     def get_session(self, token: str) -> Response:
         return self.http.post(f"{self.url}/session", params={"ott-token": token})
 

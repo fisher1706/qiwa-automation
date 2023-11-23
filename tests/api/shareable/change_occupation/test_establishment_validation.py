@@ -18,7 +18,7 @@ def test_successful_validation(change_occupation):
 
 def test_unsuccessful_validation():
     change_occupation = ChangeOccupationController.pass_ott_authorization(
-        labor_office_id="1", sequence_number="115892", personal_number="1015671413"
+        labor_office_id="1", sequence_number="115892"
     )
     response = change_occupation.api.validate_establishment()
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
