@@ -9,6 +9,7 @@ from selene.support.shared import browser
 from data.visa.constants import (
     ALLOWANCE_PERIOD_END_DATE,
     ALLOWANCE_PERIOD_START_DATE,
+    BR_ACCEPTED,
     ESTABLISHING,
     ESTABLISHMENT_FUND,
     ESTABLISHMENT_PHASE,
@@ -177,7 +178,7 @@ class PermWorkVisaPage:
 
     @allure.step("Verify visa request (pdf) permanent work visa page")
     def verify_perm_work_visa_request_pdf(self, request, visa_type=VisaType.ESTABLISHMENT):
-        self.open_action_menu_on_first_visa_request(visa_type, request)
+        self.open_action_menu_on_visa_request(visa_type, request)
         self.print_action.click()
         filename = get_downloaded_filename(timeout=20)
         if visa_type == VisaType.ESTABLISHMENT:
@@ -189,7 +190,7 @@ class PermWorkVisaPage:
     def return_to_transitional_page(self):
         self.nav_link_to_transitional_page.click()
 
-    def open_action_menu_on_first_visa_request(self, visa_type, request):
+    def open_action_menu_on_visa_request(self, visa_type, request):
         if visa_type == VisaType.ESTABLISHMENT:
             self.permanent_visas_tab.click()
             command.js.scroll_into_view(self.establishment_fund_section)
@@ -609,3 +610,31 @@ class PermWorkVisaPage:
     def verify_go_to_knowledge_center_open_page(self, link):
         link.click()
         verify_new_tab_url_contains(KNOWLEDGE_CENTER_URL)
+
+    @allure.step("Verify visa request status")
+    def verify_perm_status_work_visa_request(self, ref_number: str) -> None:
+        status_cell_perm_work_visas_request = self.table_status_cell(
+            self.permanent_visas_table, ref_number
+        )
+        status_cell_others_visa_request = self.table_status_cell(
+            self.other_visas_table, ref_number
+        )
+        soft_assert_text(
+            element=status_cell_perm_work_visas_request,
+            text=BR_ACCEPTED.label,
+            element_name=f"Perm work visas request status ref_num={ref_number}",
+        )
+        soft_assert_text(
+            element=status_cell_others_visa_request,
+            text=BR_ACCEPTED.label,
+            element_name=f"Other visas status ref_num={ref_number}",
+        )
+
+    @allure.step("Open visa request view")
+    def open_visa_request_view(self, ref_number: str) -> None:
+        self.open_action_menu_on_visa_request(visa_type=VisaType.ESTABLISHMENT, request=ref_number)
+        self.view_action.click()
+
+    def table_status_cell(self, table_element: Element, ref_number: str) -> Element:
+        table = Table(table_element)
+        return table.cell(row=have.text(ref_number), column=ColName.VISA_STATUS)
