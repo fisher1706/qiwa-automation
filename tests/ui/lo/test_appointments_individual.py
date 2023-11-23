@@ -41,7 +41,7 @@ def test_view_appointments_page():
 @case_id(39180, 54992)
 @pytest.mark.parametrize("language", (Language.EN, Language.AR))
 def test_book_individual_appointment(language):
-    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.language = language
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(language)
@@ -93,7 +93,7 @@ def test_individual_view_appointment_from_history():
 @allure.title("Appointments[Individual]: Filter appointments in appointments history")
 @case_id(39204)
 def test_individual_filter_appointments_history():
-    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_individual_account()
@@ -140,13 +140,8 @@ def test_individual_filter_appointments_history():
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
         AppointmentsHistoryStatus.UNDER_PROGRESS['index']
     )
-    qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.UNDER_PROGRESS['value']
-    )
-    qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.PENDING['index']
-    )
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
+
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
         AppointmentsHistoryStatus.PENDING['index']
     )
@@ -160,7 +155,7 @@ def test_individual_filter_appointments_history():
 @allure.title("Appointments[Individual]: Multiple filter appointments in appointments history")
 @case_id(39219)
 def test_individual_multiple_filter_appointments_history():
-    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_individual_account()
@@ -230,7 +225,7 @@ def test_individual_multiple_filter_appointments_history():
 @allure.title("Appointments[Individual]: View details via upcoming appointments")
 @case_id(43167)
 def test_individual_view_appointment_from_upcoming():
-    qiwa.login_as_user(login=IndividualUser.ID_2)
+    qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_individual_account()
