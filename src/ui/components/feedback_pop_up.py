@@ -21,3 +21,4 @@ class FeedbackPopup:
     def close_feedback(self):
         self.iframe.element(".demo__shutter").click()
         browser.switch_to.default_content()
+        self._iframe = None

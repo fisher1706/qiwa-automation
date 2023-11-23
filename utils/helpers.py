@@ -13,6 +13,7 @@ from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
 
+
 GET_SESSION_VARS_JS = """var ls = window.sessionStorage, items = {};
                          for (var i = 0, k; i < ls.length; ++i)  
                          items[k = ls.key(i)] = ls.getItem(k);  
@@ -78,3 +79,7 @@ def save_pdf_file_from_response(response: Response, file_name: str):
 def dround(amount: float, num: int = 2):
     quantize = f'.{"1".zfill(num)}'
     return Decimal(f"{amount}").quantize(Decimal(quantize), rounding=ROUND_HALF_UP)
+
+
+def scroll_to_top():
+    browser.driver.execute_script("window.scrollTo(0, 0);")

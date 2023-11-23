@@ -16,6 +16,11 @@ from data.visa.constants import (
     BR_WAITING,
     ERROR_CODE,
     ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
+    VR_CANCELED,
+    VR_NEW,
+    VR_PENDING,
+    VR_UNUSED,
+    VR_USED,
     WORK_VISA_CARD_ZERO_QUOTA_ERROR,
     DateFormats,
     Numbers,
@@ -690,3 +695,39 @@ def test_verify_links_on_work_visa_page(visa_mock):
     qiwa.work_visa.increase_quota_button.click()
     qiwa.increase_quota.sign_agreement(Numbers.TWO)
     qiwa.issue_visa.verify_establishment_address_location_link()
+
+
+@case_id(6416)
+@allure.title("Test verifies visa request statuses on permanent work visa page")
+def test_verify_visa_request_statuses(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_issue_visa.click()
+    qiwa.issue_visa.verify_issue_visa_page_open()
+    vr_ref_number = qiwa.issue_visa.create_perm_visa_request()
+    qiwa.work_visa.verify_perm_status_work_visa_request(vr_ref_number)
+
+    qiwa.work_visa.open_visa_request_view(vr_ref_number)
+    qiwa.visa_request.verify_visa_request_page_open()
+    boarder_ref_number = qiwa.visa_request.get_first_border_number()
+    qiwa.visa_request.verify_visa_status(VR_UNUSED)
+    qiwa.visa_request.cancel_visa(boarder_ref_number)
+    qiwa.visa_request.verify_visa_status(VR_CANCELED)
+
+    visa_mock.change_visa_request(boarder_ref_number, VR_NEW.id)
+    browser.driver.refresh()
+    qiwa.visa_request.verify_visa_request_page_open()
+    qiwa.visa_request.verify_visa_status(VR_NEW)
+    qiwa.visa_request.cancel_visa(boarder_ref_number)
+    qiwa.visa_request.verify_visa_status(VR_CANCELED)
+
+    visa_mock.change_visa_request(boarder_ref_number, VR_USED.id)
+    browser.driver.refresh()
+    qiwa.visa_request.verify_visa_request_page_open()
+    qiwa.visa_request.verify_visa_status(VR_USED)
+
+    visa_mock.change_visa_request(boarder_ref_number, VR_PENDING.id)
+    browser.driver.refresh()
+    qiwa.visa_request.verify_visa_request_page_open()
+    qiwa.visa_request.verify_visa_status(VR_PENDING)

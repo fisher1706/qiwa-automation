@@ -60,6 +60,9 @@ class PayCardSuccess:  # pylint: disable=R0903
 
 class ColName:  # pylint: disable=too-few-public-methods
     REQUEST_STATUS = "Request status"
+    VISA_STATUS = "Visa status"
+    VISA_BORDER_NUMBER = "Border number"
+    VISA_ACTIONS = "Action"
 
 
 BalanceRequestStatus = namedtuple("TierRequest", ["id", "label"])
@@ -72,6 +75,19 @@ BR_REFUNDED = BalanceRequestStatus(5, "Refunded")
 BR_EXPIRED = BalanceRequestStatus(6, "Expired")
 BR_TERMINATED = BalanceRequestStatus(7, "Terminated")
 BR_NEW = BalanceRequestStatus(8, "Waiting for inspection")
+
+
+VisaRequestStatus = namedtuple("VisaRequest", ["id", "label", "expire"])
+
+VR_NEW = VisaRequestStatus(0, "Unused", False)
+VR_UNUSED = VisaRequestStatus(1, "Unused", True)
+VR_CANCELED = VisaRequestStatus(2, "Canceled", False)
+VR_USED = VisaRequestStatus(3, "Used", False)
+VR_PENDING = VisaRequestStatus(
+    4, "Pending for visa cancellation from Ministry of the interior", False
+)
+
+VR_CANCELABLE = [VR_NEW, VR_UNUSED]
 
 
 ERROR_CODE = "ODM0024"
@@ -143,6 +159,8 @@ ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
     "Please wait for the allowance period to end."
 )
 HOW_TO_INCREASE_ESTABLISHMENT_FUNDS = "How to increase establishment funds?"
+CANCEL_VISA = "Cancel visa"
+YOUR_REQUEST_HAS_BEEN_SENT = "Your request has been sent"
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
