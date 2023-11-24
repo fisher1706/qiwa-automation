@@ -46,7 +46,6 @@ class UserManagementActions(
 
     @allure.step
     def navigate_to_view_details_page(self, user_nid: str = None) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
         if user_nid is None:
             self.click_view_details_in_table()
         else:
@@ -68,7 +67,6 @@ class UserManagementActions(
 
     @allure.step
     def check_localization_for_main_page(self) -> UserManagementActions:
-        self.change_language_to_arabic()
         self.check_translation(
             ArabicTranslations.user_management_title,
             ArabicTranslations.add_new_user_btn,
@@ -81,11 +79,10 @@ class UserManagementActions(
 
     @allure.step
     def check_localization_for_details_page(self) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
         self.click_view_details_in_table()
         self.navigate_to_view_details()
         self.check_user_details_title(Texts.establishment_user_details)
-        self.change_language_to_arabic()
+        qiwa.header.change_local(Language.AR)
         self.check_ar_localization(
             ArabicTranslations.full_name,
             ArabicTranslations.national_id,
