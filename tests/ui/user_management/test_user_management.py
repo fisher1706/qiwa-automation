@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+from data.constants import Language
 from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
@@ -18,6 +19,7 @@ from data.user_management.user_management_users import (
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
+from tests.ui.user_management.conftest import log_in_and_open_user_management
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
@@ -28,8 +30,8 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 def test_main_page_elements():
     user_management = UserManagementActions()
     owner = owner_for_self
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().check_users_role_is_present().compare_user_name()
+    log_in_and_open_user_management(owner, Language.EN)
+    qiwa.main_page.check_users_role_is_present().compare_user_name()
     user_management.check_subscription_text_is_present(Texts.subscription_info)
 
 
@@ -38,9 +40,8 @@ def test_main_page_elements():
 def test_all_users_table():
     user_management = UserManagementActions()
     owner = owner_for_self
-    user_management.log_in_and_navigate_to_um(
-        owner.personal_number, owner.sequence_number
-    ).check_company_title_in_users_table(
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.check_company_title_in_users_table(
         labor_office_id=owner.labor_office_id, seq_number=owner.sequence_number
     ).compare_number_of_users_in_table()
 
@@ -52,8 +53,7 @@ def test_all_users_table():
 def test_user_is_redirected_to_user_details():
     owner = owner_account
     user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded()
+    log_in_and_open_user_management(owner, Language.EN)
     user_management.navigate_to_view_details_page()
 
 
@@ -61,8 +61,7 @@ def test_user_is_redirected_to_user_details():
 def test_user_is_redirected_to_owner_flow():
     owner = owner_account
     user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded()
+    log_in_and_open_user_management(owner, Language.EN)
     user_management.navigate_to_owner_flow()
 
 
@@ -70,27 +69,24 @@ def test_user_is_redirected_to_owner_flow():
 @case_id(7875, 7876, 39233, 41375, 39228)
 def test_active_user_has_access():
     owner = owner_account
-    user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().check_user_status()
+    log_in_and_open_user_management(owner, Language.EN)
+    qiwa.main_page.check_user_status()
 
 
 @allure.title("Check 'Users in Establishment Group' table pagination")
 @case_id(7878)
 def test_pagination_for_users_table():
     owner = owner_account
-    user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().check_pagination_btns()
+    log_in_and_open_user_management(owner, Language.EN)
+    qiwa.main_page.check_pagination_btns()
 
 
 @allure.title("Check that Group Manager displayed at the top of the users list")
 @case_id(23717)
 def test_that_owner_is_first_in_table():
     owner = owner_account
-    user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().check_owner_role_in_table()
+    log_in_and_open_user_management(owner, Language.EN)
+    qiwa.main_page.check_owner_role_in_table()
 
 
 @allure.title("Check that 'User Management' page has AR localization")
@@ -98,19 +94,17 @@ def test_that_owner_is_first_in_table():
 def test_localization():
     user_management = UserManagementActions()
     owner = owner_account
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded()
+    log_in_and_open_user_management(owner, Language.AR)
     user_management.check_localization_for_main_page()
 
 
 @allure.title("Check that Delegation Manager can not edit his subscription")
 @case_id(39230, 39231)
 @pytest.mark.parametrize("users", UsersTypes.users)
-def test_manager_cannt_edit_his_subscription(users):
+def test_manager_cannot_edit_his_subscription(users):
     owner = users
-    user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(owner.personal_number, owner.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().confirm_that_action_btn_is_missed()
+    log_in_and_open_user_management(owner, Language.EN)
+    qiwa.main_page.confirm_that_action_btn_is_missed()
 
 
 @allure.title("Check that user without UM privileges can't open UM service")
@@ -119,8 +113,8 @@ def test_manager_cannt_edit_his_subscription(users):
 def test_error_for_user_without_um_service():
     user = delegator_without_um
     user_management = UserManagementActions()
-    user_management.log_in_and_navigate_to_um(user.personal_number, user.sequence_number)
-    qiwa.main_page.wait_until_page_is_loaded().check_error_message_for_um_page_without_permission(
+    log_in_and_open_user_management(user, Language.EN)
+    user_management.check_error_message_for_um_page_without_permission(
         ErrorsMessage.user_doesnt_have_access_to_um
     ).click_header_main_menu_btn().click_change_workspace_btn()
     qiwa.workspace_page.select_company_account_with_sequence_number(sequence_number="157949")
@@ -133,9 +127,8 @@ def test_error_for_user_without_um_service():
 def test_ar_localization_for_delegator_details_page():
     user_management = UserManagementActions()
     owner = owner_account
-    user_management.log_in_and_navigate_to_um(
-        owner.personal_number, owner.sequence_number
-    ).check_localization_for_details_page()
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.check_localization_for_details_page()
 
 
 @allure.title("Check privileges data on Select Privileges modal")
@@ -144,9 +137,8 @@ def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
     user = delegator_with_um
-    user_management.log_in_and_navigate_to_um(
-        owner.personal_number, owner.sequence_number
-    ).navigate_to_view_details_page(user.personal_number)\
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.navigate_to_view_details_page(user.personal_number)\
         .open_select_privileges_modal_for_no_access_workspace().check_privileges_are_grouped() \
         .check_default_privileges_are_selected(Privileges.default_ui_privileges) \
         .check_ineligible_privileges_cannot_be_selected(Privileges.ineligible_ui_privileges)
@@ -158,9 +150,8 @@ def test_select_and_unselect_privileges():
     user_management = UserManagementActions()
     owner = owner_account_with_another_company
     user = user_type_three_employee
-    user_management.log_in_and_navigate_to_um(
-        owner.personal_number, owner.sequence_number
-    ).navigate_to_view_details_page(user.personal_number)\
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.navigate_to_view_details_page(user.personal_number)\
         .open_select_privileges_modal_for_no_access_workspace()\
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE)\
         .select_all_privileges().unselect_all_privileges()
