@@ -41,6 +41,8 @@ class LaborOfficeAppointmentsCreatePage:
         dropdown_element_locator,
     )
 
+    error_message = s('//*[@data-component="ErrorMessage"]')
+
     # inputs
     input_service = s('//input[@id="service"]')
     input_region = s('//input[@id="region"]')
@@ -129,6 +131,10 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Verify Service list is not empty")
     def should_service_list_be(self):
         assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
+
+    @allure.step("Verify validation message on create additional appointment")
+    def should_validation_additional_appointment_be(self):
+        self.error_message.should(have.text("You've already booked an appointment"))
 
     @allure.step("Create appointment flow in create appointment page")
     def book_appointment_flow(
