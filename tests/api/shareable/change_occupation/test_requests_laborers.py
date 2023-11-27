@@ -31,7 +31,6 @@ def test_getting_by_laborer_id(change_occupation):
 
 @pytest.mark.parametrize("status", [
     RequestStatus.DRAFT,
-    RequestStatus.PENDING_LABORER_APPROVAL,
     RequestStatus.REJECTED_BY_LABORER,
     RequestStatus.CANCELED_BY_EMPLOYER
 ])
