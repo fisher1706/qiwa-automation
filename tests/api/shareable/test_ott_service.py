@@ -10,7 +10,7 @@ def test_token_generation_and_validation():
     ott_service = OttServiceApi()
     sequence_number = time.time_ns()
 
-    generate = ott_service.generate_token(sequence_number)
+    generate = ott_service.generate_token(sequence_number=sequence_number)
     assert_status_code(generate.status_code).equals_to(HTTPStatus.OK)
     token = GenerateToken.parse_obj(generate.json())
 

@@ -23,8 +23,8 @@ class RequestLaborer(QiwaBaseModel):
     request_status_id: int
     request_status_en: str
     request_status_ar: str
-    requester_id_no: int
-    requester_user_id: int
+    requester_id_no: int | None
+    requester_user_id: int | None
     current_occupation_id: int
     current_occupation_en: str
     current_occupation_ar: str
