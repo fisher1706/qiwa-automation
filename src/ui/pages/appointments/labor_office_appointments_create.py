@@ -22,6 +22,22 @@ class LaborOfficeAppointmentsCreatePage:
     radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
     in_person_appointment = s('//fieldset//label[4]//p[@id="1-label"]')
 
+    block_new_request_virtual = s('//*[@id="reason"]//label[1]')
+    block_follow_up = s('//*[@id="reason"]//label[2]')
+    block_inquiry = s('//*[@id="reason"]//label[3]')
+    block_request_new_service_in_person = s('//*[@id="reason"]//label[4]')
+
+    edit_creators_info_btn = s('//*[@id="establishment"]//button')
+    edit_reason_btn = s('//*[@id="reason"]//button')
+    edit_service_btn = s('//*[@id="service"]//button')
+    edit_details_btn = s('//*[@id="details"]//button')
+    summary_block = s('//*[@id="summary"]/div')
+    summary_reason = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[1]')
+    summary_office = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[2]')
+    summary_date = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[3]')
+    summary_time = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[4]')
+    summary_type = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[5]')
+
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
     dropdown_select_service = Dropdown(
@@ -54,6 +70,47 @@ class LaborOfficeAppointmentsCreatePage:
         self.search.type(name)
         self.establishment_list.first.click()
         self.next_btn.click()
+        return self
+
+    @allure.step("Verify establishment search is visible")
+    def verify_select_establishment_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.search.should(be.visible)
+        return self
+
+    @allure.step("Verify next button is visible")
+    def verify_next_btn_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.next_btn.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in Appointment reason page")
+    def verify_appointment_reason_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.block_new_request_virtual.should(be.visible)
+        self.block_follow_up.should(be.visible)
+        self.block_inquiry.should(be.visible)
+        self.block_request_new_service_in_person.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in service and subservice page")
+    def verify_service_and_subservice_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.input_service.should(be.visible)
+        self.sub_service.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in Appointment details page")
+    def verify_appointment_details_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.input_region.should(be.visible)
+        self.input_office.should(be.visible)
+        self.date_picker.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in summary page")
+    def verify_summary_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.summary_block.should(be.visible)
+        self.summary_reason.should(be.visible)
+        self.summary_office.should(be.visible)
+        self.summary_date.should(be.visible)
+        self.summary_time.should(be.visible)
+        self.summary_type.should(be.visible)
         return self
 
     @allure.step("Select appointment reason {value}")
