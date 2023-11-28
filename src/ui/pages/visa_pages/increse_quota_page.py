@@ -27,7 +27,7 @@ class IncreaseQuotaPage:
         '//*[@data-testid="programAgreement"]//following-sibling::span/span'
     )
     location_dropdown = s('//*[@data-testid="estabAddressSectionlocationSelect"]')
-    location_dropdown_options = ss('//li[@role="option"]')
+    dropdown_options = ss('//li[@role="option"]')
     back_to_perm_work_visa_button = s('//*[@data-testid="backToWorkVisas"]')
     program_agreement_section = s('//p[contains(text(), "Program agreement")]')
     payment_request_sent = s('//*[@data-testid="yourRequestHasBeenSent"]')
@@ -35,9 +35,9 @@ class IncreaseQuotaPage:
         '//*[@data-testid="yourRequestForPaymentIncreaseRecruitmentQuotaApproved"]'
     )
     history_tier_upgrades = s('//*[@data-testid="TierHistoryTable"]')
-    balanse_request = s('//*[@data-testid="ExceptionalRequestsTable"]')
+    balance_request = s('//*[@data-testid="ExceptionalRequestsTable"]')
     history_tier_upgrades_table = Table(history_tier_upgrades)
-    balanse_request_table = Table(balanse_request)
+    balanse_request_table = Table(balance_request)
     visas_amount_input_field = s('//*[@data-testid="numberOfRequestedExceptionalVisasField"]')
     next_step_visas_amount_button = s(
         '//*[@data-testid="numberOfExceptionalVisasActiveNextStepBtn"]'
@@ -53,6 +53,7 @@ class IncreaseQuotaPage:
     visit_time_options = visit_time_options_box.ss(".//ul/li")
     last_name = s("#person-name")
     payment = PaymentGateWay()
+    city_dropdown = s('//*[@id="inspection-cities-select"]')
 
     def get_to_tier(self, visa_db, tier, num_visas=0):
         self.sign_agreement(tier, num_visas)
@@ -88,8 +89,9 @@ class IncreaseQuotaPage:
         return ref_number
 
     def select_location(self, index=1):
+        self.select_city()
         self.location_dropdown.click()
-        self.location_dropdown_options.element(index - 1).click()
+        self.dropdown_options.element(index - 1).click()
 
     @allure.step("Verify request is created/sent")
     def verify_created_request(self):
@@ -115,11 +117,27 @@ class IncreaseQuotaPage:
         self.visit_time_options.element(option - 1).click()
 
     def sign_agreement(self, tier, num_visas=0):
+        self.select_tier(tier, num_visas)
+        command.js.scroll_into_view(self.program_agreement_section)
+        self.agree_agreement_checkbox.click()
+        self.next_step_button_agreement.click()
+
+    def select_city(self, index=1):
+        self.city_dropdown.click()
+        self.dropdown_options.element(index - 1).click()
+
+    def select_tier(self, tier: int, num_visas: int = 0) -> None:
         s(self.TIER_CHECK_BOX.format(tier)).click()
         if tier == Numbers.FOUR:
             self.tier_4_input_field.type(num_visas)
             self.agree_checkbox.click()
         self.next_step_button_tier_select.click()
-        command.js.scroll_into_view(self.program_agreement_section)
-        self.agree_agreement_checkbox.click()
-        self.next_step_button_agreement.click()
+
+    @allure.step("Verify step 'select location' is open")
+    def verify_location_step_open(self):
+        self.city_dropdown.should(be.visible)
+        self.location_dropdown.should(be.visible)
+
+    @allure.step("Verify step 'Agreement' is open")
+    def verify_agreement_step_open(self):
+        self.agree_agreement_checkbox.should(be.visible)
