@@ -4,7 +4,7 @@ import pytest
 
 from data.shareable.expected_json.change_occupation.common import empty_data
 from src.api.models.qiwa.change_occupation import RequestsData
-from utils.assertion import assert_that, assert_status_code
+from utils.assertion import assert_status_code, assert_that
 from utils.assertion.asserts import assert_data
 from utils.json_search import get_data_attribute
 
