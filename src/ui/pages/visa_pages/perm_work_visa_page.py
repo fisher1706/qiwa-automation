@@ -30,6 +30,10 @@ from data.visa.constants import (
     RECRUITMENT_QUOTA,
     RECRUITMENT_QUOTA_TIER,
     TIER,
+    USER_CANNOT_SIGN_AGREEMENT_CONTENT_EST,
+    USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP,
+    USER_CANNOT_SIGN_AGREEMENT_TITLE_EST,
+    USER_CANNOT_SIGN_AGREEMENT_TITLE_EXP,
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
     ColName,
@@ -452,12 +456,14 @@ class PermWorkVisaPage:
         )
         browser.driver.back()
 
-    def verify_increase_recruitment_quota_button_disabled(self, button: Element) -> None:
+    def verify_increase_recruitment_quota_button_disabled(
+        self, button: Element, title: str = None, content: str = None
+    ) -> None:
         scroll_into_view_if_needed(button)
         button.should(be.visible).should(be.clickable)
         button.s(self.ICON).should(be.visible)
         button.click()
-        self.verify_modal_error_window()
+        self.verify_modal_error_window(title, content)
         self.modal_window_x_button.click()
         self.modal_window.should(be.hidden)
         button.click()
@@ -638,3 +644,26 @@ class PermWorkVisaPage:
     def table_status_cell(self, table_element: Element, ref_number: str) -> Element:
         table = Table(table_element)
         return table.cell(row=have.text(ref_number), column=ColName.VISA_STATUS)
+
+    @allure.step("Verify the option to sign agreement is not available [establishing]")
+    def verify_user_cannot_sign_agreement_establishing(self):
+        self.verify_issue_visa_button_enabled()
+        self.verify_increase_recruitment_quota_button_disabled(
+            self.increase_quota_button,
+            title=USER_CANNOT_SIGN_AGREEMENT_TITLE_EST,
+            content=USER_CANNOT_SIGN_AGREEMENT_CONTENT_EST,
+        )
+
+    @allure.step("Verify the option to sign agreement is not available [expansion]")
+    def verify_user_cannot_sign_agreement_expansion(self):
+        self.verify_issue_visa_button_enabled()
+        self.verify_increase_recruitment_quota_button_disabled(
+            self.increase_quota_button,
+            title=USER_CANNOT_SIGN_AGREEMENT_TITLE_EXP,
+            content=USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP,
+        )
+
+    @allure.step("Verify the option to sign agreement is available, and this step is skipped")
+    def verify_user_can_sign_agreement(self):
+        self.verify_issue_visa_button_enabled()
+        self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)

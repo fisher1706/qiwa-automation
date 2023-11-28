@@ -20,9 +20,10 @@ class PaymentGateWay:
     submit_payment = s('//*[@data-testid="submit-button"]')
     payment_summary = s('//*[@data-testid="summary-section-id"]')
     payment_iframe = s("#challengeFrame")
-    payment_submit_button = s("//form/input")
+    payment_submit_button = s('//input[@id="acssubmit"]')
     payment_gateway_redirect_page = s("#threedsChallengeRedirect")
     go_to_request_details_button = s('//button/p[contains(text(), "Go to request details")]')
+    iframe = "#challengeFrame"
 
     def pay_successfully(self, visa_db):
         self.payment_summary.should(be.visible)
@@ -35,7 +36,9 @@ class PaymentGateWay:
         self.card_cvv_input_field.type(PayCardSuccess.CVV2)
         self.agree_payment_checkbox.click()
         self.submit_payment.click()
+        browser.switch_to.frame(browser.element(self.iframe).should(be.visible)())
         self.payment_submit_button.click()
+        browser.switch_to.default_content()
         self.go_to_request_details_button.click()
         browser.should(have.url_containing(config.qiwa_urls.visa_web_url))
         if get_url_param(TRANSACTIONID) == visa_db.payment_id:

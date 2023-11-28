@@ -24,6 +24,7 @@ from data.visa.constants import (
     WORK_VISA_CARD_ZERO_QUOTA_ERROR,
     DateFormats,
     Numbers,
+    UserType,
     VisaType,
 )
 from src.ui.qiwa import qiwa
@@ -31,6 +32,7 @@ from utils.allure import TestmoProject, project
 from utils.helpers import join_codes
 
 case_id = project(TestmoProject.VISAS)
+
 
 @case_id(21267)
 @allure.title('Test verifies transitional page opens absher balance part')
@@ -653,6 +655,7 @@ def test_verify_internal_errors_perm_work_visa_page_expansion(visa_mock):
     qiwa.work_visa.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT)
     qiwa.work_visa.verify_expansion_balance_zero_buttons_behavior()
 
+
 @case_id(46945)
 @allure.title("Test verifies errors appearance (internal error) on permanent work visa page [establishing]")
 def test_verify_internal_tier_balance_validations_perm_work_visa_page(visa_mock, visa_db):
@@ -731,3 +734,77 @@ def test_verify_visa_request_statuses(visa_mock):
     browser.driver.refresh()
     qiwa.visa_request.verify_visa_request_page_open()
     qiwa.visa_request.verify_visa_status(VR_PENDING)
+
+
+@case_id(134728)
+@allure.title("Test verifies handling user-type during balance request for establishment flow, "
+              "so that only unified company owner can approve")
+def test_verify_handling_tier_balance_request_user_not_approved(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            user_type=UserType.USER,
+                            agreement_approved=False)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_user_cannot_sign_agreement_establishing()
+
+
+@case_id(134727)
+@allure.title("Test verifies handling user-type during balance request for establishment flow, "
+              "when company owner already approved agreement")
+def test_verify_handling_tier_balance_request_user_approved(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            user_type=UserType.USER,
+                            agreement_approved=True)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_user_can_sign_agreement()
+    qiwa.work_visa.increase_quota_button.click()
+    qiwa.increase_quota.select_tier(Numbers.FOUR, num_visas=Numbers.ONE_HUNDRED)
+    qiwa.increase_quota.verify_location_step_open()
+
+
+@case_id(134727)
+@allure.title("Test verifies handling user-type during balance request in establishment flow, "
+              "in case company owner and agreement_approved=False")
+def test_verify_handling_tier_balance_request_owner_not_approved(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            user_type=UserType.OWNER,
+                            agreement_approved=False)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_user_can_sign_agreement()
+    qiwa.work_visa.increase_quota_button.click()
+    qiwa.increase_quota.select_tier(Numbers.FOUR, num_visas=Numbers.ONE_HUNDRED)
+    qiwa.increase_quota.verify_agreement_step_open()
+
+
+@case_id(134722)
+@allure.title("Test verifies handling user-type during balance request in establishment flow, "
+              "in case company owner and agreement_approved=True")
+def test_verify_handling_balance_request_owner_approved(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            user_type=UserType.OWNER,
+                            agreement_approved=True)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_user_can_sign_agreement()
+    qiwa.work_visa.increase_quota_button.click()
+    qiwa.increase_quota.select_tier(Numbers.FOUR, num_visas=Numbers.ONE_HUNDRED)
+    qiwa.increase_quota.verify_location_step_open()
+
+
+@case_id(134196)
+@allure.title("Test verifies handling user-type during balance request for expansion flow, "
+              "so that only unified company owner can approve")
+def test_verify_handling_balance_request_user_not_approved(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION,
+                            user_type=UserType.USER,
+                            agreement_approved=False)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_user_cannot_sign_agreement_expansion()

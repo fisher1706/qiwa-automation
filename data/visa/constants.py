@@ -7,6 +7,11 @@ class VisaType:  # pylint: disable=R0903
     EXPANSION = 2
 
 
+class UserType:  # pylint: disable=R0903
+    OWNER = 1
+    USER = 2
+
+
 class DateFormats:  # pylint: disable=R0903
     DDMMYYYY = "%d-%m-%Y"
     YYYYMMDD = "%Y-%m-%d"
@@ -87,6 +92,23 @@ VR_PENDING = VisaRequestStatus(
     4, "Pending for visa cancellation from Ministry of the interior", False
 )
 
+TOASTER = "Toaster"
+TOOLTIP = "Tooltip"
+
+BR_REFUND_MESSAGES = namedtuple("RefundStatus", ["id", "message", "place"])
+
+BR_SUCCESS = BR_REFUND_MESSAGES(1, "-", None)
+BR_LIMIT = BR_REFUND_MESSAGES(
+    2, "Sorry, you have exceeded the 30 days limit of refunding requested balance.", TOOLTIP
+)
+BR_USED = BR_REFUND_MESSAGES(
+    3,
+    "Sorry, you cannot refund this balance request as you have used it for either employee transfer or issuing visas.",
+    TOOLTIP,
+)
+BR_CANNOT = BR_REFUND_MESSAGES(4, "Sorry, you cannot refund this balance request", TOOLTIP)
+BR_ERROR = BR_REFUND_MESSAGES(5, "error", TOASTER)
+
 VR_CANCELABLE = [VR_NEW, VR_UNUSED]
 
 
@@ -161,6 +183,18 @@ ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
 HOW_TO_INCREASE_ESTABLISHMENT_FUNDS = "How to increase establishment funds?"
 CANCEL_VISA = "Cancel visa"
 YOUR_REQUEST_HAS_BEEN_SENT = "Your request has been sent"
+USER_CANNOT_SIGN_AGREEMENT_TITLE_EST = "Sorry, currently you cannot increase recruitment quota"
+USER_CANNOT_SIGN_AGREEMENT_CONTENT_EST = (
+    "Establishing tiers are available when unified number "
+    "owner agrees on establishing program agreement"
+)
+USER_CANNOT_SIGN_AGREEMENT_TITLE_EXP = (
+    "Sorry, currently you cannot request exceptional recruitment quota"
+)
+USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP = (
+    "Exceptional expansion balance are only available for unified "
+    "number owner to agree on exceptional program agreement"
+)
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
