@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+import utils.helpers
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
     AppointmentsHistoryStatus,
@@ -359,7 +360,7 @@ def test_edit_establishment_appointment(language=Language.EN):
     qiwa.labor_office_appointments_edit_page.next_step_btn_click()
 
     qiwa.labor_office_appointments_edit_page.verify_summary_table(
-        office_name=OfficesInfo.OFFICE_NAME_TEST_OFFICE, type_value='In-person'
+        office_name=OfficesInfo.OFFICE_NAME_TEST_OFFICE, type_value="In-person"
     )
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
@@ -376,3 +377,105 @@ def test_edit_establishment_appointment(language=Language.EN):
     qiwa.labor_office_appointments_view_page.verify_general_info_row()
     qiwa.labor_office_appointments_view_page.verify_general_table()
     qiwa.labor_office_appointments_view_page.verify_requester_info()
+
+
+@allure.title(
+    "Appointments: Edit Appointment in process of booking with visit type 'Establishments'"
+)
+@case_id(22143)
+def test_edit_establishment_appointment_from_booking(language=Language.EN):
+    qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(language)
+    qiwa.workspace_page.select_company_account_with_sequence_number(SubscribedUser.SEQUENCE_NUMBER)
+    qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.verify_select_establishment_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+    qiwa.labor_office_appointments_create_page.select_establishment(
+        SubscribedUser.ESTABLISHMENT[language]
+    )
+
+    qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+
+    qiwa.labor_office_appointments_create_page.edit_creators_info_btn.click()
+    qiwa.labor_office_appointments_create_page.verify_select_establishment_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+    qiwa.labor_office_appointments_create_page.select_establishment(
+        SubscribedUser.ESTABLISHMENT[language]
+    )
+
+    qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.IN_PERSON
+    )
+
+    qiwa.labor_office_appointments_create_page.verify_service_and_subservice_blocks_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+
+    utils.helpers.scroll_to_coordinates()
+
+    qiwa.labor_office_appointments_create_page.edit_reason_btn.click()
+    qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.IN_PERSON
+    )
+
+    qiwa.labor_office_appointments_create_page.select_service(
+        ServicesInfo.SERVICE_NAME_WORK_PERMITS[language]
+    )
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language]
+    )
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.verify_appointment_details_blocks_visible()
+
+    utils.helpers.scroll_to_coordinates()
+
+    qiwa.labor_office_appointments_create_page.edit_service_btn.click()
+
+    qiwa.labor_office_appointments_create_page.verify_service_and_subservice_blocks_visible()
+    qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_MADINAH[language])
+    qiwa.labor_office_appointments_create_page.select_office(OfficesInfo.OFFICE_NAME_TEST_OFFICE)
+    qiwa.labor_office_appointments_create_page.select_date()
+    qiwa.labor_office_appointments_create_page.select_time()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.verify_summary_blocks_visible()
+
+    utils.helpers.scroll_to_coordinates()
+
+    qiwa.labor_office_appointments_create_page.edit_details_btn.click()
+    qiwa.labor_office_appointments_create_page.verify_appointment_details_blocks_visible()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.verify_summary_blocks_visible()
+
+    utils.helpers.scroll_to_coordinates()
+
+    qiwa.labor_office_appointments_create_page.edit_creators_info_btn.click()
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        region=OfficesInfo.REGION_MADINAH[language],
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
+        establishment=SubscribedUser.ESTABLISHMENT[language],
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
+        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
+    )
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.check_context_action_menu_from_upcoming()

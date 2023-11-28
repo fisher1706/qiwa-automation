@@ -1,5 +1,6 @@
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
+from time import sleep
 from typing import Union
 from urllib import parse
 
@@ -79,6 +80,12 @@ def save_pdf_file_from_response(response: Response, file_name: str):
 def dround(amount: float, num: int = 2):
     quantize = f'.{"1".zfill(num)}'
     return Decimal(f"{amount}").quantize(Decimal(quantize), rounding=ROUND_HALF_UP)
+
+
+def scroll_to_coordinates(x: str = "0", y: str = "0"):
+    for _ in range(2):
+        browser.driver.execute_script(f"window.scrollTo({x}, {y});")
+        sleep(3)
 
 
 def scroll_to_top():
