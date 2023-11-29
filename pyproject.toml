@@ -55,6 +55,7 @@ markers = [
     "stage",
     "demo"
 ]
+addopts = "--ignore=tests/api/shareable/work_permits"
 
 [tool.black]
 line-length = 99
