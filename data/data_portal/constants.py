@@ -563,7 +563,7 @@ class Admin:
     AUTOMATION_UPPER_CASE = "Automation"
     AUTOMATION_EDIT = "automation-edited"
     TABS = ["Content", "Reports\n(active tab)", "Blocks", "Takeaway Sections", "Files"]
-    FILTERS = ["Title", "Published status", "Language", "Category (field_category)"]
+    FILTERS = ["Title", "Published status", "Language", "Category"]
     REPORT_CATEGORY_COLUMNS = [
         "Title",
         "Likes",
@@ -576,14 +576,15 @@ class Admin:
         "Operations",
     ]
     LANGUAGES = ["English (Original language)", "Arabic"]
-    MODAL_WARNING = "Are you sure you want to delete the content item"
+    MODAL_WARNING = "Are you sure you want to delete the content item {0}?"
+    PUBLISHED_NAME = "Published"
     PUBLISHED = "1"
     UNPUBLISHED = "2"
     ENGLISH_FILTER = "en"
     ARABIC_FILTER = "ar"
-    SUCCESS_MESSAGE = "Action processing results: Change Category "
+    CHANGE_CATEGORY_SUCCESS_MESSAGE = "Node {0} category changed to {1}."
     VALIDATION_TITLE = "The title of the takeaway section cannot contain special symbols."
-    VALIDATION_CONTENT = "Maximum 2000 characters are allowed"
+    VALIDATION_CONTENT = "The text is too long: the limit is 2000 characters."
     AUTOMATION_AR = "أتمتة"
     CREATE_REPORT_TITLE = "Create Report"
     CREATE_REPORT_REQUIRED_FIELDS = ["Report name", "Duration Read", "Add a new file"]
@@ -616,3 +617,22 @@ class Admin:
     TXT = "admin_portal_test_attach.txt"
     DOC = "admin_portal_test_attach.doc"
     PDF = "admin_portal_test_attach.pdf"
+    CHART = "chart"
+    IMAGE = "image"
+    IMAGE_PARAGRAPH = "image-paragraph"
+    NUMBER = "number"
+    CURRENCY = "currency"
+    PERCENTAGE = "percentage"
+    YELLOW = (252, 182, 20)
+    BOLD = "Bold (Ctrl+B)"
+    ITALIC = "Italic (Ctrl+I)"
+    UNDERLINE = "Underline (Ctrl+U)"
+    STRIKETHROUGH = "Strikethrough (Ctrl+Shift+X)"
+    SUBSCRIPT = "Subscript"
+    SUPERSCRIPT = "Superscript"
+    HYPER_LINK = "Link (Ctrl+K)"
+    ALIGN_LEFT = "Align left"
+    ALIGN_RIGHT = "Align right"
+    ALIGN_CENTER = "Align center"
+    ALIGN_JUSTIFY = "Justify"
+    GOOGLE_LINK = "https://www.google.com/"
