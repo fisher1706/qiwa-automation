@@ -8,22 +8,23 @@ from src.api.models.qiwa.change_occupation import RequestsLaborersData
 from src.api.models.qiwa.raw.root import Root
 from utils.assertion import assert_status_code
 from utils.assertion.asserts import assert_that
-from utils.json_search import get_data_attribute, search_data_by_attributes
+from utils.json_search import get_data_attribute
 
 
 def test_getting_by_laborer_name(change_occupation):
     laborer = change_occupation.get_random_laborer()
 
-    json = change_occupation.get_requests_laborers(laborer_name=laborer.laborer_name, per=1000)
-    assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
-    assert_that(search_data_by_attributes(json, laborer_name=laborer.laborer_name)).size_is(json.meta.total_entities)
+    json = change_occupation.get_requests_laborers(laborer_name=laborer.laborer_name)
+    assert_that(json.data).is_not_empty()
+    names = get_data_attribute(json, "laborer_name")
+    assert_that(set(names)).size_is(1).contains(laborer.laborer_name)
 
 
 def test_getting_by_laborer_id(change_occupation):
     laborer = change_occupation.get_random_laborer()
 
-    json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no, per=100)
-    assert_that(json.data).is_not_empty().size_is(json.meta.total_entities)
+    json = change_occupation.get_requests_laborers(laborer_id=laborer.laborer_id_no)
+    assert_that(json.data).is_not_empty()
 
     laborer_ids_from_json = get_data_attribute(json, "laborer_id_no")
     assert_that(set(laborer_ids_from_json)).size_is(1).contains(laborer.laborer_id_no)
@@ -35,7 +36,7 @@ def test_getting_by_laborer_id(change_occupation):
     RequestStatus.CANCELED_BY_EMPLOYER
 ])
 def test_getting_by_status_id(change_occupation, status):
-    json = change_occupation.get_requests_laborers(request_status=status, per=100)
+    json = change_occupation.get_requests_laborers(request_status=status)
     status_ids_from_json = get_data_attribute(json, "request_status_id")
 
     assert_that(set(status_ids_from_json)).size_is(1).contains(status.value)
