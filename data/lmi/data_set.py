@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from data.data_portal.constants import Admin
 from data.lmi.constants import (
     Actions,
     DimensionAction,
@@ -155,29 +154,6 @@ class ResultDataSet:
         ),
         (Actions.DELETE, DimensionsInfo.NAME_EN_TEXT, DimensionsInfo.DELETE_LINK_SUCCESS_MESSAGE),
         (Actions.COUNTER, DimensionsInfo.COPY_LINK_MESSAGE),
-    )
-
-
-@dataclass
-class AdminDataSet:
-    criteria = (
-        (Admin.AUTOMATION, None, None, None),
-        (Admin.AUTOMATION, Admin.PUBLISHED, None, None),
-        (Admin.AUTOMATION, None, Admin.ENGLISH_FILTER, None),
-        (Admin.AUTOMATION, None, None, Admin.AUTOMATION),
-        (Admin.AUTOMATION, Admin.PUBLISHED, Admin.ENGLISH_FILTER, None),
-        (Admin.AUTOMATION, Admin.PUBLISHED, Admin.ARABIC_FILTER, None),
-        (Admin.AUTOMATION, Admin.PUBLISHED, None, Admin.AUTOMATION),
-        (Admin.AUTOMATION, None, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
-        (None, Admin.PUBLISHED, None, None),
-        (None, Admin.PUBLISHED, Admin.ENGLISH_FILTER, None),
-        (None, Admin.PUBLISHED, Admin.ARABIC_FILTER, None),
-        (None, Admin.PUBLISHED, None, Admin.AUTOMATION),
-        (None, Admin.PUBLISHED, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
-        (None, Admin.PUBLISHED, Admin.ARABIC_FILTER, Admin.AUTOMATION),
-        (None, None, Admin.ENGLISH_FILTER, None),
-        (None, None, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
-        (None, None, None, Admin.AUTOMATION),
     )
 
 
