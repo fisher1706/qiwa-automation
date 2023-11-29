@@ -433,3 +433,36 @@ def test_individual_verify_validation_error_on_book_appointment_once_exists():
         office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
     qiwa.labor_office_appointments_create_page.should_validation_additional_appointment_be()
+
+
+@allure.title("Appointments[Individual]: The validation messages on Appointment Details fields are present")
+@case_id(43168)
+def test_individual_verify_validation_error_appointment_details():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON)
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN])
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN]
+    )
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_region_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_office_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_date_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_time_be()
+
+    qiwa.labor_office_appointments_create_page.should_validation_message_region_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_office_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_date_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_time_be()

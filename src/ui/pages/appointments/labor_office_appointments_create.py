@@ -58,6 +58,15 @@ class LaborOfficeAppointmentsCreatePage:
     )
 
     error_message = s('//*[@data-component="ErrorMessage"]')
+    error_message_region = s('//*[@id="region-error"]')
+    error_message_office = s('//*[@id="office-error"]')
+    error_message_date = s('//*[@id="date-error"]')
+    error_message_time = s('(//*[@id="office-error"])[2]')
+
+    error_message_region_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[1]')
+    error_message_office_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[2]')
+    error_message_date_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[3]')
+    error_message_time_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[4]')
 
     # inputs
     input_service = s('//input[@id="service"]')
@@ -189,9 +198,41 @@ class LaborOfficeAppointmentsCreatePage:
     def should_service_list_be(self):
         assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
 
-    @allure.step("Verify validation message on create additional appointment")
+    @allure.step("Verify validation select link on region field is present")
+    def should_validation_select_link_region_be(self):
+        self.error_message_region_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on office field is present")
+    def should_validation_select_link_office_be(self):
+        self.error_message_office_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on date field is present")
+    def should_validation_select_link_date_be(self):
+        self.error_message_date_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on time field is present")
+    def should_validation_select_link_time_be(self):
+        self.error_message_time_select_link.should(be.visible)
+
+    @allure.step("Verify validation message on create additional appointment is present")
     def should_validation_additional_appointment_be(self):
         self.error_message.should(have.text("You've already booked an appointment"))
+
+    @allure.step("Verify validation message on region field is present")
+    def should_validation_message_region_be(self):
+        self.error_message_region.should(be.visible)
+
+    @allure.step("Verify validation message on office field is present")
+    def should_validation_message_office_be(self):
+        self.error_message_office.should(be.visible)
+
+    @allure.step("Verify validation message on date field is present")
+    def should_validation_message_date_be(self):
+        self.error_message_date.should(be.visible)
+
+    @allure.step("Verify validation message on time field is present")
+    def should_validation_message_time_be(self):
+        self.error_message_time.should(be.visible)
 
     @allure.step("Create appointment flow in create appointment page")
     def book_appointment_flow(
