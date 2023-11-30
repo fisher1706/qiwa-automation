@@ -6,12 +6,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def send_email_from_outlook(sender, email_password, report, receivers):
+def send_email_from_outlook(sender, email_password, report, receivers, service_name):
     password = email_password
     message = MIMEMultipart()
     message["From"] = sender
     message["To"] = ", ".join(receivers)
-    message["Subject"] = "Automation daily report" + ": " + str(date.today())
+    message["Subject"] = "Automation daily report for: " + service_name + " " + str(date.today())
 
     html_content = """<html>
              <head></head>
