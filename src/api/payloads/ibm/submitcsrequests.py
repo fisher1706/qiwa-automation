@@ -1,6 +1,13 @@
+from typing import Optional
+
 from pydantic.main import BaseModel
 
 from src.api.payloads.ibm.header import Header
+
+
+class SponsorDetails(BaseModel):
+    SponsorIdNo: Optional[int]
+    SponsorName: Optional[str]
 
 
 class SourceDetails(BaseModel):

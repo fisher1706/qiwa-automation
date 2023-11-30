@@ -10,7 +10,7 @@ from src.api.payloads.ibm.submitcsrequests import (
     LaborersDetailsList,
     SourceDetails,
     SubmitCSRequestRq,
-    SubmitCSRequestRqPayload,
+    SubmitCSRequestRqPayload, SponsorDetails,
 )
 
 
@@ -52,6 +52,10 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer):
                             LaborOfficeId="1",
                             SequenceNumber="224981",
                         ),
+                        SponsorDetails=SponsorDetails(
+                            SponsorIdNo=0,
+                            SponsorName=""
+                        )
                     )
                 ),
             ),
