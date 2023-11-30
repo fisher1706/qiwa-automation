@@ -45,7 +45,7 @@ def pre_test():
 @pytest.fixture()
 def create_et_request():
     employee_transfer_api.post_prepare_laborer_for_et_request()
-    ibm_api.create_new_contract(laborer, employer)
+    ibm_api.create_new_contract(employer, laborer)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 

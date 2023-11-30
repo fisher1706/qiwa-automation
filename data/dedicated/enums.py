@@ -16,20 +16,29 @@ class RowsPerPage(Enum):
 class RequestStatus(Enum):
     ALL = "All"
     DRAFT = "Draft"
-    PENDING_FOR_CURRENT_EMPLOYER_APPROVAL = "Pending For Current Employer Approval"
+    PENDING_FOR_CURRENT_EMPLOYER_APPROVAL = {
+        Language.EN: "Pending For Current Employer Approval",
+        Language.AR: "بانتظار موافقة صاحب العمل الحالي",
+    }
     PENDING_FOR_LABORER_APPROVAL = "Pending for Laborer Approval"
     PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER = {
-        Language.EN: "Pending Completing Transfer In Absher By New Employer",
-        Language.AR: "",
+        Language.EN: "Pending Completing Transfer in Absher by New Employer",
+        Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
     }
     APPROVED = "Approved"
     REJECTED_BY_NIC = "Rejected By NIC"
-    PENDING_FOR_NOTICE_PERIOD_COMPLETION = "Pending For Notice Period Completion"
+    PENDING_FOR_NOTICE_PERIOD_COMPLETION = {
+        Language.EN: "Pending for Notice Period Completion",
+        Language.AR: "بانتظار إكمال فترة الإشعار",
+    }
     AUTO_CANCELLED_FOR_MORE_THAN_14_DAYS = (
         "Auto Cancelled Due To Not Approve Or Reject The Request For More Than 14 Days"
     )
-    REJECTED_BY_LABORER = "Rejected By Laborer"
-    REJECTED_BY_CURRENT_EMPLOYER = "Rejected By Current Employer"
+    REJECTED_BY_LABORER = {Language.EN: "Rejected by Employee", Language.AR: "مرفوض من الموظف"}
+    REJECTED_BY_CURRENT_EMPLOYER = {
+        Language.EN: "Rejected by Current Employer",
+        Language.AR: "مرفوض من صاحب العمل الحالي",
+    }
     CANCELLED_BY_NEW_EMPLOYER = "Cancelled By New Employer"
     EXPIRED_BECAUSE_OF_NOT_COMPLETING_THE_REQUEST_BY_THE_NEW_EMPLOYER = (
         "Expired Because Of Not Completing The Request By The New Employer"

@@ -16,7 +16,9 @@ from src.api.payloads.ibm.submitchangesponsorrequest import (
 )
 
 
-def employee_transfer_request_payload(user: User, laborer: Laborer, transfer_type: TransferType):
+def employee_transfer_request_bme_payload(
+    user: User, laborer: Laborer, transfer_type: TransferType
+):
     return SubmitChangeSponsorRequestRqPayload(
         SubmitChangeSponsorRequestRq=SubmitChangeSponsorRequestRq(
             Header=Header(

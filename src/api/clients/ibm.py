@@ -11,7 +11,12 @@ from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.payloads.appointment import appointment_payload
 from src.api.payloads.contract_details import contract_details_payload
-from src.api.payloads.employee_transfer_request import employee_transfer_request_payload
+from src.api.payloads.employee_transfer_request_ import (
+    employee_transfer_request_ae_payload,
+)
+from src.api.payloads.employee_transfer_request_bme import (
+    employee_transfer_request_bme_payload,
+)
 from src.api.payloads.establishment_information import establishment_information_payload
 from utils.allure import allure_steps
 from utils.assertion import assert_status_code
@@ -44,26 +49,38 @@ class IbmApi:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
-    def create_new_contract(self, laborer: Laborer, employer: User):
+    def create_new_contract(self, user: User, laborer: Laborer):
         response = self.client.post(
             url=self.url,
             endpoint="/takamol/staging/contractmanagement/createnewcontract",
-            json=contract_details_payload(laborer, employer),
+            json=contract_details_payload(laborer, user),
             headers=HEADERS,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
-    def create_employee_transfer_request(
+    def create_employee_transfer_request_bme(
         self, user: User, laborer: Laborer, transfer_type: TransferType
     ):
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitchangesponsorrequest",
             headers=HEADERS,
-            json=employee_transfer_request_payload(user, laborer, transfer_type),
+            json=employee_transfer_request_bme_payload(user, laborer, transfer_type),
         )
         response = response.json()["SubmitChangeSponsorRequestRs"]["Header"]["ResponseStatus"]
-        if response["Status"] == "ERROR":
+        if response["Status"].lower() == "error":
+            pytest.fail(reason=response["EnglishMsg"])
+
+    def create_employee_transfer_request_ae(self, user: User, laborer: Laborer):
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/changesponsor/submitcsrequests",
+            headers=HEADERS,
+            json=employee_transfer_request_ae_payload(user, laborer),
+        )
+        print(response.json())
+        response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
+        if response["Status"].lower() == "error":
             pytest.fail(reason=response["EnglishMsg"])
 
 

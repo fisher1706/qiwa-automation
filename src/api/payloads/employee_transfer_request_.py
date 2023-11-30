@@ -1,9 +1,17 @@
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.api.payloads.ibm.header import Header, UserInfo
-
-from src.api.payloads.ibm.submitcsrequests import SubmitCSRequestRqPayload, SubmitCSRequestRq, Body, DestinationDetails, \
-    LaborersDetailsList, LaborersDetailsItem, LaborerDetails, SourceDetails, LaborerNationality
+from src.api.payloads.ibm.submitcsrequests import (
+    Body,
+    DestinationDetails,
+    LaborerDetails,
+    LaborerNationality,
+    LaborersDetailsItem,
+    LaborersDetailsList,
+    SourceDetails,
+    SubmitCSRequestRq,
+    SubmitCSRequestRqPayload,
+)
 
 
 def employee_transfer_request_ae_payload(user: User, laborer: Laborer):

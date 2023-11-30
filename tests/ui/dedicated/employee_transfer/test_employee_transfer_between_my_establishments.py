@@ -3,10 +3,6 @@ import pytest
 from selene import browser
 
 from data.constants import Language
-from data.dedicated.employee_trasfer.employee_transfer_constants import (
-    LABORER_STATUS_REJECT,
-    LABORER_TYPE_9_STATUS_APPROVE,
-)
 from data.dedicated.employee_trasfer.employee_transfer_users import (
     employer,
     employer_between_my_establishments,
@@ -14,7 +10,7 @@ from data.dedicated.employee_trasfer.employee_transfer_users import (
     laborer_between_my_establishments_existing_contract,
     laborer_between_my_establishments_quota,
 )
-from data.dedicated.enums import ServicesAndTools, TransferType
+from data.dedicated.enums import RequestStatus, ServicesAndTools, TransferType
 from src.api.clients.employee_transfer import employee_transfer_api
 from src.api.clients.ibm import ibm_api
 from src.ui.actions.employee_transfer import employee_transfer_actions
@@ -50,7 +46,7 @@ def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
 
 
 @pytest.mark.parametrize(
-    'status', [LABORER_TYPE_9_STATUS_APPROVE, LABORER_STATUS_REJECT],
+    'status', [RequestStatus.PENDING_FOR_CURRENT_EMPLOYER_APPROVAL.value, RequestStatus.REJECTED_BY_LABORER.value],
     ids=[
         'Verify Laborer is able to approve the ET request',
         'Verify Laborer is able to reject the ET request'
@@ -59,10 +55,10 @@ def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
 @case_id(123679, 123680, 123681, 123682)
 def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
-    ibm_api.create_new_contract(laborer_between_my_establishments, employer)
-    ibm_api.create_employee_transfer_request(employer,
-                                             laborer_between_my_establishments,
-                                             TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
+    ibm_api.create_new_contract(employer, laborer_between_my_establishments)
+    ibm_api.create_employee_transfer_request_bme(employer,
+                                                 laborer_between_my_establishments,
+                                                 TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
 
     employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.login_id)
 
@@ -75,7 +71,7 @@ def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
     qiwa.individual_page.select_service(ServicesAndTools.EMPLOYEE_TRANSFERS.value[Language.EN]) \
         .click_agree_checkbox()
 
-    if status == LABORER_TYPE_9_STATUS_APPROVE:
+    if status == RequestStatus.PENDING_FOR_CURRENT_EMPLOYER_APPROVAL.value:
         individual_actions.approve_request()
     else:
         individual_actions.reject_request()
@@ -90,15 +86,15 @@ def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
 @case_id(123683)
 def test_bme_quota_should_be_decreased_after_submitting_et_request():
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
-    ibm_api.create_new_contract(laborer_between_my_establishments, employer)
+    ibm_api.create_new_contract(employer, laborer_between_my_establishments)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
 
-    ibm_api.create_employee_transfer_request(employer,
-                                             laborer_between_my_establishments,
-                                             TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
+    ibm_api.create_employee_transfer_request_bme(employer,
+                                                 laborer_between_my_establishments,
+                                                 TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
 
     qiwa.header.click_on_menu().click_on_logout()
     qiwa.login_page.wait_login_page_to_load()
@@ -130,15 +126,15 @@ def test_bme_quota_should_be_decreased_after_submitting_et_request():
 @case_id(123684)
 def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
-    ibm_api.create_new_contract(laborer_between_my_establishments, employer)
+    ibm_api.create_new_contract(employer, laborer_between_my_establishments)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
 
-    ibm_api.create_employee_transfer_request(employer,
-                                             laborer_between_my_establishments,
-                                             TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
+    ibm_api.create_employee_transfer_request_bme(employer,
+                                                 laborer_between_my_establishments,
+                                                 TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
 
     qiwa.header.click_on_menu().click_on_logout()
     qiwa.login_page.wait_login_page_to_load()
@@ -155,7 +151,7 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
     individual_actions = IndividualActions()
     individual_actions.reject_request() \
         .wait_until_popup_disappears() \
-        .verify_expected_status(LABORER_STATUS_REJECT[Language.EN])
+        .verify_expected_status(RequestStatus.REJECTED_BY_LABORER.value[Language.EN])
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
 
@@ -168,15 +164,15 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
 @case_id(123685)
 def test_quota_not_decrease_between_my_establishments_same_unified_number():
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments_quota.login_id)
-    ibm_api.create_new_contract(laborer_between_my_establishments_quota, employer)
+    ibm_api.create_new_contract(employer, laborer_between_my_establishments_quota)
 
     employee_transfer_actions.navigate_to_et_service(employer_between_my_establishments)
 
     establishment_balance = qiwa.employee_transfer_page.get_recruitment_quota()
 
-    ibm_api.create_employee_transfer_request(employer,
-                                             laborer_between_my_establishments_quota,
-                                             TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
+    ibm_api.create_employee_transfer_request_bme(employer,
+                                                 laborer_between_my_establishments_quota,
+                                                 TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
 
     browser.driver.refresh()
 

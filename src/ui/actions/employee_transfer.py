@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 from data.constants import Language, UserInfo
-from data.dedicated.employee_trasfer.employee_transfer_constants import (
-    SPONSOR_STATUS_APPROVE,
-)
+from data.dedicated.enums import RequestStatus
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.ui.actions.contract_management import contract_management_actions
@@ -100,7 +98,7 @@ class EmployeeTransferActions:
         return self
 
     def make_a_decision_as_current_sponsor(self, status: dict):
-        if status == SPONSOR_STATUS_APPROVE:
+        if status == RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value:
             qiwa.employee_transfer_page.click_btn_approve().click_btn_accept_request()
             qiwa.code_verification.fill_in_code().click_confirm_button()
         else:
