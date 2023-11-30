@@ -60,31 +60,8 @@ POPUP_REDIRECTION_TITLE = "YOU WILL BE REDIRECTED"
 POPUP_REDIRECTION_BODY = (
     "You will be redirected to Contracts Management service to edit the employee’s contract"
 )
-LABORER_STATUS_APPROVE = {
-    Language.EN: "Pending For Current Employer Approval",
-    Language.AR: "بانتظار موافقة صاحب العمل الحالي",
-}
-LABORER_TYPE_9_STATUS_APPROVE = {
-    Language.EN: "Pending Completing Transfer in Absher by New Employer",
-    Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
-}
-LABORER_TYPE_4_FREEDOM_TRANSFER_STATUS_APPROVE = {
-    Language.EN: "Pending for Notice Period Completion",
-    Language.AR: "بانتظار إكمال فترة الإشعار",
-}
-LABORER_TYPE_4_DIRECT_TRANSFER_STATUS_APPROVE = {
-    Language.EN: "Pending Completing Transfer in Absher by New Employer",
-    Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
-}
-LABORER_STATUS_REJECT = {Language.EN: "Rejected by Employee", Language.AR: "مرفوض من الموظف"}
-SPONSOR_STATUS_APPROVE = {
-    Language.EN: "Pending Completing Transfer in Absher by New Employer",
-    Language.AR: "بانتظار استكمال عملية النقل في وزارة الداخلية بواسطة صاحب العمل الجديد",
-}
-SPONSOR_STATUS_REJECT = {
-    Language.EN: "Rejected by Current Employer",
-    Language.AR: "مرفوض من صاحب العمل الحالي",
-}
+
+
 REJECT_REASON = "I don’t want to be transferred"
 HEADER_REQ_NUMBER = {Language.EN: "Req number", Language.AR: "رقم الطلب"}
 HEADER_EMPLOYEE_NAME = {Language.EN: "Employee name", Language.AR: "اسم الموظف"}
@@ -112,15 +89,6 @@ HEADER_TITLES_LIST = [
 ]
 PLACEHOLDER_SEARCH = {Language.EN: "Search", Language.AR: "البحث"}
 REQUEST_SUBMITTED = {Language.EN: "Request submitted", Language.AR: "البحث"}
-REQUEST_CONFIRMED_BY_EMPLOYEE = {
-    Language.EN: "Request confirmed by employee",
-    Language.AR: "البحث",
-}
-REQUEST_CONFIRMED_BY_CURRENT_EMPLOYER = {
-    Language.EN: "Request confirmed by current employer",
-    Language.AR: "البحث",
-}
-REQUEST_CONFIRMED_BY_NIC = {Language.EN: "Request confirmed by NIC", Language.AR: "البحث"}
 EXPECTED_DATE = [
     "Date: 20/09/2022",
     "Date: 20/09/2022",
