@@ -20,6 +20,7 @@ stages:
   - test-run
   - testmo-report
   - allure-report
+  - allure-send-email
   - discord-notification
 
 .package:
@@ -408,6 +409,22 @@ visa_ui_allure_report:
   variables:
     ALLURE_PROJECT_ID: aqa-visa-ui
   needs: [visa_ui_tests]
+
+.allure_email_template: &allure_send_email
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  extends: .generate_allure_report
+  stage: allure-send-email
+  script:
+    - "curl --http1.1 -sS -f -o allure-email-report-${ALLURE_PROJECT_ID}.html -X GET $ALLURE_URL/allure-docker-service/emailable-report/render?project_id=${ALLURE_PROJECT_ID}"
+    - python3 utils/email_sender.py $address $password allure-email-report-${ALLURE_PROJECT_ID}.html $RECIPIENTS
+
+dedicated_et_ui_allure_send_email:
+  <<: *allure_send_email
+  variables:
+    ALLURE_PROJECT_ID: aqa-et-ui
+    RECIPIENTS: M.Ozman@takamol.com.sa, yurii.zosin@cd.p2h.com, olena.kazanets@cd.p2h.com, dmytro.popovskyi@p2h.com
+  needs: [dedicated_et_ui_allure_report]
 
 .discord_notification_template: &discord_notification
   rules:
