@@ -59,7 +59,7 @@ class IbmApi:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     def create_employee_transfer_request_bme(
-        self, user: User, laborer: Laborer, transfer_type: TransferType
+            self, user: User, laborer: Laborer, transfer_type: TransferType
     ):
         response = self.client.post(
             url=self.url,
@@ -71,14 +71,13 @@ class IbmApi:
         if response["Status"].lower() == "error":
             pytest.fail(reason=response["EnglishMsg"])
 
-    def create_employee_transfer_request_ae(self, user: User, laborer: Laborer):
+    def create_employee_transfer_request_ae(self, user: User, laborer: Laborer, sponsor: User = None):
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitcsrequests",
             headers=HEADERS,
-            json=employee_transfer_request_ae_payload(user, laborer),
+            json=employee_transfer_request_ae_payload(user, laborer, sponsor),
         )
-        print(response.json())
         response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
         if response["Status"].lower() == "error":
             pytest.fail(reason=response["EnglishMsg"])

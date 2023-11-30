@@ -35,6 +35,7 @@ class LaborerDetails(BaseModel):
 class LaborersDetailsItem(BaseModel):
     LaborerDetails: LaborerDetails
     SourceDetails: SourceDetails
+    SponsorDetails: SponsorDetails
 
 
 class LaborersDetailsList(BaseModel):

@@ -14,7 +14,7 @@ from src.api.payloads.ibm.submitcsrequests import (
 )
 
 
-def employee_transfer_request_ae_payload(user: User, laborer: Laborer):
+def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor: User):
     return SubmitCSRequestRqPayload(
         SubmitCSRequestRq=SubmitCSRequestRq(
             Header=Header(
@@ -46,16 +46,16 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer):
                             IqamaExpiryDate="2023-02-09",
                             TransferTypeId=laborer.transfer_type.code,
                         ),
+                        SponsorDetails=SponsorDetails(
+                            SponsorIdNo=int(sponsor.personal_number) if isinstance(sponsor, User) else 0,
+                            SponsorName=""
+                        ),
                         SourceDetails=SourceDetails(
                             EstablishmentName="",
                             EstablishmentId="",
                             LaborOfficeId="1",
                             SequenceNumber="224981",
                         ),
-                        SponsorDetails=SponsorDetails(
-                            SponsorIdNo=0,
-                            SponsorName=""
-                        )
                     )
                 ),
             ),
