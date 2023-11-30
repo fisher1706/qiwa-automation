@@ -66,7 +66,10 @@ def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_
 
 @pytest.mark.parametrize(
     'status',
-    [RequestStatus.PENDING_FOR_CURRENT_EMPLOYER_APPROVAL.value, RequestStatus.REJECTED_BY_LABORER.value],
+    [
+        RequestStatus.PENDING_FOR_CURRENT_EMPLOYER_APPROVAL.value,
+        RequestStatus.REJECTED_BY_LABORER.value
+    ],
     ids=[
         'AS-320 Verify Laborer is able to approve the ET request',
         'AS-322 Verify Laborer is able to reject the ET request'
@@ -102,8 +105,10 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
 
 @pytest.mark.parametrize(
     'status',
-    [RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value,
-     RequestStatus.REJECTED_BY_CURRENT_EMPLOYER.value],
+    [
+        RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value,
+        RequestStatus.REJECTED_BY_CURRENT_EMPLOYER.value
+    ],
     ids=[
         'Verify Current Sponsor Able to approve the ET request',
         'Verify Current Sponsor Able to reject the ET request'
