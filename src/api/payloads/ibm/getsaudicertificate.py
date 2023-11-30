@@ -1,8 +1,10 @@
 from pydantic import Field
 from pydantic.main import BaseModel
-from typing_extensions import Optional
+
+from src.api.payloads.ibm.header import Header
 
 
+# TODO: Remove this model if not in use
 class GetSaudiCertificateDetailsBody(BaseModel):
     CertificateNumber: str
     LaborOfficeId: int
@@ -12,21 +14,6 @@ class GetSaudiCertificateDetailsBody(BaseModel):
     SortDirection: int = Field(default=2)
     PageSize: int = Field(default=1)
     PageIndex: int = Field(default=1)
-
-
-class UserInfo(BaseModel):
-    UserId: str
-    IDNumber: str
-
-
-class Header(BaseModel):
-    TransactionId: str
-    ChannelId: Optional[str]
-    SessionId: Optional[str]
-    RequestTime: str
-    ServiceCode: str
-    DebugFlag: Optional[int]
-    UserInfo: Optional[UserInfo]
 
 
 class CertificateDetails(BaseModel):

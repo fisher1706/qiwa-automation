@@ -40,8 +40,7 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 @case_id(134165, 134166)
 def test_type_12_current_sponsor(status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.login_id)
-    establishment_id = ibm_api_controller.get_establishment_id(employer)
-    ibm_api.create_new_contract(laborer_type_12, employer, establishment_id)
+    ibm_api.create_new_contract(laborer_type_12, employer)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 
@@ -111,8 +110,7 @@ def test_type_12_current_sponsor(status):
 @case_id(134167, 134168, 134170, 134172, 134174)
 def test_transfer_types_rejection_by_laborer(laborer):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
-    establishment_id = ibm_api_controller.get_establishment_id(employer)
-    ibm_api.create_new_contract(laborer, employer, establishment_id)
+    ibm_api.create_new_contract(laborer, employer)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 
@@ -171,8 +169,7 @@ def test_transfer_types_rejection_by_laborer(laborer):
 @case_id(134169, 134171, 134173, 134175)
 def test_transfer_type_approval_by_laborer(laborer, status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
-    establishment_id = ibm_api_controller.get_establishment_id(employer)
-    ibm_api.create_new_contract(laborer, employer, establishment_id)
+    ibm_api.create_new_contract(laborer, employer)
 
     employee_transfer_actions.navigate_to_et_service(employer)
 

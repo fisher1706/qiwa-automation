@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from selene import be, command, have
-from selene.support.shared.jquery_style import s
+from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
 from src.ui.components.raw.table import Table
@@ -11,7 +11,8 @@ from utils.selene import scroll_into_view_if_needed
 
 @allure_steps
 class TransferBetweenMyEstablishmentsPage:
-    table = Table()
+    tables = ss("table")
+    table = Table() if len(tables) < 1 else Table(ss("table").second)
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")
     terms_checkbox = s("#terms")

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
@@ -139,10 +141,8 @@ class ContractManagementPage:
         return self
 
     def fill_field_contract_period(self) -> ContractManagementPage:
-        # TODO(dp): Adjust method for different types of users
-        # self.field_contract_period.should(be.visible).all("option").element_by(
-        #     have.exact_text()(data)
-        # ).click()
+        # TODO(dp): Find possibility to avoid this sleep
+        time.sleep(3)
         self.radiobtn_contract_period_type.click()
         return self
 

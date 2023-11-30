@@ -1,7 +1,7 @@
 from datetime import datetime
 from http import HTTPStatus
 
-import allure
+import pytest
 
 import config
 import src
@@ -42,9 +42,11 @@ from src.api.payloads.ibm.getworkspaceestablishments import (
     GetWorkspaceEstablishmentsRqPayload,
 )
 from src.api.payloads.ibm.token import Token
+from utils.allure import allure_steps
 from utils.assertion import assert_status_code
 
 
+@allure_steps
 class IBMApiController:
     def __init__(self) -> None:
         self.client = HTTPClient()
@@ -66,7 +68,6 @@ class IBMApiController:
         response = response.json()
         return f"{response['token_type']} {response['access_token']}"
 
-    @allure.step
     def get_work_permit_requests_from_ibm(
         self, body: src.api.models.ibm.payloads.GetWorkPermitRequestsRq
     ) -> IBMWorkPermitRequestList:
@@ -82,7 +83,6 @@ class IBMApiController:
         json_model = IBMResponse[IBMWorkPermitRequestList].parse_obj(response.json())
         return json_model[IBMServicesResponse.GET_WORK_PERMIT_REQUESTS].Body
 
-    @allure.step
     def get_saudization_certificate_from_ibm(
         self, body: src.api.models.ibm.payloads.GetSaudiCertificateRq
     ) -> IBMResponseData[GetSaudiCertificateRsBody]:
@@ -98,7 +98,6 @@ class IBMApiController:
         json_model = IBMResponse[GetSaudiCertificateRsBody].parse_obj(response.json())
         return json_model[IBMServicesResponse.GET_SAUDI_CERTIFICATE]
 
-    @allure.step
     def validate_establishment_saudization_in_ibm(
         self, body: src.api.models.ibm.payloads.ValidEstSaudiCertificateRq
     ) -> IBMResponseData:
@@ -114,7 +113,6 @@ class IBMApiController:
         json_model = IBMResponse.parse_obj(response.json())
         return json_model[IBMServicesResponse.VALIDATE_EST_SAUDI_CERTIFICATE]
 
-    @allure.step
     def get_change_occupation_requests_from_ibm(
         self, body: Body
     ) -> IBMResponseData[src.api.models.ibm.searchchangeoccupation.Body]:
@@ -134,15 +132,15 @@ class IBMApiController:
         )
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
 
-    @allure.step
     def get_appointment_id(self, user: User, service: Service) -> AppointmentStatus:
         response = ibm_api.create_new_appointment(user, service)
-        appointment_id = AppointmentStatus.validate(
-            response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
-        )
-        return appointment_id
+        try:
+            return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
+        except KeyError:
+            pytest.fail(
+                response["CreateNewAppointmentRs"]["Header"]["ResponseStatus"]["EnglishMsg"]
+            )
 
-    @allure.step
     def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
         headers = HEADERS
         headers["Authorization"] = self._get_token()
@@ -154,7 +152,6 @@ class IBMApiController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()["occupationsList"][0]["descriptionAr"]
 
-    @allure.step
     def get_first_expected_employee(self, user: User) -> str:
         header = Header(
             TransactionId="0",
@@ -193,7 +190,6 @@ class IBMApiController:
         )
         return personal_number
 
-    @allure.step("Get user eligible services")
     def get_user_eligible_services(self, id_no, office_id, sequence):
         payload = GetUserEligibleServicesRqPayload(
             GetUserEligibleServicesRq=(
@@ -222,7 +218,6 @@ class IBMApiController:
 
         return ResponseUserEligibleServices(**response.json())
 
-    @allure.step("Get workspace establishments")
     def get_workspace_establishments(self, id_no) -> dict:
         payload = GetWorkspaceEstablishmentsRqPayload(
             GetQiwaWorkspaceEstablishmentsRq=(
@@ -250,7 +245,6 @@ class IBMApiController:
         establishment_list = response.json()["GetQiwaWorkspaceEstablishmentsRs"]
         return establishment_list
 
-    @allure.step("Get user establishments MLSDLO")
     def get_user_establishments_mlsdlo(self, id_no) -> dict:
         payload = GetUserEstablishmentsMLSDLORqPayload(
             GetUserEstablishmentsMLSDLORq=(
@@ -277,13 +271,11 @@ class IBMApiController:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
-    @allure.step
     def get_economic_activity_id(self, user: User) -> str:
         return ibm_api.get_establishment_information(user)["GetEstablishmentInformationRs"][
             "Body"
         ]["EstablishmentDetails"]["EconomicActivityId"]
 
-    @allure.step
     def get_cr_unified_numbers_for_establishment(self, user: User) -> SaudiEstValidation:
         response = ibm_api.get_establishment_information(user)
         return SaudiEstValidation(
@@ -295,7 +287,6 @@ class IBMApiController:
             ]["UnifiedNationalNumber"],
         )
 
-    @allure.step
     def get_establishment_id(self, employer: User) -> str:
         return ibm_api.get_establishment_information(employer)["GetEstablishmentInformationRs"][
             "Body"

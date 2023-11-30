@@ -53,9 +53,9 @@ class ServicesAndTools(dict, Enum):
     }
 
 
-class TransferType(str, Enum):
-    FROM_ANOTHER_BUSINESS_OWNER = "From another business owner"
-    BETWEEN_MY_ESTABLISHMENTS = "Between my establishments"
+class TransferType(int, Enum):
+    FROM_DIFFERENT_UNIFIED_NUMBER = 0
+    BETWEEN_MY_ESTABLISHMENTS = 1
 
 
 class SearchingType(str, Enum):
