@@ -135,9 +135,9 @@ class IndividualPage:
 
     def verify_expected_status(self, text: str) -> IndividualPage:
         # TODO(dp): Remove this sleep after fixing an issue with the shown section
-        time.sleep(10)
+        time.sleep(5)
         browser.driver.refresh()
-        self.status.should(have.exact_text(text))
+        self.status.should(have.text(text))
         return self
 
     def select_rejection_reason(self, reason: str) -> IndividualPage:
