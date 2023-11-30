@@ -4,7 +4,7 @@ from pydantic.main import BaseModel
 
 
 class UserInfo(BaseModel):
-    UserId: str
+    UserId: Optional[str]
     IDNumber: str
 
 
