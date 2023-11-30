@@ -54,7 +54,7 @@ class ChangeOccupationController:
     def get_requests_laborers(
         self,
         page: int = 1,
-        per: int = 10,
+        per: int = 100,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: RequestStatus = None,
