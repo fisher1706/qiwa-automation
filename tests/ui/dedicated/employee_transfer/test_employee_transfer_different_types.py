@@ -36,30 +36,13 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 def test_type_12_current_sponsor(status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.login_id)
     ibm_api.create_new_contract(employer, laborer_type_12)
-
-    employee_transfer_actions.navigate_to_et_service(employer)
-
-    qiwa.employee_transfer_page.click_btn_transfer_employee() \
-        .select_another_establishment() \
-        .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer_type_12.login_id) \
-        .fill_date_of_birth(laborer_type_12.birthdate) \
-        .click_btn_find_employee() \
-        .click_btn_add_employee_to_transfer_request() \
-        .click_btn_next_step() \
-        .check_existence_of_a_contract() \
-        .click_btn_next_step() \
-        .select_terms_checkbox() \
-        .click_btn_submit() \
-        .check_request_status() \
-        .click_btn_back_to_employee_transfer()
-
-    qiwa.header.click_on_menu().click_on_logout()
-    qiwa.login_page.wait_login_page_to_load()
-    qiwa.header.change_local(Language.EN)
+    ibm_api.create_employee_transfer_request_ae(employer, laborer_type_12, current_sponsor_type_12)
 
     employee_transfer_actions.navigate_to_individual(laborer_type_12.login_id)
 
+    qiwa.dashboard_page.wait_dashboard_page_to_load()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
@@ -75,7 +58,9 @@ def test_type_12_current_sponsor(status):
 
     employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.personal_number)
 
-    qiwa.individual_page.select_service(ServicesAndTools.HOME_WORKERS_TRANSFER.value)
+    qiwa.individual_page.navigate_to_services()
+
+    qiwa.individual_page.select_service(ServicesAndTools.HOME_WORKERS_TRANSFER.value[Language.EN])
 
     qiwa.employee_transfer_page.search_received_request(laborer_type_12.login_id)
 
@@ -106,29 +91,12 @@ def test_type_12_current_sponsor(status):
 def test_transfer_types_rejection_by_laborer(laborer):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
     ibm_api.create_new_contract(employer, laborer)
-
-    employee_transfer_actions.navigate_to_et_service(employer)
-
-    qiwa.employee_transfer_page.click_btn_transfer_employee() \
-        .select_another_establishment() \
-        .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer.login_id) \
-        .fill_date_of_birth(laborer.birthdate) \
-        .click_btn_find_employee() \
-        .click_btn_add_employee_to_transfer_request() \
-        .check_existence_of_a_contract() \
-        .click_btn_next_step() \
-        .click_btn_next_step() \
-        .select_terms_checkbox() \
-        .click_btn_submit() \
-        .check_request_status() \
-        .click_btn_back_to_employee_transfer()
-
-    qiwa.header.click_on_menu().click_on_logout()
-    qiwa.login_page.wait_login_page_to_load()
-    qiwa.header.change_local(Language.EN)
+    ibm_api.create_employee_transfer_request_ae(employer, laborer)
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
+
+    qiwa.dashboard_page.wait_dashboard_page_to_load()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -143,13 +111,13 @@ def test_transfer_types_rejection_by_laborer(laborer):
         .wait_until_popup_disappears() \
         .verify_expected_status(RequestStatus.REJECTED_BY_LABORER.value[Language.EN])
     qiwa.header.change_local(Language.AR)
-    individual_actions.verify_expected_status(RequestStatus.REJECTED_BY_LABORER.value[Language.EN])
+    individual_actions.verify_expected_status(RequestStatus.REJECTED_BY_LABORER.value[Language.AR])
 
 
 @pytest.mark.parametrize(
     "laborer, status",
     [
-        (laborer_type_9, RequestStatus.PENDING_FOR_CURRENT_EMPLOYER_APPROVAL.value),
+        (laborer_type_9, RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value),
         (laborer_type_4_freedom_transfer, RequestStatus.PENDING_FOR_NOTICE_PERIOD_COMPLETION.value),
         (laborer_type_4_direct_transfer, RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value),
         (laborer_type_4_absent, RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value)
@@ -165,33 +133,12 @@ def test_transfer_types_rejection_by_laborer(laborer):
 def test_transfer_type_approval_by_laborer(laborer, status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer.login_id)
     ibm_api.create_new_contract(employer, laborer)
-
-    employee_transfer_actions.navigate_to_et_service(employer)
-
-    qiwa.employee_transfer_page.click_btn_transfer_employee() \
-        .select_another_establishment() \
-        .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer.login_id) \
-        .fill_date_of_birth(laborer.birthdate) \
-        .click_btn_find_employee()
-
-    if laborer == laborer_type_4_absent:
-        qiwa.employee_transfer_page.select_late_fees_checkbox()
-
-    qiwa.employee_transfer_page.click_btn_add_employee_to_transfer_request() \
-        .check_existence_of_a_contract() \
-        .click_btn_next_step() \
-        .click_btn_next_step() \
-        .select_terms_checkbox() \
-        .click_btn_submit() \
-        .check_request_status() \
-        .click_btn_back_to_employee_transfer()
-
-    qiwa.header.click_on_menu().click_on_logout()
-    qiwa.login_page.wait_login_page_to_load()
-    qiwa.header.change_local(Language.EN)
+    ibm_api.create_employee_transfer_request_ae(employer, laborer)
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
+
+    qiwa.dashboard_page.wait_dashboard_page_to_load()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
