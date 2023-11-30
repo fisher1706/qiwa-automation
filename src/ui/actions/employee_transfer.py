@@ -66,7 +66,6 @@ class EmployeeTransferActions:
 
         (
             qiwa.employee_transfer_page.click_btn_next_step()
-            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit()
             .check_success_msg()
