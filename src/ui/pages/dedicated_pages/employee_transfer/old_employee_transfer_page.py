@@ -305,7 +305,7 @@ class OldEmployeeTransferPage:
     def select_transfer_type(self, transfer_type: TransferType):
         element = (
             self.from_another_business_owner
-            if transfer_type == TransferType.FROM_ANOTHER_BUSINESS_OWNER
+            if transfer_type == TransferType.FROM_DIFFERENT_UNIFIED_NUMBER
             else self.between_my_establishments
         )
         element.click()

@@ -68,7 +68,7 @@ class OldEmployeeTransferActionsOld(OldEmployeeTransferPage):
 
     def add_employee(self, transfer_type: TransferType, laborer: Laborer):
         match transfer_type:
-            case TransferType.FROM_ANOTHER_BUSINESS_OWNER:
+            case TransferType.FROM_DIFFERENT_UNIFIED_NUMBER:
                 self.fill_field_iqama_number(laborer.login_id)
                 self.select_field_date_of_birth(laborer.birthdate)
                 self.click_btn_search()
@@ -119,7 +119,7 @@ class OldEmployeeTransferActionsOld(OldEmployeeTransferPage):
         self,
         entity_laborer: Laborer,
         user: User = employer,
-        transfer_type=TransferType.FROM_ANOTHER_BUSINESS_OWNER,
+        transfer_type=TransferType.FROM_DIFFERENT_UNIFIED_NUMBER,
         is_get_balance_value: bool = False,
         is_verify_popup: bool = False,
     ):
