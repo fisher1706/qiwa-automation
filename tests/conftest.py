@@ -3,6 +3,8 @@ import pytest
 import config
 from data.account import Account
 from data.constants import UserInfo
+from data.dedicated.models.user import User
+from data.user_management.user_management_datasets import Privileges
 from src.api.app import QiwaApi
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
 from src.api.controllers.sso_auth import AuthApiSSOController
@@ -75,3 +77,34 @@ def clean_up_session(http_client):
 @pytest.fixture(scope="session", autouse=True)
 def log_env_config(record_testsuite_property):
     record_testsuite_property("ENV", config.settings.env)
+
+
+def prepare_data_for_free_subscription(qiwa_api: QiwaApi, cookie: dict, user: User):
+    user_establishments = qiwa_api.user_management_api.get_user_subscribed_establishments(
+        cookie=cookie,
+        users_personal_number=user.personal_number,
+        subscribed_state=True,
+    )
+    if int(user.sequence_number) in user_establishments:
+        qiwa_api.user_management_api.patch_remove_establishment_from_user(
+            cookie=cookie,
+            users_personal_number=user.personal_number,
+            labor_office_id=user.labor_office_id,
+            sequence_number=user.sequence_number,
+        )
+
+
+def prepare_data_for_terminate_company(qiwa_api: QiwaApi, cookie: dict, subscribed_user: User):
+    user_establishments = qiwa_api.user_management_api.get_user_subscribed_establishments(
+        cookie=cookie,
+        users_personal_number=subscribed_user.personal_number,
+        subscribed_state=True,
+    )
+    if int(subscribed_user.sequence_number) not in user_establishments:
+        qiwa_api.user_management_api.post_subscribe_user_to_establishment(
+            cookie=cookie,
+            users_personal_number=subscribed_user.personal_number,
+            labor_office_id=subscribed_user.labor_office_id,
+            sequence_number=subscribed_user.sequence_number,
+            privileges=Privileges.default_privileges,
+        )

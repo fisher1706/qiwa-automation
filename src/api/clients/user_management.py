@@ -246,7 +246,11 @@ class UserManagementApi:  # pylint: disable=duplicate-code
             headers=headers,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        return response.json()["content"]
+        user_establishments = response.json()["content"]
+        establishments_list = []
+        for establishment in user_establishments:
+            establishments_list.append(establishment["sequenceNumber"])
+        return establishments_list
 
     def patch_terminate_subscription(
         self,
