@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from selene import be, command, have
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
 
 from src.ui.components.raw.table import Table
@@ -11,8 +11,10 @@ from utils.selene import scroll_into_view_if_needed
 
 @allure_steps
 class TransferBetweenMyEstablishmentsPage:
-    tables = ss("table")
-    table = Table() if len(tables) < 1 else Table(ss("table").second)
+    # TODO(dp): Find possibility to check if tables more then 1
+    # tables = browser.all("table")
+    # table_element = tables.first if len(tables) < 2 else tables.second
+    table = Table()
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")
     terms_checkbox = s("#terms")
