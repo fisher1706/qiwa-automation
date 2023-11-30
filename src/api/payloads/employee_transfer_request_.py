@@ -9,8 +9,9 @@ from src.api.payloads.ibm.submitcsrequests import (
     LaborersDetailsItem,
     LaborersDetailsList,
     SourceDetails,
+    SponsorDetails,
     SubmitCSRequestRq,
-    SubmitCSRequestRqPayload, SponsorDetails,
+    SubmitCSRequestRqPayload,
 )
 
 
@@ -47,8 +48,10 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor: 
                             TransferTypeId=laborer.transfer_type.code,
                         ),
                         SponsorDetails=SponsorDetails(
-                            SponsorIdNo=int(sponsor.personal_number) if isinstance(sponsor, User) else 0,
-                            SponsorName=""
+                            SponsorIdNo=int(sponsor.personal_number)
+                            if isinstance(sponsor, User)
+                            else 0,
+                            SponsorName="",
                         ),
                         SourceDetails=SourceDetails(
                             EstablishmentName="",
