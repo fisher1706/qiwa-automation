@@ -20,12 +20,13 @@ from src.api.payloads.sso_oauth_payloads import (
     login_payload,
     logout_payload,
     otp_code_payload,
-    phone_verification_payload,
+    phone_verification_on_registration_payload,
     registration_account_payload,
     request_with_otp_payload,
     reset_password,
     security_question_payload,
     unlock_through_email_payload,
+    phone_verification_on_login_payload,
 )
 from utils.assertion import assert_status_code
 
@@ -139,7 +140,7 @@ class AuthApiSSO:
         response = self.api.post(
             url=self.url,
             endpoint="/phones/init-verification",
-            json=phone_verification_payload(phone_number),
+            json=phone_verification_on_registration_payload(phone_number),
         )
         assert_status_code(response.status_code).equals_to(expected_code)
         return self
@@ -306,5 +307,50 @@ class AuthApiSSO:
         payload = init_hsm_for_reset_password(token=token)
         response = self.api.post(
             url=self.url, endpoint="/reset-password/high-security-mode/init", json=payload
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def init_hsm_for_change_phone_on_login(
+        self, personal_number: str, birth_date: str, expected_code: int = 200
+    ):
+        payload = init_sso_hsm_payload(personal_number=personal_number, birth_date=birth_date)
+        response = self.api.post(
+            url=self.url,
+            endpoint="/change-phone-on-login/high-security-mode/init/with-birthday",
+            json=payload,
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def activate_hsm_for_change_phone_on_login(
+        self, absher_code: str = "000000", expected_code: int = 200
+    ):
+        payload = hsm_payload(absher_code=absher_code)
+        response = self.api.post(
+            url=self.url, endpoint="/change-phone-on-login/high-security-mode", json=payload
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def phone_verification_for_change_phone_on_login(
+        self, phone_number: str, expected_code: int = 200
+    ) -> AuthApiSSO:
+        response = self.api.post(
+            url=self.url,
+            endpoint="/change-phone-on-login/init-verification",
+            json=phone_verification_on_login_payload(phone_number),
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+        return self
+
+    @allure.step
+    def confirm_phone_verification_for_change_on_login(
+        self, otp_code: str = "0000", expected_code: int = 200
+    ):
+        response = self.api.post(
+            url=self.url,
+            endpoint="/change-phone-on-login/confirm-verification",
+            json=otp_code_payload(otp_code),
         )
         assert_status_code(response.status_code).equals_to(expected_code)
