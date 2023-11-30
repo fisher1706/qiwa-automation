@@ -20,13 +20,13 @@ from src.api.payloads.sso_oauth_payloads import (
     login_payload,
     logout_payload,
     otp_code_payload,
+    phone_verification_on_login_payload,
     phone_verification_on_registration_payload,
     registration_account_payload,
     request_with_otp_payload,
     reset_password,
     security_question_payload,
     unlock_through_email_payload,
-    phone_verification_on_login_payload,
 )
 from utils.assertion import assert_status_code
 
@@ -342,7 +342,7 @@ class AuthApiSSO:
             json=phone_verification_on_login_payload(phone_number),
         )
         assert_status_code(response.status_code).equals_to(expected_code)
-        return self
+        return response.json()
 
     @allure.step
     def confirm_phone_verification_for_change_on_login(

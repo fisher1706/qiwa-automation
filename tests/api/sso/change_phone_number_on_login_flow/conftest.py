@@ -20,7 +20,7 @@ def account_data():
 
 @pytest.fixture
 def expat_account_data():
-    account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP)
+    account = Account(personal_number=users_data.EXPAT_FOR_SIGN_UP, birth_day="2010-01-01")
     qiwa = QiwaApi()
     try:
         qiwa.sso.register_account_via_sso_api(account)

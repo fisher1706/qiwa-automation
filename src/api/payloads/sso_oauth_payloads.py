@@ -20,11 +20,11 @@ from src.api.payloads.sso.sso_attributes_data import (
     oauth_init,
     otp_attributes,
     password,
+    phone_verification_payload,
     registration,
     restore_password,
     session,
     user_email,
-    phone_verification_payload,
 )
 
 

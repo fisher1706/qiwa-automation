@@ -1,15 +1,17 @@
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
+from data.sso import account_data_constants as constants
 from data.sso import account_data_constants as users_data
 from data.sso import data_constants
-from data.sso import account_data_constants as constants
+from data.sso.messages import INVALID_NID_FOR_INIT
 from src.api.app import QiwaApi
 from src.database.actions.account_db_action import update_account_email
 from src.database.sql_requests.account_request import AccountRequests
 from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
 from utils.allure import TestmoProject, project
+from utils.assertion import assert_that
 
 case_id = project(TestmoProject.QIWA_SSO)
 
@@ -55,8 +57,11 @@ def test_change_phone_number_during_login_use_id_and_dob_from_another_registered
                                                                                          second_account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
-    qiwa.sso.init_hsm_for_change_phone_on_login(second_account_data.personal_number, second_account_data.birth_day,
-                                                expected_code=422)
+    qiwa.sso.init_hsm_for_change_phone_on_login(second_account_data.personal_number, second_account_data.birth_day)
+    qiwa.sso.activate_hsm_for_change_phone_on_login(account_data.absher_confirmation_code)
+    response = qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER,
+                                                                     expected_code=403)
+    assert_that(response["errors"][0]["details"]["en"]).equals_to(INVALID_NID_FOR_INIT)
 
 
 @case_id(42059)
