@@ -20,6 +20,7 @@ class AppointmentRequestPage:
     button_proceed = s('//button[@class="btn btn--primary with-preloader"]')
     button_proceed_modal = s(".o-modal__otp-actions--single-action button")
     button_next = s('//button[@class="btn btn--primary"]')
+    button_process_appointments = s(".welcome-navigation__list__item__btn.btn")
 
     def visit(self) -> AppointmentRequestPage:
         browser.open(config.qiwa_urls.agent_sys_url)
@@ -45,6 +46,10 @@ class AppointmentRequestPage:
 
     def proceed_modal(self) -> AppointmentRequestPage:
         self.button_proceed_modal.click()
+        return self
+
+    def click_btn_process_appointments(self) -> AppointmentRequestPage:
+        self.button_process_appointments.click()
         return self
 
     def set_and_confirm_otp(self, otp_code: str = "0000") -> AppointmentRequestPage:
