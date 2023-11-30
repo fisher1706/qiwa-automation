@@ -40,6 +40,7 @@ class UserManagementMainPage:
 
     change_language_icon = s("//div[2]/div[contains(@data-component, 'MenuTrigger')]/button")
     arabic_language = s("//*[contains(text(), 'العربية')]")
+    english_language = s("//*[contains(text(), 'English')]")
     header_menu_btn = s("//div[contains(@data-testid, 'menu-trigger')]/div/button")
 
     global_error = s("//div[contains(@data-testid,'global-error')]/div/p[1]")

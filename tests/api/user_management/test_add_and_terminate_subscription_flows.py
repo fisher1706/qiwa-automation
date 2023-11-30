@@ -17,10 +17,11 @@ from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from tests.api.user_management.conftest import (
     check_deleted_status_of_privilege_log,
     get_subscription_status_and_renew_owner_subscription,
-    get_user_establishments,
+    renew_self_subscription,
+)
+from tests.conftest import (
     prepare_data_for_free_subscription,
     prepare_data_for_terminate_company,
-    renew_self_subscription,
 )
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
@@ -40,7 +41,7 @@ def test_free_subscription_flow():
         company_labor_office_id=owner.labor_office_id,
         user_personal_number=owner.personal_number,
     ).dict(by_alias=True)
-    prepare_data_for_free_subscription(qiwa=qiwa, cookie=subscription_cookie, subscribed_user=subscribed_user)
+    prepare_data_for_free_subscription(qiwa_api=qiwa, cookie=subscription_cookie, user=subscribed_user)
     qiwa.user_management_api.post_subscribe_user_to_establishment(
         cookie=subscription_cookie,
         users_personal_number=subscribed_user.personal_number,
@@ -69,7 +70,7 @@ def test_terminate_company_from_subscription():
         user_personal_number=owner.personal_number,
     ).dict(by_alias=True)
     prepare_data_for_terminate_company(
-        qiwa=qiwa,
+        qiwa_api=qiwa,
         cookie=subscription_cookie,
         subscribed_user=subscribed_user
     )
@@ -79,8 +80,7 @@ def test_terminate_company_from_subscription():
         labor_office_id=subscribed_user.labor_office_id,
         sequence_number=subscribed_user.sequence_number,
     )
-    terminated_establishments = get_user_establishments(
-        qiwa=qiwa,
+    terminated_establishments = qiwa.user_management_api.get_user_subscribed_establishments(
         cookie=subscription_cookie,
         users_personal_number=subscribed_user.personal_number,
         subscribed_state=False

@@ -10,16 +10,20 @@ from data.user_management.user_management_datasets import (
     UsersTypes,
 )
 from data.user_management.user_management_users import (
-    delegator_with_um,
+    delegator_for_add_and_terminate_subscription_flow,
     delegator_without_um,
     owner_account,
     owner_account_with_another_company,
     owner_for_self,
     user_type_three_employee,
+    user_type_three_employee_for_add_access,
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
-from tests.ui.user_management.conftest import log_in_and_open_user_management
+from tests.ui.user_management.conftest import (
+    log_in_and_open_user_management,
+    prepare_data_for_add_access_to_company,
+)
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
@@ -132,26 +136,56 @@ def test_ar_localization_for_delegator_details_page():
 
 
 @allure.title("Check privileges data on Select Privileges modal")
-@case_id(7921, 7922, 7923)
+@case_id(165303, 7922, 7923)
 def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_with_um
+    user = delegator_for_add_and_terminate_subscription_flow
     log_in_and_open_user_management(owner, Language.EN)
-    user_management.navigate_to_view_details_page(user.personal_number)\
-        .open_select_privileges_modal_for_no_access_workspace().check_privileges_are_grouped() \
-        .check_default_privileges_are_selected(Privileges.default_ui_privileges) \
-        .check_ineligible_privileges_cannot_be_selected(Privileges.ineligible_ui_privileges)
+    user_management.navigate_to_view_details_page(user.personal_number) \
+        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number).check_privileges_are_grouped() \
+        .check_privileges_are_selected(privilege_names=Privileges.default_ui_privileges, active_state=False) \
+        .check_privileges_are_unselected(privilege_names=Privileges.ineligible_ui_privileges, active_state=False)
 
 
-@allure.title("Check that user can select/unselect privileges")
-@case_id(7924)
-def test_select_and_unselect_privileges():
+@allure.title("Check interaction with privileges list")
+@case_id(7924, 165306, 7927, 7926)
+def test_interaction_with_privileges_list():
     user_management = UserManagementActions()
     owner = owner_account_with_another_company
     user = user_type_three_employee
     log_in_and_open_user_management(owner, Language.EN)
-    user_management.navigate_to_view_details_page(user.personal_number)\
-        .open_select_privileges_modal_for_no_access_workspace()\
-        .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE)\
-        .select_all_privileges().unselect_all_privileges()
+    user_management.navigate_to_view_details_page(user.personal_number) \
+        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
+        .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE) \
+        .select_all_privileges().unselect_all_privileges() \
+        .select_paired_privileges([user_management_data.OCCUPATION_MANAGEMENT],
+                                  [user_management_data.EMPLOYEE_INFORMATION]) \
+        .select_paired_privileges([user_management_data.ISSUE_AND_RENEW_WORKING_PERMITS],
+                                  [user_management_data.EMPLOYEE_INFORMATION]) \
+        .select_paired_privileges([user_management_data.EMPLOYEE_TRANSFER],
+                                  [user_management_data.EMPLOYEE_INFORMATION,
+                                   user_management_data.CONTRACT_MANAGEMENT]) \
+        .check_expanding_privilege_group_list().check_collapsing_privilege_group_list().close_select_privileges_modal()
+
+
+@allure.title("test_add_access_to_establishment")
+@pytest.mark.skip("test is skipped due to issue UM-5868")
+@case_id(7928, 7932)
+def test_add_access_to_establishment():
+    user_management = UserManagementActions()
+    owner = owner_account_with_another_company
+    user = user_type_three_employee
+    user_for_add_access = user_type_three_employee_for_add_access
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+    user_management.navigate_to_view_details_page(user.personal_number) \
+        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number)\
+        .add_access_with_fundamental_privileges(user.sequence_number) \
+        .open_select_privileges_modal_for_no_access_workspace(user_for_add_access.sequence_number)\
+        .add_access_with_not_fundamental_privileges(user_for_add_access.sequence_number)
+    row_number = user_management.get_row_with_allowed_establishment(user_for_add_access.labor_office_id,
+                                                                    user_for_add_access.sequence_number)
+    user_management.check_success_message_and_privileges_after_add_access(row_number)
+    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+
