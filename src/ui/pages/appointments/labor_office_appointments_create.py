@@ -57,7 +57,7 @@ class LaborOfficeAppointmentsCreatePage:
         dropdown_element_locator,
     )
 
-    error_message = s('//*[@data-component="ErrorMessage"]')
+    modal_appointment_exists = s('//*[@id="modalBodyWrapper"]')
     error_message_region = s('//*[@id="region-error"]')
     error_message_office = s('//*[@id="office-error"]')
     error_message_date = s('//*[@id="date-error"]')
@@ -216,7 +216,10 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Verify validation message on create additional appointment is present")
     def should_validation_additional_appointment_be(self):
-        self.error_message.should(have.text("You've already booked an appointment"))
+        self.modal_appointment_exists.should(have.text("Sorry, you can’t book an appointment now"))
+        self.modal_appointment_exists.should(
+            have.text("Please cancel or edit an existing appointment")
+        )
 
     @allure.step("Verify validation message on region field is present")
     def should_validation_message_region_be(self):

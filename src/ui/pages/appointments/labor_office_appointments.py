@@ -121,6 +121,8 @@ class LaborOfficeAppointmentsPage:
 
     @allure.step("Click on book appointment button")
     def click_book_appointment_btn(self) -> LaborOfficeAppointmentsPage:
+        self.book_appointment_btn.wait_until(be.visible)
+        time.sleep(2)  # need to update state of button in case of appointment already booked
         self.book_appointment_btn.click()
         return self
 
@@ -149,7 +151,9 @@ class LaborOfficeAppointmentsPage:
             self.button_action_cancel_upcoming_appointment.click()
             self.cancel_app_wrapper_cancel_btn.click()
             self.button_close_modal.click()
-
+            # refreshing page strictly to ensure appointment cancelled (UI without refresh might still show appointment)
+            browser.driver.refresh()
+            self.wait_page_to_load()
         return self
 
     @allure.step("Check active appointment exist")
