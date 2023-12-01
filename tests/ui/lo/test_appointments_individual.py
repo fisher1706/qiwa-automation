@@ -425,13 +425,6 @@ def test_individual_verify_validation_error_on_book_appointment_once_exists():
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
 
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
-    qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
-        region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
-    )
     qiwa.labor_office_appointments_create_page.should_validation_additional_appointment_be()
 
 
