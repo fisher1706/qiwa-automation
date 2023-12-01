@@ -401,6 +401,8 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
 
+    utils.helpers.scroll_to_coordinates()
+
     qiwa.labor_office_appointments_create_page.edit_creators_info_btn.click()
     qiwa.labor_office_appointments_create_page.verify_select_establishment_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
@@ -417,8 +419,6 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.verify_service_and_subservice_blocks_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
-
-    utils.helpers.scroll_to_coordinates()
 
     qiwa.labor_office_appointments_create_page.edit_reason_btn.click()
     qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
