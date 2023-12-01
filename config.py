@@ -83,7 +83,6 @@ class QiwaUrls:
         self.lmi_url: str = f"{protocol}lmi-dashboard.{domain}"
         self.lmi_landing_url: str = f"{protocol}lmi.{domain}"
         self.data_portal_admin_url: str = f"{protocol}data-portal-admin.{domain}"
-        self.employee_transfer_v2: str = f"{protocol}employee-transfer-v2.{domain}"
         self.e_services: str = f"{protocol}e-services.{domain}"
 
 

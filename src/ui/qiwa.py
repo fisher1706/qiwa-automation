@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import allure
 from selene import be
 from selene.support.shared import browser
 
@@ -71,8 +70,10 @@ from src.ui.pages.visa_pages.transitional_page import TransitionalPage
 from src.ui.pages.visa_pages.visa_request_page import VisaRequestPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from src.ui.pages.wp_page import LoWorkPermitPage
+from utils.allure import allure_steps
 
 
+@allure_steps
 class QiwaUiClient:
     # Pages
     login_page = LoginPage()
@@ -124,7 +125,6 @@ class QiwaUiClient:
     delegation_localisation = DelegationLocalisationChange()
     code_verification = CodeVerification()
 
-    @allure.step
     def login_as_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
         self.open_login_page()
         self.header.change_local(Language.EN)
@@ -132,7 +132,6 @@ class QiwaUiClient:
         (self.login_page.otp_pop_up.fill_in_code().click_confirm_button())
         return self
 
-    @allure.step
     def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
         QiwaApi().sso.login_user(login, password)
         QiwaApi().sso.pass_account_security()
@@ -140,80 +139,61 @@ class QiwaUiClient:
         self.feedback.close_feedback()
         return self
 
-    @allure.step
     def login_as_admin(self) -> QiwaUiClient:
         self.login_as_user("1215113732")
         self.workspace_page.should_have_workspace_list_appear().select_admin_account()
         return self
 
-    @allure.step
     def open_login_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.sso)
         return self
 
-    @allure.step
     def open_work_permits(self) -> QiwaUiClient:
         browser.open("https://working-permits.qiwa.tech/working-permits")
         return self
 
-    @allure.step
     def open_dashboard(self) -> QiwaUiClient:
         browser.open("https://spa.qiwa.tech/en/company")
         return self
 
-    @allure.step
     def should_not_have_error_message(self) -> QiwaUiClient:
         browser.element(".error-message").should(be.in_dom.and_(be.not_.visible))
         return self
 
-    @allure.step
     def open_delegation_dashboard_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.delegation_service)
         return self
 
-    @allure.step
     def open_delegation_details_page(self, delegation_id: int | str) -> QiwaUiClient:
         browser.open(f"{config.qiwa_urls.delegation_service}/delegation-details/{delegation_id}")
         return self
 
-    @allure.step
     def open_add_new_delegation_page(self) -> QiwaUiClient:
         browser.open(f"{config.qiwa_urls.delegation_service}/create-delegation")
         return self
 
-    @allure.step
     def open_verify_delegation_letter_page(self) -> QiwaUiClient:
         browser.open(f"{config.qiwa_urls.delegation_service}/verify")
         return self
 
-    @allure.step
     def open_visa_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.visa_web_url)
         return self
 
-    @allure.step
     def open_user_management_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.ui_user_management)
         return self
 
-    @allure.step
     def open_labor_office_appointments_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.appointment_booking)
         self.labor_office_appointments_page.wait_page_to_load()
         return self
 
-    @allure.step
     def open_labor_office_appointments_page_individual(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.appointment_booking_individual)
         self.individual_page.wait_page_to_load()
         return self
 
-    @allure.step
-    def open_employee_transfer_v2_page(self) -> QiwaUiClient:
-        browser.open(config.qiwa_urls.employee_transfer_v2)
-        return self
-
-    @allure.step
     def open_e_services_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.e_services)
         return self

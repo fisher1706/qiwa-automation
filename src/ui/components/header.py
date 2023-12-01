@@ -18,7 +18,7 @@ class Header:
         }
         self.profile = self.web_element.s("[data-testid='menu-trigger'] p")
         self.profile_individuals = self.web_element.ss('[data-component="MenuTrigger"] p')[2]
-        self.dropdown_profile = ss("[data-component='Menu'] > div")
+        self.dropdown_profile = ss("[data-component='Menu'] > div > div")
 
     def _select_language(self, language: str):
         element = self.language_links[language]
