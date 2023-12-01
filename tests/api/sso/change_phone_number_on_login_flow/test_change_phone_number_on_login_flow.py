@@ -66,7 +66,6 @@ def test_change_phone_number_during_login_use_id_and_dob_from_another_registered
 
 @case_id(42059)
 def test_change_phone_number_during_login_use_valid_data_but_email_is_not_verified(account_data):
-    #TODO: not finished need to check with dev
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
     qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
@@ -111,3 +110,19 @@ def test_change_phone_number_during_login_for_user_with_expired_email(expat_acco
     qiwa.sso.confirm_phone_verification_for_change_on_login()
 
 
+@case_id(167575)
+def test_resend_init_hsm_code_during_change_phone_on_login_page_flow(account_data):
+   qiwa = QiwaApi()
+   qiwa.sso.login(account_data.personal_number, account_data.password)
+   qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+   qiwa.sso.resend_init_hsm_for_change_phone_on_login()
+
+
+@case_id(167576)
+def test_resend_init_phone_during_change_phone_on_login_page_flow(account_data):
+    qiwa = QiwaApi()
+    qiwa.sso.login(account_data.personal_number, account_data.password)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+    qiwa.sso.activate_hsm_for_change_phone_on_login(account_data.absher_confirmation_code)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    qiwa.sso.resend_phone_init_for_change_phone_on_login()

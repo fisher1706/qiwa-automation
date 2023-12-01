@@ -354,3 +354,21 @@ class AuthApiSSO:
             json=otp_code_payload(otp_code),
         )
         assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_init_hsm_for_change_phone_on_login(self, expected_code: int = 200):
+        response = self.api.post(
+            url=self.url, endpoint="/change-phone-on-login/high-security-mode/init/resend"
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_phone_init_for_change_phone_on_login(
+        self, phone_number: str, expected_code: int = 200
+    ):
+        response = self.api.post(
+            url=self.url,
+            endpoint="/change-phone-on-login/init-verification/resend",
+            json=phone_verification_on_login_payload(phone_number),
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
