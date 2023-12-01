@@ -121,7 +121,7 @@ class LaborOfficeAppointmentsViewPage:
     map_body = s("//*[@id='modalBodyWrapper']/div[2]/div[2]")
     map_blue_pin_btn = s("//div[@aria-label='Map']//div[@role='button']")
     map_address_details_form = s("//div[@aria-label='Map']//div[@role='dialog']")
-    copy_map_form_text = s("//*[@id='root']/div[3]/div/div/div/div")
+    copy_map_form_text = s("//*[@data-component='ToastStacking']")
 
     print_btn = s(
         "//*[@id='root']/div/span/div[1]/div/span[1]/div/div/div/div[2]/div[2]/div/button[1]"
