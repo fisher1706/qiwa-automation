@@ -3,14 +3,14 @@ from __future__ import annotations
 import allure
 
 from data.account import Account
-from src.api.clients.auth_sso import AuthApiSSO
+from src.api.clients.sso.auth_sso import AuthApiSSO
 from src.api.clients.oauth import OAuthApi
 
 
 class AuthApiSSOController(AuthApiSSO):
     @property
     def oauth_api(self) -> OAuthApi:
-        return OAuthApi(self.api)
+        return OAuthApi(self.client)
 
     @allure.step("Login {personal_number} via Laborer SSO API")
     def login_user(self, personal_number: str, password: str) -> None:

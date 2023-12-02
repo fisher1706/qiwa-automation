@@ -40,7 +40,8 @@ def test_change_phone_number_during_login(account_data, second_account_data):
 def test_change_phone_number_during_login_use_wrong_id_and_dob(account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
-    qiwa.sso.init_hsm_for_change_phone_on_login(constants.INVALID_PERSONAL_NUMBER, account_data.birth_day, expected_code=422)
+    qiwa.sso.init_hsm_for_change_phone_on_login(constants.INVALID_PERSONAL_NUMBER, account_data.birth_day,
+                                                expected_code=422)
 
 
 @case_id(42055)
@@ -112,10 +113,10 @@ def test_change_phone_number_during_login_for_user_with_expired_email(expat_acco
 
 @case_id(167575)
 def test_resend_init_hsm_code_during_change_phone_on_login_page_flow(account_data):
-   qiwa = QiwaApi()
-   qiwa.sso.login(account_data.personal_number, account_data.password)
-   qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
-   qiwa.sso.resend_init_hsm_for_change_phone_on_login()
+    qiwa = QiwaApi()
+    qiwa.sso.login(account_data.personal_number, account_data.password)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+    qiwa.sso.resend_init_hsm_for_change_phone_on_login()
 
 
 @case_id(167576)
@@ -125,4 +126,4 @@ def test_resend_init_phone_during_change_phone_on_login_page_flow(account_data):
     qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
     qiwa.sso.activate_hsm_for_change_phone_on_login(account_data.absher_confirmation_code)
     qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
-    qiwa.sso.resend_phone_init_for_change_phone_on_login()
+    qiwa.sso.resend_phone_init_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)

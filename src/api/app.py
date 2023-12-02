@@ -26,7 +26,7 @@ from src.api.controllers.lmi.weq_api_actions import WeqApiAction
 from src.api.controllers.lo.offices_api_actions import OfficesApiActions
 from src.api.controllers.lo.services_api_actions import ServiceApiActions
 from src.api.controllers.lo.visits_api_actions import VisitsApiActions
-from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.sso.sso_auth import AuthApiSSOController
 from src.api.controllers.user_management import UserManagementControllers
 from src.api.controllers.visits import VisitsApiController
 from src.api.controllers.workspaces import WorkspacesApiController
