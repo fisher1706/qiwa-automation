@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+import allure
 import pytest
 
 from data.shareable.expected_json.change_occupation.common import empty_data
@@ -93,6 +94,8 @@ class TestPagination:
         assert_that(json.data).size_is(per_page)
         assert_that(json.meta).has(size=per_page)
 
+    @pytest.mark.xfail(strict=True)
+    @allure.issue("https://employeesgate.atlassian.net/browse/QSS-2676")
     def test_getting_max_items(self, change_occupation):
         max_items = 100
         data = change_occupation.get_requests()
