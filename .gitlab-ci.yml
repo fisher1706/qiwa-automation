@@ -20,8 +20,8 @@ stages:
   - test-run
   - testmo-report
   - allure-report
-  - allure-send-email
   - discord-notification
+  - allure-send-email
 
 .package:
   image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
