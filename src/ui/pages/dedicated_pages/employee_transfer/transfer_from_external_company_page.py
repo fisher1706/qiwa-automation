@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from selene import command
+from selene import command, have
 from selene.support.shared.jquery_style import s
 
 from src.ui.components.raw.table import Table
 from utils.allure import allure_steps
-from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -38,7 +37,6 @@ class TransferFromExternalCompanyPage:
         return self
 
     def click_link_create_contract_another_establishment(self) -> TransferFromExternalCompanyPage:
-        link = self.table.cell(row=1, column="Actions")
-        scroll_into_view_if_needed(link)
-        link.click()
+        self.table.headers.wait_until(have.size(6))
+        self.table.cell(row=1, column=6).should(have.text("Create contract")).click()
         return self

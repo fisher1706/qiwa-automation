@@ -17,6 +17,7 @@ from data.dedicated.change_occupation.change_occupation_users import (
     lo_co_ho_user,
     lo_co_user,
 )
+from data.dedicated.employee_trasfer.employee_transfer_users import employer
 from data.dedicated.enums import (
     RequestStatus,
     SearchingType,
@@ -25,32 +26,58 @@ from data.dedicated.enums import (
 )
 from data.dedicated.models.services import change_occupation
 from src.api.app import QiwaApi
-from src.api.clients.employee_transfer import EmployeeTransferApi
-from src.api.controllers.ibm import IBMApiController
-from src.ui.actions.old_employee_transfer import OldEmployeeTransferActionsOld
+from src.api.clients.employee_transfer import employee_transfer_api
+from src.api.clients.ibm import ibm_api
+from src.api.controllers.ibm import ibm_api_controller
+from src.ui.actions.employee_transfer import employee_transfer_actions
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.LABOR_OFFICE)
 
 
-@allure.feature('Change Occupation')
 @pytest.fixture(autouse=True)
-def pre_test(request):
-    if 'noautouse' in request.keywords:
-        return
+def pre_test():
     api = QiwaApi.login_as_user(lo_co_user.personal_number)
     api.visits_api.cancel_active_visit(lo_co_user.personal_number)
 
 
 @pytest.fixture()
+def create_et_request():
+    employee_transfer_api.post_prepare_laborer_for_et_request()
+    ibm_api.create_new_contract(employer, laborer)
+
+    employee_transfer_actions.navigate_to_et_service(employer)
+
+    qiwa.employee_transfer_page.click_btn_transfer_employee() \
+        .select_another_establishment() \
+        .click_btn_next_step() \
+        .fill_employee_iqama_number(laborer.login_id) \
+        .fill_date_of_birth(laborer.birthdate) \
+        .click_btn_find_employee() \
+        .click_btn_add_employee_to_transfer_request() \
+        .click_btn_next_step() \
+        .check_existence_of_a_contract() \
+        .click_btn_next_step() \
+        .select_terms_checkbox() \
+        .click_btn_submit() \
+        .check_request_status() \
+        .click_btn_back_to_employee_transfer()
+
+    qiwa.header.click_on_menu().click_on_logout()
+    qiwa.login_page.wait_login_page_to_load()
+    qiwa.header.change_local(Language.EN)
+
+
+@pytest.fixture()
 def login():
-    booking_id = IBMApiController().get_appointment_id(lo_co_user, change_occupation)
+    booking_id = ibm_api_controller.get_appointment_id(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_user.name).change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
+        .click_btn_process_appointments() \
         .set_search_by(SearchingType.ID, booking_id) \
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
@@ -86,9 +113,8 @@ def test_check_if_cr_is_expired():
 @allure.title('AS-284 Check if excluded activities are not able to CO')
 @case_id(32949)
 def test_check_if_excluded_activities_are_not_able_to_co(navigate_to_co):
-    ibm = IBMApiController()
-    economic_activity_id = ibm.get_economic_activity_id(employee)
-    first_unrelated_occupation_ar = ibm.get_first_unrelated_occupation(economic_activity_id)
+    economic_activity_id = ibm_api_controller.get_economic_activity_id(employee)
+    first_unrelated_occupation_ar = ibm_api_controller.get_first_unrelated_occupation(economic_activity_id)
 
     qiwa.change_occupation_page.find_expected_employee(employee.personal_number) \
         .click_btn_change_occupation() \
@@ -132,13 +158,8 @@ def test_check_if_co_is_submitted(navigate_to_co):
 
 @allure.title('AS-286 Check if CO submitted while there is ST')
 @case_id(32951)
-@pytest.mark.skip('The ST (service transfer) is determined by PO as Employee Transfer')
-def test_check_if_co_submitted_while_there_is_st(http_client, navigate_to_co):
-    employee_transfer_api = EmployeeTransferApi(http_client)
-    employee_transfer_api.post_prepare_laborer_for_et_request()
-    employee_transfer_api.post_create_new_contract()
-    OldEmployeeTransferActionsOld().confirm_creation_of_contract(laborer)
-
+# @pytest.mark.skip('The ST (service transfer) is determined by PO as Employee Transfer')
+def test_check_if_co_submitted_while_there_is_st(navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(laborer.personal_number) \
         .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)
 
@@ -197,15 +218,15 @@ def test_check_if_co_submitted_on_saudization_occupations(navigate_to_co):
 
 @allure.title('AS-290 Check if CO submitted on home occupations')
 @case_id(32955)
-@pytest.mark.noautouse
 def test_check_if_co_submitted_on_home_occupations():
     api = QiwaApi.login_as_user(lo_co_ho_user.personal_number)
     api.visits_api.cancel_active_visit(lo_co_ho_user.personal_number)
-    booking_id = IBMApiController().get_appointment_id(lo_co_ho_user, change_occupation)
+    booking_id = ibm_api_controller.get_appointment_id(lo_co_ho_user, change_occupation)
     qiwa.login_as_user(lo_co_ho_user.personal_number)
     qiwa.header.check_personal_number_or_name(lo_co_ho_user.personal_number).change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
+        .click_btn_process_appointments() \
         .set_search_by(SearchingType.ID, booking_id) \
         .search_visit()
     qiwa.footer.click_on_lang_button(Language.EN)
@@ -232,7 +253,7 @@ def test_check_if_co_submitted_to_not_allowed_occupations(navigate_to_co):
 @allure.title('AS-292 Check if CO submitted over occupation not allowed to transfer from')
 @case_id(32957)
 def test_check_if_co_submitted_over_occupation_not_allowed_to_transfer_from(navigate_to_co):
-    employee_personal_number = IBMApiController().get_first_expected_employee(lo_co_user)
+    employee_personal_number = ibm_api_controller.get_first_expected_employee(lo_co_user)
     qiwa.change_occupation_page.find_expected_employee(employee_personal_number) \
         .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)
 

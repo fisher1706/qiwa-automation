@@ -96,6 +96,14 @@ user_type_three_employee = User(
     unified_number_id=9086,
 )
 
+user_type_three_employee_for_add_access = User(
+    personal_number="1070111305",
+    user_id=1668068,
+    labor_office_id=15,
+    sequence_number=2722,
+    unified_number_id=9086,
+)
+
 establishment_type_one = User(
     personal_number="1023450479",
     user_id=33707906,

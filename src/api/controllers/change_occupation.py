@@ -34,10 +34,14 @@ class ChangeOccupationController:
     @classmethod
     @allure.step
     def pass_ott_authorization(
-        cls, labor_office_id: str, sequence_number: str
+        cls, office_id: str, sequence_number: str, personal_number: str = None
     ) -> "ChangeOccupationController":
         ott_service = OttServiceApi()
-        response = ott_service.generate_token(sequence_number, labor_office_id)
+        response = ott_service.generate_token(
+            sequence_number=sequence_number,
+            labor_office_id=office_id,
+            personal_number=personal_number,
+        )
         assert_that(response).has(status_code=200)
         ott_token = response.json().get("ott")
         client = HTTPClient()
@@ -50,7 +54,7 @@ class ChangeOccupationController:
     def get_requests_laborers(
         self,
         page: int = 1,
-        per: int = 10,
+        per: int = 100,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: RequestStatus = None,

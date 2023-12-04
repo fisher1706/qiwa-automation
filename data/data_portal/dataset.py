@@ -684,3 +684,34 @@ class AdminData:
         Admin.JPEG_640,
         Admin.WEBP_640,
     )
+
+    criteria = (
+        (Admin.AUTOMATION, None, None, None),
+        (Admin.AUTOMATION, Admin.PUBLISHED, None, None),
+        (Admin.AUTOMATION, None, Admin.ENGLISH_FILTER, None),
+        (Admin.AUTOMATION, None, None, Admin.AUTOMATION),
+        (Admin.AUTOMATION, Admin.PUBLISHED, Admin.ENGLISH_FILTER, None),
+        (Admin.AUTOMATION, Admin.PUBLISHED, Admin.ARABIC_FILTER, None),
+        (Admin.AUTOMATION, Admin.PUBLISHED, None, Admin.AUTOMATION),
+        (Admin.AUTOMATION, None, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
+        (None, Admin.PUBLISHED, None, None),
+        (None, Admin.PUBLISHED, Admin.ENGLISH_FILTER, None),
+        (None, Admin.PUBLISHED, Admin.ARABIC_FILTER, None),
+        (None, Admin.PUBLISHED, None, Admin.AUTOMATION),
+        (None, Admin.PUBLISHED, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
+        (None, Admin.PUBLISHED, Admin.ARABIC_FILTER, Admin.AUTOMATION),
+        (None, None, Admin.ENGLISH_FILTER, None),
+        (None, None, Admin.ENGLISH_FILTER, Admin.AUTOMATION),
+        (None, None, None, Admin.AUTOMATION),
+    )
+
+    format_text = (
+        Admin.BOLD,
+        Admin.ITALIC,
+        Admin.UNDERLINE,
+        Admin.STRIKETHROUGH,
+        Admin.SUBSCRIPT,
+        Admin.SUPERSCRIPT,
+    )
+
+    alignment_text = (Admin.ALIGN_LEFT, Admin.ALIGN_CENTER, Admin.ALIGN_RIGHT, Admin.ALIGN_JUSTIFY)

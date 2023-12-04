@@ -12,7 +12,8 @@ employer = User(
     sequence_number="3212",
     establishment_name_ar="مؤسسة دائره العلاقات عبداللة زكريا عبداللة المولد تجربة",
     establishment_number="1828954",
-    name="عبدالله المولد",
+    name="عبدالله",
+    establishment_id="23244",
 )
 employer_between_my_establishments = User(
     personal_number="1029955703",
@@ -48,4 +49,6 @@ laborer_between_my_establishments = Laborer(
 laborer_between_my_establishments_existing_contract = Laborer(
     login_id=2126951132, birthdate="01-03-1961", transfer_type=type_4
 )
-laborer_between_my_establishments_quota = Laborer(login_id=2111825226, birthdate="01-01-1976")
+laborer_between_my_establishments_quota = Laborer(
+    login_id=2353279280, birthdate="14-01-1990", transfer_type=type_4
+)

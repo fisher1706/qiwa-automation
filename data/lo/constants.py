@@ -130,7 +130,7 @@ class OfficesInfo:
     IS_ELECTRONIC_OFFICE = False
 
     OFFICES_NAME = random_name
-    OFFICE_NAME_TEST_OFFICE = "Test office 125"
+    OFFICE_NAME_TEST_OFFICE = "office 3216"
     OFFICE_NAME_VEUM_HANE = "Veum - Hane"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
@@ -186,6 +186,12 @@ class ServicesInfo:
     SUB_SERVICE_NAME_RENEW_WORK_PERMITS = {
         Language.EN: "Renew Work Permits",
         Language.AR: "تجديد رخص العمل",
+    }
+
+    SERVICE_NAME_POLICIES = {Language.EN: "Policies", Language.AR: "لوائح تنظيم العمل"}
+    SUB_SERVICE_NAME_POLICIES = {
+        Language.EN: "Submit Policies Request",
+        Language.AR: "تقديم لوائح تنظيم العمل",
     }
 
     EMPLOYEE_TRANSFER_SERVICE = "Employee Transfer"

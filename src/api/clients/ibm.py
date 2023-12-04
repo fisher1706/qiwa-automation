@@ -1,118 +1,88 @@
-from datetime import datetime
 from http import HTTPStatus
 
-import allure
+import pytest
 
 import config
+from data.dedicated.enums import TransferType
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.services import Service
 from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
+from src.api.payloads.appointment import appointment_payload
 from src.api.payloads.contract_details import contract_details_payload
-from src.api.payloads.ibm.createnewappointment import (
-    Body,
-    CreateNewAppointmentRq,
-    CreateNewAppointmentRqPayload,
-    EstablishmentDetails,
-    Header,
-    RequesterDetails,
-    UserInfo,
+from src.api.payloads.employee_transfer_request_ import (
+    employee_transfer_request_ae_payload,
 )
-from src.api.payloads.ibm.getestablishmentinformation import (
-    EstablishmentInformation,
-    GetEstablishmentInformationPayload,
-    GetEstablishmentInformationRq,
+from src.api.payloads.employee_transfer_request_bme import (
+    employee_transfer_request_bme_payload,
 )
+from src.api.payloads.establishment_information import establishment_information_payload
+from utils.allure import allure_steps
 from utils.assertion import assert_status_code
 
 
+@allure_steps
 class IbmApi:
     def __init__(self):
         self.client = HTTPClient()
         self.url = config.settings.ibm_url
         self.route = "/takamol/staging"
 
-    @allure.step
     def create_new_appointment(self, user: User, service: Service) -> dict:
-        header = Header(
-            TransactionId="0",
-            ChannelId="Qiwa",
-            SessionId="0",
-            RequestTime="2023-08-03 09:00:00.555",
-            ServiceCode="CNA00001",
-            DebugFlag="1",
-            UserInfo=UserInfo(UserId=user.personal_number, IDNumber=user.personal_number),
-        )
-
-        body = Body(
-            EstablishmentDetails=EstablishmentDetails(
-                LaborOfficeId=user.labor_office_id,
-                SequenceNumber=user.sequence_number,
-            ),
-            OfficeID=user.office_id,
-            ClientServiceId=service.client_service_id,
-            RequesterDetails=RequesterDetails(
-                RequesterIdNo=user.personal_number,
-                RequesterName="",
-                RequesterUserId=user.personal_number,
-            ),
-            Time="90",
-            Date=datetime.today().strftime("%Y-%m-%d"),
-            RegionId="1",
-            RequesterTypeId="2",
-            SubServiceId=service.sub_service_id,
-            VisitReasonId="1",
-        )
-        payload = CreateNewAppointmentRqPayload(
-            CreateNewAppointmentRq=CreateNewAppointmentRq(Header=header, Body=body)
-        )
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/qiwalo/createnewappointment",
             headers=HEADERS,
-            json=payload.dict(exclude_none=True),
+            json=appointment_payload(user, service),
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
-    @allure.step
     def get_establishment_information(self, user: User) -> dict:
-        header = Header(
-            TransactionId="0",
-            ChannelId="Qiwa",
-            SessionId="0",
-            RequestTime="2019-10-10 00:00:00.555",
-            MWRequestTime="2019-10-10 00:00:00.555",
-            ServiceCode="GEI00001",
-            DebugFlag="1",
-        )
-        body = EstablishmentInformation(
-            LaborOfficeId=user.labor_office_id,
-            EstablishmentSequanceNumber=user.sequence_number,
-        )
-        payload = GetEstablishmentInformationPayload(
-            GetEstablishmentInformationRq=GetEstablishmentInformationRq(Header=header, Body=body)
-        )
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/qiwa/esb/getestablishmentinformation",
             headers=HEADERS,
-            json=payload.dict(),
+            json=establishment_information_payload(user),
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
-    @allure.step
-    def create_new_contract(self, laborer: Laborer, employer: User, establishment_id: str):
+    def create_new_contract(self, user: User, laborer: Laborer):
         response = self.client.post(
             url=self.url,
             endpoint="/takamol/staging/contractmanagement/createnewcontract",
-            json=contract_details_payload(laborer, employer, establishment_id),
+            json=contract_details_payload(laborer, user),
             headers=HEADERS,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-        return response.json()
+
+    def create_employee_transfer_request_bme(
+        self, user: User, laborer: Laborer, transfer_type: TransferType
+    ):
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/changesponsor/submitchangesponsorrequest",
+            headers=HEADERS,
+            json=employee_transfer_request_bme_payload(user, laborer, transfer_type),
+        )
+        response = response.json()["SubmitChangeSponsorRequestRs"]["Header"]["ResponseStatus"]
+        if response["Status"].lower() == "error":
+            pytest.fail(reason=response["EnglishMsg"])
+
+    def create_employee_transfer_request_ae(
+        self, user: User, laborer: Laborer, sponsor: User = None
+    ):
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/changesponsor/submitcsrequests",
+            headers=HEADERS,
+            json=employee_transfer_request_ae_payload(user, laborer, sponsor),
+        )
+        response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
+        if response["Status"].lower() == "error":
+            pytest.fail(reason=response["EnglishMsg"])
 
 
 ibm_api = IbmApi()

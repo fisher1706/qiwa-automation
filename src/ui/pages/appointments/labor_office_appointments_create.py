@@ -22,6 +22,22 @@ class LaborOfficeAppointmentsCreatePage:
     radio_button_appointment_reason = '//*[@data-component="RadioButton"]'
     in_person_appointment = s('//fieldset//label[4]//p[@id="1-label"]')
 
+    block_new_request_virtual = s('//*[@id="reason"]//label[1]')
+    block_follow_up = s('//*[@id="reason"]//label[2]')
+    block_inquiry = s('//*[@id="reason"]//label[3]')
+    block_request_new_service_in_person = s('//*[@id="reason"]//label[4]')
+
+    edit_creators_info_btn = s('//*[@id="establishment"]//button')
+    edit_reason_btn = s('//*[@id="reason"]//button')
+    edit_service_btn = s('//*[@id="service"]//button')
+    edit_details_btn = s('//*[@id="details"]//button')
+    summary_block = s('//*[@id="summary"]/div')
+    summary_reason = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[1]')
+    summary_office = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[2]')
+    summary_date = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[3]')
+    summary_time = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[4]')
+    summary_type = s('//*[@id="summary"]/div/div[2]/div[1]/div[2]/div[5]')
+
     # dropdowns
     dropdown_element_locator = '//*[@role="option"]'
     dropdown_select_service = Dropdown(
@@ -41,6 +57,17 @@ class LaborOfficeAppointmentsCreatePage:
         dropdown_element_locator,
     )
 
+    modal_appointment_exists = s('//*[@id="modalBodyWrapper"]')
+    error_message_region = s('//*[@id="region-error"]')
+    error_message_office = s('//*[@id="office-error"]')
+    error_message_date = s('//*[@id="date-error"]')
+    error_message_time = s('(//*[@id="office-error"])[2]')
+
+    error_message_region_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[1]')
+    error_message_office_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[2]')
+    error_message_date_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[3]')
+    error_message_time_select_link = s('(//*[@role="status"]//*[@data-component="Link"])[4]')
+
     # inputs
     input_service = s('//input[@id="service"]')
     input_region = s('//input[@id="region"]')
@@ -52,6 +79,47 @@ class LaborOfficeAppointmentsCreatePage:
         self.search.type(name)
         self.establishment_list.first.click()
         self.next_btn.click()
+        return self
+
+    @allure.step("Verify establishment search is visible")
+    def verify_select_establishment_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.search.should(be.visible)
+        return self
+
+    @allure.step("Verify next button is visible")
+    def verify_next_btn_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.next_btn.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in Appointment reason page")
+    def verify_appointment_reason_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.block_new_request_virtual.should(be.visible)
+        self.block_follow_up.should(be.visible)
+        self.block_inquiry.should(be.visible)
+        self.block_request_new_service_in_person.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in service and subservice page")
+    def verify_service_and_subservice_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.input_service.should(be.visible)
+        self.sub_service.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in Appointment details page")
+    def verify_appointment_details_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.input_region.should(be.visible)
+        self.input_office.should(be.visible)
+        self.date_picker.should(be.visible)
+        return self
+
+    @allure.step("Verify blocks in summary page")
+    def verify_summary_blocks_visible(self) -> LaborOfficeAppointmentsCreatePage:
+        self.summary_block.should(be.visible)
+        self.summary_reason.should(be.visible)
+        self.summary_office.should(be.visible)
+        self.summary_date.should(be.visible)
+        self.summary_time.should(be.visible)
+        self.summary_type.should(be.visible)
         return self
 
     @allure.step("Select appointment reason {value}")
@@ -129,6 +197,45 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Verify Service list is not empty")
     def should_service_list_be(self):
         assert len(self.dropdown_select_service.options) > 0, "Service list is empty"
+
+    @allure.step("Verify validation select link on region field is present")
+    def should_validation_select_link_region_be(self):
+        self.error_message_region_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on office field is present")
+    def should_validation_select_link_office_be(self):
+        self.error_message_office_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on date field is present")
+    def should_validation_select_link_date_be(self):
+        self.error_message_date_select_link.should(be.visible)
+
+    @allure.step("Verify validation select link on time field is present")
+    def should_validation_select_link_time_be(self):
+        self.error_message_time_select_link.should(be.visible)
+
+    @allure.step("Verify validation message on create additional appointment is present")
+    def should_validation_additional_appointment_be(self):
+        self.modal_appointment_exists.should(have.text("Sorry, you can’t book an appointment now"))
+        self.modal_appointment_exists.should(
+            have.text("Please cancel or edit an existing appointment")
+        )
+
+    @allure.step("Verify validation message on region field is present")
+    def should_validation_message_region_be(self):
+        self.error_message_region.should(be.visible)
+
+    @allure.step("Verify validation message on office field is present")
+    def should_validation_message_office_be(self):
+        self.error_message_office.should(be.visible)
+
+    @allure.step("Verify validation message on date field is present")
+    def should_validation_message_date_be(self):
+        self.error_message_date.should(be.visible)
+
+    @allure.step("Verify validation message on time field is present")
+    def should_validation_message_time_be(self):
+        self.error_message_time.should(be.visible)
 
     @allure.step("Create appointment flow in create appointment page")
     def book_appointment_flow(

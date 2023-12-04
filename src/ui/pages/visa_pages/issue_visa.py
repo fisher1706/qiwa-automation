@@ -32,7 +32,7 @@ class IssueVisaPage:
     request_created_banner = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]')
     visa_request_ref_number = s('//*[@data-testid="yourRequestForPaymentWorkVisasApproved"]//span')
     back_to_perm_work_visas = s('//*[@data-testid="backToWorkVisas"]')
-    add_new_location_link = s('//*[@data-testid="estabAddressSectionestablishmentLocation"]/a')
+    add_new_location_link = s('//*[@data-testid="estabAddressWarningCard"]//a')
     popup = FeedbackPopup('//*[@data-component="Modal"]')
 
     @allure.step("Verify issue visa page is open")

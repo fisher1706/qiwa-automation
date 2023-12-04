@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+import utils.helpers
 from data.constants import AppointmentReason, Language
 from data.lo.constants import (
     AppointmentsHistoryStatus,
@@ -57,12 +58,12 @@ def test_book_individual_appointment(language):
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language],
         region=OfficesInfo.REGION_MADINAH[language],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
@@ -114,40 +115,40 @@ def test_individual_filter_appointments_history():
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.click_clear_search()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.EXPIRED['index']
+        AppointmentsHistoryStatus.EXPIRED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.EXPIRED['value']
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.CANCELLED['index']
+        AppointmentsHistoryStatus.CANCELLED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.CANCELLED['value']
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.ATTENDED['index']
+        AppointmentsHistoryStatus.ATTENDED["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.ATTENDED['value']
+        by_index=6, value=AppointmentsHistoryStatus.ATTENDED["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.DONE['index']
+        AppointmentsHistoryStatus.DONE["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.DONE['value']
+        by_index=6, value=AppointmentsHistoryStatus.DONE["value"]
     )
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.UNDER_PROGRESS['index']
+        AppointmentsHistoryStatus.UNDER_PROGRESS["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
 
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.PENDING['index']
+        AppointmentsHistoryStatus.PENDING["index"]
     )
     qiwa.labor_office_appointments_page.should_history_search_results_be_empty()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.SHOW_ALL['index']
+        AppointmentsHistoryStatus.SHOW_ALL["index"]
     )
     qiwa.labor_office_appointments_page.should_search_history_be_visible()
 
@@ -164,61 +165,53 @@ def test_individual_multiple_filter_appointments_history():
     qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
     qiwa.labor_office_appointments_page.wait_page_to_load()
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.EXPIRED['index']
+        AppointmentsHistoryStatus.EXPIRED["index"]
     )
-    qiwa.labor_office_appointments_page.search_appointments(
-        IndividualUser.APPOINTMENT_EXPIRED
-    )
+    qiwa.labor_office_appointments_page.search_appointments(IndividualUser.APPOINTMENT_EXPIRED)
     qiwa.labor_office_appointments_page.should_history_search_results_have(
         by_index=2, value=IndividualUser.APPOINTMENT_EXPIRED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.EXPIRED['value']
+        by_index=6, value=AppointmentsHistoryStatus.EXPIRED["value"]
     )
     qiwa.labor_office_appointments_page.click_clear_search()
 
     # check cancelled appointments multiple filter
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.CANCELLED['index']
+        AppointmentsHistoryStatus.CANCELLED["index"]
     )
-    qiwa.labor_office_appointments_page.search_appointments(
-        IndividualUser.APPOINTMENT_CANCELLED
-    )
+    qiwa.labor_office_appointments_page.search_appointments(IndividualUser.APPOINTMENT_CANCELLED)
     qiwa.labor_office_appointments_page.should_history_search_results_have(
         by_index=2, value=IndividualUser.APPOINTMENT_CANCELLED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.CANCELLED['value']
+        by_index=6, value=AppointmentsHistoryStatus.CANCELLED["value"]
     )
     qiwa.labor_office_appointments_page.click_clear_search()
 
     # check attended appointments multiple filter
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.ATTENDED['index']
+        AppointmentsHistoryStatus.ATTENDED["index"]
     )
-    qiwa.labor_office_appointments_page.search_appointments(
-        IndividualUser.APPOINTMENT_ATTENDED
-    )
+    qiwa.labor_office_appointments_page.search_appointments(IndividualUser.APPOINTMENT_ATTENDED)
     qiwa.labor_office_appointments_page.should_history_search_results_have(
         by_index=2, value=IndividualUser.APPOINTMENT_ATTENDED
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.ATTENDED['value']
+        by_index=6, value=AppointmentsHistoryStatus.ATTENDED["value"]
     )
     qiwa.labor_office_appointments_page.click_clear_search()
 
     # check done appointments multiple filter
     qiwa.labor_office_appointments_page.filter_appointments_history_by_status(
-        AppointmentsHistoryStatus.DONE['index']
+        AppointmentsHistoryStatus.DONE["index"]
     )
-    qiwa.labor_office_appointments_page.search_appointments(
-        IndividualUser.APPOINTMENT_DONE
-    )
+    qiwa.labor_office_appointments_page.search_appointments(IndividualUser.APPOINTMENT_DONE)
     qiwa.labor_office_appointments_page.should_history_search_results_have(
         by_index=2, value=IndividualUser.APPOINTMENT_DONE
     )
     qiwa.labor_office_appointments_page.should_history_search_results_have(
-        by_index=6, value=AppointmentsHistoryStatus.DONE['value']
+        by_index=6, value=AppointmentsHistoryStatus.DONE["value"]
     )
 
 
@@ -242,7 +235,7 @@ def test_individual_view_appointment_from_upcoming():
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -257,7 +250,9 @@ def test_individual_view_appointment_from_upcoming():
     qiwa.labor_office_appointments_view_page.verify_print_btn()
 
 
-@allure.title("Appointments[Individual]: Cancel Appointment (from the 'Upcoming appointments' table)")
+@allure.title(
+    "Appointments[Individual]: Cancel Appointment (from the 'Upcoming appointments' table)"
+)
 @case_id(41845)
 def test_individual_cancel_appointment_from_active_appointments():
     qiwa.login_as_user(login=IndividualUser.ID)
@@ -276,7 +271,7 @@ def test_individual_cancel_appointment_from_active_appointments():
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -323,7 +318,7 @@ def test_individual_cancel_appointment_from_details_appointments():
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -368,7 +363,7 @@ def test_individual_edit_appointment():
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
         region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -378,13 +373,14 @@ def test_individual_edit_appointment():
 
     qiwa.labor_office_appointments_edit_page.open_knowledge_center()
     qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
+    utils.helpers.scroll_to_coordinates()
     qiwa.labor_office_appointments_edit_page.change_details_fields(
         region=OfficesInfo.REGION_MADINAH[Language.EN], office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
     qiwa.labor_office_appointments_edit_page.next_step_btn_click()
 
     qiwa.labor_office_appointments_edit_page.verify_summary_table(
-        office_name=OfficesInfo.OFFICE_NAME_VEUM_HANE, type_value='In-person'
+        office_name=OfficesInfo.OFFICE_NAME_VEUM_HANE, type_value="In-person"
     )
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
@@ -401,3 +397,65 @@ def test_individual_edit_appointment():
     qiwa.labor_office_appointments_view_page.verify_general_info_row()
     qiwa.labor_office_appointments_view_page.verify_general_table()
     qiwa.labor_office_appointments_view_page.verify_requester_info()
+
+
+@allure.title(
+    "Appointments[Individual]: As LO User I see validation message when book appointment once exists"
+)
+@case_id(43426)
+def test_individual_verify_validation_error_on_book_appointment_once_exists():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON,
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
+    )
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+    qiwa.labor_office_appointments_create_page.should_validation_additional_appointment_be()
+
+
+@allure.title("Appointments[Individual]: The validation messages on Appointment Details fields are present")
+@case_id(43168)
+def test_individual_verify_validation_error_appointment_details():
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[Language.EN])
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON)
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN])
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN]
+    )
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_region_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_office_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_date_be()
+    qiwa.labor_office_appointments_create_page.should_validation_select_link_time_be()
+
+    qiwa.labor_office_appointments_create_page.should_validation_message_region_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_office_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_date_be()
+    qiwa.labor_office_appointments_create_page.should_validation_message_time_be()

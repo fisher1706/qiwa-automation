@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import allure
+from selene import have
 
 from data.constants import Language
+from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ArabicTranslations,
     Privileges,
@@ -119,15 +121,17 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def open_select_privileges_modal_for_no_access_workspace(self) -> UserManagementActions:
-        self.select_no_access_tab()
-        self.click_add_access_button()
-        self.check_select_privileges_modal_is_displayed()
+    def open_select_privileges_modal_for_no_access_workspace(
+        self, establishment: str
+    ) -> UserManagementActions:
+        self.switch_to_tab(user_management_data.NO_ACCESS)
+        self.click_add_access_button_for_workspace_without_access(establishment)
+        self.check_add_privileges_modal_is_displayed()
         return self
 
     @allure.step
     def check_privileges_are_grouped(self) -> UserManagementActions:
-        self.click_show_more_privileges_btn_for_groups()
+        self.click_show_more_privileges_btn_for_all_groups()
         self.check_privileges_group_names(Privileges.groups_data)
         return self
 
@@ -135,12 +139,12 @@ class UserManagementActions(
     def select_all_privileges(self) -> UserManagementActions:
         self.wait_until_privilege_list_is_displayed()
         self.click_all_privileges_checkbox()
-        self.check_privileges_are_selected()
+        self.check_all_privileges_are_selected()
         return self
 
     @allure.step
     def unselect_the_privilege(self, privilege_name: str) -> UserManagementActions:
-        self.click_privilege_from_the_list(privilege_name)
+        self.click_privilege_from_the_list([privilege_name])
         self.check_all_privileges_checkbox_is_unselected()
         return self
 
@@ -148,6 +152,71 @@ class UserManagementActions(
     def unselect_all_privileges(self) -> UserManagementActions:
         self.click_all_privileges_checkbox()
         self.check_non_default_privileges_are_unselected()
+        return self
+
+    @allure.step
+    def select_paired_privileges(
+        self, privilege_name: list, selected_privileges: list
+    ) -> UserManagementActions:
+        self.click_privilege_from_the_list(privilege_name)
+        self.check_privileges_are_selected(selected_privileges, active_state=False)
+        self.click_privilege_from_the_list(privilege_name)
+        self.check_privileges_are_selected(selected_privileges, active_state=True)
+        self.click_privilege_from_the_list(selected_privileges)
+        return self
+
+    @allure.step
+    def check_expanding_privilege_group_list(self) -> UserManagementActions:
+        group = self.privilege_groups.element_by(
+            have.text(user_management_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE)
+        )
+        self.check_show_more_btn_is_displayed(group, 7)
+        self.click_show_more_btn_for_group(group)
+        self.check_hide_privileges_btn_is_displayed(group)
+        self.click_privilege_from_the_list(Privileges.groups_data[1]["privileges"][-7:])
+        self.check_hide_privileges_btn_is_not_displayed(group)
+        return self
+
+    @allure.step
+    def check_collapsing_privilege_group_list(self) -> UserManagementActions:
+        group = self.privilege_groups.element_by(
+            have.text(user_management_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE)
+        )
+        self.click_privilege_from_the_list([user_management_data.NATIONALIZATION_OF_OPERATION])
+        self.click_hide_btn_for_group(group)
+        self.check_show_more_btn_is_displayed(group, 1)
+        return self
+
+    @allure.step
+    def add_access_with_fundamental_privileges(self, establishment: str) -> UserManagementActions:
+        self.click_add_access_btn_on_add_privileges_modal()
+        self.switch_to_tab(user_management_data.ALLOWED_ACCESS)
+        self.check_establishment_is_added_to_allowed_access(establishment=establishment)
+        self.success_message_is_hidden()
+        return self
+
+    @allure.step
+    def add_access_with_not_fundamental_privileges(
+        self, establishment: str
+    ) -> UserManagementActions:
+        self.click_privilege_from_the_list(
+            [user_management_data.VISA_ISSUANCE_SERVICE, user_management_data.WAGE_DISBURSEMENT]
+        )
+        self.click_add_access_btn_on_add_privileges_modal()
+        self.switch_to_tab(user_management_data.ALLOWED_ACCESS)
+        self.check_establishment_is_added_to_allowed_access(establishment=establishment)
+        return self
+
+    @allure.step
+    def check_success_message_and_privileges_after_add_access(
+        self, row: int
+    ) -> UserManagementActions:
+        establishment_name = self.get_establishment_name(row)
+        self.check_success_message_is_displayed(establishment_name)
+        self.open_edit_privilege_modal(row)
+        self.check_privileges_are_selected(
+            [user_management_data.VISA_ISSUANCE_SERVICE, user_management_data.WAGE_DISBURSEMENT]
+        )
         return self
 
     @allure.step
