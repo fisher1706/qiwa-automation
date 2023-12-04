@@ -1,13 +1,15 @@
 import argparse
 import smtplib
+import sys
 from datetime import date
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 
 
-def send_email_from_outlook(sender, email_password, report, receivers, service_name, junitxml_report: str):
-
+# def send_email_from_outlook(sender, email_password, report, receivers, service_name, junitxml_report: str):
+def send_email_from_outlook(sender, email_password, report, service_name, junitxml_report: str, receivers):
     def email_template(total: int, passed: int, failed: int, skipped: int) -> str:
         return (f"<p style='max-width: 90px';><font color='grey'> Total: {total}\n </p>"
                 f"<p style='max-width: 90px'><font color='green'> Passed: {passed}\n </p>"
@@ -37,7 +39,7 @@ def send_email_from_outlook(sender, email_password, report, receivers, service_n
     html_content = f"""<html>
              <head></head>
              <body>
-                 <h3>Please find the daily report in attachment to this email.</h1>
+                 <h3>Please find the detailed report in attachment to this email.</h1>
                  <h3>{statistics}</h2>
              </body>
              </html>"""
@@ -63,18 +65,25 @@ def send_email_from_outlook(sender, email_password, report, receivers, service_n
 
 
 if __name__ == "__main__":
-    """
-    Script run example:
-    python3 utils/email_sender.py $address $password allure.html email1@com, email2@com
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("email")
-    parser.add_argument("password")
-    parser.add_argument("attachment")
-    parser.add_argument("recipients", nargs = "+")
-    parser.add_argument("project_name")
-    parser.add_argument("report_template")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("email")
+    # parser.add_argument("password")
+    # parser.add_argument("attachment")
+    # parser.add_argument("recipients", nargs = "+")
+    # parser.add_argument("project_name")
+    # parser.add_argument("report_template")
+    # args = parser.parse_args()
 
-    print(args.recipients)
-    send_email_from_outlook(args.email, args.password, args.attachment, args.recipients, args.project_name, args.report_template)
+    path = Path(__file__).parent.parent
+    sys.path.append(str(path))
+    email = sys.argv[1]
+    password = sys.argv[2]
+    attachment = sys.argv[3]
+    service_name = sys.argv[4]
+    report_template = sys.argv[5]
+    recipients = sys.argv[6:]
+
+
+    # print(args.recipients)
+    # send_email_from_outlook(args.email, args.password, args.attachment, args.recipients, args.project_name, args.report_template)
+    send_email_from_outlook(email, password, attachment, service_name, report_template, recipients)
