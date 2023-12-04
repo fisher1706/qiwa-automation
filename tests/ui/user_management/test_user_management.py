@@ -168,7 +168,7 @@ def test_select_and_unselect_privileges():
 @case_id(41783, 41794)
 def test_self_subscription():
     user_management = UserManagementActions()
-    user = SelfSubscriptionData.self_subscription_data[2]
+    user = SelfSubscriptionData.self_subscription_data[1]
 
     delete_self_subscription(user)
     log_in_and_open_establishment_account(user, Language.EN)
@@ -179,7 +179,7 @@ def test_self_subscription():
         .check_annual_subscription()\
         .make_establishment_payment()\
         .check_thank_you_page()
-    time.sleep(20)
+    # time.sleep(20)
 
 
 @allure.title("Check open annual subscription page")

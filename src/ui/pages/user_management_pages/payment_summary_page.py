@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be, command
+from selene import be, command, browser
 from selene.support.shared.jquery_style import s
 
 from src.api.payloads.raw.user_management.payment import CardDetails
@@ -22,6 +22,7 @@ class PaymentSummary(BaseEstablishmentPayment):
     field_month = s("//*[@id='date-test-0']")
     field_year = s("//*[@id='date-test-1']")
     field_CVV = s("//*[@id='cvv-test']")
+    iframe = s("//*[@id='challengeFrame']")
     btn_submit = s("//*[@id='acssubmit']")
 
     def _fill_card_data(self, card: CardDetails = CardDetails()) -> PaymentSummary:
@@ -73,8 +74,10 @@ class PaymentSummary(BaseEstablishmentPayment):
     @allure.step
     def complete_payment(self, payment_type: str = None) -> PaymentSummary:
         if not payment_type:
-            # self.btn_submit.should(be.visible).click()
-            self.btn_submit.click()
+            browser.switch_to.frame(self.iframe.should(be.visible)())
+            self.btn_submit.should(be.visible).click()
         else:
             pass
         return self
+
+

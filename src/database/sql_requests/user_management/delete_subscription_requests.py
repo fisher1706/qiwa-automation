@@ -130,7 +130,7 @@ class UserManagementRequestsDeleteSubscription:
         return self
 
     # TODO: delete data Join() by sqlalchemy in future
-    def um_privileges_investigate(
+    def um_privileges(
         self, personal_number: str, unified_number: int
     ) -> UserManagementRequestsDeleteSubscription:
         um_privileges_to_delete = (
@@ -152,7 +152,7 @@ class UserManagementRequestsDeleteSubscription:
             self.session.commit()
         return self
 
-    def um_privileges(
+    def um_privileges_row(
         self, personal_number: str, unified_number: int
     ) -> UserManagementRequestsDeleteSubscription:
         raw_sql = (

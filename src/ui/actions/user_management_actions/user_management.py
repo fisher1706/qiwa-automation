@@ -173,4 +173,5 @@ class UserManagementActions(
     @allure.step
     def check_thank_you_page(self) -> UserManagementActions:
         self.wait_until_page_load(locator=ThankYouPage.main_text)
+        self.check_data_thank_you_page()
         return self

@@ -138,12 +138,20 @@ user_with_active_subscription = User(
     sequence_number=117,
 )
 
+# user_with_expired_subscription = User(
+#     personal_number="1035752508",
+#     user_id=977820,
+#     labor_office_id=1,
+#     sequence_number=285105,
+#     unified_number_id=1276712,
+# )
+
 user_with_expired_subscription = User(
-    personal_number="1035752508",
-    user_id=977820,
-    labor_office_id=1,
-    sequence_number=285105,
-    unified_number_id=1276712,
+    personal_number="1006783110",
+    user_id=941498,
+    labor_office_id=8,
+    sequence_number=1374199,
+    unified_number_id=1676913,
 )
 
 user_with_terminated_subscription = User(
@@ -154,8 +162,8 @@ user_with_terminated_subscription = User(
 )
 
 user_without_subscription = User(
-    personal_number="1012365118",
-    user_id=1,
+    personal_number="1030807810",
     labor_office_id=1,
-    sequence_number=66754,
+    sequence_number=1376508,
+    unified_number_id=1678008,
 )

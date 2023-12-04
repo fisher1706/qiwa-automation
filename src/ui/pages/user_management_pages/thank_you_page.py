@@ -3,18 +3,19 @@ from __future__ import annotations
 import allure
 from selene import be
 from selene.support.shared.jquery_style import s, ss
-from src.ui.pages.user_management_pages.base_establishment_payment_page import (
-    BaseEstablishmentPayment,
-)
+
+from utils.assertion import assert_that
 
 
-class ThankYouPage(BaseEstablishmentPayment):
+class ThankYouPage:
     main_text = s("//p[contains(text(), 'Thank you!')]")
-    request_details = ss("//p[contains(text(), 'Request details!')]")
+    payment = s("//*[@id='root']//strong")
+    payment_data = ss("//*[@data-component='SimpleTable']//td")
+    count = 11
 
-    '[data-component="SimpleTable"]'
-    '//*[@data-component="SimpleTable"]'
-
-    '//*[text()="Request details"]/..'
-
-    '//*[text()="Request details"]'
+    @allure.step
+    def check_data_thank_you_page(self) -> ThankYouPage:
+        self.payment.should(be.visible)
+        elements = [item.should(be.visible) for item in self.payment_data]
+        assert_that(len(elements)).equals_to(self.count)
+        return self
