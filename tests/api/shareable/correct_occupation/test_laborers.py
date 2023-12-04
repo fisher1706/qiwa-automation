@@ -32,8 +32,21 @@ def test_by_laborer_nationality_and_occupation(correct_occupation, parameter):
     assert_that(all(getattr(laborer.attributes, parameter) == value for laborer in json.data)).equals_to(True)
 
 
-def test_not_found():
-    ...
+@pytest.mark.parametrize("value", [
+    {"page": 10000},
+    {"laborer_name": "Some Name"},
+    {"laborer_id": "1234567890"},
+    {"nationality_id": 12345},
+    {"occupation_id": 12345},
+], ids=lambda param: list(param.keys())[0])
+def test_by_not_found_parameter_value(correct_occupation, value):
+    json = correct_occupation.get_laborers(**value)
+
+    assert_that(json.data).is_empty()
+    assert_that(json.meta).has(
+        pages_count=0,
+        total_entities=0,
+    )
 
 
 class TestPagination:
