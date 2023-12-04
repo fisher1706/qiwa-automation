@@ -125,11 +125,12 @@ class UserManagementRequestsDeleteSubscription:
             .all()
         )
         for user_privileges in user_privileges_to_delete:
-            self.session.delete(user_privileges)
+            self.session.delete(user_privileges[0])
             self.session.commit()
         return self
 
-    def um_privileges(
+    # TODO: delete data Join() by sqlalchemy in future
+    def um_privileges_investigate(
         self, personal_number: str, unified_number: int
     ) -> UserManagementRequestsDeleteSubscription:
         um_privileges_to_delete = (
@@ -149,4 +150,18 @@ class UserManagementRequestsDeleteSubscription:
         for um_privileges in um_privileges_to_delete:
             self.session.delete(um_privileges)
             self.session.commit()
+        return self
+
+    def um_privileges(
+        self, personal_number: str, unified_number: int
+    ) -> UserManagementRequestsDeleteSubscription:
+        raw_sql = (
+            f"DELETE p FROM UM_Privileges p JOIN UM_EstablishmentAccess e ON p.FK_Idno = e.FK_Idno "
+            f"AND e.FK_LaborOfficeId = p.FK_LaborOfficeId "
+            f"AND e.FK_SequenceNumber = p.FK_SequenceNumber "
+            f"WHERE p.FK_Idno = {personal_number} "
+            f"AND e.FK_UnifiedNumber = {unified_number}"
+        )
+
+        self.session.execute(raw_sql)
         return self

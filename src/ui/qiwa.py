@@ -218,5 +218,10 @@ class QiwaUiClient:
         browser.open(config.qiwa_urls.e_services)
         return self
 
+    @allure.step
+    def open_establishment_account_page(self) -> QiwaUiClient:
+        browser.open("https://workspaces.qiwa.info/establishment-accounts?sort_by=1")
+        return self
+
 
 qiwa = QiwaUiClient()

@@ -30,3 +30,10 @@ class WorkspacesApiController(WorkspacesApi):
             and workspace["attributes"]["company-id"]
         )
         return workspace
+
+    @allure.step
+    def select_company_subscription_with_sequence_number(
+        self, number: int
+    ) -> WorkspacesApiController:
+        self.__get_workspace_with("company-sequence-number", number)
+        return self

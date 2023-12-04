@@ -130,3 +130,32 @@ establishment_discount_val_10 = User(
     labor_office_id=9,
     sequence_number=1680894,
 )
+
+user_with_active_subscription = User(
+    personal_number="1055034217",
+    user_id=1588485,
+    labor_office_id=14,
+    sequence_number=117,
+)
+
+user_with_expired_subscription = User(
+    personal_number="1035752508",
+    user_id=977820,
+    labor_office_id=1,
+    sequence_number=285105,
+    unified_number_id=1276712,
+)
+
+user_with_terminated_subscription = User(
+    personal_number="1039949845",
+    user_id=1644420,
+    labor_office_id=8,
+    sequence_number=1837074,
+)
+
+user_without_subscription = User(
+    personal_number="1012365118",
+    user_id=1,
+    labor_office_id=1,
+    sequence_number=66754,
+)

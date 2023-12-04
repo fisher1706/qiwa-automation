@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 
@@ -6,6 +8,7 @@ from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
     Privileges,
+    SelfSubscriptionData,
     Texts,
     UsersTypes,
 )
@@ -19,7 +22,11 @@ from data.user_management.user_management_users import (
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
-from tests.ui.user_management.conftest import log_in_and_open_user_management
+from tests.ui.user_management.conftest import (
+    delete_self_subscription,
+    log_in_and_open_establishment_account,
+    log_in_and_open_user_management,
+)
 from utils.allure import TestmoProject, project
 
 case_id = project(TestmoProject.USER_MANAGEMENT)
@@ -155,3 +162,36 @@ def test_select_and_unselect_privileges():
         .open_select_privileges_modal_for_no_access_workspace()\
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE)\
         .select_all_privileges().unselect_all_privileges()
+
+
+@allure.title("Test self subscription")
+@case_id(41783, 41794)
+def test_self_subscription():
+    user_management = UserManagementActions()
+    user = SelfSubscriptionData.self_subscription_data[2]
+
+    delete_self_subscription(user)
+    log_in_and_open_establishment_account(user, Language.EN)
+    qiwa.workspace_page.click_btn_subscribe()
+
+    user_management\
+        .check_establishment_user_details()\
+        .check_annual_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page()
+    time.sleep(20)
+
+
+@allure.title("Check open annual subscription page")
+@case_id(41780)
+@pytest.mark.parametrize("user", SelfSubscriptionData.self_subscription_data)
+def test_open_annual_subscription_page(user):
+    user_management = UserManagementActions()
+
+    log_in_and_open_establishment_account(user, Language.EN)
+    qiwa.workspace_page.click_btn_subscribe()
+
+    user_management\
+
+
+    time.sleep(20)

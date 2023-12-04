@@ -8,14 +8,28 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
+from src.ui.pages.user_management_pages.annual_subscription_page import (
+    AnnualSubscription,
+)
+from src.ui.pages.user_management_pages.establishment_user_details_page import (
+    EstablishmentUser,
+)
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
+from src.ui.pages.user_management_pages.payment_summary_page import PaymentSummary
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
+from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
 from src.ui.qiwa import qiwa
 
 
 class UserManagementActions(
-    UserManagementMainPage, UserDetailsPage, OwnerFLowPage
+    UserManagementMainPage,
+    UserDetailsPage,
+    OwnerFLowPage,
+    EstablishmentUser,
+    AnnualSubscription,
+    PaymentSummary,
+    ThankYouPage
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -132,4 +146,31 @@ class UserManagementActions(
     def unselect_all_privileges(self) -> UserManagementActions:
         self.click_all_privileges_checkbox()
         self.check_non_default_privileges_are_unselected()
+        return self
+
+    @allure.step
+    def check_establishment_user_details(self) -> UserManagementActions:
+        self.wait_until_page_load(locator=EstablishmentUser.main_text)
+        self.click_btn_proceed_subscription()
+        return self
+
+    @allure.step
+    def check_annual_subscription(self) -> UserManagementActions:
+        self.wait_until_page_load(locator=AnnualSubscription.main_text)
+        self.check_checkbox_read_accept()
+        self.click_button_go_to_payment()
+        return self
+
+    @allure.step
+    def make_establishment_payment(self, payment: str = None) -> UserManagementActions:
+        self.wait_until_page_load(locator=PaymentSummary.main_text)
+        self.choose_and_make_payment(payment_type=payment)
+        self.check_checkbox_read_accept()
+        self.click_btn_submit_pay()
+        self.complete_payment(payment_type=payment)
+        return self
+
+    @allure.step
+    def check_thank_you_page(self) -> UserManagementActions:
+        self.wait_until_page_load(locator=ThankYouPage.main_text)
         return self
