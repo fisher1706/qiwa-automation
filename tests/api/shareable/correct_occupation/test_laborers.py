@@ -10,10 +10,7 @@ def test_by_laborer_name(correct_occupation):
 
     json = correct_occupation.get_laborers(laborer_name=name)
     assert_that(json.data).is_not_empty()
-    searched_by_name_in_json = len(
-        search_by_data(f"data[? starts_with(attributes.\"laborer_name\", '{name}')]", json.dict())
-    )
-    assert_that(json.data).size_is(searched_by_name_in_json)
+    assert_that(all(laborer.attributes.laborer_name.startswith(name) for laborer in json.data)).equals_to(True)
 
 
 def test_by_laborer_id(correct_occupation):
@@ -32,7 +29,7 @@ def test_by_laborer_nationality_and_occupation(correct_occupation, parameter):
 
     json = correct_occupation.get_laborers(**query_parameter)
     assert_that(json.data).is_not_empty()
-    assert_that(set(get_data_attribute(json, parameter))).size_is(1).contains(value)
+    assert_that(all(getattr(laborer.attributes, parameter) == value for laborer in json.data)).equals_to(True)
 
 
 def test_not_found():
