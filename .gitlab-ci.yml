@@ -417,7 +417,7 @@ visa_ui_allure_report:
   stage: allure-send-email
   script:
     - "curl --http1.1 -sS -f -o allure-email-report-${ALLURE_PROJECT_ID}.html -X GET $ALLURE_URL/allure-docker-service/emailable-report/render?project_id=${ALLURE_PROJECT_ID}"
-    - python3 utils/email_sender.py $address $password allure-email-report-${ALLURE_PROJECT_ID}.html $RECIPIENTS $SERVICE_NAME
+    - python3 utils/email_sender.py $address $password allure-email-report-${ALLURE_PROJECT_ID}.html $RECIPIENTS $SERVICE_NAME $XML_REPORT
 
 dedicated_et_ui_allure_send_email:
   <<: *allure_send_email
