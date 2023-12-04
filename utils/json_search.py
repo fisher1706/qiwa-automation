@@ -1,6 +1,6 @@
 import json
-from typing import Any
-
+from typing import Any, Type
+from pydantic import BaseModel
 import allure
 import jmespath
 
@@ -36,6 +36,6 @@ def search_data_by_attributes(data: Root, **attributes) -> Any:
 
 
 @allure.step
-def get_data_attribute(data: Root, attr: Any, *args) -> list[Any]:
+def get_data_attribute(data: Root | BaseModel, attr: Any, *args) -> list[Any]:
     expression = f'data[].attributes."{attr}"{"".join(args)}'
     return search_by_data(expression, data=data.dict(exclude_unset=True))
