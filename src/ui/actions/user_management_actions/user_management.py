@@ -17,8 +17,9 @@ from src.ui.pages.user_management_pages.establishment_user_details_page import (
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
 from src.ui.pages.user_management_pages.payment_summary_page import PaymentSummary
-from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
+from src.ui.pages.user_management_pages.renew_subscription_page import RenewSubscription
 from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
+from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
 from src.ui.qiwa import qiwa
 
 
@@ -29,7 +30,8 @@ class UserManagementActions(
     EstablishmentUser,
     AnnualSubscription,
     PaymentSummary,
-    ThankYouPage
+    ThankYouPage,
+    RenewSubscription,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -149,6 +151,11 @@ class UserManagementActions(
         return self
 
     @allure.step
+    def possibility_switch_to_establishment_page(self, user_type: str) -> UserManagementActions:
+        qiwa.workspace_page.click_btn_subscribe(user_type)
+        return self
+
+    @allure.step
     def check_establishment_user_details(self) -> UserManagementActions:
         self.wait_until_page_load(locator=EstablishmentUser.main_text)
         self.click_btn_proceed_subscription()
@@ -159,6 +166,13 @@ class UserManagementActions(
         self.wait_until_page_load(locator=AnnualSubscription.main_text)
         self.check_checkbox_read_accept()
         self.click_button_go_to_payment()
+        return self
+
+    @allure.step
+    def check_renew_subscription(self) -> UserManagementActions:
+        self.wait_until_page_load(locator=RenewSubscription.main_text)
+        self.check_checkbox_read_accept()
+        self.click_btn_go_to_payment()
         return self
 
     @allure.step

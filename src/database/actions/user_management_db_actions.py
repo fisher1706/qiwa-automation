@@ -5,39 +5,21 @@ from src.database.sql_requests.user_management.delete_subscription_requests impo
 )
 
 
-# def delete_subscription(personal_number: str, unified_number: int):
-#     user_management_request = UserManagementRequestsDeleteSubscription()
-#     try:
-#         transaction_id = user_management_request.get_transaction_id(personal_number, unified_number)
-#
-#         user_management_request\
-#             .subscription_payment(personal_number, unified_number)\
-#             .um_payment(transaction_id)\
-#             .um_privileges(personal_number, unified_number)\
-#             .establishment_access(personal_number, unified_number)\
-#             .subscription(personal_number, unified_number)\
-#             .user_privileges(personal_number, unified_number)\
-#             .user_subscriptions(personal_number, unified_number)
-#     except (IntegrityError, AttributeError):
-#         print('DB ****************')
-#         # pass
-
 def delete_subscription(personal_number: str, unified_number: int):
     user_management_request = UserManagementRequestsDeleteSubscription()
     try:
-        transaction_id = user_management_request.get_transaction_id(personal_number, unified_number)
+        transaction_id = user_management_request.get_transaction_id(
+            personal_number, unified_number
+        )
 
-        user_management_request\
-            .subscription_payment(personal_number, unified_number)\
-            .um_payment(transaction_id)\
-            .establishment_access(personal_number, unified_number)\
-            .subscription(personal_number, unified_number)\
-            .user_privileges(personal_number, unified_number)\
-            .user_subscriptions(personal_number, unified_number)
+        user_management_request.subscription_payment(personal_number, unified_number).um_payment(
+            transaction_id
+        ).establishment_access(personal_number, unified_number).subscription(
+            personal_number, unified_number
+        ).user_privileges(
+            personal_number, unified_number
+        ).user_subscriptions(
+            personal_number, unified_number
+        )
     except (IntegrityError, AttributeError):
         pass
-
-
-if __name__ == "__main__":
-    # delete_subscription("1008660340", 418884)
-    delete_subscription("1012365118", 151472)

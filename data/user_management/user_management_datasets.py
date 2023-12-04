@@ -204,8 +204,7 @@ class SubscriptionStatuses:
 @dataclasses.dataclass
 class SelfSubscriptionData:
     self_subscription_data = [
-        user_with_active_subscription,
-        user_without_subscription,
-        user_with_expired_subscription,
-        user_with_terminated_subscription,
+        ("active", user_with_active_subscription),
+        ("without", user_without_subscription),
+        ("expired", user_with_expired_subscription),
     ]

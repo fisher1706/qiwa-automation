@@ -165,33 +165,27 @@ def test_select_and_unselect_privileges():
 
 
 @allure.title("Test self subscription")
-@case_id(41783, 41794)
-def test_self_subscription():
+@case_id(41783, 41794, 41780, 41785, 41790)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.self_subscription_data)
+def test_self_subscription(user_type, user):
     user_management = UserManagementActions()
-    user = SelfSubscriptionData.self_subscription_data[1]
-
-    delete_self_subscription(user)
     log_in_and_open_establishment_account(user, Language.EN)
-    qiwa.workspace_page.click_btn_subscribe()
 
-    user_management\
-        .check_establishment_user_details()\
-        .check_annual_subscription()\
-        .make_establishment_payment()\
-        .check_thank_you_page()
-    # time.sleep(20)
+    if user_type == 'without':
+        user_management\
+            .possibility_switch_to_establishment_page(user_type)\
+            .check_establishment_user_details()\
+            .check_annual_subscription()\
+            .make_establishment_payment()\
+            .check_thank_you_page()
+        delete_self_subscription(user)
 
+    elif user_type in ['expired', 'terminated']:
+        user_management\
+            .possibility_switch_to_establishment_page(user_type)\
+            .check_establishment_user_details()\
+            .check_renew_subscription()\
 
-@allure.title("Check open annual subscription page")
-@case_id(41780)
-@pytest.mark.parametrize("user", SelfSubscriptionData.self_subscription_data)
-def test_open_annual_subscription_page(user):
-    user_management = UserManagementActions()
-
-    log_in_and_open_establishment_account(user, Language.EN)
-    qiwa.workspace_page.click_btn_subscribe()
-
-    user_management\
-
-
-    time.sleep(20)
+    else:
+        user_management\
+            .possibility_switch_to_establishment_page(user_type)

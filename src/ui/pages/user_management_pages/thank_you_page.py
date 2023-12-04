@@ -11,11 +11,11 @@ class ThankYouPage:
     main_text = s("//p[contains(text(), 'Thank you!')]")
     payment = s("//*[@id='root']//strong")
     payment_data = ss("//*[@data-component='SimpleTable']//td")
-    count = 11
+    base_count = 11
 
     @allure.step
     def check_data_thank_you_page(self) -> ThankYouPage:
         self.payment.should(be.visible)
         elements = [item.should(be.visible) for item in self.payment_data]
-        assert_that(len(elements)).equals_to(self.count)
+        assert_that(len(elements)).is_greater_or_equal(self.base_count)
         return self

@@ -86,6 +86,10 @@ class WorkspacesPage:
         return self
 
     @allure.step
-    def click_btn_subscribe(self, number: int = None) -> WorkspacesPage:
-        self.btn_subscribe[number].click() if number else self.btn_subscribe[0].click()
+    def click_btn_subscribe(self, user_type: str, number: int = None) -> WorkspacesPage:
+        if user_type != "active":
+            self.btn_subscribe[number].click() if number else self.btn_subscribe[0].click()
+        else:
+            for item in self.btn_subscribe:
+                item.should(be.hidden)
         return self

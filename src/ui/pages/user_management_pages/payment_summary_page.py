@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be, command, browser
+from selene import be, browser, command
 from selene.support.shared.jquery_style import s
 
 from src.api.payloads.raw.user_management.payment import CardDetails
@@ -79,5 +79,3 @@ class PaymentSummary(BaseEstablishmentPayment):
         else:
             pass
         return self
-
-
