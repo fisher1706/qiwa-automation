@@ -11,7 +11,7 @@ from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.payloads.appointment import appointment_payload
 from src.api.payloads.contract_details import contract_details_payload
-from src.api.payloads.employee_transfer_request_ import (
+from src.api.payloads.employee_transfer_request_ae import (
     employee_transfer_request_ae_payload,
 )
 from src.api.payloads.employee_transfer_request_bme import (
