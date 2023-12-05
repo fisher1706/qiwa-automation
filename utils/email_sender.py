@@ -1,6 +1,6 @@
-import argparse
 import smtplib
 import sys
+import xml.etree.ElementTree as ET
 from datetime import date
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -8,17 +8,18 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 
-# def send_email_from_outlook(sender, email_password, report, receivers, service_name, junitxml_report: str):
-def send_email_from_outlook(sender, email_password, report, service_name, junitxml_report: str, receivers):
+def send_email_from_outlook(
+    sender, email_password, report, service_name, junitxml_report: str, receivers
+):
     def email_template(total: int, passed: int, failed: int, skipped: int) -> str:
-        return (f"<p style='max-width: 90px';><font color='grey'> Total: {total}\n </p>"
-                f"<p style='max-width: 90px'><font color='green'> Passed: {passed}\n </p>"
-                f"<p style='max-width: 90px'><font color='red'> Failed: {failed}\n </p>"
-                f"<p style='max-width: 90px'><font color='orange'> Skipped: {skipped}\n </p>")
+        return (
+            f"<p style='max-width: 120px'><font color='gray'> Total tests: {total}\n </p>"
+            f"<p style='max-width: 120px'><font color='green'> Passed: {passed}\n </p>"
+            f"<p style='max-width: 120px'><font color='red'> Failed: {failed}\n </p>"
+            f"<p style='max-width: 120px'><font color='orange'> Skipped: {skipped}\n </p>"
+        )
 
     def parse_report(xml_report: str) -> tuple:
-        import xml.etree.ElementTree as ET
-
         tree = ET.parse(xml_report)
         root = tree.getroot()[0]
         total = int(root.get("tests"))
@@ -30,11 +31,13 @@ def send_email_from_outlook(sender, email_password, report, service_name, junitx
 
     statistics = parse_report(junitxml_report)
 
-    password = email_password
+    mailbox_password = email_password
     message = MIMEMultipart()
     message["From"] = sender
     message["To"] = ", ".join(receivers)
-    message["Subject"] = "Automation daily report: " + service_name + " " + str(date.today())
+    message["Subject"] = (
+        "<AQA Service> Automation daily report: " + service_name + " " + str(date.today())
+    )
 
     html_content = f"""<html>
              <head></head>
@@ -49,41 +52,34 @@ def send_email_from_outlook(sender, email_password, report, service_name, junitx
 
     # Attach file
     attachment_path = report
-    attachment = open(attachment_path, "rb")
-    file_attachment = MIMEApplication(attachment.read())
-    file_attachment.add_header("Content-Disposition", f"attachment; filename={attachment.name}")
-    message.attach(file_attachment)
-    attachment.close()
+    with open(attachment_path, "rb") as attachment:
+        file_attachment = MIMEApplication(attachment.read())
+        file_attachment.add_header(
+            "Content-Disposition", f"attachment; filename={attachment.name}"
+        )
+        message.attach(file_attachment)
+        attachment.close()
 
     # Connect to SMTP server and send the email
     with smtplib.SMTP("smtp-mail.outlook.com", 587) as server:
         server.starttls()
-        server.login(sender, password)
+        server.login(sender, mailbox_password)
         server.sendmail(sender, receivers, message.as_string())
 
     print("Email sent!")
 
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("email")
-    # parser.add_argument("password")
-    # parser.add_argument("attachment")
-    # parser.add_argument("recipients", nargs = "+")
-    # parser.add_argument("project_name")
-    # parser.add_argument("report_template")
-    # args = parser.parse_args()
-
     path = Path(__file__).parent.parent
     sys.path.append(str(path))
     email = sys.argv[1]
     password = sys.argv[2]
-    attachment = sys.argv[3]
-    service_name = sys.argv[4]
+    report_attachment = sys.argv[3]
+    project_name = sys.argv[4]
     report_template = sys.argv[5]
     recipients = sys.argv[6:]
 
-
-    # print(args.recipients)
-    # send_email_from_outlook(args.email, args.password, args.attachment, args.recipients, args.project_name, args.report_template)
-    send_email_from_outlook(email, password, attachment, service_name, report_template, recipients)
+    print(recipients)
+    send_email_from_outlook(
+        email, password, report_attachment, project_name, report_template, recipients
+    )
