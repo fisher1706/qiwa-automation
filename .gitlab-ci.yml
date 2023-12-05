@@ -20,8 +20,8 @@ stages:
   - test-run
   - testmo-report
   - allure-report
-  - allure-send-email
   - discord-notification
+  - allure-send-email
 
 .package:
   image: $CI_REGISTRY/takamol/qiwa/infrastructure/ci-cd/package:latest
@@ -417,7 +417,7 @@ visa_ui_allure_report:
   stage: allure-send-email
   script:
     - "curl --http1.1 -sS -f -o allure-email-report-${ALLURE_PROJECT_ID}.html -X GET $ALLURE_URL/allure-docker-service/emailable-report/render?project_id=${ALLURE_PROJECT_ID}"
-    - python3 utils/email_sender.py $address $password allure-email-report-${ALLURE_PROJECT_ID}.html $RECIPIENTS $SERVICE_NAME
+    - python3 utils/email_sender.py $address $password allure-email-report-${ALLURE_PROJECT_ID}.html $SERVICE_NAME $XML_REPORT $RECIPIENTS
 
 dedicated_et_ui_allure_send_email:
   <<: *allure_send_email
@@ -425,7 +425,7 @@ dedicated_et_ui_allure_send_email:
     ALLURE_PROJECT_ID: aqa-et-ui
     RECIPIENTS: M.Ozman@takamol.com.sa, A.Muhammad-c@takamol.com.sa, yurii.zosin@cd.p2h.com, olena.kazanets@cd.p2h.com, dmytro.popovskyi@p2h.com
     SERVICE_NAME: Employee_Transfer
-  needs: [dedicated_et_ui_allure_report]
+  needs: [dedicated_et_ui_tests, dedicated_et_ui_allure_report]
 
 .discord_notification_template: &discord_notification
   rules:

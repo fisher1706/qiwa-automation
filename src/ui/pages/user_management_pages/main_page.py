@@ -44,6 +44,7 @@ class UserManagementMainPage:
     header_menu_btn = s("//div[contains(@data-testid, 'menu-trigger')]/div/button")
 
     global_error = s("//div[contains(@data-testid,'global-error')]/div/p[1]")
+    global_error_description = s("//div[contains(@data-testid,'global-error')]/div/p[2]")
     change_workspace_btn = s("//div[contains(@class, 'tippy-content')]//div[3]//a")
     table = Table(s("[data-testid='user-table'] table"))
 
@@ -174,9 +175,10 @@ class UserManagementMainPage:
         return self
 
     def check_error_message_for_um_page_without_permission(
-        self, error_message
+        self, error_message: str, error_message_description: str
     ) -> UserManagementMainPage:
         self.global_error.should(have.text(error_message))
+        self.global_error_description.should(have.text(error_message_description))
         return self
 
     def click_header_main_menu_btn(self) -> UserManagementMainPage:

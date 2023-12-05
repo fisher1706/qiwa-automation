@@ -175,6 +175,7 @@ def test_view_service_list_subscribed_user():
     assert_eligible_workspace_establishments(workspace_establishments)
     assert_non_eligible_workspace_establishments(workspace_establishments)
     qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_establishment(
         SubscribedUser.ESTABLISHMENT[Language.EN]
