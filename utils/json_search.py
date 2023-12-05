@@ -1,8 +1,9 @@
 import json
 from typing import Any, Type
-from pydantic import BaseModel
+
 import allure
 import jmespath
+from pydantic import BaseModel
 
 from src.api.models.qiwa.raw.root import Root
 

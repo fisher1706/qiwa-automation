@@ -1,9 +1,9 @@
 from datetime import date
 
-import config
-from src.api.http_client import HTTPClient
 from requests import Response
 
+import config
+from src.api.http_client import HTTPClient
 from src.api.payloads.data import data
 
 
