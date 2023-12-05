@@ -102,7 +102,7 @@ def test_full_terminate_flow():
         user_personal_number=owner.personal_number,
     ).dict(by_alias=True)
     get_subscription_status_and_renew_owner_subscription(
-        qiwa=qiwa,
+        qiwa_api=qiwa,
         cookie=subscription_cookie,
         subscribed_user=subscribed_user,
         owner=owner
@@ -114,7 +114,7 @@ def test_full_terminate_flow():
     )
     assert_that(subscription_status).equals_to(SubscriptionStatuses.terminated)
     get_subscription_status_and_renew_owner_subscription(
-        qiwa=qiwa,
+        qiwa_api=qiwa,
         cookie=subscription_cookie,
         subscribed_user=subscribed_user,
         owner=owner
