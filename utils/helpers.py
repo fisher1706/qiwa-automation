@@ -84,8 +84,8 @@ def dround(amount: float, num: int = 2):
 
 def scroll_to_coordinates(x: str = "0", y: str = "0"):
     for _ in range(2):
-        browser.driver.execute_script(f"window.scrollTo({x}, {y});")
         sleep(3)
+        browser.driver.execute_script(f"window.scrollTo({x}, {y});")
 
 
 def scroll_to_top():

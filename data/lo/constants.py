@@ -132,6 +132,7 @@ class OfficesInfo:
     OFFICES_NAME = random_name
     OFFICE_NAME_TEST_OFFICE = "office 3216"
     OFFICE_NAME_VEUM_HANE = "Veum - Hane"
+    OFFICE_NAME_EDIT = "Voffgh"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
     INVALID_OFFICE = "INVALID OFFICE"
@@ -159,6 +160,7 @@ class OfficesInfo:
     REGION_NAJRAN = "Najran"
     REGION_TABUK = "Tabuk"
     REGION_MADINAH = {Language.EN: "Madinah", Language.AR: "المدينة المنورة"}
+    REGION_RIYADH = {Language.EN: "Riyadh", Language.AR: ""}
     REGION_HAIL_WITHOUT_OFFICES = "Hail"
 
     REGION_ITEM_EDITED = "Riyadh"
@@ -181,6 +183,16 @@ class ServicesInfo:
     }
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
+
+    SERVICE_NAME_EDIT = {
+        Language.EN: "Alina_Individuals_",
+        Language.AR: "",
+    }
+
+    SUB_SERVICE_NAME_EDIT = {
+        Language.EN: "Alina",
+        Language.AR: "",
+    }
 
     SERVICE_NAME_WORK_PERMITS = {Language.EN: "Work Permits", Language.AR: "رخص العمل"}
     SUB_SERVICE_NAME_RENEW_WORK_PERMITS = {
