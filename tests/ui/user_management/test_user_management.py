@@ -22,7 +22,6 @@ from data.user_management.user_management_users import (
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
 from tests.ui.user_management.conftest import (
-    delete_self_subscription,
     log_in_and_open_establishment_account,
     log_in_and_open_user_management,
     prepare_data_for_add_access_to_company,
@@ -193,28 +192,41 @@ def test_add_access_to_establishment():
     prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
 
 
-@allure.title("Test self subscription")
-@case_id(41783, 41794, 41780, 41785, 41790)
-@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.self_subscription_data)
-def test_self_subscription(user_type, user):
+@allure.title("Test self subscription user without subscription")
+@case_id(41783, 41794, 41785, 41790)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.without_subscription)
+def test_self_subscription_user_without_subscription(user_type, user, delete_self_subscription):
+    delete_self_subscription(user.personal_number, user.unified_number_id)
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    if user_type == 'without':
-        user_management\
-            .possibility_switch_to_establishment_page(user_type)\
-            .check_establishment_user_details()\
-            .check_annual_subscription()\
-            .make_establishment_payment()\
-            .check_thank_you_page()
-        delete_self_subscription(user)
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_annual_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page()
 
-    elif user_type in ['expired', 'terminated']:
-        user_management\
-            .possibility_switch_to_establishment_page(user_type)\
-            .check_establishment_user_details()\
-            .check_renew_subscription()\
 
-    else:
-        user_management\
-            .possibility_switch_to_establishment_page(user_type)
+@allure.title("Test self subscription user with expired or terminated subscription")
+@case_id(41780)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.expired_terminated_subscription)
+def test_self_subscription_user_with_expired_terminated_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_renew_subscription()
+
+
+@allure.title("Test self subscription user with active subscription")
+@case_id(41780)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.active_subscription)
+def test_self_subscription_user_with_active_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)

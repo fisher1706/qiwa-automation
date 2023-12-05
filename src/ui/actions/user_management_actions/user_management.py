@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import have
+from selene.support.conditions import be
 
 from data.constants import Language
 from data.user_management import user_management_data
@@ -226,27 +227,27 @@ class UserManagementActions(
 
     @allure.step
     def check_establishment_user_details(self) -> UserManagementActions:
-        self.wait_until_page_load(locator=EstablishmentUser.main_text)
+        EstablishmentUser.main_text.wait_until(be.visible)
         self.click_btn_proceed_subscription()
         return self
 
     @allure.step
     def check_annual_subscription(self) -> UserManagementActions:
-        self.wait_until_page_load(locator=AnnualSubscription.main_text)
+        AnnualSubscription.main_text.wait_until(be.visible)
         self.check_checkbox_read_accept()
         self.click_button_go_to_payment()
         return self
 
     @allure.step
     def check_renew_subscription(self) -> UserManagementActions:
-        self.wait_until_page_load(locator=RenewSubscription.main_text)
+        RenewSubscription.main_text.wait_until(be.visible)
         self.check_checkbox_read_accept()
         self.click_btn_go_to_payment()
         return self
 
     @allure.step
     def make_establishment_payment(self, payment: str = None) -> UserManagementActions:
-        self.wait_until_page_load(locator=PaymentSummary.main_text)
+        PaymentSummary.main_text.wait_until(be.visible)
         self.choose_and_make_payment(payment_type=payment)
         self.check_checkbox_read_accept()
         self.click_btn_submit_pay()
@@ -255,6 +256,6 @@ class UserManagementActions(
 
     @allure.step
     def check_thank_you_page(self) -> UserManagementActions:
-        self.wait_until_page_load(locator=ThankYouPage.main_text)
+        ThankYouPage.main_text.wait_until(be.visible)
         self.check_data_thank_you_page()
         return self
