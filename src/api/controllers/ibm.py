@@ -132,7 +132,8 @@ class IBMApiController:
         )
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
 
-    def get_appointment_id(self, user: User, service: Service) -> AppointmentStatus:
+    @staticmethod
+    def get_appointment_id(user: User, service: Service) -> int:
         response = ibm_api.create_new_appointment(user, service)
         try:
             return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
