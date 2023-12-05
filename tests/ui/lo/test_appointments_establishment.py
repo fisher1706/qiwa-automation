@@ -38,15 +38,15 @@ def test_book_establishment_appointment(language):
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
     )
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -69,8 +69,8 @@ def test_view_establishment_appointment_from_upcoming(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
@@ -175,6 +175,7 @@ def test_view_service_list_subscribed_user():
     assert_eligible_workspace_establishments(workspace_establishments)
     assert_non_eligible_workspace_establishments(workspace_establishments)
     qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_establishment(
         SubscribedUser.ESTABLISHMENT[Language.EN]
@@ -246,8 +247,8 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
@@ -293,8 +294,8 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
@@ -339,8 +340,8 @@ def test_edit_establishment_appointment(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
@@ -365,8 +366,8 @@ def test_edit_establishment_appointment(language=Language.EN):
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
@@ -429,10 +430,10 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     )
 
     qiwa.labor_office_appointments_create_page.select_service(
-        ServicesInfo.SERVICE_NAME_WORK_PERMITS[language]
+        ServicesInfo.SERVICE_NAME_POLICIES[language]
     )
     qiwa.labor_office_appointments_create_page.select_sub_service(
-        ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language]
+        ServicesInfo.SUB_SERVICE_NAME_POLICIES[language]
     )
     qiwa.labor_office_appointments_create_page.click_next_step_button()
     qiwa.labor_office_appointments_create_page.verify_appointment_details_blocks_visible()
@@ -464,16 +465,16 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_create_page.edit_creators_info_btn.click()
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
         appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
         establishment=SubscribedUser.ESTABLISHMENT[language],
     )
 
     qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
-        service=ServicesInfo.SERVICE_NAME_WORK_PERMITS[language],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_RENEW_WORK_PERMITS[language],
+        service=ServicesInfo.SERVICE_NAME_POLICIES[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
     )
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()

@@ -13,20 +13,20 @@ from utils.assertion import assert_that
 
 
 def get_subscription_status_and_renew_owner_subscription(
-    qiwa: QiwaApi, cookie: dict, subscribed_user: User, owner: User
+    qiwa_api: QiwaApi, cookie: dict, subscribed_user: User, owner: User
 ):
     subscription_status = UserManagementRequests().get_subscription_status(
         personal_number=subscribed_user.personal_number, requester_id_number=owner.personal_number
     )
     if subscription_status == SubscriptionStatuses.terminated:
-        payment_id = qiwa.user_management.renew_owner_subscription(
+        payment_id = qiwa_api.user_management.renew_owner_subscription(
             cookie=cookie, subscribed_user=subscribed_user, subscription_type="renew-terminated"
         )
-        qiwa.payment.post_create_payment(payment_id=payment_id)
-        qiwa.payment.post_confirm_payment(
+        qiwa_api.payment.post_create_payment(payment_id=payment_id)
+        qiwa_api.payment.post_confirm_payment(
             token=PaymentHeaders.authorization, payment_id=payment_id
         )
-        qiwa.user_management_api.get_thank_you_page(cookie=cookie, transaction_id=payment_id)
+        qiwa_api.user_management_api.get_thank_you_page(cookie=cookie, transaction_id=payment_id)
 
 
 def renew_self_subscription(qiwa: QiwaApi, cookie: dict, owner: User):

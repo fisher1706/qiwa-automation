@@ -184,6 +184,10 @@ class QiwaUiClient:
         browser.open(config.qiwa_urls.ui_user_management)
         return self
 
+    def open_user_details_page(self, personal_number: int) -> QiwaUiClient:
+        browser.open(f"{config.qiwa_urls.ui_user_management}/user-details/{personal_number}")
+        return self
+
     def open_labor_office_appointments_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.appointment_booking)
         self.labor_office_appointments_page.wait_page_to_load()
