@@ -237,6 +237,18 @@ class LaborOfficeAppointmentsCreatePage:
     def should_validation_message_time_be(self):
         self.error_message_time.should(be.visible)
 
+    @allure.step("Verify edit appointment reason button is visible")
+    def should_edit_appointment_reason_button_be_visible(self):
+        self.edit_reason_btn.should(be.visible)
+
+    @allure.step("Verify edit service & subservice button is visible")
+    def should_edit_service_sub_service_button_be_visible(self):
+        self.edit_service_btn.should(be.visible)
+
+    @allure.step("Verify edit appointment details button is visible")
+    def should_edit_appointment_details_button_be_visible(self):
+        self.edit_details_btn.should(be.visible)
+
     @allure.step("Create appointment flow in create appointment page")
     def book_appointment_flow(
         self, appointment_reason, service, sub_service, region, office, establishment=None
