@@ -54,6 +54,7 @@ from src.ui.pages.delegations_pages.verify_delegation_letter_page import (
     VerifyDelegationLetterPage,
 )
 from src.ui.pages.e_services_page import EServicesPage
+from src.ui.pages.employee_list_page import EmployeeListPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.lo_saudi_certificate_page import LoSaudiCertificatePage
 from src.ui.pages.spaces_page import AdminSpacesPage
@@ -110,6 +111,7 @@ class QiwaUiClient:
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
     labor_office_appointments_edit_page = LaborOfficeAppointmentsEditPage()
     employee_transfer_page = EmployeeTransferPage()
+    employee_list_page = EmployeeListPage()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
 
@@ -196,6 +198,10 @@ class QiwaUiClient:
 
     def open_e_services_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.e_services)
+        return self
+
+    def open_employee_list_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.employee_list)
         return self
 
 
