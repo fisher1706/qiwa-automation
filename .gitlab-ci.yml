@@ -143,6 +143,12 @@ dedicated_et_ui_tests:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/employee_transfer
 
+dedicated_el_ui_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/dedicated/employee_list
+
 delegation_ui_tests:
   <<: *testrun
   variables:
@@ -349,6 +355,12 @@ dedicated_et_ui_allure_report:
   variables:
     ALLURE_PROJECT_ID: aqa-et-ui
   needs: [dedicated_et_ui_tests]
+
+dedicated_el_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: aqa-el-ui
+  needs: [dedicated_el_ui_tests]
 
 dataportal_ui_allure_report:
   <<: *allure_report
