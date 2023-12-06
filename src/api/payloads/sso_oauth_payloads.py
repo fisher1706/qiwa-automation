@@ -20,6 +20,7 @@ from src.api.payloads.sso.sso_attributes_data import (
     oauth_init,
     otp_attributes,
     password,
+    phone_verification_payload,
     registration,
     restore_password,
     session,
@@ -51,9 +52,14 @@ def activate_sso_hsm_payload(absher_code: str) -> dict:
     return registration(attributes).dict(exclude_unset=True)
 
 
-def phone_verification_payload(phone: str | int) -> dict:
+def phone_verification_on_registration_payload(phone: str | int) -> dict:
     attributes = VerifyPhone(phone=phone)
     return registration(attributes).dict()
+
+
+def phone_verification_on_login_payload(phone: str | int) -> dict:
+    attributes = VerifyPhone(phone=phone)
+    return phone_verification_payload(attributes).dict()
 
 
 def email_verification_payload(email: str | int) -> dict:
