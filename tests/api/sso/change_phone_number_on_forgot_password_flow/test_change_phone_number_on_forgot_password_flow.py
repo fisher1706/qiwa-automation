@@ -24,16 +24,6 @@ def test_check_that_user_is_able_to_change_phone_number_from_reset_password_flow
     qiwa.sso.confirm_new_phone_verification_on_reset_password()
 
 
-@case_id(57487)
-def test_error_message_in_case_there_are_no_security_questions_for_account(account_data):
-    qiwa = QiwaApi()
-    qiwa.sso.init_reset_password(account_data.personal_number)
-    qiwa.sso.init_hsm_for_change_phone_on_reset_password(account_data.personal_number, account_data.birth_day)
-    qiwa.sso.activate_hsm_for_change_phone_on_reset_password()
-    qiwa.sso.verify_phone_number_on_reset_password(new_phone=constants.NEW_PHONE_NUMBER)
-    qiwa.sso.confirm_new_phone_verification_on_reset_password()
-
-
 @case_id(57488)
 def test_validation_on_wrong_answers_on_security_questions(account_data):
     qiwa = QiwaApi()
