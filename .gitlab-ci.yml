@@ -263,6 +263,20 @@ dedicated_co_ui_testmo_report:
     ALLURE_PROJECT_ID: aqa-co-ui
   needs: [dedicated_co_ui_tests]
 
+dedicated_et_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 10
+    ALLURE_PROJECT_ID: aqa-et-ui
+  needs: [dedicated_et_ui_tests]
+
+dedicated_el_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 11
+    ALLURE_PROJECT_ID: aqa-el-ui
+  needs: [dedicated_el_ui_tests]
+
 visa_ui_testmo_report:
   <<: *testmo_report
   variables:
