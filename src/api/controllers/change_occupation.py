@@ -1,4 +1,5 @@
 import random
+from datetime import date
 
 import allure
 
@@ -58,9 +59,12 @@ class ChangeOccupationController:
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: RequestStatus = None,
+        date_range: tuple[date, date] = None,
     ) -> RequestsLaborersData:
         status = request_status.value if request_status else request_status
-        response = self.api.get_requests_laborers(page, per, laborer_name, laborer_id, status)
+        response = self.api.get_requests_laborers(
+            page, per, laborer_name, laborer_id, status, date_range
+        )
         assert_status_code(response.status_code).equals_to(200)
         return RequestsLaborersData.parse_obj(response.json())
 

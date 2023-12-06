@@ -1,3 +1,4 @@
+import inspect
 import json
 from typing import Any, Optional, TypeVar
 
@@ -13,7 +14,14 @@ T = TypeVar("T")
 def assert_that(actual: T) -> AssertionMixin:
     assertion = AssertionMixin(actual)
     assertion.assert_ = check.check_func(assertion.assert_)  # pylint: disable=no-member
-    return assertion
+
+    def retrieve_name(var: Any):
+        # to call from another function
+        callers_local_vars = inspect.currentframe().f_back.f_back.f_locals.items()
+        return [var_name for var_name, var_val in callers_local_vars if var_val is var]
+
+    var_names = retrieve_name(actual)
+    return assertion.as_(var_names[-1].replace("_", " ") if var_names else "")
 
 
 def assert_status_code(code: int) -> AssertionMixin:
