@@ -52,8 +52,8 @@ class CorrectOccupationApi:
 
     def get_requests(
         self,
-        page: int = 1,
-        per: int = 10,
+        page: int,
+        per: int,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: int = None,
@@ -64,11 +64,11 @@ class CorrectOccupationApi:
             per=per,
         )
         if laborer_name:
-            params["q[laborer-name][eq]"] = laborer_name
+            params["q[employee-name][eq]"] = laborer_name
         if laborer_id:
-            params["q[laborer-id-no][eq]"] = laborer_id
-        if request_status:
-            params["q[status-list][eq][]"] = request_status
+            params["q[laborer-id][eq]"] = laborer_id
+        if request_status is not None:
+            params["q[request-status][eq]"] = request_status
         if date_range:
             from_date, to_date = date_range
             (
