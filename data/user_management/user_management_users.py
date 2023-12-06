@@ -38,6 +38,8 @@ delegator_for_edit_flow = User(
     labor_office_id=1,
     sequence_number=1910,
     unified_number_id=9086,
+    establishment_name_ar="شركة الاتحاد الهندسي السعودية للاستشارات الهندسية خطيب وعلمي",
+    name="نوف مشبب بن سعيد الاحمري",
 )
 
 delegator_for_add_and_terminate_subscription_flow = User(
@@ -96,12 +98,22 @@ user_type_three_employee = User(
     unified_number_id=9086,
 )
 
+user_type_three = User(
+    personal_number="1106495433",
+    user_id=424198,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+    name="حمود جمال حمود المهوس",
+)
+
 user_type_three_employee_for_add_access = User(
     personal_number="1070111305",
     user_id=1668068,
     labor_office_id=15,
     sequence_number=2722,
     unified_number_id=9086,
+    establishment_name_ar="فرع شركةالاتحادالهندسي السعوديةللاستشارات الهندسية||(خطيب و",
 )
 
 establishment_type_one = User(

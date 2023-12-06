@@ -4,6 +4,7 @@ import allure
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
+
 import config
 
 

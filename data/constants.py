@@ -66,6 +66,7 @@ class SupportedBrowser:
 
 
 class AppointmentReason(Enum):
+    VIRTUAL = 0
     COMPLAINT = 1
     IN_PERSON = 3
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
+from data.user_management import user_management_data
 from src.ui.components.raw.table import Table
 
 
@@ -29,6 +30,7 @@ class UserManagementMainPage:
     action_btn_for_owner = s("tr:nth-child(1) td button[data-testid='row-actions']")
     action_btn_table = "td button[data-testid='row-actions']"
     user_role_in_table = users_in_table.s("//tr[1]/td[4]")
+    user_status_on_table = "[data-testid='row-status-action']"
     view_details_btn = s("button[data-testid='view-action'] p")
     view_detail_for_renew_btn = s("button[data-testid='renew-action'] p")
     renew_subscription_btn = s("button[data-testid='renew-action']")
@@ -44,8 +46,14 @@ class UserManagementMainPage:
     header_menu_btn = s("//div[contains(@data-testid, 'menu-trigger')]/div/button")
 
     global_error = s("//div[contains(@data-testid,'global-error')]/div/p[1]")
+    global_error_description = s("//div[contains(@data-testid,'global-error')]/div/p[2]")
     change_workspace_btn = s("//div[contains(@class, 'tippy-content')]//div[3]//a")
-    table = Table(s("[data-testid='user-table'] table"))
+    users_table = Table(s("[data-testid='user-table'] table"))
+    success_message_after_terminating_user = ss(
+        "[data-testid='modal-remove-user-block-success'] p"
+    ).first
+    tabs_on_users_table = ss("button[role='tab']")
+    close_btn_on_modal = s("[data-testid='close-button']")
 
     def __init__(self):
         super().__init__()
@@ -111,7 +119,7 @@ class UserManagementMainPage:
     def click_view_details_in_table_for_selected_user(
         self, user_nid: str
     ) -> UserManagementMainPage:
-        self.table.rows.element_by(have.text(user_nid)).s(self.action_btn_table).should(
+        self.users_table.rows.element_by(have.text(user_nid)).s(self.action_btn_table).should(
             be.visible
         ).click()
         return self
@@ -122,18 +130,20 @@ class UserManagementMainPage:
 
     def check_user_status(self) -> UserManagementMainPage:
         self.users_in_table.wait_until(be.visible)
-        for row in enumerate(self.table.rows, start=1):
-            if self.table.cell(row=row, column=5).matching(have.text("Active")):
-                if self.table.cell(row=row, column=6).matching(be.in_dom):
-                    self.table.cell(row=row, column=6).click()
+        for row in enumerate(self.users_table.rows, start=1):
+            if self.users_table.cell(row=row, column=5).matching(have.text("Active")):
+                if self.users_table.cell(row=row, column=6).matching(be.in_dom):
+                    self.users_table.cell(row=row, column=6).click()
                     self.view_details_btn.matching(have.text("View details"))
-                    self.table.cell(row=row, column=6).click()
+                    self.users_table.cell(row=row, column=6).click()
                 else:
                     pass
-            elif self.table.cell(row=row, column=5).matching(have.text("Terminated" or "Expired")):
-                self.table.cell(row=row, column=6).click()
+            elif self.users_table.cell(row=row, column=5).matching(
+                have.text("Terminated" or "Expired")
+            ):
+                self.users_table.cell(row=row, column=6).click()
                 self.view_detail_for_renew_btn.matching(have.text("Renew subscription"))
-                self.table.cell(row=row, column=6).click()
+                self.users_table.cell(row=row, column=6).click()
         return self
 
     def check_pagination_btns(self) -> UserManagementMainPage:
@@ -174,9 +184,10 @@ class UserManagementMainPage:
         return self
 
     def check_error_message_for_um_page_without_permission(
-        self, error_message
+        self, error_message: str, error_message_description: str
     ) -> UserManagementMainPage:
         self.global_error.should(have.text(error_message))
+        self.global_error_description.should(have.text(error_message_description))
         return self
 
     def click_header_main_menu_btn(self) -> UserManagementMainPage:
@@ -185,4 +196,22 @@ class UserManagementMainPage:
 
     def click_change_workspace_btn(self) -> UserManagementMainPage:
         self.change_workspace_btn.click()
+        return self
+
+    def check_success_message_after_terminate_user(self) -> UserManagementMainPage:
+        self.success_message_after_terminating_user.should(
+            have.text(user_management_data.SUCCESS_MESSAGE_AFTER_TERMINATE_FLOW)
+        )
+        return self
+
+    def close_success_modal(self) -> UserManagementMainPage:
+        self.close_btn_on_modal.click()
+        return self
+
+    def check_user_is_inactive_on_users_table(self, national_id: str) -> UserManagementMainPage:
+        self.tabs_on_users_table.second.click()
+        user_row = self.users_table.rows.element_by(have.text(national_id))
+        user_row.s(self.user_status_on_table).should(
+            have.text(user_management_data.INACTIVE_STATUS)
+        )
         return self
