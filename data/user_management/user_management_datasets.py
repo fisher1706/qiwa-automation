@@ -15,7 +15,6 @@ from data.user_management.user_management_users import (
     owner_account,
     user_with_active_subscription,
     user_with_expired_subscription,
-    user_with_terminated_subscription,
     user_without_subscription,
 )
 
