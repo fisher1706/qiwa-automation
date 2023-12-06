@@ -90,3 +90,15 @@ REMOVE_ACCESS_BTN: str = "Remove Access"
 SELECTED_ESTABLISHMENTS_TEXT: str = "{} of {} establishments selected"
 CLEAR_ALL_LINK: str = "Clear all"
 SELECT_ALL_ESTABLISHMENTS_LINK: str = "Select all {} establishments"
+
+TITLE_ON_TERMINATE_MODAL: str = "Do you want to delete this user from all establishments?"
+TEXT_ON_TERMINATE_MODAL: str = "You have selected all establishments this user has access to."
+TEXT2_ON_TERMINATE_MODAL: str = (
+    "This action will terminate the user's subscription and remove user’s access to all "
+    "establishments under this Unified ID"
+)
+QUESTION_ON_TERMINATE_MODAL: str = "Are you sure you want to terminate {}?"
+SUCCESS_MESSAGE_AFTER_TERMINATE_FLOW: str = (
+    "You have successfully deleted user from all establishments"
+)
+INACTIVE_STATUS: str = "Inactive"

@@ -98,6 +98,15 @@ user_type_three_employee = User(
     unified_number_id=9086,
 )
 
+user_type_three = User(
+    personal_number="1106495433",
+    user_id=424198,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+    name="حمود جمال حمود المهوس",
+)
+
 user_type_three_employee_for_add_access = User(
     personal_number="1070111305",
     user_id=1668068,

@@ -42,14 +42,13 @@ class UserDetailsPage:
     allowed_establishments_checkboxes = allowed_access_table.web_element.all("input")
     establishments_inputs = "input[data-testid='handle-selected']"
     actions_buttons = "[data-component='Actions']"
-    buttons_below_establishments_table = ss("[data-component='Button']")
+    remove_access_btn_below_establishments_table = s("[data-testid='toggle-modal-state']")
     cancel_btn_below_establishments_table = s("[data-testid='clear-all']")
     selected_establishments_text_below_table = ss("div.fvDbgF > div.iPxNsA").first
     link_below_establishments_table = s("[data-testid='toggle-select-all']")
     add_access_btn_on_table = "[data-testid='link-toggler-showAddPrivileges']"
     add_privileges_modal = s("[data-testid='modal-add-privileges']")
-    title_on_select_privileges_modal = ss("#modalBodyWrapper p").first
-    establishment_text_on_select_privileges_modal = ss("#modalBodyWrapper p").second
+    texts_on_select_privileges_modal = ss("#modalBodyWrapper p")
     edit_privilege_modal = s("[data-testid='modal-edit-privileges']")
     save_btn_on_edit_privilege_modal = edit_privilege_modal.s(
         "[data-testid='save-edit-privileges']"
@@ -58,14 +57,16 @@ class UserDetailsPage:
         "[data-testid='modal-state-toggler']"
     )
     remove_access_modal = s("[data-testid='modal-remove-access-block']")
-    texts_on_remove_access_modal = remove_access_modal.ss("#modalBodyWrapper p")
-    close_btn_on_remove_access_modal = remove_access_modal.s("[data-testid='close-button']")
+    texts_on_remove_access_modal = ss("#modalBodyWrapper p")
+    cancel_btn_on_modal = s("[data-testid='close-button']")
     remove_btn_on_remove_access_modal = remove_access_modal.s(
         "[data-testid='store-delete-button']"
     )
     edit_user_privilege_btn_on_table = s("[data-testid='modal-toggle-state-showEditPrivileges']")
     remove_access_btn_on_table = s("[data-testid='modal-toggle-state-showRemoveAccess']")
     add_access_btn_on_modal = add_privileges_modal.s("[data-testid='add-access-button']")
+    terminate_modal = s("[data-testid='modal-remove-user-block']")
+    delete_user_btn_on_terminate_modal = terminate_modal.s("[data-testid='button-delete']")
     paired_privileges_descriptions = ss("[data-testid='is-dependence']")
     privilege_groups = ss("div[data-testid='group-block']")
     privilege_groups_titles = "p.dSyftF"
@@ -129,7 +130,7 @@ class UserDetailsPage:
         self, *texts
     ) -> UserDetailsPage:
         elements = [
-            self.establishment_text_on_select_privileges_modal,
+            self.texts_on_select_privileges_modal.second,
             self.all_privileges_item,
             s(self.hide_privileges_buttons),
             ss(self.show_more_privileges_buttons).first,
@@ -344,7 +345,7 @@ class UserDetailsPage:
         return self
 
     def close_remove_access_modal(self) -> UserDetailsPage:
-        self.close_btn_on_remove_access_modal.click()
+        self.cancel_btn_on_modal.click()
         return self
 
     def click_remove_btn_on_remove_access_modal(self) -> UserDetailsPage:
@@ -389,9 +390,7 @@ class UserDetailsPage:
         return self
 
     def check_buttons_below_establishments_table_are_displayed(self) -> UserDetailsPage:
-        self.buttons_below_establishments_table.element_by(
-            have.text(user_management_data.REMOVE_ACCESS_BTN)
-        ).should(be.visible)
+        self.remove_access_btn_below_establishments_table.should(be.visible)
         self.cancel_btn_below_establishments_table.should(be.visible)
         return self
 
@@ -422,10 +421,30 @@ class UserDetailsPage:
         return self
 
     def check_elements_below_establishments_table_are_hidden(self) -> UserDetailsPage:
-        self.buttons_below_establishments_table.element_by(
-            have.text(user_management_data.REMOVE_ACCESS_BTN)
-        ).should(be.not_.visible)
+        self.remove_access_btn_below_establishments_table.should(be.not_.visible)
         self.cancel_btn_below_establishments_table.should(be.not_.visible)
         self.selected_establishments_text_below_table.should(be.not_.visible)
         self.link_below_establishments_table.should(be.not_.visible)
+        return self
+
+    def click_remove_access_btn(self) -> UserDetailsPage:
+        self.remove_access_btn_below_establishments_table.click()
+        return self
+
+    def check_terminate_access_modal_is_displayed(self, user_name: str) -> UserDetailsPage:
+        self.terminate_modal.should(be.visible)
+        self.texts_on_remove_access_modal.should(
+            have.texts(
+                user_management_data.TITLE_ON_TERMINATE_MODAL,
+                user_management_data.TEXT_ON_TERMINATE_MODAL,
+                user_management_data.TEXT2_ON_TERMINATE_MODAL,
+                f"{user_management_data.QUESTION_ON_TERMINATE_MODAL.format(user_name)}",
+            )
+        )
+        self.delete_user_btn_on_terminate_modal.should(be.visible)
+        self.cancel_btn_on_modal.should(be.visible)
+        return self
+
+    def confirm_terminating_user(self) -> UserDetailsPage:
+        self.delete_user_btn_on_terminate_modal.click()
         return self

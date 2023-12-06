@@ -17,6 +17,7 @@ from data.user_management.user_management_users import (
     owner_account,
     owner_account_with_another_company,
     owner_for_self,
+    user_type_three,
     user_type_three_employee,
     user_type_three_employee_for_add_access,
 )
@@ -150,7 +151,7 @@ def test_privileges_data():
     user = delegator_for_add_and_terminate_subscription_flow
     log_in_and_open_user_management(owner, Language.EN)
     user_management.navigate_to_view_details_page(user.personal_number) \
-        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number)\
+        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data) \
         .check_privileges_are_selected(privilege_names=Privileges.default_ui_privileges, active_state=False) \
         .check_privileges_are_unselected(privilege_names=Privileges.ineligible_ui_privileges, active_state=False)
@@ -209,6 +210,19 @@ def test_remove_access_flow():
     prepare_data_for_terminate_company(qiwa_api, cookie, user)
 
 
+@allure.title("test_remove_access_to_all_establishments")
+@pytest.mark.skip("confirm payment is unavailable on api side")
+# TODO: add renew subscription and payment after the test
+@case_id(7930, 12405)
+def test_terminate_flow():
+    user_management = UserManagementActions()
+    owner = owner_account
+    user = user_type_three
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name).\
+        check_user_is_terminated(user.personal_number)
+
+
 @allure.title("test_interaction_with_establishments_list")
 @case_id(7929, 7935)
 def test_interaction_with_establishments_list():
@@ -231,7 +245,7 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
     owner = owner_account
     user = delegator_with_um
     log_in_and_open_user_management(owner, Language.AR)
-    user_management.navigate_to_user_details(user.personal_number)\
-        .check_localization_for_add_access_modal(user.sequence_number)\
-        .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal()\
+    user_management.navigate_to_user_details(user.personal_number) \
+        .check_localization_for_add_access_modal(user.sequence_number) \
+        .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal() \
         .check_localization_for_edit_privileges_modal().check_privileges_are_grouped(Privileges.groups_data_ar)

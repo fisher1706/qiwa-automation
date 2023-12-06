@@ -142,7 +142,7 @@ class UserManagementActions(
             ArabicTranslations.issue_working_permits_description,
         )
         self.check_ar_localization_for_select_privileges_modal(
-            elements=[self.title_on_select_privileges_modal, self.add_access_btn_on_modal],
+            elements=[self.texts_on_select_privileges_modal.first, self.add_access_btn_on_modal],
             texts=[
                 ArabicTranslations.title_on_add_access_modal,
                 ArabicTranslations.add_access_btn,
@@ -169,7 +169,7 @@ class UserManagementActions(
         )
         self.check_ar_localization_for_select_privileges_modal(
             elements=[
-                self.title_on_select_privileges_modal,
+                self.texts_on_select_privileges_modal.first,
                 self.save_btn_on_edit_privilege_modal,
                 self.remove_access_btn_on_edit_privilege_modal,
             ],
@@ -384,4 +384,20 @@ class UserManagementActions(
         self.switch_to_tab_on_user_details(user_management_data.NO_ACCESS)
         self.switch_to_tab_on_user_details(user_management_data.ALLOWED_ACCESS)
         self.check_establishment_checkbox_is_selected(row_number)
+        return self
+
+    @allure.step
+    def terminate_user_from_all_establishments(self, user_name: str) -> UserManagementActions:
+        self.click_all_allowed_access_establishments_checkbox()
+        self.click_remove_access_btn()
+        self.check_terminate_access_modal_is_displayed(user_name)
+        self.confirm_terminating_user()
+        return self
+
+    @allure.step
+    def check_user_is_terminated(self, national_id: str) -> UserManagementActions:
+        self.check_success_message_after_terminate_user()
+        self.close_success_modal()
+        self.wait_until_page_is_loaded()
+        self.check_user_is_inactive_on_users_table(national_id)
         return self
