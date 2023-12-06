@@ -54,17 +54,15 @@ def test_getting_by_status_id_according_to_count(change_occupation, status):
 
 
 def test_getting_by_request_date(change_occupation):
-    today = date.today()
-    yesterday = today - timedelta(weeks=2)
-    date_range = (yesterday, today)
+    laborer = change_occupation.get_random_laborer()
+    from_date = laborer.request_date.date()
+    to_date = from_date + timedelta(weeks=4)
+    date_range = (from_date, to_date)
 
-    response = change_occupation.api.get_requests_laborers(page=1, per=100, date_range=date_range)
-    assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
-
-    json = RequestsLaborersData.parse_obj(response.json())
-    request_dates_from_json = get_data_attribute(json, "request_date")
-    assert_that(min(request_dates_from_json).date()).is_greater_or_equal(yesterday)
-    assert_that(max(request_dates_from_json).date()).is_less_or_equal(today)
+    json = change_occupation.get_requests_laborers(date_range=date_range)
+    requests_dates = [laborer.attributes.request_date.date() for laborer in json.data]
+    assert_that(min(requests_dates)).is_greater_or_equal(from_date)
+    assert_that(max(requests_dates)).is_less_or_equal(to_date)
 
 
 @pytest.mark.parametrize(
