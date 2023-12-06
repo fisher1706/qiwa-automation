@@ -84,6 +84,7 @@ class QiwaUrls:
         self.lmi_landing_url: str = f"{protocol}lmi.{domain}"
         self.data_portal_admin_url: str = f"{protocol}data-portal-admin.{domain}"
         self.e_services: str = f"{protocol}e-services.{domain}"
+        self.workspaces: str = f"{protocol}workspaces.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))
