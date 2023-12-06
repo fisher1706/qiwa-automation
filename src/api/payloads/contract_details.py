@@ -23,7 +23,7 @@ from src.api.payloads.ibm.createnewcontract import (
 from src.api.payloads.ibm.header import Header, UserInfo
 
 
-def contract_details_payload(laborer: Laborer, employer: User, establishment_id: str) -> dict:
+def contract_details_payload(laborer: Laborer, employer: User) -> dict:
     return CreateNewContractRqPayload(
         CreateNewContractRq=CreateNewContractRq(
             Header=Header(
@@ -34,13 +34,13 @@ def contract_details_payload(laborer: Laborer, employer: User, establishment_id:
                 MWRequestTime="2019-10-10 00:00:00.555",
                 ServiceCode="CNC00001",
                 DebugFlag="1",
-                UserInfo=UserInfo(IDNumber=laborer.login_id),
+                UserInfo=UserInfo(UserId=laborer.login_id, IDNumber=laborer.login_id),
             ),
             Body=Body(
                 EstablishmentDetails=EstablishmentDetails(
                     LaborOfficeId=employer.labor_office_id,
                     SequenceNumber=employer.sequence_number,
-                    EstablishmentId=establishment_id,
+                    EstablishmentId=employer.establishment_id,
                     UnifiedNumberId="10529",
                     EntityId="1-3419-460",
                     EstablishmentNameAr="Name",

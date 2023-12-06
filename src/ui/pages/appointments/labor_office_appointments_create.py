@@ -57,7 +57,7 @@ class LaborOfficeAppointmentsCreatePage:
         dropdown_element_locator,
     )
 
-    error_message = s('//*[@data-component="ErrorMessage"]')
+    modal_appointment_exists = s('//*[@id="modalBodyWrapper"]')
     error_message_region = s('//*[@id="region-error"]')
     error_message_office = s('//*[@id="office-error"]')
     error_message_date = s('//*[@id="date-error"]')
@@ -216,7 +216,10 @@ class LaborOfficeAppointmentsCreatePage:
 
     @allure.step("Verify validation message on create additional appointment is present")
     def should_validation_additional_appointment_be(self):
-        self.error_message.should(have.text("You've already booked an appointment"))
+        self.modal_appointment_exists.should(have.text("Sorry, you can’t book an appointment now"))
+        self.modal_appointment_exists.should(
+            have.text("Please cancel or edit an existing appointment")
+        )
 
     @allure.step("Verify validation message on region field is present")
     def should_validation_message_region_be(self):
@@ -233,6 +236,18 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Verify validation message on time field is present")
     def should_validation_message_time_be(self):
         self.error_message_time.should(be.visible)
+
+    @allure.step("Verify edit appointment reason button is visible")
+    def should_edit_appointment_reason_button_be_visible(self):
+        self.edit_reason_btn.should(be.visible)
+
+    @allure.step("Verify edit service & subservice button is visible")
+    def should_edit_service_sub_service_button_be_visible(self):
+        self.edit_service_btn.should(be.visible)
+
+    @allure.step("Verify edit appointment details button is visible")
+    def should_edit_appointment_details_button_be_visible(self):
+        self.edit_details_btn.should(be.visible)
 
     @allure.step("Create appointment flow in create appointment page")
     def book_appointment_flow(

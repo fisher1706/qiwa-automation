@@ -10,7 +10,6 @@ from selenium import webdriver
 
 import config
 from data.constants import SupportedBrowser
-from src.ui.pages.sso_pages.login_page import LoginPage
 
 
 @pytest.fixture(autouse=True)

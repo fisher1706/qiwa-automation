@@ -3,11 +3,6 @@ from pydantic import BaseModel
 from src.api.payloads.ibm.header import Header
 
 
-class UserInfo(BaseModel):
-    UserId: str
-    IDNumber: str
-
-
 class EstablishmentDetails(BaseModel):
     SequenceNumber: str
     LaborOfficeId: str

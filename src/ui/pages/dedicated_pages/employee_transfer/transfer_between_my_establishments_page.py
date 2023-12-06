@@ -11,6 +11,9 @@ from utils.selene import scroll_into_view_if_needed
 
 @allure_steps
 class TransferBetweenMyEstablishmentsPage:
+    # TODO(dp): Find possibility to check if tables more then 1
+    # tables = browser.all("table")
+    # table_element = tables.first if len(tables) < 2 else tables.second
     table = Table()
     btn_next_step = s("//button[.='Next step']")
     search = s("#test")

@@ -1,0 +1,62 @@
+from typing import Optional
+
+from pydantic.main import BaseModel
+
+from src.api.payloads.ibm.header import Header
+
+
+class SponsorDetails(BaseModel):
+    SponsorIdNo: Optional[int]
+    SponsorName: Optional[str]
+
+
+class SourceDetails(BaseModel):
+    EstablishmentName: str
+    EstablishmentId: str
+    LaborOfficeId: str
+    SequenceNumber: str
+
+
+class LaborerNationality(BaseModel):
+    Code: str
+    NameAr: str
+    NameEn: str
+
+
+class LaborerDetails(BaseModel):
+    LaborerName: str
+    LaborerIdNo: str
+    LaborerNationality: LaborerNationality
+    LaborerStatusCode: str
+    IqamaExpiryDate: str
+    TransferTypeId: str
+
+
+class LaborersDetailsItem(BaseModel):
+    LaborerDetails: LaborerDetails
+    SourceDetails: SourceDetails
+    SponsorDetails: SponsorDetails
+
+
+class LaborersDetailsList(BaseModel):
+    LaborersDetailsItem: LaborersDetailsItem
+
+
+class DestinationDetails(BaseModel):
+    EstablishmentName: str
+    LaborOfficeId: str
+    SequenceNumber: str
+
+
+class Body(BaseModel):
+    DestinationDetails: DestinationDetails
+    LaborersDetailsList: LaborersDetailsList
+
+
+class SubmitCSRequestRq(BaseModel):
+    Header: Header
+    Body: Body
+
+
+class SubmitCSRequestRqPayload(BaseModel):
+    SubmitCSRequestRq: SubmitCSRequestRq

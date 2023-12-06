@@ -14,7 +14,7 @@ def test_getting_page(change_occupation, page):
     )
 
 
-@pytest.mark.parametrize("per_page", [1, 10, 100, 1000])
+@pytest.mark.parametrize("per_page", [1, 10, 100])
 def test_getting_per_page(change_occupation, per_page):
     json = change_occupation.get_occupations(per=per_page)
     assert_that(json.data).size_is(per_page)

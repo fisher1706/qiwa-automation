@@ -50,11 +50,31 @@ class ArabicTranslations:
         "الرجاء اختيار المنشأة\المنشآت التي سيتم تعديل صلاحيات المستخدم عليها"
     )
     no_access = "لا توجد صلاحية"
+    allowed_access = "توجد صلاحية"
     establishment_name = "اسم المنشأة"
     establishment_id = "رقم المنشأة"
     privileges = "الصلاحيات"
     actions = "الإجراءات"
     establishment_delegator_details_breadcrumbs = "تفاصيل مفوض المنشأة"
+    add_access_btn = "أضف الوصول"
+    title_on_add_access_modal = "اختيار صلاحيات المستخدم على المنشآت المختارة"
+    selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
+    all_privileges = "جميع الصلاحيات"
+    hide_privileges = "إخفاء الصلاحيات الغير مختارة"
+    show_more_privileges_for_2nd_group = "إظهار {} الصلاحيات الغير مختارة"
+    occupation_management_description = (
+        "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
+    )
+    employee_transfer_description = (
+        "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين و إدارة العقود تلقائياً"
+    )
+    issue_working_permits_description = (
+        "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
+    )
+    edit_user_privileges_btn = "حرر امتيازات المستخدم"
+    title_on_edit_privileges_modal = "تعديل صلاحيات المستخدم على المنشأة"
+    remove_access_btn = "حذف الصلاحية"
+    save_and_close_btn = "حفظ وإغلاق"
 
 
 @dataclasses.dataclass
@@ -79,32 +99,28 @@ class Privileges:
         {
             "title": user_management_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
             "privileges": [
-                user_management_data.PROFESSIONAL_VERIFICATION_SERVICE,
-                user_management_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
                 user_management_data.WAGE_PROTECTION_CERTIFICATE,
-                user_management_data.CHANGE_OCCUPATION,
+                user_management_data.OCCUPATION_MANAGEMENT,
                 user_management_data.EMPLOYEE_TRANSFER,
                 user_management_data.ISSUE_AND_RENEW_WORKING_PERMITS,
                 user_management_data.VISA_ISSUANCE_SERVICE,
-                user_management_data.AJEER_PROGRAM,
                 user_management_data.WAGE_DISBURSEMENT,
                 user_management_data.EMPLOYEE_INFORMATION,
                 user_management_data.CONTRACT_MANAGEMENT,
-                user_management_data.TRAINING_MANAGEMENT,
+                user_management_data.TRAININGS_MANAGEMENT,
                 user_management_data.RECRUITMENT_SERVICE,
-                user_management_data.DEBT_CERTIFICATE,
             ],
         },
         {
             "title": user_management_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE,
             "privileges": [
-                user_management_data.SAUDIZATION_CERTIFICATE,
+                user_management_data.NATIONALIZATION_CERTIFICATE,
                 user_management_data.ESTABLISHMENT_DASHBOARD,
                 user_management_data.BOOK_APPOINTMENT_SERVICE,
-                user_management_data.LABOR_POLICIES,
+                user_management_data.INTERNAL_WORK_POLICY,
                 user_management_data.ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS,
                 user_management_data.SALARY_CERTIFICATE,
-                user_management_data.GOVERNMENT_CONTRACTS_MANAGEMENT,
+                user_management_data.NATIONALIZATION_OF_OPERATION,
                 user_management_data.ESTABLISHMENT_FILE_MANAGEMENT,
                 user_management_data.CLOSE_ESTABLISHMENT_ACTIVITY,
                 user_management_data.CHANGE_ESTABLISHMENT_ACTIVITY,
@@ -114,8 +130,7 @@ class Privileges:
             "title": user_management_data.ESTABLISHMENT_PERFORMANCE_GROUP_TITLE,
             "privileges": [
                 user_management_data.NITAGAT_CALCULATOR,
-                user_management_data.EADVISOR,
-                user_management_data.LABOR_AWARD,
+                user_management_data.INDICATORS,
                 user_management_data.LABOR_MARKET_INDEX,
                 user_management_data.ESTABLISHMENT_PERFORMANCE_REPORT,
             ],
@@ -129,16 +144,63 @@ class Privileges:
             ],
         },
     ]
+    groups_data_ar = [
+        {
+            "title": user_management_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR,
+            "privileges": [
+                user_management_data.WAGE_PROTECTION_CERTIFICATE_AR,
+                user_management_data.OCCUPATION_MANAGEMENT_AR,
+                user_management_data.EMPLOYEE_TRANSFER_AR,
+                user_management_data.ISSUE_AND_RENEW_WORKING_PERMITS_AR,
+                user_management_data.VISA_ISSUANCE_SERVICE_AR,
+                user_management_data.WAGE_DISBURSEMENT_AR,
+                user_management_data.EMPLOYEE_INFORMATION_AR,
+                user_management_data.CONTRACT_MANAGEMENT_AR,
+                user_management_data.TRAININGS_MANAGEMENT_AR,
+                user_management_data.RECRUITMENT_SERVICE_AR,
+            ],
+        },
+        {
+            "title": user_management_data.ESTABLISHMENT_MANAGEMENT_GROUP_TITLE_AR,
+            "privileges": [
+                user_management_data.NATIONALIZATION_CERTIFICATE_AR,
+                user_management_data.ESTABLISHMENT_DASHBOARD_AR,
+                user_management_data.BOOK_APPOINTMENT_SERVICE_AR,
+                user_management_data.INTERNAL_WORK_POLICY_AR,
+                user_management_data.ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS_AR,
+                user_management_data.SALARY_CERTIFICATE_AR,
+                user_management_data.NATIONALIZATION_OF_OPERATION_AR,
+                user_management_data.ESTABLISHMENT_FILE_MANAGEMENT_AR,
+                user_management_data.CLOSE_ESTABLISHMENT_ACTIVITY_AR,
+                user_management_data.CHANGE_ESTABLISHMENT_ACTIVITY_AR,
+            ],
+        },
+        {
+            "title": user_management_data.ESTABLISHMENT_PERFORMANCE_GROUP_TITLE_AR,
+            "privileges": [
+                user_management_data.NITAGAT_CALCULATOR_AR,
+                user_management_data.INDICATORS_AR,
+                user_management_data.LABOR_MARKET_INDEX_AR,
+                user_management_data.ESTABLISHMENT_PERFORMANCE_REPORT_AR,
+            ],
+        },
+        {
+            "title": user_management_data.WORKSPACES_MANAGEMENT_GROUP_TITLE_AR,
+            "privileges": [
+                user_management_data.USER_MANAGEMENT_AR,
+                user_management_data.QIWA_WALLET_AR,
+                user_management_data.DELEGATIONS_AR,
+            ],
+        },
+    ]
+
     default_ui_privileges = [
-        user_management_data.PROFESSIONAL_VERIFICATION_SERVICE,
-        user_management_data.OCCUPATIONAL_HEALTH_CERTIFICATE,
         user_management_data.WAGE_PROTECTION_CERTIFICATE,
-        user_management_data.SAUDIZATION_CERTIFICATE,
+        user_management_data.NATIONALIZATION_CERTIFICATE,
         user_management_data.ESTABLISHMENT_DASHBOARD,
         user_management_data.BOOK_APPOINTMENT_SERVICE,
         user_management_data.NITAGAT_CALCULATOR,
-        user_management_data.EADVISOR,
-        user_management_data.LABOR_AWARD,
+        user_management_data.INDICATORS,
         user_management_data.LABOR_MARKET_INDEX,
     ]
 
@@ -152,6 +214,7 @@ class Privileges:
 @dataclasses.dataclass
 class ErrorsMessage:
     user_doesnt_have_access_to_um = "Sorry! You need permission to enter this page"
+    no_access_error_description = "You have no permission to access this part of the platform."
 
 
 @dataclasses.dataclass

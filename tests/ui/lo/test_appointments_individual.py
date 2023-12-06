@@ -400,6 +400,60 @@ def test_individual_edit_appointment():
 
 
 @allure.title(
+    "Appointments[Individual]: As a LO User I have the possibility to EDIT fields on the process Book Appointment"
+)
+@case_id(44496)
+def test_individual_edit_appointment_from_booking(language=Language.EN):
+    qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(language)
+    qiwa.workspace_page.select_individual_account()
+    qiwa.individual_page.wait_page_to_load()
+    qiwa.individual_page.click_see_all_services()
+    qiwa.individual_page.select_service(IndividualService.APPOINTMENTS[language])
+    qiwa.labor_office_appointments_page.wait_page_to_load()
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON)
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS[language])
+    qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language])
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_MADINAH[language])
+    qiwa.labor_office_appointments_create_page.select_office(OfficesInfo.OFFICE_NAME_VEUM_HANE)
+    qiwa.labor_office_appointments_create_page.select_date()
+    qiwa.labor_office_appointments_create_page.select_time()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_page.should_edit_appointment_reason_button_be_visible()
+    qiwa.labor_office_appointments_create_page.should_edit_service_sub_service_button_be_visible()
+    qiwa.labor_office_appointments_create_page.should_edit_appointment_details_button_be_visible()
+
+    utils.helpers.scroll_to_coordinates()
+    qiwa.labor_office_appointments_create_page.edit_reason_btn.click()
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.VIRTUAL)
+
+    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_EDIT[language])
+    qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_EDIT[language])
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_RIYADH[language])
+    qiwa.labor_office_appointments_create_page.select_office(OfficesInfo.OFFICE_NAME_EDIT)
+    qiwa.labor_office_appointments_create_page.select_date()
+    qiwa.labor_office_appointments_create_page.select_time()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+    qiwa.labor_office_appointments_create_page.click_next_step_button()
+
+    qiwa.labor_office_appointments_create_confirmation_page.check_booked_appointment(
+        service=ServicesInfo.SERVICE_NAME_EDIT[language],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_EDIT[language],
+        office=OfficesInfo.OFFICE_NAME_EDIT,
+    )
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+
+@allure.title(
     "Appointments[Individual]: As LO User I see validation message when book appointment once exists"
 )
 @case_id(43426)
@@ -425,13 +479,6 @@ def test_individual_verify_validation_error_on_book_appointment_once_exists():
     qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
 
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
-    qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON,
-        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
-        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
-        region=OfficesInfo.REGION_MADINAH[Language.EN],
-        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
-    )
     qiwa.labor_office_appointments_create_page.should_validation_additional_appointment_be()
 
 

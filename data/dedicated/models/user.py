@@ -17,3 +17,5 @@ class User(BaseModel):
 
     user_id: Optional[int]
     unified_number_id: Optional[int]
+
+    establishment_id: Optional[str]
