@@ -6,7 +6,7 @@ from data.dedicated.enums import SearchingType
 from data.dedicated.lo_work_permit import lo_wp_user_1
 from data.dedicated.models.services import lo_work_permit
 from src.api.app import QiwaApi
-from src.api.controllers.ibm import IBMApiController
+from src.api.controllers.ibm import ibm_api_controller
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -22,7 +22,7 @@ def pre_test():
 @allure.title('AS-269 Dashboard')
 @case_id(32963)
 def test_dashboard():
-    appointment_id = IBMApiController().get_appointment_id(lo_wp_user_1, lo_work_permit)
+    appointment_id = ibm_api_controller.get_appointment_id(lo_wp_user_1, lo_work_permit)
     qiwa.login_as_user(login=lo_wp_user_1.personal_number)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \

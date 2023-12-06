@@ -8,7 +8,7 @@ from data.lo.constants import ServicesInfo
 from data.shareable.saudization_certificate.saudi_certificate import *
 from src.api.app import QiwaApi
 from src.api.controllers.appointment import AppointmentsApiController
-from src.api.controllers.ibm import IBMApiController
+from src.api.controllers.ibm import IBMApiController, ibm_api_controller
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
@@ -21,7 +21,7 @@ def login(user: User, service: Service):
     api.visits_api.cancel_active_visit(user.personal_number)
 
     # create a new appointment
-    booking_id = IBMApiController().get_appointment_id(user, service)
+    booking_id = ibm_api_controller.get_appointment_id(user, service)
 
     # login in UI
     qiwa.login_as_user(lo_sc_agent.personal_number)
