@@ -393,7 +393,7 @@ class AuthApiSSO:
 
     @allure.step
     def activate_hsm_for_change_phone_on_reset_password(
-        self, absher_code: str, expected_code: int = 200
+        self, absher_code: str = "000000", expected_code: int = 200
     ):
         payload = hsm_payload(absher_code=absher_code)
         response = self.client.post(
@@ -404,17 +404,20 @@ class AuthApiSSO:
         assert_status_code(response.status_code).equals_to(expected_code)
 
     @allure.step
-    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 200):
+    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 422):
         response = self.client.get(
             url=self.url, endpoint="/change-phone-on-reset-password/security-questions"
         )
         assert_status_code(response.status_code).equals_to(expected_code)
 
     @allure.step
-    def validate_security_answer_for_chane_phone_on_reset_password(self, expected_code: int = 200):
-        payload = security_question_payload(
-            first_answer="firs_answer", second_answer="second_answer"
-        )
+    def validate_security_answer_for_chane_phone_on_reset_password(
+        self,
+        first_answer: str = "firs_answer",
+        second_answer: str = "second_answer",
+        expected_code: int = 200,
+    ):
+        payload = security_question_payload(first_answer=first_answer, second_answer=second_answer)
         response = self.client.post(
             url=self.url,
             endpoint="/change-phone-on-reset-password/security-questions/validate",

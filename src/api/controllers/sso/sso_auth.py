@@ -3,8 +3,8 @@ from __future__ import annotations
 import allure
 
 from data.account import Account
-from src.api.clients.sso.auth_sso import AuthApiSSO
 from src.api.clients.oauth import OAuthApi
+from src.api.clients.sso.auth_sso import AuthApiSSO
 
 
 class AuthApiSSOController(AuthApiSSO):
