@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from enum import Enum
 
 
 @dataclass
@@ -63,12 +62,6 @@ class EService:
 @dataclass
 class SupportedBrowser:
     version = {"chrome": "114.0", "firefox": "93.0"}
-
-
-class AppointmentReason(Enum):
-    VIRTUAL = 0
-    COMPLAINT = 1
-    IN_PERSON = 3
 
 
 @dataclass
