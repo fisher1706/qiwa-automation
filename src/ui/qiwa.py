@@ -42,6 +42,7 @@ from src.ui.pages.dedicated_pages.contract_management_page import ContractManage
 from src.ui.pages.dedicated_pages.employee_transfer.employee_transfer_page import (
     EmployeeTransferPage,
 )
+from src.ui.pages.dedicated_pages.induviduals.my_resume_page import MyResumePage
 from src.ui.pages.dedicated_pages.requests_page import RequestsPage
 from src.ui.pages.dedicated_pages.visits_page import VisitsPage
 from src.ui.pages.delegations_pages.add_new_delegation_page import AddDelegationPage
@@ -89,6 +90,7 @@ class QiwaUiClient:
     change_occupation_page = ChangeOccupationPage()
     requests_page = RequestsPage()
     individual_page = IndividualPage()
+    my_resume_page = MyResumePage()
     visits_page = VisitsPage()
     business_page = BusinessPage()
     delegation_dashboard_page = DelegationDashboardPage()
