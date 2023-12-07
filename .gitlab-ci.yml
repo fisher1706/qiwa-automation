@@ -12,7 +12,7 @@ variables:
   TESTMO_URL: https://qiwa.testmo.net
 
 default:
-  image: takamol/qiwa-automation:master-latest
+  image: registry.gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/master
 
 stages:
   - build
@@ -28,12 +28,16 @@ stages:
   services:
     - name: docker:dind
   script:
-    - echo $TAKAMOL_REGISTRY_PASSWORD | docker login -u $TAKAMOL_REGISTRY_USERNAME --password-stdin
-    - docker pull $ENV_LATEST || true
-    - docker build --cache-from $ENV_LATEST --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --build-arg CI_SERVER_HOST=${CI_SERVER_HOST} -t $ENV_LATEST -t $VERSION_TAGGED .
-    - docker push $ENV_LATEST
-    - docker push $VERSION_TAGGED
-    - echo "Image name $VERSION_TAGGED"
+    - cp /src/.dockerignore .
+    - echo $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo "ENV_LATEST $ENV_LATEST"
+    - echo "Pulling image with `latest` tag...";
+    - time docker pull $ENV_LATEST || true
+    - echo "Building image...";
+    - time docker build --cache-from $ENV_LATEST -t $ENV_LATEST -t $VERSION_TAGGED .
+    - echo "Attempting to push image to GitLab registry...";
+    - time docker push $ENV_LATEST
+    - time docker push $VERSION_TAGGED
 
 build:
   stage: build

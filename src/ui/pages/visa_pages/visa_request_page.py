@@ -113,7 +113,7 @@ class VisaRequestPage:
         self.cancel_modal_cancel_visa_button.click()
         self.verify_confirm_modal_window(border_number=border_number)
         self.confirm_modal_back_button.click()
-        self.popup.close_feedback()
+        self.popup.close_feedback_if_appeared()
 
     def verify_cancel_modal_window(self, border_number):
         self.cancel_modal.should(be.visible)
