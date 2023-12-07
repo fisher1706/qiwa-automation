@@ -94,8 +94,3 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
         else:
             self.auth.select_first_company()
         return self
-
-    @allure.step
-    def select_company_subscription(self, sequence_number: int) -> QiwaApi:
-        self.auth.select_company_subscription_with_sequence_number(sequence_number)
-        return self

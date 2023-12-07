@@ -25,18 +25,15 @@ def log_in_and_open_user_management(user: User, language: str) -> QiwaApi:
 
 
 def log_in_and_open_establishment_account(user: User, language: str):
-    qiwa_api = QiwaApi.login_as_user(user.personal_number).select_company_subscription(
-        int(user.sequence_number)
-    )
+    qiwa_api = QiwaApi.login_as_user(user.personal_number)
     cookies = qiwa_api.sso.oauth_api.get_context()
     BaseEstablishmentPayment().open_establishment_account_page()
     set_cookies_for_browser(cookies)
     qiwa.header.change_local(language)
 
 
-@pytest.fixture
-def delete_self_subscription():
-    return delete_subscription
+def delete_self_subscription(user: User):
+    return delete_subscription(user.personal_number, user.unified_number_id)
 
 
 def get_subscription_cookie(owner: User) -> dict:

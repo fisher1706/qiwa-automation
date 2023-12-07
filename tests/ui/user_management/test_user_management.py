@@ -26,6 +26,7 @@ from src.ui.actions.user_management_actions.user_management import UserManagemen
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
+    delete_self_subscription,
     get_subscription_cookie,
     log_in_and_open_establishment_account,
     log_in_and_open_user_management,
@@ -256,8 +257,8 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
 @allure.title("Test self subscription user without subscription")
 @case_id(41783, 41794, 41785, 41790)
 @pytest.mark.parametrize("user_type, user", SelfSubscriptionData.without_subscription)
-def test_self_subscription_user_without_subscription(user_type, user, delete_self_subscription):
-    delete_self_subscription(user.personal_number, user.unified_number_id)
+def test_self_subscription_user_without_subscription(user_type, user):
+    delete_self_subscription(user)
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
