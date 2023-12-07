@@ -27,7 +27,7 @@ def test_change_phone_number_during_login(account_data):
 
 
 @case_id(57393)
-def test_change_phone_number_during_login(account_data, second_account_data):
+def test_change_phone_number_which_belongs_to_another_account_less_than_six_month(account_data, second_account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
     qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
