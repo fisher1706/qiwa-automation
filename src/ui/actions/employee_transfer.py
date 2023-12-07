@@ -14,8 +14,7 @@ class EmployeeTransferActions:
     def navigate_to_et_service(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
         qiwa.workspace_page.should_have_workspace_list_appear()
-        personal_info = user.name if user.name else user.personal_number
-        qiwa.header.check_personal_number_or_name(personal_info).change_local(Language.EN)
+        qiwa.header.change_local(Language.EN)
         qiwa.workspace_page.select_company_account_with_sequence_number(user.sequence_number)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
@@ -27,7 +26,7 @@ class EmployeeTransferActions:
     def navigate_to_et_service_current_sponsor(self, user: User) -> EmployeeTransferActions:
         qiwa.login_as_user(user.personal_number)
         qiwa.workspace_page.should_have_workspace_list_appear()
-        qiwa.header.check_personal_number_or_name(user.personal_number).change_local(Language.EN)
+        qiwa.header.change_local(Language.EN)
         qiwa.workspace_page.select_company_account_by_name(user.establishment_name_ar)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
