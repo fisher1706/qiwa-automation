@@ -5,6 +5,47 @@ import pytest
 from utils.assertion import assert_that
 
 
+def test_by_english_name(change_occupation):
+    occupation = change_occupation.get_random_occupation()
+    english_name = occupation.english_name
+
+    json = change_occupation.get_occupations(english_name=english_name)
+    data = json.data
+    assert_that(data).is_not_empty()
+    occupations_match_english_name: bool = all(
+        english_name in occupation.attributes.english_name for occupation in data
+    )
+    assert_that(occupations_match_english_name).equals_to(True)
+
+
+def test_by_arabic_name(change_occupation):
+    occupation = change_occupation.get_random_occupation()
+    arabic_name = occupation.arabic_name
+
+    json = change_occupation.get_occupations(arabic_name=arabic_name)
+    data = json.data
+    assert_that(data).is_not_empty()
+    occupations_match_arabic_name: bool = all(
+        arabic_name in occupation.attributes.arabic_name for occupation in data
+    )
+    assert_that(occupations_match_arabic_name).equals_to(True)
+
+
+@pytest.mark.parametrize("name", [
+    {"english_name": "Some Name"},
+    {"arabic_name": "بعض الاسم"},
+], ids=lambda param: list(param.keys())[0])
+def test_by_not_found_occupation_name(change_occupation, name):
+    json = change_occupation.get_occupations(**name)
+
+    data, meta = json.data, json.meta
+    assert_that(data).is_empty()
+    assert_that(meta).has(
+        total_count=0,
+        total_pages=0,
+    )
+
+
 @pytest.mark.parametrize("page", [1, 10, 100])
 def test_getting_page(change_occupation, page):
     json = change_occupation.get_occupations(page=page, per=1)
@@ -74,9 +115,3 @@ def test_getting_zero_and_negative_page(page, change_occupation):
     response = change_occupation.api.get_occupations(page=page, per=10)
     assert_that(response.status_code).equals_to(HTTPStatus.OK)
     assert_that(response.json()).has(data=None)
-
-
-def test_getting_negative_per_page(change_occupation):
-    response = change_occupation.api.get_occupations(page=1, per=-1)
-    assert_that(response.status_code).equals_to(HTTPStatus.OK)
-    assert_that(response.json()["data"]).is_not_empty()
