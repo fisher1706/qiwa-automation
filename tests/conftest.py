@@ -7,7 +7,7 @@ from data.dedicated.models.user import User
 from data.user_management.user_management_datasets import Privileges
 from src.api.app import QiwaApi
 from src.api.controllers.mock_mlsd_data import MockMlsdDataController
-from src.api.controllers.sso_auth import AuthApiSSOController
+from src.api.controllers.sso.sso_auth import AuthApiSSOController
 from src.api.http_client import HTTPClient
 
 
@@ -20,12 +20,12 @@ def http_client():
 def delete_service_categories():
     yield
     api = QiwaApi.login_as_admin()
-    response = api.e_service.api.get_admin_tags()
+    response = api.e_service.client.get_admin_tags()
     tags = response.json()["data"]
     for tag in tags:
         if tag["attributes"]["code"] not in ("businesses", "employees", "visas"):
-            api.e_service.api.delete_tag(tag["id"])
-    api.e_service.api.get_admin_tags()
+            api.e_service.client.delete_tag(tag["id"])
+    api.e_service.client.get_admin_tags()
 
 
 @pytest.fixture

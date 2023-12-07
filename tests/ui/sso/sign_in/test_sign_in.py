@@ -117,7 +117,7 @@ def test_captcha_is_displayed_after_entering_incorrect_password_three_times(seco
     qiwa.login_page.recaptcha_should_be_visible()
 
 
-@case_id(57505)
+@case_id(57505, 42065)
 @pytest.mark.xfail(reasone="functionality could change")
 def test_check_that_account_is_locked_after_four_times_login_with_wrong_credentials(first_account_data):
     qiwa.open_login_page()
