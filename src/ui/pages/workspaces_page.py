@@ -22,6 +22,7 @@ class WorkspacesPage:
     business_account_list = ss("[data-component='TabPanel'] button")
     search = s("#search")
     lmi_admin_card = ss("[data-component='Tile'] p").element_by(have.text("LMI Admin"))
+    btn_subscribe = ss("//*[@id='tabpanel-:r0:-0']//button//a")
 
     @allure.step
     def should_have_workspace_list_appear(self) -> WorkspacesPage:
@@ -82,4 +83,13 @@ class WorkspacesPage:
     @allure.step
     def select_lmi_admin(self) -> WorkspacesPage:
         self.lmi_admin_card.click()
+        return self
+
+    @allure.step
+    def click_btn_subscribe(self, user_type: str, number: int = None) -> WorkspacesPage:
+        if user_type != "active":
+            self.btn_subscribe[number].click() if number else self.btn_subscribe[0].click()
+        else:
+            for item in self.btn_subscribe:
+                item.should(be.hidden)
         return self

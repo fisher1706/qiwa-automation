@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import Element, have
+from selene.support.conditions import be
 from selene.support.shared.jquery_style import ss
 
 from data.constants import Language
@@ -13,14 +14,30 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
+from src.ui.pages.user_management_pages.annual_subscription_page import (
+    AnnualSubscription,
+)
+from src.ui.pages.user_management_pages.establishment_user_details_page import (
+    EstablishmentUser,
+)
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
+from src.ui.pages.user_management_pages.payment_summary_page import PaymentSummary
+from src.ui.pages.user_management_pages.renew_subscription_page import RenewSubscription
+from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
 from src.ui.qiwa import qiwa
 
 
 class UserManagementActions(
-    UserManagementMainPage, UserDetailsPage, OwnerFLowPage
+    UserManagementMainPage,
+    UserDetailsPage,
+    OwnerFLowPage,
+    EstablishmentUser,
+    AnnualSubscription,
+    PaymentSummary,
+    ThankYouPage,
+    RenewSubscription,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -400,4 +417,44 @@ class UserManagementActions(
         self.close_success_modal()
         self.wait_until_page_is_loaded()
         self.check_user_is_inactive_on_users_table(national_id)
+        return self
+
+    @allure.step
+    def possibility_switch_to_establishment_page(self, user_type: str) -> UserManagementActions:
+        qiwa.workspace_page.click_btn_subscribe(user_type)
+        return self
+
+    @allure.step
+    def check_establishment_user_details(self) -> UserManagementActions:
+        EstablishmentUser.main_text.wait_until(be.visible)
+        self.click_btn_proceed_subscription()
+        return self
+
+    @allure.step
+    def check_annual_subscription(self) -> UserManagementActions:
+        AnnualSubscription.main_text.wait_until(be.visible)
+        self.check_checkbox_read_accept()
+        self.click_button_go_to_payment()
+        return self
+
+    @allure.step
+    def check_renew_subscription(self) -> UserManagementActions:
+        RenewSubscription.main_text.wait_until(be.visible)
+        self.check_checkbox_read_accept()
+        self.click_btn_go_to_payment()
+        return self
+
+    @allure.step
+    def make_establishment_payment(self, payment: str = None) -> UserManagementActions:
+        PaymentSummary.main_text.wait_until(be.visible)
+        self.choose_and_make_payment(payment_type=payment)
+        self.check_checkbox_read_accept()
+        self.click_btn_submit_pay()
+        self.complete_payment(payment_type=payment)
+        return self
+
+    @allure.step
+    def check_thank_you_page(self) -> UserManagementActions:
+        ThankYouPage.main_text.wait_until(be.visible)
+        self.check_data_thank_you_page()
         return self
