@@ -10,6 +10,9 @@ from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.payloads.appointment import appointment_payload
+from src.api.payloads.change_occupation_laborers_list import (
+    change_occupation_laborers_list_payload,
+)
 from src.api.payloads.contract_details import contract_details_payload
 from src.api.payloads.employee_transfer_request_ae import (
     employee_transfer_request_ae_payload,
@@ -18,6 +21,7 @@ from src.api.payloads.employee_transfer_request_bme import (
     employee_transfer_request_bme_payload,
 )
 from src.api.payloads.establishment_information import establishment_information_payload
+from src.api.payloads.laborers_co_requests import laborers_co_requests_payload
 from utils.allure import allure_steps
 from utils.assertion import assert_status_code
 
@@ -49,7 +53,7 @@ class IbmApi:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
-    def create_new_contract(self, user: User, laborer: Laborer):
+    def create_new_contract(self, user: User, laborer: Laborer) -> None:
         response = self.client.post(
             url=self.url,
             endpoint="/takamol/staging/contractmanagement/createnewcontract",
@@ -58,9 +62,17 @@ class IbmApi:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
+    def get_change_occupation_laborers_list(self, user: User) -> dict:
+        return self.client.post(
+            url=self.url,
+            endpoint=self.route + "/chgoccupation/getchangeoccupationlaborerslist",
+            headers=HEADERS,
+            json=change_occupation_laborers_list_payload(user),
+        ).json()
+
     def create_employee_transfer_request_bme(
         self, user: User, laborer: Laborer, transfer_type: TransferType
-    ):
+    ) -> None:
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitchangesponsorrequest",
@@ -73,7 +85,7 @@ class IbmApi:
 
     def create_employee_transfer_request_ae(
         self, user: User, laborer: Laborer, sponsor: User = None
-    ):
+    ) -> None:
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitcsrequests",
@@ -83,6 +95,14 @@ class IbmApi:
         response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
         if response["Status"].lower() == "error":
             pytest.fail(reason=response["EnglishMsg"])
+
+    def get_laborers_co_requests(self, user: User, laborer: Laborer, status_id: int) -> dict:
+        return self.client.post(
+            url=self.url,
+            endpoint=self.route + "/chgoccupation/getlaborerscorequests",
+            headers=HEADERS,
+            json=laborers_co_requests_payload(user, laborer, status_id),
+        ).json()
 
 
 ibm_api = IbmApi()
