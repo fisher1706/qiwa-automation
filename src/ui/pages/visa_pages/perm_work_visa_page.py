@@ -1,5 +1,6 @@
 import datetime
 from time import sleep
+from typing import Union
 
 import allure
 from dateutil.relativedelta import relativedelta
@@ -10,6 +11,9 @@ from data.visa.constants import (
     ALLOWANCE_PERIOD_END_DATE,
     ALLOWANCE_PERIOD_START_DATE,
     BR_ACCEPTED,
+    BR_REFUNDED,
+    BR_SUCCESS,
+    CAN_BE_REFUNDED,
     ESTABLISHING,
     ESTABLISHMENT_FUND,
     ESTABLISHMENT_PHASE,
@@ -29,6 +33,9 @@ from data.visa.constants import (
     PERMANENT_VISAS_TITLE,
     RECRUITMENT_QUOTA,
     RECRUITMENT_QUOTA_TIER,
+    REFUND_ERROR_MODAL_MESSAGE,
+    REFUND_SUCCESS_MODAL_CONTENT,
+    REFUND_SUCCESS_MODAL_TITLE,
     TIER,
     USER_CANNOT_SIGN_AGREEMENT_CONTENT_EST,
     USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP,
@@ -36,8 +43,10 @@ from data.visa.constants import (
     USER_CANNOT_SIGN_AGREEMENT_TITLE_EXP,
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
+    BRRefundMessages,
     ColName,
     DateFormats,
+    ExceptionalBalanceRequestStatus,
     Numbers,
     VisaType,
 )
@@ -82,6 +91,7 @@ class PermWorkVisaPage:
     request_action_button = './/*[@data-testid="baseTableActions"]'
     print_action = s('//button/p[contains(text(), "Print")]')
     view_action = s('//button/p[contains(text(), "View details")]')
+    refund_action_button = s('//button/p[contains(text(), "Return and refund")]')
     establishment_fund_section = s('//*[@data-testid="absherFundsSection"]')
     establishment_fund_section_title = establishment_fund_section.ss("./div").first
     establishment_fund_table = Table(establishment_fund_section.s(".//table"))
@@ -91,12 +101,11 @@ class PermWorkVisaPage:
     increase_quota_button = s('//*[@data-testid="increaseRecruitmentQuotaBtn"]')
     nav_link_to_transitional_page = ss("//nav//li").second
     allowed_quota_section = s('//*[@id="allowedQuotaSection"]')
-    exceptional_requests_table = s('//*[@data-testid="ExceptionalRequestsTable"]')
+    exceptional_requests_table = s('//*[@data-testid="ExceptionalLOBalanceTable"]')
     tier_upgrades_requests_table = s('//*[@data-testid="TierHistoryTable"]')
     establishment_fund_tab = s('//*[@data-testid="nav-Establishment fund"]')
     learn_more_tab = s('//*[@data-testid="nav-Learn more"]')
-    learn_more_section = s('//*[@id="knowledgeSection"]')
-    learn_more_section_title = learn_more_section.s(".//p")
+    learn_more_section = s('//*[@id="knowledgeSection"]//p')
     recruitment_quota_section = s("#allowedQuotaSection")
     recruitment_quota_tab = s('//*[@data-testid="nav-Recruitment quota"]')
     increase_fund_modal = s('//*[@data-testid="absherFundsModal"]')
@@ -111,12 +120,19 @@ class PermWorkVisaPage:
     issue_visa_button = s('//*[@data-testid="issueVisaBtn"]')
     modal_window = s('//*[@id="modalBodyWrapper"]//parent::div')
     modal_window_x_button = modal_window.ss(".//button").first
-    modal_window_close_button = modal_window.ss(".//button").second
-    modal_window_title = modal_window.s(".//p")
-    modal_window_content = modal_window.s(".//ol/li")
+    modal_window_close_button = modal_window.s('.//button/*[text()="Close"]')
+    modal_window_title = modal_window.ss(".//p").first
+    modal_error_window_content = modal_window.s(".//ol/li")
+    modal_warning_window_content = modal_window.ss(".//p").second
+    modal_success_window_content = modal_warning_window_content
+    modal_cancel_button = modal_window.s('.//button/*[text()="Cancel request"]')
+    modal_return_button = modal_window.s('.//button/*[text()="Back to Permanent work visas"]')
     page_navigation_chain = s("//nav")
     page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
     banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
+    modal_error_message = modal_window.s('.//*[@data-component="ErrorMessage"]')
+    modal_retry_button = modal_window.s('.//button/*[text()="Retry"]')
+    action_menu = s('//*[@data-component="ActionsMenu"]')
     increase_fund_modal_title = increase_fund_modal.s(".//p")
 
     @allure.step("Verify work visa page is opened")
@@ -209,18 +225,22 @@ class PermWorkVisaPage:
 
     @allure.step("Verify tier upgrade status of tier upgrade request")
     def verify_tier_upgrade_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
-        self.verify_request_status(ref_number, status, self.tier_upgrades_requests_table)
+        table = Table(self.tier_upgrades_requests_table)
+        self.verify_request_status(ref_number, status, table)
 
     @allure.step("Verify balance request status")
     def verify_balance_request_status(self, ref_number: str, status: BalanceRequestStatus) -> None:
-        self.verify_request_status(ref_number, status, self.exceptional_requests_table)
+        table = Table(self.exceptional_requests_table)
+        self.verify_request_status(ref_number, status, table)
 
     def verify_request_status(
-        self, ref_number: str, status: BalanceRequestStatus, element: Element
+        self,
+        ref_number: str,
+        status: Union[BalanceRequestStatus | ExceptionalBalanceRequestStatus],
+        table: Table,
     ) -> None:
-        table = Table(element)
         status_cell = table.cell(row=have.text(ref_number), column=ColName.REQUEST_STATUS)
-        command.js.scroll_into_view(element)
+        command.js.scroll_into_view(table.web_element)
         soft_assert_text(
             element=status_cell, text=status.label, element_name="Balance request status"
         )
@@ -235,7 +255,7 @@ class PermWorkVisaPage:
         self.other_visas_tab.click()
         self.verify_section_visible(self.other_visas_section)
         self.learn_more_tab.click()
-        self.verify_section_visible(self.learn_more_section_title)
+        self.verify_section_visible(self.learn_more_section)
         self.recruitment_quota_tab.click()
         self.verify_section_visible(self.allowed_quota_section)
 
@@ -436,11 +456,11 @@ class PermWorkVisaPage:
         self.issue_visa_button.should(be.visible).should(be.clickable)
         self.issue_visa_button.s(self.ICON).should(be.visible)
         self.issue_visa_button.click()
-        self.verify_modal_error_window(modal_title, modal_content)
+        self.verify_modal_window(modal_title, modal_content)
         self.modal_window_x_button.click()
         self.modal_window.should(be.hidden)
         self.issue_visa_button.click()
-        self.verify_modal_error_window(modal_title, modal_content)
+        self.verify_modal_window(modal_title, modal_content)
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
 
@@ -463,26 +483,31 @@ class PermWorkVisaPage:
         button.should(be.visible).should(be.clickable)
         button.s(self.ICON).should(be.visible)
         button.click()
-        self.verify_modal_error_window(title, content)
+        self.verify_modal_window(title, content)
         self.modal_window_x_button.click()
         self.modal_window.should(be.hidden)
         button.click()
-        self.verify_modal_error_window()
+        self.verify_modal_window()
         self.modal_window_close_button.click()
         self.modal_window.should(be.hidden)
 
-    def verify_modal_error_window(self, title: str = None, content: str = None) -> None:
+    def verify_modal_window(
+        self,
+        title: str = None,
+        content: str = None,
+        content_element: Element = None,
+        close_button: bool = True,
+    ) -> None:
         self.modal_window.should(be.visible)
         self.modal_window_x_button.should(be.visible).should(be.clickable)
-        self.modal_window_close_button.should(be.visible).should(be.clickable)
+        condition = be.visible if close_button else be.hidden
+        self.modal_window_close_button.should(condition)
         if title:
             soft_assert_text(
                 self.modal_window_title, text=title, element_name="modal window title"
             )
         if content:
-            soft_assert_text(
-                self.modal_window_content, text=content, element_name="modal window content"
-            )
+            soft_assert_text(content_element, text=content, element_name="modal window content")
 
     @allure.step(
         "Verify if buttons 'Issue visa' and 'Increase recruitment quota' are enable/disabled in establishment flow"
@@ -563,10 +588,10 @@ class PermWorkVisaPage:
         )
 
     @allure.step("Check the error text above Recruitment quota title on the work visa dashboard.")
-    def verify_error_banner(self, text):
+    def verify_error_banner(self):
         soft_assert_text(
             self.banner,
-            text=text,
+            text=ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
             element_name="Error banner",
         )
 
@@ -579,7 +604,7 @@ class PermWorkVisaPage:
 
     @allure.step("Verify tier one, balance zero case validations")
     def verify_issue_perm_work_visa_blocked(self):
-        self.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT)
+        self.verify_error_modal_window(content=ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT)
         self.verify_issue_visa_button_disabled(
             ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_ESTABLISHING_TEXT
         )
@@ -644,6 +669,126 @@ class PermWorkVisaPage:
     def table_status_cell(self, table_element: Element, ref_number: str) -> Element:
         table = Table(table_element)
         return table.cell(row=have.text(ref_number), column=ColName.VISA_STATUS)
+
+    def verify_perm_work_visa_refund_status(
+        self, ref_number: str, br_status: BRRefundMessages
+    ) -> None:
+        self.open_action_menu_on_tier_upgrade_request(ref_number)
+        self.refund_action_button.click()
+        self.verify_warning_modal_window(title=br_status.title, content=br_status.content)
+        self.modal_window_close_button.click()
+        self.open_action_menu_on_tier_upgrade_request(ref_number)
+        self.refund_action_button.click()
+        self.verify_warning_modal_window(title=br_status.title, content=br_status.content)
+        self.modal_window_x_button.click()
+        if br_status.id in CAN_BE_REFUNDED:
+            self.refund_tier_upgrade_request(ref_number, br_status.success)
+
+    @allure.step("Verify successful refund modal window")
+    def verify_successful_refund_modal(self):
+        self.verify_success_modal_window(
+            title=REFUND_SUCCESS_MODAL_TITLE, content=REFUND_SUCCESS_MODAL_CONTENT
+        )
+        self.modal_return_button.should(be.visible)
+        self.modal_return_button.click()
+
+    @allure.step("Verify erroneous refund modal window")
+    def verify_error_refund_modal(self):
+        self.verify_modal_window(
+            title=BRRefundMessages.title,
+            content=BRRefundMessages.content,
+            content_element=self.modal_error_window_content,
+        )
+        soft_assert_text(
+            self.modal_error_message,
+            REFUND_ERROR_MODAL_MESSAGE,
+            element_name="Refund modal error message",
+        )
+        self.modal_retry_button.should(be.visible)
+        self.modal_retry_button.click()
+        self.modal_error_message.should(be.hidden)
+        self.modal_cancel_button.should(be.visible)
+        self.verify_modal_window(
+            title=BRRefundMessages.title,
+            content=BRRefundMessages.content,
+            content_element=self.modal_error_window_content,
+        )
+        soft_assert_text(
+            self.modal_error_message,
+            REFUND_ERROR_MODAL_MESSAGE,
+            element_name="Refund modal error message",
+        )
+        self.modal_retry_button.should(be.visible)
+        self.modal_window_close_button.click()
+
+    def open_action_menu_on_tier_upgrade_request(self, request):
+        if self.action_menu.matching(be.hidden):
+            self.recruitment_quota_table_establishment.rows.should(have.size(Numbers.SIX))
+            command.js.scroll_into_view(
+                self.recruitment_quota_table_establishment.cell(
+                    row=Numbers.SIX, column=Numbers.ONE
+                )
+            )
+            self.tier_upgrades_requests_table.ss(self.table_rows).by(have.text(request)).first.s(
+                self.request_action_button
+            ).click()
+
+    def refund_tier_upgrade_request(self, ref_number, expected):
+        self.open_action_menu_on_tier_upgrade_request(ref_number)
+        self.refund_action_button.click()
+        self.modal_cancel_button.should(be.visible)
+        self.modal_cancel_button.click()
+        self.verify_refund_modal(expected)
+        self.modal_window.should(be.hidden)
+
+    def verify_error_modal_window(self, title: str = None, content: str = None) -> None:
+        self.verify_modal_window(title, content, content_element=self.modal_error_window_content)
+
+    def verify_warning_modal_window(self, title: str, content: str, error: bool = False) -> None:
+        self.verify_modal_window(title, content, content_element=self.modal_warning_window_content)
+        if error:
+            soft_assert_text(
+                self.modal_error_message,
+                text=REFUND_ERROR_MODAL_MESSAGE,
+                element_name="Refund modal error message",
+            )
+
+    def verify_success_modal_window(self, title: str, content: str) -> None:
+        self.verify_modal_window(
+            title, content, content_element=self.modal_success_window_content, close_button=False
+        )
+
+    def verify_refund_modal(self, expected: bool) -> None:
+        if expected:
+            self.verify_success_modal_window(
+                title=REFUND_SUCCESS_MODAL_TITLE, content=REFUND_SUCCESS_MODAL_CONTENT
+            )
+            self.modal_return_button.should(be.visible)
+            self.modal_return_button.click()
+        else:
+            self.verify_warning_modal_window(
+                title=BR_SUCCESS.title, content=BR_SUCCESS.content, error=True
+            )
+            self.modal_window_close_button.click()
+
+    def verify_perm_work_visa_refund_available(
+        self, ref_number: str, status: BalanceRequestStatus
+    ) -> None:
+        self.open_action_menu_on_tier_upgrade_request(ref_number)
+        condition = be.visible if status.refundable else be.hidden
+        self.refund_action_button.should(condition)
+        if status.refundable:
+            self.refund_tier_upgrade_request(ref_number, expected=True)
+            self.open_action_menu_on_tier_upgrade_request(ref_number)
+            self.refund_action_button.should(be.hidden)
+            table = Table(self.tier_upgrades_requests_table)
+            self.verify_request_status(ref_number, BR_REFUNDED, table)
+
+    def verify_exceptional_balance_request_status(
+        self, ref_number: str, status: ExceptionalBalanceRequestStatus
+    ) -> None:
+        table = Table(self.exceptional_requests_table)
+        self.verify_request_status(ref_number, status, table)
 
     @allure.step("Verify the option to sign agreement is not available [establishing]")
     def verify_user_cannot_sign_agreement_establishing(self):

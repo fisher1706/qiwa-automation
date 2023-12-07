@@ -3,9 +3,9 @@ from time import sleep
 
 import allure
 from dateutil.relativedelta import relativedelta
-from selene.api import be, command, have, not_, query, s, ss
+from selene.api import be, command, have, not_, s, ss
 
-from data.visa.constants import Numbers
+from data.visa.constants import FIRST_NAME, LAST_NAME, Numbers
 from src.ui.components.raw.table import Table
 from src.ui.pages.visa_pages.payment_gateway_page import PaymentGateWay
 from utils.assertion.selene_conditions import have_any_number
@@ -51,13 +51,15 @@ class IncreaseQuotaPage:
     visit_time_input = s('//*[@data-testid="estabAddressSectionVisitTimeSelect"]')
     visit_time_options_box = floating_popup
     visit_time_options = visit_time_options_box.ss(".//ul/li")
-    last_name = s("#person-name")
     payment = PaymentGateWay()
     city_dropdown = s('//*[@id="inspection-cities-select"]')
+    first_name = s('//*[@data-testid="estabAddressSectionpersonFirstName"]')
+    last_name = s('//*[@data-testid="estabAddressSectionpersonLastName"]')
 
     def get_to_tier(self, visa_db, tier, num_visas=0):
         self.sign_agreement(tier, num_visas)
         self.select_location()
+        self.add_name()
         self.select_inspection()
         self.next_step_button_location.click()
         self.goto_payment_button.click()
@@ -65,9 +67,7 @@ class IncreaseQuotaPage:
         self.verify_created_request()
         self.back_to_perm_work_visa_button.click()
         self.history_tier_upgrades_table.row(1).should(be.visible)
-        return self.history_tier_upgrades_table.cell(row=1, column="Request number").get(
-            query.text
-        )
+        return visa_db.get_balance_request_reference_number()
 
     def create_balance_request(self, visa_db, visas_amount):
         sleep(4)  # TODO: remove when bug is fixed
@@ -76,6 +76,7 @@ class IncreaseQuotaPage:
         self.agree_agreement_checkbox.click()
         self.next_step_button_agreement.click()
         self.select_location()
+        self.add_name()
         self.select_inspection()
         self.next_step_button_location.click()
         self.terms_agree_checkbox.click()
@@ -83,9 +84,7 @@ class IncreaseQuotaPage:
         self.payment.pay_successfully(visa_db)
         self.payment_request_sent.should(have_any_number())
         self.back_to_perm_work_visa_button.click()
-        ref_number = self.balanse_request_table.cell(row=Numbers.ONE, column="Request number").get(
-            query.text
-        )
+        ref_number = visa_db.get_balance_request_reference_number()
         return ref_number
 
     def select_location(self, index=1):
@@ -122,10 +121,6 @@ class IncreaseQuotaPage:
         self.agree_agreement_checkbox.click()
         self.next_step_button_agreement.click()
 
-    def select_city(self, index=1):
-        self.city_dropdown.click()
-        self.dropdown_options.element(index - 1).click()
-
     def select_tier(self, tier: int, num_visas: int = 0) -> None:
         s(self.TIER_CHECK_BOX.format(tier)).click()
         if tier == Numbers.FOUR:
@@ -141,3 +136,11 @@ class IncreaseQuotaPage:
     @allure.step("Verify step 'Agreement' is open")
     def verify_agreement_step_open(self):
         self.agree_agreement_checkbox.should(be.visible)
+
+    def select_city(self, index=1):
+        self.city_dropdown.click()
+        self.dropdown_options.element(index - 1).click()
+
+    def add_name(self):
+        self.first_name.type(FIRST_NAME)
+        self.last_name.type(LAST_NAME)
