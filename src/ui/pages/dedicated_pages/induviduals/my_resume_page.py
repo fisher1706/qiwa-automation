@@ -3,15 +3,16 @@ from __future__ import annotations
 import datetime
 import time
 
-import allure
 import pyperclip
 from selene import be, browser, have, query
 from selene.core.condition import not_
 from selene.support.shared.jquery_style import s, ss
 
+from utils.allure import allure_steps
 from utils.selene import scroll_into_view_if_needed
 
 
+@allure_steps
 class MyResumePage:
     dropdown = s(".tippy-content")
     add = s("//p[.='Add']")
@@ -110,7 +111,6 @@ class MyResumePage:
     list_of_professional_certificates = ss("//p[.='qa sertificare']")
     confirm_delete_record = s("//p[.='Delete certificate']")
 
-    @allure.step
     def add_volunteering_record(self) -> MyResumePage:
         self.add_volunteer_experience.click()
         self.organization_name.type("QA TEST " + str(datetime.date.today()))
@@ -123,7 +123,6 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def edit_volunteering_record(self) -> MyResumePage:
         self.edit_volunteer_experience.click()
         scroll_into_view_if_needed(self.add)
@@ -133,7 +132,6 @@ class MyResumePage:
         self.save_changes_btn.click()
         return self
 
-    @allure.step
     def delete_volunteer_exp(self) -> MyResumePage:
         self.edit_volunteer_experience.click()
         time.sleep(2)
@@ -141,14 +139,12 @@ class MyResumePage:
         self.confirm_delete_experience_btn.click()
         return self
 
-    @allure.step
     def add_summary_record(self) -> MyResumePage:
         self.add_summary.click()
         self.summary_section.set_value("Test summary")
         self.submit_btn.click()
         return self
 
-    @allure.step
     def delete_about_summary(self) -> MyResumePage:
         self.edit_summary_btn.click()
         scroll_into_view_if_needed(self.delete_summary_btn)
@@ -156,7 +152,6 @@ class MyResumePage:
         self.confirm_delete_summary_btn.click()
         return self
 
-    @allure.step
     def add_trainings_record(self) -> MyResumePage:
         self.add_training_btn.click()
         self.training_name.set_value("TEST QA NAME")
@@ -178,7 +173,6 @@ class MyResumePage:
         self.training_list_name.should(have.exact_text("QA TEST CHANGED"))
         return self
 
-    @allure.step
     def delete_training_record(self) -> MyResumePage:
         self.edit_trainings_btn.click()
         scroll_into_view_if_needed(self.add)
@@ -186,7 +180,6 @@ class MyResumePage:
         self.confirm_delete_trainings.click()
         return self
 
-    @allure.step("Create new link")
     def create_new_link(self) -> MyResumePage:
         self.share_resume_btn.click()
         time.sleep(2)
@@ -200,7 +193,6 @@ class MyResumePage:
         self.back_to_resume_sharing.click()
         return self
 
-    @allure.step
     def create_second_link(self) -> MyResumePage:
         self.create_new_link_btn.click()
         self.enter_link_name.type("TEST QA LINK 2")
@@ -212,7 +204,6 @@ class MyResumePage:
         self.back_to_resume_sharing.click()
         return self
 
-    @allure.step
     def edit_link(self) -> MyResumePage:
         self.link_options.click()
         self.edit_btn.click()
@@ -220,47 +211,39 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def delete_link(self) -> MyResumePage:
         self.link_options.click()
         self.delete_btn.click()
         self.confirm_delete_link.click()
         return self
 
-    @allure.step
     def verify_second_added_link_status(self) -> MyResumePage:
         self.link_options.click()
         self.edit_btn.click()
         self.visibility_toggle.should(have.attribute("aria-checked", "true"))
         return self
 
-    @allure.step
     def share_resume(self) -> MyResumePage:
         self.share_resume_btn.click()
         return self
 
-    @allure.step
     def copy_link(self) -> MyResumePage:
         self.copy_link_btn.click()
         return self
 
-    @allure.step
     def open_link_in_current_tab(self) -> MyResumePage:
         clipboard_url = str(pyperclip.paste())
         browser.driver.get(clipboard_url)
         return self
 
-    @allure.step
     def verify_resume_availability(self) -> MyResumePage:
         self.experiences_section.should(be.visible)
         return self
 
-    @allure.step
     def verify_resume_unavailability(self) -> MyResumePage:
         self.unavailable_resume.should(be.visible)
         return self
 
-    @allure.step
     def disable_link_visibility(self) -> MyResumePage:
         self.link_options.click()
         self.edit_btn.click()
@@ -269,7 +252,6 @@ class MyResumePage:
         self.save_changes_btn.click()
         return self
 
-    @allure.step
     def verify_profile_analytics(self) -> MyResumePage:
         self.share_resume_btn.click()
         self.total_views.should(be.visible)
@@ -278,19 +260,16 @@ class MyResumePage:
         self.average_time.should(be.visible)
         return self
 
-    @allure.step
     def verify_changed_profile_analytics(self, new_total_views) -> MyResumePage:
         browser.driver.back()
         browser.driver.refresh()
         self.total_views.should(have.no.exact_text(new_total_views))
         return self
 
-    @allure.step
     def get_total_views(self) -> str:
         total_views = self.total_views.get(query.text)
         return total_views
 
-    @allure.step
     def add_education_record(self) -> MyResumePage:
         self.add_education_btn.click()
         self.educational_institute_name.type("test")
@@ -307,13 +286,11 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def verify_list_of_education_records(self) -> MyResumePage:
         self.education_section.should(be.visible)
         self.list_of_education_records.should(have.size_greater_than(0))
         return self
 
-    @allure.step
     def edit_the_education_record(self) -> MyResumePage:
         scroll_into_view_if_needed(self.edit_education_btn)
         self.edit_education_btn.click()
@@ -323,7 +300,6 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def delete_the_education_record(self) -> MyResumePage:
         scroll_into_view_if_needed(self.edit_education_btn)
         self.edit_education_btn.click()
@@ -331,7 +307,6 @@ class MyResumePage:
         self.confirm_delete_education_btn.click()
         return self
 
-    @allure.step
     def add_skills_record(self) -> MyResumePage:
         self.add_new_skill.click()
         self.your_skill.type("test skill" + str(datetime.date.today()))
@@ -339,13 +314,11 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def verify_skills_records(self) -> MyResumePage:
         self.skills_section.should(be.visible)
         self.list_of_skills.should(have.size_greater_than(0))
         return self
 
-    @allure.step
     def edit_skills_record(self) -> MyResumePage:
         self.edit_skills_section.click()
         scroll_into_view_if_needed(self.delete_skill)
@@ -353,7 +326,6 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def delete_skills_record(self) -> MyResumePage:
         self.edit_skills_section.click()
         scroll_into_view_if_needed(self.delete_skills)
@@ -361,7 +333,6 @@ class MyResumePage:
         self.confirm_delete_skills.click()
         return self
 
-    @allure.step
     def add_professional_certificates_record(self) -> MyResumePage:
         self.add_professional_certificates.click()
         self.organization_name.type("test organization")
@@ -376,14 +347,12 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def verify_professional_certificate_records(self) -> MyResumePage:
         scroll_into_view_if_needed(self.professional_certificates_section)
         self.professional_certificates_section.should(be.visible)
         self.list_of_professional_certificates.should(have.size_greater_than(0))
         return self
 
-    @allure.step
     def edit_professional_certificate_record(self) -> MyResumePage:
         self.edit_professional_certificates.click()
         scroll_into_view_if_needed(self.edit_btn)
@@ -394,7 +363,6 @@ class MyResumePage:
         self.submit_btn.click()
         return self
 
-    @allure.step
     def delete_professional_certificate_record(self) -> MyResumePage:
         self.edit_professional_certificates.click()
         scroll_into_view_if_needed(self.delete_btn)
