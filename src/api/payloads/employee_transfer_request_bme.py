@@ -40,7 +40,9 @@ def employee_transfer_request_bme_payload(
                         SourceLaborOfficeId=user.labor_office_id,
                         SourceSequenceNumber=user.sequence_number,
                         LaborerList=LaborerList(
-                            LaborerItem=LaborerItem(LaborerName="", LaborerIdNo=laborer.personal_number)
+                            LaborerItem=LaborerItem(
+                                LaborerName="", LaborerIdNo=laborer.personal_number
+                            )
                         ),
                     )
                 ),

@@ -10,7 +10,9 @@ from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.payloads.appointment import appointment_payload
-from src.api.payloads.cancelchgoccrequest import cancel_change_occupation_request_payload
+from src.api.payloads.cancelchgoccrequest import (
+    cancel_change_occupation_request_payload,
+)
 from src.api.payloads.change_occupation_laborers_list import (
     change_occupation_laborers_list_payload,
 )

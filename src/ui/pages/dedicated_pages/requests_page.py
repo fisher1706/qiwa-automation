@@ -1,4 +1,4 @@
-from selene import have, be
+from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Titles
