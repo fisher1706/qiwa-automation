@@ -44,7 +44,7 @@ class OldContractManagementActions(OldContractManagementPage):
     def fill_employee_details(self, transfer_type: TransferType, laborer: Laborer):
         employee_details = EmployeeDetails()
         if transfer_type.code != type_4.code:
-            employee_details.passport_no = str(laborer.login_id)
+            employee_details.passport_no = str(laborer.personal_number)
             employee_details.date_of_birth = laborer.birthdate
             self.fill_field_name(employee_details.name)
             self.select_dropdown_marital_status(employee_details.marital_status[1])
@@ -94,10 +94,10 @@ class OldContractManagementActions(OldContractManagementPage):
 
     def find_employee(self, laborer: Laborer):
         for _ in range(5):
-            self.fill_national_iqama_id(str(laborer.login_id))
+            self.fill_national_iqama_id(str(laborer.personal_number))
             self.fill_date(laborer.birthdate)
             self.click_btn_find()
-            if self.verify_employee_id(str(laborer.login_id)):
+            if self.verify_employee_id(str(laborer.personal_number)):
                 break
             time.sleep(1)
 
