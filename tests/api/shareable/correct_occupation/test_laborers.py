@@ -54,17 +54,22 @@ class TestPagination:
     @pytest.mark.parametrize("page", [1, 2, 3])
     def test_by_page(self, correct_occupation, page):
         json = correct_occupation.get_laborers(page=page, per=5)
-        assert_that(json.data).is_not_empty()
-        assert_that(json.meta).has(current_page=page)
+        data, meta = json.data, json.meta
+        assert_that(data).is_not_empty()
+        assert_that(meta).has(current_page=page)
+        laborers = [laborer.attributes.laborer_id for laborer in data]
 
-        next_page = json.meta.current_page + 1
+        next_page = page + 1
         next_page_json = correct_occupation.get_laborers(page=next_page, per=5)
-        assert_that(next_page_json.data).is_not_empty()
-        assert_that(all(laborer not in next_page_json.data for laborer in json.data))\
-            .as_("next page data is different").equals_to(True)
+        next_page_data = next_page_json.data
+        assert_that(next_page_data).is_not_empty()
+        next_page_laborers = [laborer.attributes.laborer_id for laborer in next_page_data]
+        next_page_data_is_different = all(laborer not in next_page_laborers for laborer in laborers)
+        assert_that(next_page_data_is_different).equals_to(True)
 
     @pytest.mark.parametrize("per_page", [1, 5, 10, 15])
     def test_by_per_page(self, correct_occupation, per_page):
         json = correct_occupation.get_laborers(per=per_page)
+        data = json.data
 
-        assert_that(json.data).size_is(per_page)
+        assert_that(data).size_is(per_page)
