@@ -6,7 +6,14 @@ import allure
 from data.shareable.correct_occupation import RequestStatus
 from src.api.clients.correct_occupation import CorrectOccupationApi
 from src.api.http_client import HTTPClient
-from src.api.models.qiwa.correct_occupation import LaborersData, RequestsData
+from src.api.models.qiwa.correct_occupation import (
+    CorrectOccupationsData,
+    LaborersData,
+    RequestsData,
+)
+from src.api.models.qiwa.raw.correct_occupation.correct_occupations import (
+    CorrectOccupationAttributes,
+)
 from src.api.models.qiwa.raw.correct_occupation.laborers import LaborerAttributes
 from src.api.models.qiwa.raw.correct_occupation.requests import (
     OccupationCorrectionRequestAttributes,
@@ -47,6 +54,17 @@ class CorrectOccupationController:
         response = self.api.get_requests(page, per, laborer_name, laborer_id, status, date_range)
         assert response.status_code == 200
         return RequestsData.parse_obj(response.json())
+
+    @allure.step
+    def get_occupations(
+        self,
+        occupation_id: str,
+        page: int = 1,
+        per: int = 10,
+    ) -> CorrectOccupationsData:
+        response = self.api.get_correct_occupations(occupation_id, page, per)
+        assert response.status_code == 200
+        return CorrectOccupationsData.parse_obj(response.json())
 
     @allure.step
     def get_any_laborer(self) -> LaborerAttributes:
