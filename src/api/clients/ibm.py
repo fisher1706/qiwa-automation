@@ -10,6 +10,7 @@ from data.dedicated.models.user import User
 from src.api.constants.auth import HEADERS
 from src.api.http_client import HTTPClient
 from src.api.payloads.appointment import appointment_payload
+from src.api.payloads.cancelchgoccrequest import cancel_change_occupation_request_payload
 from src.api.payloads.change_occupation_laborers_list import (
     change_occupation_laborers_list_payload,
 )
@@ -96,13 +97,24 @@ class IbmApi:
         if response["Status"].lower() == "error":
             pytest.fail(reason=response["EnglishMsg"])
 
-    def get_laborers_co_requests(self, user: User, laborer: Laborer, status_id: int) -> dict:
+    def get_laborers_co_requests(self, user: User, status_id: int) -> dict:
         return self.client.post(
             url=self.url,
             endpoint=self.route + "/chgoccupation/getlaborerscorequests",
             headers=HEADERS,
-            json=laborers_co_requests_payload(user, laborer, status_id),
+            json=laborers_co_requests_payload(user, status_id),
         ).json()
+
+    def cancel_change_occupation_request(self, request_number: str) -> None:
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/qiwalo/cancelchgoccrequestlo",
+            headers=HEADERS,
+            json=cancel_change_occupation_request_payload(request_number),
+        )
+        response = response.json()["CancelChangeOccupationRequestLORs"]["Header"]["ResponseStatus"]
+        if response["Status"].lower() == "error":
+            print(response["EnglishMsg"])
 
 
 ibm_api = IbmApi()
