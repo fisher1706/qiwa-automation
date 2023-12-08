@@ -83,8 +83,18 @@ class ChangeOccupationApi:
     def get_users(self, page: int, per: int) -> Response:
         return self.http.get(f"{self.url}/users", params={"page": page, "per": per})
 
-    def get_occupations(self, page: int, per: int) -> Response:
-        return self.http.get(f"{self.url}/occupations", params={"page": page, "per": per})
+    def get_occupations(
+        self, page: int, per: int, english_name: str = None, arabic_name: str = None
+    ) -> Response:
+        params = dict(
+            page=page,
+            per=per,
+        )
+        if english_name:
+            params["q[english-name][match_phrase]"] = english_name
+        if arabic_name:
+            params["q[arabic-name][match_phrase]"] = arabic_name
+        return self.http.get(f"{self.url}/occupations", params=params)
 
     def get_context(self) -> Response:
         return self.http.get(f"{self.url}/context")

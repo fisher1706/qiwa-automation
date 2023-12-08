@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from src.api.models.qiwa.data.correct_occupation import (
+    CorrectOccupation,
     Laborer,
     OccupationCorrectionRequest,
 )
@@ -14,4 +15,9 @@ class LaborersData(BaseModel):
 
 class RequestsData(BaseModel):
     data: list[OccupationCorrectionRequest]
+    meta: Meta
+
+
+class CorrectOccupationsData(BaseModel):
+    data: list[CorrectOccupation]
     meta: Meta

@@ -94,3 +94,28 @@ def test_by_not_found_value(correct_occupation, parameter):
         total_entities=0,
         pages_count=0,
     )
+
+
+class TestPagination:
+    def test_by_page(self, correct_occupation):
+        page = 1
+        json = correct_occupation.get_requests(page=page, per=1)
+        data, meta = json.data, json.meta
+        assert_that(data).is_not_empty()
+        assert_that(meta).has(current_page=page)
+        requests = [request.attributes.request_id for request in data]
+
+        next_page = page + 1
+        next_page_json = correct_occupation.get_requests(page=next_page, per=1)
+        next_page_data = next_page_json.data
+        assert_that(next_page_data).is_not_empty()
+        next_page_requests = [request.attributes.request_id for request in next_page_data]
+        next_page_data_is_different = all(request not in next_page_requests for request in requests)
+        assert_that(next_page_data_is_different).equals_to(True)
+
+    @pytest.mark.parametrize("per_page", [1, 2])
+    def test_by_per_page(self, correct_occupation, per_page):
+        json = correct_occupation.get_requests(per=per_page)
+        data = json.data
+
+        assert_that(data).size_is(per_page)

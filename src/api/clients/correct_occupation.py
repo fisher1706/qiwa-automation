@@ -88,14 +88,14 @@ class CorrectOccupationApi:
 
     def get_correct_occupations(
         self,
+        occupation_id: str,
         page: int = 1,
         per: int = 10,
-        occupation_id: int = None,
     ) -> Response:
         params = dict(
             page=page,
             per=per,
         )
         if occupation_id:
-            params["q[current-occupation-id][eq][]"] = occupation_id
+            params["q[current-occupation-id][eq]"] = occupation_id
         return self.http.get(f"{self.url}/correct-occupations", params=params)
