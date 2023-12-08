@@ -8,17 +8,26 @@ def test_by_laborer_name(correct_occupation):
     name = laborer.laborer_name.split()[0]
 
     json = correct_occupation.get_laborers(laborer_name=name)
-    assert_that(json.data).is_not_empty()
-    assert_that(all(laborer.attributes.laborer_name.startswith(name) for laborer in json.data))\
-        .as_(f"laborer names start with {name}").equals_to(True)
+
+    data = json.data
+    assert_that(data).is_not_empty()
+
+    laborers_are_with_name: bool = all(
+        laborer.attributes.laborer_name.startswith(name) for laborer in json.data
+    )
+    assert_that(laborers_are_with_name).equals_to(True)
 
 
 def test_by_laborer_id(correct_occupation):
     laborer = correct_occupation.get_any_laborer()
 
     json = correct_occupation.get_laborers(laborer_id=laborer.laborer_id)
-    assert_that(json.data).size_is(1)
-    assert_that(json.data[0].attributes).has(laborer_id=laborer.laborer_id)
+
+    data = json.data
+    assert_that(data).size_is(1)
+
+    attributes = data[0].attributes
+    assert_that(attributes).has(laborer_id=laborer.laborer_id)
 
 
 @pytest.mark.parametrize("parameter", ["nationality_id", "occupation_id"])
@@ -28,9 +37,14 @@ def test_by_laborer_nationality_and_occupation(correct_occupation, parameter):
     query_parameter = {parameter: value}
 
     json = correct_occupation.get_laborers(**query_parameter)
-    assert_that(json.data).is_not_empty()
-    assert_that(all(getattr(laborer.attributes, parameter) == value for laborer in json.data))\
-        .as_("laborers are with attribute").equals_to(True)
+
+    data = json.data
+    assert_that(data).is_not_empty()
+
+    laborers_are_with_attribute: bool = all(
+        getattr(laborer.attributes, parameter) == value for laborer in json.data
+    )
+    assert_that(laborers_are_with_attribute).equals_to(True)
 
 
 @pytest.mark.parametrize("value", [
@@ -43,8 +57,9 @@ def test_by_laborer_nationality_and_occupation(correct_occupation, parameter):
 def test_by_not_found_parameter_value(correct_occupation, value):
     json = correct_occupation.get_laborers(**value)
 
-    assert_that(json.data).is_empty()
-    assert_that(json.meta).has(
+    data, meta = json.data, json.meta
+    assert_that(data).is_empty()
+    assert_that(meta).has(
         pages_count=0,
         total_entities=0,
     )
@@ -64,7 +79,7 @@ class TestPagination:
         next_page_data = next_page_json.data
         assert_that(next_page_data).is_not_empty()
         next_page_laborers = [laborer.attributes.laborer_id for laborer in next_page_data]
-        next_page_data_is_different = all(laborer not in next_page_laborers for laborer in laborers)
+        next_page_data_is_different: bool = all(laborer not in next_page_laborers for laborer in laborers)
         assert_that(next_page_data_is_different).equals_to(True)
 
     @pytest.mark.parametrize("per_page", [1, 5, 10, 15])
