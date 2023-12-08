@@ -56,7 +56,7 @@ class ChangeOccupationController:
     def get_requests_laborers(
         self,
         page: int = 1,
-        per: int = 100,
+        per: int = 10,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: RequestStatus = None,
@@ -146,7 +146,7 @@ class ChangeOccupationController:
 
     @allure.step
     def get_random_laborer(self) -> RequestLaborer:
-        requests = self.get_requests_laborers(per=1000)
+        requests = self.get_requests_laborers(per=100)
         return random.choice(requests.data).attributes
 
     @allure.step

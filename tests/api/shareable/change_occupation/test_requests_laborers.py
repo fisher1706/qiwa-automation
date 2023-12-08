@@ -47,7 +47,7 @@ def test_getting_by_status_id(change_occupation, status):
 def test_getting_by_status_id_according_to_count(change_occupation, status):
     count = change_occupation.get_requests_count_by_status(status).requests_count
 
-    response = change_occupation.api.get_requests_laborers(page=1, per=100, request_status=status.value)
+    response = change_occupation.api.get_requests_laborers(request_status=status.value)
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
     json = Root.parse_obj(response.json())
@@ -98,7 +98,7 @@ def test_getting_by_invalid_parameter_value(change_occupation, parameter):
 class TestPagination:
     @pytest.mark.parametrize("page", [-1, 0, 1])
     def test_getting_by_page(self, change_occupation, page):
-        response = change_occupation.api.get_requests_laborers(page=page, per=10)
+        response = change_occupation.api.get_requests_laborers(page=page)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
         json = RequestsLaborersData.parse_obj(response.json())
@@ -126,7 +126,7 @@ class TestPagination:
 
     @pytest.mark.parametrize("per_page", list(range(1, 11)))
     def test_getting_per_page(self, change_occupation, per_page):
-        response = change_occupation.api.get_requests_laborers(page=1, per=per_page)
+        response = change_occupation.api.get_requests_laborers(per=per_page)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
         json = RequestsLaborersData.parse_obj(response.json())
@@ -140,7 +140,7 @@ class TestPagination:
         data = change_occupation.get_requests_laborers()
         total_entities = data.meta.total_entities
 
-        response = change_occupation.api.get_requests_laborers(page=1, per=total_entities)
+        response = change_occupation.api.get_requests_laborers(per=total_entities)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
         json = RequestsLaborersData.parse_obj(response.json())
@@ -150,5 +150,5 @@ class TestPagination:
         assert_that(json.meta.total_pages).equals_to(json.meta.pages_count)
 
     def test_getting_zero_per_page(self, change_occupation):
-        response = change_occupation.api.get_requests_laborers(page=1, per=0)
+        response = change_occupation.api.get_requests_laborers(per=0)
         assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
