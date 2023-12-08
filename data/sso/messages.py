@@ -10,3 +10,6 @@ TOO_MANY_ABSHER_ATTEMPTS = (
     "Sorry, you have entered an incorrect code too many times, please click on the link below "
     "to receive a new code."
 )
+INVALID_NID_FOR_INIT = (
+    "The Identity number you provided in this process and during login don't match."
+)

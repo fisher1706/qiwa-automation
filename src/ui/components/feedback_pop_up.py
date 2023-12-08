@@ -22,3 +22,7 @@ class FeedbackPopup:
         self.iframe.element(".demo__shutter").click()
         browser.switch_to.default_content()
         self._iframe = None
+
+    def close_feedback_if_appeared(self):
+        if self.popup.with_(timeout=5).matching(be.visible):
+            self.close_feedback()

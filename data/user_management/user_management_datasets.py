@@ -13,6 +13,9 @@ from data.user_management.user_management_users import (
     establishment_type_four,
     establishment_type_one,
     owner_account,
+    user_with_active_subscription,
+    user_with_expired_subscription,
+    user_without_subscription,
 )
 
 
@@ -56,7 +59,7 @@ class ArabicTranslations:
     privileges = "الصلاحيات"
     actions = "الإجراءات"
     establishment_delegator_details_breadcrumbs = "تفاصيل مفوض المنشأة"
-    add_access_btn = "أضف الوصول"
+    add_access_btn = "إضافة الصلاحية"
     title_on_add_access_modal = "اختيار صلاحيات المستخدم على المنشآت المختارة"
     selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
     all_privileges = "جميع الصلاحيات"
@@ -71,9 +74,9 @@ class ArabicTranslations:
     issue_working_permits_description = (
         "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
     )
-    edit_user_privileges_btn = "حرر امتيازات المستخدم"
+    edit_user_privileges_btn = "تعديل صلاحيات المستخدم"
     title_on_edit_privileges_modal = "تعديل صلاحيات المستخدم على المنشأة"
-    remove_access_btn = "حذف الصلاحية"
+    remove_access_btn = "إزالة المستخدم"
     save_and_close_btn = "حفظ وإغلاق"
 
 
@@ -258,3 +261,18 @@ class SubscriptionStatuses:
     active = 1
     expired = 2
     terminated = 3
+
+
+@dataclasses.dataclass
+class SelfSubscriptionData:
+    active_subscription = [
+        ("active", user_with_active_subscription),
+    ]
+
+    without_subscription = [
+        ("without", user_without_subscription),
+    ]
+
+    expired_terminated_subscription = [
+        ("expired", user_with_expired_subscription),
+    ]

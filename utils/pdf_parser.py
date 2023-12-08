@@ -1,7 +1,7 @@
 from time import sleep, time
 from typing import Union
 
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from selene.api.shared import browser
 
 import config

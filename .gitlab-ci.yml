@@ -12,7 +12,7 @@ variables:
   TESTMO_URL: https://qiwa.testmo.net
 
 default:
-  image: takamol/qiwa-automation:master-latest
+  image: registry.gitlab.qiwa.tech/takamol/qiwa/integration-testing/qiwa-automation/master
 
 stages:
   - build
@@ -28,12 +28,16 @@ stages:
   services:
     - name: docker:dind
   script:
-    - echo $TAKAMOL_REGISTRY_PASSWORD | docker login -u $TAKAMOL_REGISTRY_USERNAME --password-stdin
-    - docker pull $ENV_LATEST || true
-    - docker build --cache-from $ENV_LATEST --build-arg CI_JOB_TOKEN=${CI_JOB_TOKEN} --build-arg CI_SERVER_HOST=${CI_SERVER_HOST} -t $ENV_LATEST -t $VERSION_TAGGED .
-    - docker push $ENV_LATEST
-    - docker push $VERSION_TAGGED
-    - echo "Image name $VERSION_TAGGED"
+    - cp /src/.dockerignore .
+    - echo $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo "ENV_LATEST $ENV_LATEST"
+    - echo "Pulling image with `latest` tag...";
+    - time docker pull $ENV_LATEST || true
+    - echo "Building image...";
+    - time docker build --cache-from $ENV_LATEST -t $ENV_LATEST -t $VERSION_TAGGED .
+    - echo "Attempting to push image to GitLab registry...";
+    - time docker push $ENV_LATEST
+    - time docker push $VERSION_TAGGED
 
 build:
   stage: build
@@ -142,6 +146,12 @@ dedicated_et_ui_tests:
   variables:
     ENV: stage
     TEST_SUITE: tests/ui/dedicated/employee_transfer
+
+dedicated_el_ui_tests:
+  <<: *testrun
+  variables:
+    ENV: stage
+    TEST_SUITE: tests/ui/dedicated/employee_list
 
 delegation_ui_tests:
   <<: *testrun
@@ -257,6 +267,20 @@ dedicated_co_ui_testmo_report:
     ALLURE_PROJECT_ID: aqa-co-ui
   needs: [dedicated_co_ui_tests]
 
+dedicated_et_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 10
+    ALLURE_PROJECT_ID: aqa-et-ui
+  needs: [dedicated_et_ui_tests]
+
+dedicated_el_ui_testmo_report:
+  <<: *testmo_report
+  variables:
+    TESTMO_PROJECT_ID: 11
+    ALLURE_PROJECT_ID: aqa-el-ui
+  needs: [dedicated_el_ui_tests]
+
 visa_ui_testmo_report:
   <<: *testmo_report
   variables:
@@ -349,6 +373,12 @@ dedicated_et_ui_allure_report:
   variables:
     ALLURE_PROJECT_ID: aqa-et-ui
   needs: [dedicated_et_ui_tests]
+
+dedicated_el_ui_allure_report:
+  <<: *allure_report
+  variables:
+    ALLURE_PROJECT_ID: aqa-el-ui
+  needs: [dedicated_el_ui_tests]
 
 dataportal_ui_allure_report:
   <<: *allure_report

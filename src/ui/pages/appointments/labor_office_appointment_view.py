@@ -19,10 +19,7 @@ class LaborOfficeAppointmentsViewPage:
     )
     info_row_text = s("//*[@role='status']//div/div/p[2]")
 
-    general_info_reason_text = s(
-        "//*[@id='root']/div/span/div[1]/div/span[2]"
-        "/div[1]/div/div/div[3]/table/tbody/tr[1]/td/div/p[1]"
-    )
+    general_info_reason_text = s("(//table)[1]//tr[1]//p[1]")
     general_info_reason_value = s(
         "//*[@id='root']/div/span/div[1]/div/span[2]"
         "/div[1]/div/div/div[3]/table/tbody/tr[1]/td/div/p[2]"

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from selene import be
+import pytest
+from selene import be, have
 from selene.support.shared import browser
 
 import config
 from data.constants import Language, UserInfo
-from src.api.app import QiwaApi
+
+# from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.delegation.localisation_change import (
@@ -54,6 +56,7 @@ from src.ui.pages.delegations_pages.verify_delegation_letter_page import (
     VerifyDelegationLetterPage,
 )
 from src.ui.pages.e_services_page import EServicesPage
+from src.ui.pages.employee_list_page import EmployeeListPage
 from src.ui.pages.individual_page import IndividualPage
 from src.ui.pages.lo_saudi_certificate_page import LoSaudiCertificatePage
 from src.ui.pages.spaces_page import AdminSpacesPage
@@ -110,6 +113,7 @@ class QiwaUiClient:
     labor_office_appointments_create_confirmation_page = LaborOfficeCreateConfirmationPage()
     labor_office_appointments_edit_page = LaborOfficeAppointmentsEditPage()
     employee_transfer_page = EmployeeTransferPage()
+    employee_list_page = EmployeeListPage()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
 
@@ -133,8 +137,8 @@ class QiwaUiClient:
         return self
 
     def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        QiwaApi().sso.login_user(login, password)
-        QiwaApi().sso.pass_account_security()
+        # QiwaApi().sso.login_user(login, password)
+        # QiwaApi().sso.pass_account_security()
         self.login_as_user(login, password)
         self.feedback.close_feedback()
         return self
@@ -178,6 +182,15 @@ class QiwaUiClient:
 
     def open_visa_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.visa_web_url)
+        for _ in range(3):
+            browser.should(have.url_containing(config.qiwa_urls.visa_web_url))
+            if browser.with_(timeout=3).matching(
+                have.url_containing(config.qiwa_urls.visa_web_url)
+            ):
+                break
+            browser.open(config.qiwa_urls.visa_web_url)
+        else:
+            pytest.fail(f"Could not reach to home page {config.qiwa_urls.visa_web_url}")
         return self
 
     def open_user_management_page(self) -> QiwaUiClient:
@@ -200,6 +213,10 @@ class QiwaUiClient:
 
     def open_e_services_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.e_services)
+        return self
+
+    def open_employee_list_page(self) -> QiwaUiClient:
+        browser.open(config.qiwa_urls.employee_list)
         return self
 
 

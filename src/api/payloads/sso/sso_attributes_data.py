@@ -24,6 +24,10 @@ def registration(attributes: Any) -> Root:
     return Root(data=Data(type="registration", attributes=attributes))
 
 
+def phone_verification_payload(attributes: Any) -> Root:
+    return Root(data=Data(type="phone", attributes=attributes))
+
+
 def user_email(attributes: Any) -> Root:
     return Root(data=Data(type="user-email", attributes=attributes))
 

@@ -20,6 +20,7 @@ class PaymentGateWay:
     submit_payment = s('//*[@data-testid="submit-button"]')
     payment_summary = s('//*[@data-testid="summary-section-id"]')
     payment_iframe = s("#challengeFrame")
+    payment_iframe_submit_button = s("#acssubmit")
     payment_submit_button = s('//input[@id="acssubmit"]')
     payment_gateway_redirect_page = s("#threedsChallengeRedirect")
     go_to_request_details_button = s('//button/p[contains(text(), "Go to request details")]')

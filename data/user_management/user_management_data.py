@@ -33,7 +33,7 @@ USER_MANAGEMENT: str = "User Management"
 QIWA_WALLET: str = "Qiwa Wallet"
 DELEGATIONS: str = "Delegations"
 
-EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة المنشأة"
+EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة الموظفين "
 WAGE_PROTECTION_CERTIFICATE_AR: str = "شهادة الالتزام بنظام حماية الأجور"
 OCCUPATION_MANAGEMENT_AR: str = "إدارة المهن"
 EMPLOYEE_TRANSFER_AR: str = "خدمة نقل الخدمات"
@@ -51,21 +51,21 @@ ESTABLISHMENT_DASHBOARD_AR: str = "لوحة بيانات المنشأة"
 BOOK_APPOINTMENT_SERVICE_AR: str = "خدمة حجز موعد"
 INTERNAL_WORK_POLICY_AR: str = "لوائح تنظيم العمل"
 ENQUIRY_AND_VIEW_ESTABLISHMENT_VIOLATIONS_AR: str = "خدمة الاستعلام والاعتراض عن مخالفات المنشأة"
-SALARY_CERTIFICATE_AR: str = "خدمة شهادة تعريف الراتب"
+SALARY_CERTIFICATE_AR: str = "شهادة التعريف بالراتب"
 NATIONALIZATION_OF_OPERATION_AR: str = "توطين عقود التشغيل والصيانة"
 ESTABLISHMENT_FILE_MANAGEMENT_AR: str = "إدارة ملف منشأة"
 CLOSE_ESTABLISHMENT_ACTIVITY_AR: str = "إغلاق نشاط المنشأة"
 CHANGE_ESTABLISHMENT_ACTIVITY_AR: str = "تغيير نشاط المنشأة"
 
-ESTABLISHMENT_PERFORMANCE_GROUP_TITLE_AR: str = "إدارة المنشأة"
+ESTABLISHMENT_PERFORMANCE_GROUP_TITLE_AR: str = "أداء المنشأة"
 NITAGAT_CALCULATOR_AR: str = "حاسبة نطاقات"
 INDICATORS_AR: str = "المؤشرات"
 LABOR_MARKET_INDEX_AR: str = "مؤشرات العمل"
 ESTABLISHMENT_PERFORMANCE_REPORT_AR: str = "تقرير أداء المنشأة"
 
-WORKSPACES_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة المنشأة"
+WORKSPACES_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة حسابات المنشأة"
 USER_MANAGEMENT_AR: str = "إدارة مستخدمي المنشأة"
-QIWA_WALLET_AR: str = "محفظة الكترونية"
+QIWA_WALLET_AR: str = "محفظة قوى"
 DELEGATIONS_AR: str = "خدمة التفويض"
 
 PAST_EXPIRY_DATE: str = "2023-11-18 00:00:00.000"
@@ -76,7 +76,7 @@ HIDE_PRIVILEGES: str = "Hide not granted privileges"
 SUCCESS_MESSAGE_AFTER_ADD_ACCESS: str = (
     "You have successfully added access to {} for this Workspace User."
 )
-SUCCESS_MESSAGE_AFTER_REMOVE_ACCESS: str = (
+SUCCESS_TEXT_AFTER_REMOVE_ACCESS: str = (
     "You have successfully removed access to {} establishments for Workspace User {}"
 )
 
@@ -87,7 +87,7 @@ TEXT_ON_REMOVE_ACCESS_MODAL: str = "This action will withdraw access to {} selec
 QUESTION_ON_REMOVE_ACCESS_MODAL: str = "Are you sure you want to remove {} access?"
 
 REMOVE_ACCESS_BTN: str = "Remove Access"
-SELECTED_ESTABLISHMENTS_TEXT: str = "{} of {} establishments selected"
+SELECTED_WORKSPACES_TEXT: str = "{} of {} establishments selected"
 CLEAR_ALL_LINK: str = "Clear all"
 SELECT_ALL_ESTABLISHMENTS_LINK: str = "Select all {} establishments"
 

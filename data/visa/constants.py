@@ -70,16 +70,27 @@ class ColName:  # pylint: disable=too-few-public-methods
     VISA_ACTIONS = "Action"
 
 
-BalanceRequestStatus = namedtuple("TierRequest", ["id", "label"])
+BalanceRequestStatus = namedtuple("TierRequest", ["id", "label", "refundable"])
 
-BR_ACCEPTED = BalanceRequestStatus(1, "Accepted")
-BR_INACTIVE = BalanceRequestStatus(2, "Accepted")
-BR_WAITING = BalanceRequestStatus(3, "Waiting for inspection")
-BR_REJECTED = BalanceRequestStatus(4, "Rejected")
-BR_REFUNDED = BalanceRequestStatus(5, "Refunded")
-BR_EXPIRED = BalanceRequestStatus(6, "Expired")
-BR_TERMINATED = BalanceRequestStatus(7, "Terminated")
-BR_NEW = BalanceRequestStatus(8, "Waiting for inspection")
+BR_ACCEPTED = BalanceRequestStatus(1, "Accepted", True)
+BR_INACTIVE = BalanceRequestStatus(2, "Accepted", True)
+BR_WAITING = BalanceRequestStatus(3, "Waiting for inspection", False)
+BR_REJECTED = BalanceRequestStatus(4, "Rejected", True)
+BR_REFUNDED = BalanceRequestStatus(5, "Refunded", False)
+BR_EXPIRED = BalanceRequestStatus(6, "Expired", False)
+BR_TERMINATED = BalanceRequestStatus(7, "Terminated", False)
+BR_NEW = BalanceRequestStatus(8, "Waiting for inspection", False)
+
+
+ExceptionalBalanceRequestStatus = namedtuple("ExceptionRequest", ["id", "label"])
+
+EBR_NEW = ExceptionalBalanceRequestStatus(1, "Waiting for inspection")
+EBR_WAITING = ExceptionalBalanceRequestStatus(2, "Waiting for inspection")
+EBR_ACTIVE = ExceptionalBalanceRequestStatus(3, "Accepted")
+EBR_REJECTED = ExceptionalBalanceRequestStatus(4, "Rejected")
+EBR_REFUNDED = ExceptionalBalanceRequestStatus(5, "Refunded")
+EBR_EXPIRED = ExceptionalBalanceRequestStatus(6, "Expired")
+EBR_TERMINATED = ExceptionalBalanceRequestStatus(7, "Terminated")
 
 
 VisaRequestStatus = namedtuple("VisaRequest", ["id", "label", "expire"])
@@ -89,28 +100,41 @@ VR_UNUSED = VisaRequestStatus(1, "Unused", True)
 VR_CANCELED = VisaRequestStatus(2, "Canceled", False)
 VR_USED = VisaRequestStatus(3, "Used", False)
 VR_PENDING = VisaRequestStatus(
-    4, "Pending for visa cancellation from Ministry of the interior", False
+    4, "Pending for visa cancelation from Ministry of the interior", False
 )
-
-TOASTER = "Toaster"
-TOOLTIP = "Tooltip"
-
-BR_REFUND_MESSAGES = namedtuple("RefundStatus", ["id", "message", "place"])
-
-BR_SUCCESS = BR_REFUND_MESSAGES(1, "-", None)
-BR_LIMIT = BR_REFUND_MESSAGES(
-    2, "Sorry, you have exceeded the 30 days limit of refunding requested balance.", TOOLTIP
-)
-BR_USED = BR_REFUND_MESSAGES(
-    3,
-    "Sorry, you cannot refund this balance request as you have used it for either employee transfer or issuing visas.",
-    TOOLTIP,
-)
-BR_CANNOT = BR_REFUND_MESSAGES(4, "Sorry, you cannot refund this balance request", TOOLTIP)
-BR_ERROR = BR_REFUND_MESSAGES(5, "error", TOASTER)
-
 VR_CANCELABLE = [VR_NEW, VR_UNUSED]
 
+CANCEL_UPGRADE_REQUEST_TITLE = "Cancel upgrade request"
+CANCEL_UPGRADE_REQUEST_CONTENT = (
+    "When your request is approved, the recruitment quota "
+    "will reduce and your establishment funds will be returned."
+)
+
+BRRefundMessages = namedtuple("RefundStatus", ["id", "title", "content", "success"])
+
+BR_SUCCESS = BRRefundMessages(
+    1, CANCEL_UPGRADE_REQUEST_TITLE, CANCEL_UPGRADE_REQUEST_CONTENT, True
+)
+BR_LIMIT = BRRefundMessages(
+    2,
+    "Unfortunately, you cannot return the requested balance",
+    "Sorry, you have exceeded the 30 days limit of refunding requested balance.",
+    False,
+)
+BR_USED = BRRefundMessages(
+    3,
+    "Unfortunately, you cannot return the requested balance",
+    "Sorry, you cannot refund this balance request as you have used it for either employee transfer or issuing visas.",
+    False,
+)
+BR_CANNOT = BRRefundMessages(
+    4,
+    "Unfortunately, you cannot return the requested balance",
+    "Sorry, you cannot refund this balance request.",
+    False,
+)
+BR_ERROR = BRRefundMessages(5, CANCEL_UPGRADE_REQUEST_TITLE, CANCEL_UPGRADE_REQUEST_CONTENT, False)
+CAN_BE_REFUNDED = [1, 5]
 
 ERROR_CODE = "ODM0024"
 WORK_VISA_CARD_ZERO_QUOTA_ERROR = (
@@ -183,6 +207,14 @@ ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT = (
 HOW_TO_INCREASE_ESTABLISHMENT_FUNDS = "How to increase establishment funds?"
 CANCEL_VISA = "Cancel visa"
 YOUR_REQUEST_HAS_BEEN_SENT = "Your request has been sent"
+FIRST_NAME = "John"
+LAST_NAME = "Doe"
+REFUND_SUCCESS_MODAL_TITLE = "Your request has been sent"
+REFUND_SUCCESS_MODAL_CONTENT = (
+    "We’ve received and approved your request to cancel the tier upgrade. Your "
+    "recruitment quota will be reduced and your establishment funds will be returned."
+)
+REFUND_ERROR_MODAL_MESSAGE = "Sorry, something went wrong"
 USER_CANNOT_SIGN_AGREEMENT_TITLE_EST = "Sorry, currently you cannot increase recruitment quota"
 USER_CANNOT_SIGN_AGREEMENT_CONTENT_EST = (
     "Establishing tiers are available when unified number "
