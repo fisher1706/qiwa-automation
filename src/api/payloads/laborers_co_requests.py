@@ -13,7 +13,7 @@ from src.api.payloads.ibm.getlaborerscorequests import (
 from src.api.payloads.ibm.header import Header, UserInfo
 
 
-def laborers_co_requests_payload(user: User, laborer: Laborer, status_id: int):
+def laborers_co_requests_payload(user: User, status_id: int):
     return GetLaborersCORequestsRqPayload(
         GetLaborersCORequestsRq=GetLaborersCORequestsRq(
             Header=Header(
@@ -30,11 +30,11 @@ def laborers_co_requests_payload(user: User, laborer: Laborer, status_id: int):
                     StatusList=StatusList(StatusItem=StatusItem(StatusId=status_id)),
                 ),
                 EstablishmentDetails=EstablishmentDetails(
-                    LaborOfficeId=user.office_id, SequenceNumber=user.sequence_number
+                    LaborOfficeId=user.labor_office_id, SequenceNumber=user.sequence_number
                 ),
-                LaborerDetails=LaborerDetails(LaborerIdNo=laborer.login_id),
+                LaborerDetails=LaborerDetails(LaborerIdNo=user.personal_number),
                 PageSize=10,
                 PageIndex=1,
             ),
         )
-    ).dict()
+    ).dict(exclude_none=True)

@@ -5,7 +5,6 @@ import pytest
 
 import config
 import src
-from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.services import Service
 from data.dedicated.models.user import User
 from data.shareable.saudization_certificate.saudi_certificate import SaudiEstValidation
@@ -265,8 +264,8 @@ class IBMApiController:
             "Body"
         ]["EstablishmentDetails"]["EstablishmentId"]
 
-    def get_request_numbers(self, user: User, laborer: Laborer, status_id: int = 3) -> list | None:
-        response = ibm_api.get_laborers_co_requests(user, laborer, status_id)
+    def get_request_numbers(self, user: User, status_id: int = 3) -> list | None:
+        response = ibm_api.get_laborers_co_requests(user, status_id)
 
         change_occupation_item = (
             response.get("GetLaborersCORequestsRs", {})
