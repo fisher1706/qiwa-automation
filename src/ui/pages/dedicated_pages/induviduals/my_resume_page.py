@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import datetime
-import time
 
-import allure
 import pyperclip
 from selene import be, browser, have, query
 from selene.core.condition import not_
@@ -21,7 +19,7 @@ class MyResumePage:
     start_date = s("#startDate")
     end_date = s("#endDate")
 
-    add_volunteer_experience = ss('a[href="/my-resume/volunteer-works/add"]').second
+    add_volunteer_experience = ss('a[href="/my-resume/volunteer-works/add"]').first
     edit_volunteer_experience = ss('#volunteer-works [data-component="Button"]').second
     organization_name = s("#organizationName")
     event_name = s("#volunteerEventName")
@@ -29,27 +27,30 @@ class MyResumePage:
     confirm_delete_experience_btn = s("//p[contains(.,'Delete experience')]")
     about_section_btn = s("//p[contains(text(), 'About')]")
     save_changes_btn = s("//p[normalize-space()='Save changes']")
+    volunteering_section = s("#volunteer-works")
+    list_of_volunteering_records = ss(
+        '#volunteer-works [class="Box__StyledBox-ds__sc-utz9m7-0 icusqv"]'
+    )
 
     summary_section = s("#summary")
-    add_summary = s("[href='/my-resume/summary']")
+    add_summary_btn = s("[href='/my-resume/summary']")
     edit_summary_btn = s('#about [data-component="Button"]')
     delete_summary_btn = s("//p[.='Delete summary']")
     confirm_delete_summary_btn = ss("//p[.='Delete summary']").second
 
-    add_training_btn = ss("[href='/my-resume/trainings/add']").second
+    click_add_training_btn = ss("[href='/my-resume/trainings/add']").second
     training_name = s("#courseName")
     training_provider = s("#courseProvider")
     edit_trainings_btn = s("//section[@id='trainings']//p[.='Edit']")
     resume_sharing_scroll = s("//nav[@aria-label='Breadcrumb']")
     confirm_delete_trainings = s("//p[.='Delete training']")
     trainings_section = s("#trainings")
-    training_list_name = s("//section[@id='trainings']//h4[text()]")
+    training_list_name = ss("//section[@id='trainings'][1]")
 
     share_resume_btn = s('a[href="/my-resume/resume-sharing"]')
     create_new_link_btn = s("//p[.='Create new link']")
     enter_link_name = s("#linkName")
     expiration_date = s("#expiryDate")
-    value_expiration_date = s("div.CalendarCell__Cell-ds__sc-1awceb6-0.cPVzib")
     agreement_checkbox = s('//label[@class="Checkbox__StyledLabel-ds__sc-t2he6b-2 hNRoEh"]')
     next_step_btn = s("//p[normalize-space()='Next step']")
     link_status = s("//p[@class='Text-ds__sc-lk593a-0 gggtgX']")
@@ -98,7 +99,6 @@ class MyResumePage:
     edit_professional_certificates = ss(
         '#professional-certificates [data-component="Button"]'
     ).second
-    organizationName = s("#organizationName")
     certification_name = s("#certificateName")
     credential_id = s("#credentialId")
     issue_date = s("#issueDate")
@@ -107,297 +107,346 @@ class MyResumePage:
     description = s(".ql-editor.ql-blank")
     upload_file = s("#file-upload-input")
     add_link = s("//p[.='Add a link']")
-    list_of_professional_certificates = ss("//p[.='qa sertificare']")
+    list_of_professional_certificates = ss(
+        '#professional-certificates [class="Box__StyledBox-ds__sc-utz9m7-0 fVWnPo"]'
+    )
     confirm_delete_record = s("//p[.='Delete certificate']")
 
-    @allure.step
-    def add_volunteering_record(self) -> MyResumePage:
+    def click_add_volunteer_experience(self):
         self.add_volunteer_experience.click()
-        self.organization_name.type("QA TEST " + str(datetime.date.today()))
-        self.event_name.type("QA TEST")
+        return self
+
+    def type_organization_name(self):
+        self.organization_name.set("QA TEST " + str(datetime.date.today()))
+        return self
+
+    def type_event_name(self):
+        self.event_name.set("QA TEST")
+        return self
+
+    def click_on_start_date(self):
         self.start_date.click()
+        return self
+
+    def select_day(self):
         select_date = datetime.date.today()
         self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
+        return self
+
+    def click_on_end_date(self):
         self.end_date.click()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
+        return self
+
+    def click_on_submit(self):
         self.submit_btn.click()
         return self
 
-    @allure.step
-    def edit_volunteering_record(self) -> MyResumePage:
+    def verify_volunteering_section_is_visible(self):
+        self.volunteering_section.should(be.visible)
+        return self
+
+    def verify_volunteering_list(self):
+        self.list_of_volunteering_records.should(have.size_greater_than(0))
+        return self
+
+    def click_on_edit_volunteer_experience(self):
         self.edit_volunteer_experience.click()
-        scroll_into_view_if_needed(self.add)
+        return self
+
+    def edit_record(self):
         self.edit_btn.click()
-        self.organization_name.set_value("QA TEST 1")
-        self.event_name.set_value("QA TEST 1")
+        return self
+
+    def click_on_save_changes(self):
         self.save_changes_btn.click()
         return self
 
-    @allure.step
-    def delete_volunteer_exp(self) -> MyResumePage:
-        self.edit_volunteer_experience.click()
-        time.sleep(2)
+    def delete_volunteer_exp(self):
+        scroll_into_view_if_needed(self.delete_volunteer_exp_btn)
         self.delete_volunteer_exp_btn.click()
         self.confirm_delete_experience_btn.click()
         return self
 
-    @allure.step
-    def add_summary_record(self) -> MyResumePage:
-        self.add_summary.click()
+    def click_add_summary_record(self):
+        self.add_summary_btn.click()
+        return self
+
+    def type_summary_section(self):
         self.summary_section.set_value("Test summary")
+        return self
+
+    def click_edit_summary_record(self):
+        self.edit_summary_btn.click()
+        return self
+
+    def edit_summary_section(self):
+        self.summary_section.set_value("Test summary edited")
+        return self
+
+    def submit_summary_btn(self):
         self.submit_btn.click()
         return self
 
-    @allure.step
-    def delete_about_summary(self) -> MyResumePage:
-        self.edit_summary_btn.click()
-        scroll_into_view_if_needed(self.delete_summary_btn)
+    def delete_summary_record(self):
         self.delete_summary_btn.click()
+        return self
+
+    def click_confirm_delete_summary(self):
         self.confirm_delete_summary_btn.click()
         return self
 
-    @allure.step
-    def add_trainings_record(self) -> MyResumePage:
-        self.add_training_btn.click()
+    def click_add_trainings_record(self):
+        self.click_add_training_btn.click()
+        return self
+
+    def type_training_name(self):
         self.training_name.set_value("TEST QA NAME")
+        return self
+
+    def type_provider_name(self):
         self.training_provider.set_value("TEST QA PROVIDER")
-        self.start_date.click()
-        select_date = datetime.date.today()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.end_date.click()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.submit_btn.click()
         return self
 
-    def edit_training_record(self) -> MyResumePage:
+    def edit_training_record(self):
         self.edit_trainings_btn.click()
-        scroll_into_view_if_needed(self.edit_btn)
-        self.edit_btn.click()
+        return self
+
+    def edit_training_name(self):
         self.training_name.set_value("QA TEST CHANGED")
-        self.submit_btn.click()
-        self.training_list_name.should(have.exact_text("QA TEST CHANGED"))
+
+    def verify_training_section_is_visible(self):
+        self.trainings_section.should(be.visible)
         return self
 
-    @allure.step
-    def delete_training_record(self) -> MyResumePage:
-        self.edit_trainings_btn.click()
-        scroll_into_view_if_needed(self.add)
-        self.delete_btn.click()
+    def verify_training_list(self):
+        self.training_list_name.should(have.size_greater_than(0))
+        return self
+
+    def confirm_delete_training_btn(self):
         self.confirm_delete_trainings.click()
         return self
 
-    @allure.step("Create new link")
-    def create_new_link(self) -> MyResumePage:
+    def click_share_resume(self):
         self.share_resume_btn.click()
-        time.sleep(2)
+        return self
+
+    def click_create_new_link(self):
         self.create_new_link_btn.click()
-        self.enter_link_name.type("TEST QA LINK 1")
+        return self
+
+    def type_link_name(self, link_name):
+        self.enter_link_name.type(link_name)
+        return self
+
+    def click_on_expiration_date(self):
         self.expiration_date.click()
-        self.value_expiration_date.click()
+        return self
+
+    def click_on_next_step(self):
         self.next_step_btn.click()
+        return self
+
+    def click_on_agreement_checkbox(self):
         self.agreement_checkbox.click()
-        self.submit_btn.click()
+        return self
+
+    def click_on_back_to_resume_sharing(self):
         self.back_to_resume_sharing.click()
         return self
 
-    @allure.step
-    def create_second_link(self) -> MyResumePage:
-        self.create_new_link_btn.click()
-        self.enter_link_name.type("TEST QA LINK 2")
-        self.expiration_date.click()
-        self.value_expiration_date.click()
-        self.next_step_btn.click()
-        self.agreement_checkbox.click()
-        self.submit_btn.click()
-        self.back_to_resume_sharing.click()
-        return self
-
-    @allure.step
-    def edit_link(self) -> MyResumePage:
+    def click_on_link_options(self):
         self.link_options.click()
-        self.edit_btn.click()
+        return self
+
+    def click_on_change_link_name(self):
         self.change_link_name.set("TEST QA EDIT 1")
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def delete_link(self) -> MyResumePage:
-        self.link_options.click()
+    def delete_record(self):
         self.delete_btn.click()
+        return self
+
+    def click_on_confirm_delete_link(self):
         self.confirm_delete_link.click()
         return self
 
-    @allure.step
-    def verify_second_added_link_status(self) -> MyResumePage:
-        self.link_options.click()
-        self.edit_btn.click()
+    def verify_second_added_link_status(self):
         self.visibility_toggle.should(have.attribute("aria-checked", "true"))
         return self
 
-    @allure.step
-    def share_resume(self) -> MyResumePage:
+    def share_resume(self):
         self.share_resume_btn.click()
         return self
 
-    @allure.step
-    def copy_link(self) -> MyResumePage:
+    def copy_link(self):
         self.copy_link_btn.click()
         return self
 
-    @allure.step
-    def open_link_in_current_tab(self) -> MyResumePage:
+    def open_link_in_current_tab(self):
         clipboard_url = str(pyperclip.paste())
         browser.driver.get(clipboard_url)
         return self
 
-    @allure.step
-    def verify_resume_availability(self) -> MyResumePage:
+    def verify_resume_availability(self):
         self.experiences_section.should(be.visible)
         return self
 
-    @allure.step
-    def verify_resume_unavailability(self) -> MyResumePage:
+    def verify_resume_unavailability(self):
         self.unavailable_resume.should(be.visible)
         return self
 
-    @allure.step
-    def disable_link_visibility(self) -> MyResumePage:
-        self.link_options.click()
-        self.edit_btn.click()
+    def click_on_toggle(self):
         self.toggle.click()
-        self.visibility_toggle.should(have.attribute("aria-checked", "false"))
-        self.save_changes_btn.click()
         return self
 
-    @allure.step
-    def verify_profile_analytics(self) -> MyResumePage:
-        self.share_resume_btn.click()
+    def verify_unchecked_toggle(self):
+        self.visibility_toggle.should(have.attribute("aria-checked", "false"))
+        return self
+
+    def verify_total_views(self):
         self.total_views.should(be.visible)
+        return self
+
+    def verify_unique_viewers(self):
         self.unique_viewers.should(be.visible)
+        return self
+
+    def verify_total_time_spent(self):
         self.total_time_spent.should(be.visible)
+        return self
+
+    def verify_average_time(self):
         self.average_time.should(be.visible)
         return self
 
-    @allure.step
-    def verify_changed_profile_analytics(self, new_total_views) -> MyResumePage:
+    def verify_changed_profile_analytics(self, new_total_views):
         browser.driver.back()
         browser.driver.refresh()
         self.total_views.should(have.no.exact_text(new_total_views))
         return self
 
-    @allure.step
     def get_total_views(self) -> str:
         total_views = self.total_views.get(query.text)
         return total_views
 
-    @allure.step
-    def add_education_record(self) -> MyResumePage:
+    def click_on_add_education_record(self):
         self.add_education_btn.click()
-        self.educational_institute_name.type("test")
-        self.major_or_specialization.type("test major")
-        self.country.click()
-        self.dropdown.all('[role="option"]').first.click()
-        self.qualification_type.click()
-        self.dropdown.all('[role="option"]').second.click()
-        self.start_date.click()
-        select_date = datetime.date.today()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.end_date.click()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def verify_list_of_education_records(self) -> MyResumePage:
+    def type_educational_institute_name(self):
+        self.educational_institute_name.type("Test")
+        return self
+
+    def type_major_or_specialization(self):
+        self.major_or_specialization.type("Test major")
+        return self
+
+    def select_country(self):
+        self.country.click()
+        self.dropdown.all('[role="option"]').first.click()
+        return self
+
+    def select_qualification_type(self):
+        self.qualification_type.click()
+        self.dropdown.all('[role="option"]').second.click()
+        return self
+
+    def verify_education_section(self):
         self.education_section.should(be.visible)
+        return self
+
+    def verify_list_of_education_records(self):
         self.list_of_education_records.should(have.size_greater_than(0))
         return self
 
-    @allure.step
-    def edit_the_education_record(self) -> MyResumePage:
-        scroll_into_view_if_needed(self.edit_education_btn)
+    def click_edit_the_education_record(self):
         self.edit_education_btn.click()
-        self.edit_btn.click()
-        self.educational_institute_name.set_value("test edited")
-        self.major_or_specialization.set_value("test major edited")
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def delete_the_education_record(self) -> MyResumePage:
-        scroll_into_view_if_needed(self.edit_education_btn)
-        self.edit_education_btn.click()
-        self.delete_btn.click()
+    def edit_educational_institute_name(self):
+        self.educational_institute_name.set_value("Test edited")
+        return self
+
+    def edit_major_or_specialization(self):
+        self.major_or_specialization.set_value("Test Major Edited")
+        return self
+
+    def confirm_delete_education(self):
         self.confirm_delete_education_btn.click()
         return self
 
-    @allure.step
-    def add_skills_record(self) -> MyResumePage:
+    def click_on_add_skills_record(self) -> MyResumePage:
         self.add_new_skill.click()
-        self.your_skill.type("test skill" + str(datetime.date.today()))
-        self.add_skill.click()
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def verify_skills_records(self) -> MyResumePage:
+    def type_your_skill(self):
+        self.your_skill.type("test skill" + str(datetime.date.today()))
+        return self
+
+    def type_edited_skill(self):
+        self.your_skill.type("edit skill" + str(datetime.date.today()))
+        return self
+
+    def click_add_skill_btn(self):
+        self.add_skill.click()
+        return self
+
+    def verify_skills_records(self):
         self.skills_section.should(be.visible)
+        return self
+
+    def verify_list_of_skills(self):
         self.list_of_skills.should(have.size_greater_than(0))
         return self
 
-    @allure.step
-    def edit_skills_record(self) -> MyResumePage:
+    def edit_skills_btn(self):
         self.edit_skills_section.click()
-        scroll_into_view_if_needed(self.delete_skill)
-        self.delete_skill.click()
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def delete_skills_record(self) -> MyResumePage:
-        self.edit_skills_section.click()
-        scroll_into_view_if_needed(self.delete_skills)
+    def delete_skills_btn(self):
         self.delete_skills.click()
+        return self
+
+    def confirm_delete_skills_btn(self):
         self.confirm_delete_skills.click()
         return self
 
-    @allure.step
-    def add_professional_certificates_record(self) -> MyResumePage:
+    def click_on_professional_certificates_record(self):
         self.add_professional_certificates.click()
-        self.organization_name.type("test organization")
-        self.certification_name.type("test certificate")
-        self.credential_id.type("123")
-        self.issue_date.click()
-        select_date = datetime.date.today()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.expiration_certificate_date.click()
-        self.selectable_days.element_by(have.exact_text(str(select_date.day))).click()
-        self.description.type("Test description")
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def verify_professional_certificate_records(self) -> MyResumePage:
-        scroll_into_view_if_needed(self.professional_certificates_section)
+    def type_certification_name(self):
+        self.certification_name.set("test certificate")
+        return self
+
+    def type_credential_id(self):
+        self.credential_id.type("1234")
+        return self
+
+    def click_on_issue_date(self):
+        self.issue_date.click()
+        return self
+
+    def click_on_expiration_certificate_date(self):
+        self.expiration_certificate_date.click()
+        return self
+
+    def type_description(self):
+        self.description.type("Test description")
+        return self
+
+    def verify_professional_certificate_section(self):
         self.professional_certificates_section.should(be.visible)
+        return self
+
+    def verify_list_of_professional_certificates(self):
         self.list_of_professional_certificates.should(have.size_greater_than(0))
         return self
 
-    @allure.step
-    def edit_professional_certificate_record(self) -> MyResumePage:
+    def click_on_edit_professional_certificate_record(self):
         self.edit_professional_certificates.click()
-        scroll_into_view_if_needed(self.edit_btn)
-        self.edit_btn.click()
-        self.organization_name.set("test organization 2")
-        self.certification_name.set("test certificate 2")
-        self.credential_id.set("123456")
-        self.submit_btn.click()
         return self
 
-    @allure.step
-    def delete_professional_certificate_record(self) -> MyResumePage:
-        self.edit_professional_certificates.click()
-        scroll_into_view_if_needed(self.delete_btn)
-        self.delete_btn.click()
+    def click_on_confirm_delete_record(self):
         self.confirm_delete_record.click()
         return self
