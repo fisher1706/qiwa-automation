@@ -7,9 +7,11 @@ from selene import be, browser, have, query
 from selene.core.condition import not_
 from selene.support.shared.jquery_style import s, ss
 
+from utils.allure import allure_steps
 from utils.selene import scroll_into_view_if_needed
 
 
+@allure_steps
 class MyResumePage:
     dropdown = s(".tippy-content")
     add = s("//p[.='Add']")

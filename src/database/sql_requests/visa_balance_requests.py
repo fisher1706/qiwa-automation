@@ -11,7 +11,8 @@ from src.database.models.visa_tables import BalanceRequests
 
 class VisaBalanceRequests:
     def __init__(self):
-        self.payment_id = None
+        self.__payment_id = None
+        self.last_payment_id = None
 
     session = DBClient(db_url=config.settings.visa_db_url).set_db_session()
 
@@ -25,3 +26,21 @@ class VisaBalanceRequests:
             if record.count() > 0:
                 self.session.delete(record.one())
                 self.session.commit()
+
+    def get_balance_request_reference_number(self):
+        record = (
+            self.session.query(BalanceRequests)
+            .filter(BalanceRequests.payment_id == self.last_payment_id)
+            .first()
+        )
+        return record.reference_number
+
+    @property
+    def payment_id(self):
+        return self.__payment_id
+
+    @payment_id.setter
+    def payment_id(self, value):
+        self.__payment_id = value
+        if value:
+            self.last_payment_id = value

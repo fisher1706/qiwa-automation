@@ -56,7 +56,7 @@ class IssueVisaPage:
         self.accept_checkbox.should(be.visible)
         self.accept_checkbox.click()
         self.submit_button.click()
-        self.popup.close_feedback()
+        self.popup.close_feedback_if_appeared()
         self.request_created_banner.should(be.visible)
         ref_number = self.visa_request_ref_number.get(query.text)
         self.back_to_perm_work_visas.click()

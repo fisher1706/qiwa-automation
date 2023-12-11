@@ -115,15 +115,29 @@ class TransitionalPage:
     temp_work_visa_card = s('//*[@data-testid="visit-visa"]')
     seasonal_work_visa_card = s('//*[@data-testid="seasonal-visa"]')
     perm_work_visa_card_exp_date = s('//*[@data-testid="workVisaEligibilityExpirationDateValue"]')
+    # errors:
+    error_message = s('//*[@data-testid="customErrorMessage"]')
+    error_message_link = s('//*[@data-testid="customErrorMessageLink"]')
+    error_message_modal = s('//*[@data-testid="dataLoadErrorModal"]')
+    error_button = s('//button[text() = "Retry"]')
+    error_messages = [error_message, error_message_link, error_message_modal, error_button]
 
     def page_is_loaded(self):
-        self.cards_loading.should(be.hidden)
-        self.absher_loading.should(be.hidden)
+        for _ in range(3):
+            self.cards_loading.should(be.hidden)
+            self.absher_loading.should(be.hidden)
+            if not self.any_errors_on_page():
+                break
+            browser.driver.refresh()
 
     @allure.step("Verifies transitional cards are loaded")
     def verify_cards_loaded(self):
-        self.absher_loading.should(be.hidden)
-        self.verify_cards_title_text(TRANSITIONAL_CARDS_TITLE_TEXT)
+        for _ in range(3):
+            self.absher_loading.should(be.hidden)
+            self.verify_cards_title_text(TRANSITIONAL_CARDS_TITLE_TEXT)
+            if not self.any_errors_on_page():
+                break
+            browser.driver.refresh()
 
     @allure.step("Verifies absher balance part is loaded")
     def verify_absher_balance_loaded(self, expected_value):
@@ -524,3 +538,6 @@ class TransitionalPage:
         self.perm_work_visa_card_exp_date.should(
             have.exact_text(exp_date.strftime(DateFormats.DD_MM_YYYY))
         )
+
+    def any_errors_on_page(self):
+        return any(message.matching(be.visible) for message in self.error_messages)

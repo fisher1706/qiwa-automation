@@ -125,10 +125,11 @@ class UserManagementRequestsDeleteSubscription:
             .all()
         )
         for user_privileges in user_privileges_to_delete:
-            self.session.delete(user_privileges)
+            self.session.delete(user_privileges[0])
             self.session.commit()
         return self
 
+    # TODO: delete data Join() by sqlalchemy in future
     def um_privileges(
         self, personal_number: str, unified_number: int
     ) -> UserManagementRequestsDeleteSubscription:

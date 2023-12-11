@@ -360,7 +360,7 @@ class AppointmentsView:
     }
     GENERAL_INFO_REASON_TEXT = {
         Language.EN: "Appointment reason",
-        Language.AR: "طلب خدمة جديدة - موعد حضوري",
+        Language.AR: "سبب الموعد",
     }
     GENERAL_INFO_DATA_TEXT = {Language.EN: "Date", Language.AR: "التاريخ"}
     GENERAL_INFO_TIME_TEXT = {Language.EN: "Time", Language.AR: "الوقت"}
@@ -394,3 +394,21 @@ class AppointmentsCancel:
     OFFICE_TEXT = {Language.EN: "Office", Language.AR: "المكتب"}
     TYPE_TEXT = {Language.EN: "Type", Language.AR: "النوع"}
     STATUS_TEXT = {Language.EN: "Status", Language.AR: "الحالة"}
+
+
+class AppointmentReason:
+    VIRTUAL = {"id": 0, "text": {Language.EN: "", Language.AR: ""}}
+    IN_PERSON = {
+        "id": 3,
+        "text": {
+            Language.EN: "Request new service - in person",
+            Language.AR: "طلب خدمة جديدة - موعد حضوري",
+        },
+    }
+
+
+class AppointmentType:
+    IN_PERSON = {
+        Language.EN: "In-person",
+        Language.AR: "حضوري",
+    }

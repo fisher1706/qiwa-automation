@@ -37,10 +37,10 @@ class VisaMockApi:
         response = self.api.teardown(data)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 
-    def change_balance_request(self, ref_number, refund_id=1, status_id=1):
+    def change_balance_request(self, ref_number, **kwargs):
         data = load_json_schema("refund.json")
-        data["status"] = status_id
-        data["refund_status_id"] = refund_id
+        for key, value in kwargs.items():
+            data[key] = value
         response = self.api.balance_request(ref_number, data)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
 

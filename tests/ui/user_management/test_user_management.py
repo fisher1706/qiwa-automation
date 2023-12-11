@@ -6,6 +6,7 @@ from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
     Privileges,
+    SelfSubscriptionData,
     Texts,
     UsersTypes,
 )
@@ -25,9 +26,11 @@ from src.ui.actions.user_management_actions.user_management import UserManagemen
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
+    delete_self_subscription,
     get_subscription_cookie,
+    log_in_and_open_establishment_account,
     log_in_and_open_user_management,
-    prepare_data_for_add_access_to_company,
+    remove_establishment_from_subscription,
 )
 from utils.allure import TestmoProject, project
 
@@ -123,7 +126,7 @@ def test_error_for_user_without_um_service():
     user = delegator_without_um
     employee = user_type_three_employee
     user_management = UserManagementActions()
-    log_in_and_open_user_management(user, Language.EN)
+    log_in_and_open_user_management(user, Language.EN, False)
     user_management.check_error_message_for_um_page_without_permission(
         ErrorsMessage.user_doesnt_have_access_to_um, ErrorsMessage.no_access_error_description
     ).navigate_to_user_details_without_um_permission(employee.personal_number) \
@@ -149,7 +152,8 @@ def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
     user = delegator_for_add_and_terminate_subscription_flow
-    log_in_and_open_user_management(owner, Language.EN)
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data) \
@@ -163,7 +167,8 @@ def test_interaction_with_privileges_list():
     user_management = UserManagementActions()
     owner = owner_account_with_another_company
     user = user_type_three_employee
-    log_in_and_open_user_management(owner, Language.EN)
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE) \
@@ -186,14 +191,14 @@ def test_add_access_to_establishment():
     user = user_type_three_employee
     user_for_add_access = user_type_three_employee_for_add_access
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
-    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+    remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
     user_management.navigate_to_user_details(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .add_access_with_fundamental_privileges(user.sequence_number) \
         .open_select_privileges_modal_for_no_access_workspace(user_for_add_access.sequence_number) \
         .add_access_with_not_fundamental_privileges(user_for_add_access) \
         .check_privileges_after_add_access_with_not_fundamental_privileges(user_for_add_access.sequence_number)
-    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+    remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
 
 
 @allure.title("test_remove_establishment_from_subscription")
@@ -238,7 +243,7 @@ def test_interaction_with_establishments_list():
 
 
 @allure.title("Check AR localization for Add access/Edit privileges modals")
-@pytest.mark.skip("test is skipped due to translations issues")
+@pytest.mark.skip("test is skipped due to UM-6483, UM-6482")
 @case_id(7933)
 def test_ar_localization_for_add_access_and_edit_privileges_modals():
     user_management = UserManagementActions()
@@ -249,3 +254,43 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
         .check_localization_for_add_access_modal(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal() \
         .check_localization_for_edit_privileges_modal().check_privileges_are_grouped(Privileges.groups_data_ar)
+
+
+@allure.title("Test self subscription user without subscription")
+@case_id(41783, 41794, 41785, 41790)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.without_subscription)
+def test_self_subscription_user_without_subscription(user_type, user):
+    delete_self_subscription(user)
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_annual_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page()
+
+
+@allure.title("Test self subscription user with expired or terminated subscription")
+@case_id(41780)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.expired_terminated_subscription)
+def test_self_subscription_user_with_expired_terminated_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_renew_subscription()
+
+
+@allure.title("Test self subscription user with active subscription")
+@case_id(41780)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.active_subscription)
+def test_self_subscription_user_with_active_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)

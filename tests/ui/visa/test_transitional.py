@@ -7,13 +7,25 @@ from selene.support.shared import browser
 
 from data.visa.constants import (
     BR_ACCEPTED,
+    BR_CANNOT,
+    BR_ERROR,
     BR_EXPIRED,
     BR_INACTIVE,
+    BR_LIMIT,
     BR_NEW,
     BR_REFUNDED,
     BR_REJECTED,
+    BR_SUCCESS,
     BR_TERMINATED,
+    BR_USED,
     BR_WAITING,
+    EBR_ACTIVE,
+    EBR_EXPIRED,
+    EBR_NEW,
+    EBR_REFUNDED,
+    EBR_REJECTED,
+    EBR_TERMINATED,
+    EBR_WAITING,
     ERROR_CODE,
     ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
     VR_CANCELED,
@@ -412,7 +424,7 @@ def test_verify_perm_work_visa_card_internal_error(visa_mock, visa_db):
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.increase_quota_establishment_button.click()
     ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
-    visa_mock.change_balance_request(ref_number, Numbers.ONE, Numbers.ONE)
+    visa_mock.change_balance_request(ref_number, status=Numbers.ONE, refund_status_id=Numbers.ONE)
     visa_mock.change_visa_quantity(Numbers.FOUR, Numbers.ZERO)
     qiwa.work_visa.return_to_transitional_page()
     qiwa.transitional.verify_perm_work_visa_error_shown()
@@ -433,6 +445,7 @@ def test_verify_perm_work_visa_card_expiration_balance(visa_mock, visa_db):
     qiwa.work_visa.verify_work_visa_page_open()
     qiwa.work_visa.increase_quota_button.click()
     ref_num = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
+    visa_mock.change_balance_request(ref_num, balance_type_id=3)
     qiwa.work_visa.return_to_transitional_page()
     qiwa.transitional.verify_balance_expiration_date_perm_visa_card()
     visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
@@ -443,15 +456,15 @@ def test_verify_perm_work_visa_card_expiration_balance(visa_mock, visa_db):
     browser.driver.refresh()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.verify_balance_expiration_date_perm_visa_card()
-    visa_mock.change_balance_request(ref_num, Numbers.TWO, Numbers.TWO)
+    visa_mock.change_balance_request(ref_num, status=Numbers.TWO, refund_status_id=Numbers.TWO)
     browser.driver.refresh()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.verify_no_balance_expiration_date_perm_visa_card()
-    visa_mock.change_balance_request(ref_num, Numbers.THREE, Numbers.THREE)
+    visa_mock.change_balance_request(ref_num, status=Numbers.THREE, refund_status_id=Numbers.THREE)
     browser.driver.refresh()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.verify_no_balance_expiration_date_perm_visa_card()
-    visa_mock.change_balance_request(ref_num, Numbers.FOUR, Numbers.FOUR)
+    visa_mock.change_balance_request(ref_num, status=Numbers.FOUR, refund_status_id=Numbers.FOUR)
     browser.driver.refresh()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.verify_no_balance_expiration_date_perm_visa_card()
@@ -482,31 +495,31 @@ def test_verify_statuses_tier_upgrades_table_establishment_flow(visa_mock, visa_
     ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_WAITING)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_ACCEPTED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_ACCEPTED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_ACCEPTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    visa_mock.change_balance_request(ref_number, status=BR_INACTIVE.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_INACTIVE)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_REJECTED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_REJECTED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_REJECTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_REFUNDED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_REFUNDED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_REFUNDED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_EXPIRED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_EXPIRED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_EXPIRED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_TERMINATED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_TERMINATED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_TERMINATED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
+    visa_mock.change_balance_request(ref_number, status=BR_NEW.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_tier_upgrade_status(ref_number, BR_NEW)
 
@@ -522,35 +535,35 @@ def test_verify_statuses_exceptional_balance_requests_table_expansion_flow(visa_
     ref_number = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_ACCEPTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    visa_mock.change_balance_request(ref_number, status=BR_INACTIVE.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_INACTIVE)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    visa_mock.change_balance_request(ref_number, status=BR_INACTIVE.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_INACTIVE)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_WAITING.id)
+    visa_mock.change_balance_request(ref_number, status=BR_WAITING.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_WAITING)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_REJECTED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_REJECTED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_REJECTED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_REFUNDED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_REFUNDED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_REFUNDED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_EXPIRED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_EXPIRED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_EXPIRED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_TERMINATED.id)
+    visa_mock.change_balance_request(ref_number, status=BR_TERMINATED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_TERMINATED)
 
-    visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
+    visa_mock.change_balance_request(ref_number, status=BR_NEW.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_balance_request_status(ref_number, BR_NEW)
 
@@ -652,7 +665,7 @@ def test_verify_internal_errors_perm_work_visa_page_expansion(visa_mock):
     browser.driver.refresh()
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.perm_work_visa_service_page_button.click()
-    qiwa.work_visa.verify_error_banner(ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT)
+    qiwa.work_visa.verify_error_modal_window(content=ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT)
     qiwa.work_visa.verify_expansion_balance_zero_buttons_behavior()
 
 
@@ -667,12 +680,13 @@ def test_verify_internal_tier_balance_validations_perm_work_visa_page(visa_mock,
     qiwa.work_visa.verify_issue_perm_work_visa_blocked()
     qiwa.work_visa.increase_quota_establishment_button.click()
     ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
-    visa_mock.change_balance_request(ref_number, Numbers.ONE, Numbers.ONE)
+    visa_mock.change_balance_request(ref_number, status=Numbers.ONE, refund_status_id=Numbers.ONE)
     browser.driver.refresh()
     qiwa.work_visa.verify_increase_perm_work_visa_quota_blocked()
     visa_mock.change_visa_quantity(Numbers.FOUR, Numbers.ZERO)
     browser.driver.refresh()
     qiwa.work_visa.verify_increase_perm_work_visa_quota_and_issue_blocked()
+
 
 @case_id(134714)
 @allure.title("Test verifies autocomplete component to use lazy loading and search")
@@ -808,3 +822,96 @@ def test_verify_handling_balance_request_user_not_approved(visa_mock):
     qiwa.transitional.page_is_loaded()
     qiwa.transitional.perm_work_visa_service_page_button.click()
     qiwa.work_visa.verify_user_cannot_sign_agreement_expansion()
+
+
+@case_id(134196)
+@allure.title("Test verifies error messages while attempted to refund tier balance request")
+def test_verify_errors_in_refunding(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_establishment_button.click()
+    ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
+    visa_mock.change_balance_request(ref_number, refund_id=BR_SUCCESS.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_status(ref_number, br_status=BR_SUCCESS)
+    visa_mock.change_balance_request(ref_number, refund_id=BR_LIMIT.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_status(ref_number, br_status=BR_LIMIT)
+    visa_mock.change_balance_request(ref_number, refund_id=BR_USED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_status(ref_number, br_status=BR_USED)
+    visa_mock.change_balance_request(ref_number, refund_id=BR_CANNOT.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_status(ref_number, br_status=BR_CANNOT)
+    visa_mock.change_balance_request(ref_number, refund_id=BR_ERROR.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_status(ref_number, br_status=BR_ERROR)
+
+
+@case_id(46658)
+@allure.title("Test verifies possibility to refund tier balance request")
+def test_verify_possibility_refund_establishing_balance_request(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_establishment_button.click()
+    ref_number = qiwa.increase_quota.get_to_tier(visa_db, Numbers.FOUR, Numbers.ONE_HUNDRED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_ACCEPTED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_ACCEPTED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_INACTIVE.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_INACTIVE)
+    visa_mock.change_balance_request(ref_number, status_id=BR_WAITING.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_WAITING)
+    visa_mock.change_balance_request(ref_number, status_id=BR_REJECTED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_REJECTED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_REFUNDED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_REFUNDED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_EXPIRED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_EXPIRED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_TERMINATED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_TERMINATED)
+    visa_mock.change_balance_request(ref_number, status_id=BR_NEW.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_perm_work_visa_refund_available(ref_number, status=BR_NEW)
+
+
+@case_id(6420)
+@allure.title('Test verifies possibility to refund expansion balance request')
+def test_verify_possibility_refund_expansion_balance_request(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_button.click()
+    ref_number = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_NEW.id, balance_type_id=3)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_NEW)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_WAITING.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_WAITING)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_ACTIVE.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_ACTIVE)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_REJECTED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_REJECTED)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_REFUNDED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_REFUNDED)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_EXPIRED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_EXPIRED)
+    visa_mock.change_balance_request(ref_number, status_id=EBR_TERMINATED.id)
+    browser.driver.refresh()
+    qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_TERMINATED)

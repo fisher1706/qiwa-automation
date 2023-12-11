@@ -4,6 +4,7 @@ import time
 
 import allure
 from selene import be, have
+from selene.api import command
 from selene.support.shared.jquery_style import s, ss
 
 from src.ui.components.raw.dropdown import Dropdown
@@ -125,7 +126,7 @@ class LaborOfficeAppointmentsCreatePage:
     @allure.step("Select appointment reason {value}")
     def select_appointment_reason(self, value) -> LaborOfficeAppointmentsCreatePage:
         if self.appointment_reason_section.wait_until(be.visible):
-            ss(self.radio_button_appointment_reason)[value.value].click()
+            ss(self.radio_button_appointment_reason)[value].click()
             self.next_btn.click()
         return self
 
@@ -156,7 +157,9 @@ class LaborOfficeAppointmentsCreatePage:
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_region.wait_until(be.visible)
         time.sleep(0.5)  # todo: investigate to remove this sleep
-        self.input_region.double_click()  # todo: investigate why one click does not work
+        self.input_region.perform(
+            command.js.scroll_into_view
+        ).double_click()  # todo: investigate why one click does not work
         self.dropdown_select_region.select_by_text(name)
         return self
 
