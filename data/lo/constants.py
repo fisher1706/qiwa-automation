@@ -132,6 +132,7 @@ class OfficesInfo:
     OFFICES_NAME = random_name
     OFFICE_NAME_TEST_OFFICE = "office 3216"
     OFFICE_NAME_VEUM_HANE = "Veum - Hane"
+    OFFICE_NAME_VIRTUAL = "Alina_Virtual"
     OFFICE_NAME_EDIT = "Voffgh"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
@@ -180,6 +181,14 @@ class ServicesInfo:
     SUB_SERVICE_NAME_INDIVIDUALS = {
         Language.EN: "subservices_10/08",
         Language.AR: "subservices_10/08",
+    }
+    SERVICE_NAME_VIRTUAL = {
+        Language.EN: "Alina_Individuals_Virtual",
+        Language.AR: "Alina_Individuals_Virtual",
+    }
+    SUB_SERVICE_NAME_VIRTUAL = {
+        Language.EN: "Alina_New_Individuals",
+        Language.AR: "Alina_New_Individuals",
     }
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
@@ -397,7 +406,7 @@ class AppointmentsCancel:
 
 
 class AppointmentReason:
-    VIRTUAL = {"id": 0, "text": {Language.EN: "", Language.AR: ""}}
+    VIRTUAL = {"id": 0, "text": {Language.EN: "New request - virtual", Language.AR: ""}}
     IN_PERSON = {
         "id": 3,
         "text": {
