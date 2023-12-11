@@ -2,10 +2,7 @@ import allure
 
 from data.dedicated.individuals.individuals_constans import IndividualsServices
 from data.dedicated.models.individuals import user1
-from src.ui.actions.dedicated.individuals.my_resume_actions import (
-    MyResumeActions,
-    my_resume_actions,
-)
+from src.ui.actions.dedicated.individuals.my_resume_actions import my_resume_actions
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
 
