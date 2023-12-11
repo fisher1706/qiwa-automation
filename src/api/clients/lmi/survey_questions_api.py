@@ -16,9 +16,9 @@ class SurveyQuestionsApi:
     def put_question_weight(
         self,
         survey_id,
-        question_choices_id,
-        question_choices_weight,
         question_id,
+        question_choices_weight,
+        question_choices_id,
         question_weight,
         cookies=None,
         expect_code=200,

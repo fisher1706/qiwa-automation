@@ -84,10 +84,10 @@ class GetWorkForceStatisticsApi:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         self.max_date = jmespath.search(
-            "WFSResponse.response.fact.item[*].item[?name=='MAXDATE'].value", response.json()
-        )[0][0]
+            "WFSResponse.response.fact.Item[0].Item[?name=='MAXDATE'].value", response.json()
+        )[0]
         self.min_date = jmespath.search(
-            "WFSResponse.response.fact.item[?name=='MINDATE'].value", response.json()
+            "WFSResponse.response.fact.Item[?name=='MINDATE'].value", response.json()
         )[0]
         self.last_quarter = (
             datetime.strptime(self.max_date, date_format) - timedelta(days=90)

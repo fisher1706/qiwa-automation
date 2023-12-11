@@ -12,6 +12,7 @@ case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check English translation for element on the page')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 @case_id(5546, 5548)
 @pytest.mark.parametrize('element, translation, perform_request', ContactUsDataSet.en_element_data,
                          ids=['Page title en', 'Send button en', 'Back button en', 'Success Title en',
@@ -22,6 +23,7 @@ def test_en_translation_element_on_the_page(element, translation, perform_reques
 
 
 @allure.title('Check Arabic translation for element on the page')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 @case_id(5547, 5549)
 @pytest.mark.parametrize('element, translation, perform_request', ContactUsDataSet.ar_element_data,
                          ids=['Page title ar', 'Send button ar',  'Back button ar', 'Success Title ar',
@@ -48,12 +50,14 @@ def test_ar_translation_titles_on_the_page():
 
 
 @allure.title('Check navigation to Home page after request')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 def test_navigation_to_home_page_after_request():
     data_portal.open_contact_us_page()
     data_portal.contact_us_page.check_navigation_to_home_page_after_request()
 
 
 @allure.title('Create Contact us request')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 @case_id(5537, 5541)
 @pytest.mark.parametrize('values', ContactUsDataSet.setup_data, ids=['request with Company, reason=30char',
                                                                      'request with Company, reason=2500char',

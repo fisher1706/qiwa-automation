@@ -16,6 +16,7 @@ def test_reset_question_weight(login_lmi_user, survey_id):
     lmi.qiwa_api.survey_questions_api_actions.put_question_weight(*QuestionDataSet.setup_action_api_data[0], lmi.cookie)
     lmi.open_question_survey_tab(survey_id)
     lmi.survey_question.reset_question_weight()
+    lmi.survey_question.check_reset_values()
 
 
 @allure.title('Check setup question weight')
@@ -53,6 +54,7 @@ def test_calculation_max_answer_score(login_lmi_user, survey_id):
 
 
 @allure.title('Check setup invalid question values')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2805')
 @case_id(11879, 11941, 11944)
 @pytest.mark.parametrize('survey_id', SurveyDataSet.survey_ids_data)
 @pytest.mark.parametrize('value', QuestionDataSet.invalid_question_data)

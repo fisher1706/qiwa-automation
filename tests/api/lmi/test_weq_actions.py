@@ -24,7 +24,7 @@ def test_dimension_action(values):
 
 
 @allure.title('Overall index calculation')
-@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2343')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2720')
 @pytest.mark.parametrize('survey, survey_results, target_group', SurveyDataSet.survey_data)
 def test_overall_index_calculation(survey, survey_results, target_group):
     qiwa = QiwaApi.login_as_user(personal_number=UserInfo.LMI_ADMIN_LOGIN)

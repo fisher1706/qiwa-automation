@@ -26,6 +26,7 @@ def test_customize_clear_searching():
 
 
 @allure.title('Check Customize Searching Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5872)
 def test_customize_options_searching():
     data_portal.open_market_overview_page()
@@ -39,6 +40,7 @@ def test_customize_no_result_searching():
 
 
 @allure.title('Check Customize Show All Sectors')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5874)
 def test_show_all_sectors():
     data_portal.open_market_overview_page()
@@ -46,6 +48,7 @@ def test_show_all_sectors():
 
 
 @allure.title('Check Customize Selected Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5873)
 def test_customize_selected_options():
     data_portal.open_market_overview_page()
@@ -53,6 +56,7 @@ def test_customize_selected_options():
 
 
 @allure.title('Check Customize Select All Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5874)
 def test_customize_selected_all_options():
     data_portal.open_market_overview_page()
@@ -67,6 +71,7 @@ def test_customize_clear_selected_options():
 
 
 @allure.title('Check Customize Clear All Selected Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5876)
 def test_customize_clear_all_selected_options():
     data_portal.open_market_overview_page()
@@ -74,6 +79,7 @@ def test_customize_clear_all_selected_options():
 
 
 @allure.title('Check Customize Apply Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5875)
 def test_customize_apply_option():
     data_portal.open_market_overview_page()
@@ -81,6 +87,7 @@ def test_customize_apply_option():
 
 
 @allure.title('Add Customize Another Options')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @case_id(5424)
 def test_customize_add_another_option():
     data_portal.open_market_overview_page()
@@ -88,6 +95,7 @@ def test_customize_add_another_option():
 
 
 @allure.title('Check the displaying employee and establishment data from the backend to the interface')
+@pytest.mark.skip('Skipped due to no data from IBM')
 @pytest.mark.parametrize('locator, endpoint_id, filtered_data, response_filter, action',
                          MarketOverviewData.employee_establish_data,
                          ids=['Employees amount', 'Establishments amount', 'Employees amount chart',
@@ -102,6 +110,7 @@ def test_employee_establish_chart_data(locator, endpoint_id, filtered_data, resp
 
 
 @allure.title('Check the displaying data Employees for last 5 years')
+@pytest.mark.skip('Skipped due to no data from IBM')
 def test_employee_calculation():
     data_portal.open_market_overview_page()
     workforce_api.post_workforcestatistics(1, [{"name": "StartDate", "gt": workforce_api.min_date},
@@ -114,6 +123,7 @@ def test_employee_calculation():
 
 @allure.title('Check the displaying workforce chart data from the backend to the interface')
 @case_id(5866)
+@pytest.mark.skip('Skipped due to no data from IBM')
 @pytest.mark.parametrize('locator, endpoint_id, filtered_data, response_filter, action',
                          MarketOverviewData.workforce_by_sector_data,
                          ids=['Top largest sector', 'All sectors'])

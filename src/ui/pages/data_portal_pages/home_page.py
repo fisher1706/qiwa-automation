@@ -62,7 +62,7 @@ class HomePage:
     HERO_DESCRIPTION = s('//section[@class="hero"]//p')
     MARKET_OVERVIEW = s('//section[@class="hero"]//a')
 
-    BLOCK_DATA_HERO_1 = s('//span[@class="d-none d-xl-block"]')
+    BLOCK_DATA_HERO_1 = s("a:nth-child(1) > div.body-02-highlight")
     BLOCK_DATA_HERO_2 = s('(//span[@class="d-block d-sm-none d-xl-block"])[1]')
     BLOCK_DATA_HERO_3 = s('(//span[@class="d-block d-sm-none d-xl-block"])[2]')
 
@@ -74,7 +74,7 @@ class HomePage:
     CONTACT_US_BUTTON = s('//section[@class="request-block "]//a')
 
     CHART_EXPLORE_BUTTON = s('//div[@class="chart-block-content"]/a')
-    SECTORS_LIST = s(".sectors-list ")
+    SECTORS_LIST = s('[class*="flex sector-list"]')
 
     def check_navigation_to_market_overview_from_hero(self):
         self.MARKET_OVERVIEW.click()
