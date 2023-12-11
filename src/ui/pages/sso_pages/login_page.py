@@ -13,7 +13,7 @@ class LoginPage:
     password_field = s("#password")
     login_button = s('button[type="submit"]')
     otp_pop_up = CodeVerification(s('[data-testid="modal-root"]'))
-    absher_pop_up = CodeVerification(s(".iswHle"))
+    absher_pop_up = CodeVerification(s('[data-testid="absher-popup"]'))
     notification_message_texts = ss('[data-component="VerticalNotification"] p')
     unlock_account_button = s('[data-component="VerticalNotification"] button')
     not_robot_captcha = s('[title="reCAPTCHA"]')
