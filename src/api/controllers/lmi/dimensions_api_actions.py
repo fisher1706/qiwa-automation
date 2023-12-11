@@ -21,8 +21,7 @@ class DimensionsApiAction(DimensionsApi):
     @allure.step("I delete dimension for particular survey")
     def delete_dimension(self, *_):
         self.del_dimension(self.last_dimension_id)
-        assert self.get_dimension(self.last_dimension_id, expect_code=422, expect_schema=None)
-        assert self.dimension["dimension_get"][0] == "dimension_not_found"
+        assert self.get_dimension(self.last_dimension_id, expect_code=400, expect_schema=None)
 
     @allure.step("I edit names of dimension")
     def edit_dimension_names(self, name_en_edited, name_ar_edited, name_en_edited_validation):

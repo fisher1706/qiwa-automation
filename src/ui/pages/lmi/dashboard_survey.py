@@ -25,10 +25,8 @@ class DashboardSurveyPage:
     def perform_sync_survey(self, survey_resource):
         self.SYNC_DROPDOWN.click()
         s(self.SYNC_SURVEY_OPTION.format(survey_resource)).click()
-        self.SPINNER_SYNC.wait_until(be.visible)
-        self.SPINNER_SYNC.with_(timeout=600).wait_until(be.not_.visible)
-        self.EMPTY_COLUMN.wait_until(be.visible)
-        self.EMPTY_COLUMN.wait_until(be.not_.visible)
+        self.SPINNER_SYNC.should(be.visible)
+        self.SPINNER_SYNC.with_(timeout=600).should(be.not_.visible)
 
     def check_sync_survey_and_question(self, survey_id):
         s(self.SURVEY_ID.format(survey_id)).should(be.visible)

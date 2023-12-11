@@ -1,4 +1,4 @@
-from selene.support.conditions import have
+from selene.support.conditions import be, have
 from selene.support.shared.jquery_style import browser, s, ss
 
 from data.data_portal.constants import Links
@@ -12,10 +12,11 @@ class HeaderBlock:
     REPORTS = s('//div[@class="d-none d-sm-flex reports"]/a')
     SECTORS_DROPDOWN = s('//div[@class="sectors-menu d-flex flex-column justify-content-center"]')
     VIEW_ALL_SECTORS = s('//div[@class="sectors-menu-body-links"]/a/span')
-    ECONOMIC_ACTIVITIES = s('//div[@class="sectors-menu-body-tabs"]//div[1]/div')
-    NITAQAT_ACTIVITIES = s('//div[@class="sectors-menu-body-tabs"]//div[2]/div')
+    ISIC_4_CLASSIFICATION = s('[class^="sectors-menu-body-tabs"]>div:nth-child(1)>div')
+    NITAQAT_CLASSIFICATION = s('[class^="sectors-menu-body-tabs"]>div:nth-child(2)>div')
     MARKET_OVERVIEW = s('//div[@class="d-flex header-left"]//a[@href="/market-overview"]')
-    SECTORS_ITEM = ss('//a[@class="cta-small"]')
+    SECTORS_ITEM = ss('[class^="sectors-menu-body-links-link"]>a')
+    SECTORS_BLOCK = s('[class^="flex align-items-baseline"]')
 
     def change_localization(self):
         self.LOCALIZATION.click()
@@ -30,7 +31,6 @@ class HeaderBlock:
         element.should(have.text(element_text))
 
     def check_navigation_to_all_sectors_page(self):
-        self.SECTORS.click()
         self.VIEW_ALL_SECTORS.click()
         assert browser.driver.current_url == Links.VIEW_ALL_SECTORS
 
@@ -41,3 +41,7 @@ class HeaderBlock:
     def check_navigation_to_reports_page(self):
         self.REPORTS.click()
         assert browser.driver.current_url == Links.REPORTS
+
+    def open_sectors_dropdown(self):
+        self.SECTORS.click()
+        self.SECTORS_BLOCK.should(be.visible)

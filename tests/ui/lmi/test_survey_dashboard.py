@@ -11,6 +11,7 @@ case_id = project(TestmoProject.LMI)
 
 
 @allure.title('Check Synchronization with SurveySparrow')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2797')
 @case_id(11942, 17287, 17289, 17290, 17323)
 def test_sync_with_survey_sparrow_service(login_lmi_user):
     lmi.qiwa_api.dashboard_api_actions.create_sparrow_survey()
@@ -20,6 +21,7 @@ def test_sync_with_survey_sparrow_service(login_lmi_user):
 
 
 @allure.title('Check Synchronization with QuestionPro')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2797')
 @case_id(11942, 17287, 17289, 17290, 17323)
 def test_sync_with_question_pro_service(login_lmi_user):
     lmi.qiwa_api.dashboard_api_actions.create_question_pro_survey()

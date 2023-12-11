@@ -1,13 +1,13 @@
 from selene import have
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 from data.data_portal.constants import Reports
 
 
 class ReportsPage:
     TITLE = s('//div[@class="reports-title"]/h3')
-    TOPIC_TITLES = ss('//div[@class="caption d-flex"]/p')
-    TOPIC_DESCRIPTIONS = ss('//div[@class="report-card-info"]/div[1]')
+    TOPIC_TITLES = s('//div[@class="caption d-flex"]/p')
+    TOPIC_DESCRIPTIONS = s('//div[@class="report-card-info"]/div[1]')
 
     INDICATORS_VIEW_MORE = s('(//div[@data-testid="report-category"]/div/a/span)[1]')
     SAUDI_ECONOMY_VIEW_MORE = s('(//div[@data-testid="report-category"]/div/a/span)[2]')
