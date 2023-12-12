@@ -7,17 +7,21 @@ from data.shareable.expected_json.change_occupation.common import empty_data
 from src.api.models.qiwa.change_occupation import RequestsData
 from utils.assertion import assert_status_code, assert_that
 from utils.assertion.asserts import assert_data
-from utils.json_search import get_data_attribute
 
 # TODO: get by partial name
 
 
 def test_getting_by_employee_name(change_occupation):
     laborer = change_occupation.get_random_laborer()
-    json = change_occupation.get_requests(employee_name=laborer.laborer_name, per=100)
+    name = laborer.laborer_name
 
-    employee_names_from_json = get_data_attribute(json, "laborers", "[0]", ".employee_name")
-    assert_that(set(employee_names_from_json)).size_is(1).contains(laborer.laborer_name)
+    json = change_occupation.get_requests(employee_name=name)
+
+    requests_have_employee_with_name: bool = all(
+        any(laborer.employee_name == name for laborer in request.attributes.laborers)
+        for request in json.data
+    )
+    assert_that(requests_have_employee_with_name).equals_to(True)
 
 
 def test_getting_by_request_id(change_occupation):

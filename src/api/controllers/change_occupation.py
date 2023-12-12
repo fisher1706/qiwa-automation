@@ -146,8 +146,9 @@ class ChangeOccupationController:
 
     @allure.step
     def get_random_laborer(self) -> RequestLaborer:
-        requests = self.get_requests_laborers(per=100)
-        return random.choice(requests.data).attributes
+        laborers = self.get_requests_laborers(per=100)
+        laborers_with_name = list(filter(lambda l: bool(l.attributes.laborer_name), laborers.data))
+        return random.choice(laborers_with_name).attributes
 
     @allure.step
     def get_random_user(self, eligible: bool = True) -> User:
