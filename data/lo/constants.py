@@ -367,6 +367,13 @@ class AppointmentsView:
         Language.AR: "للحصول على تجربة أفضل في مكتب العمل،"
         " يرجى التأكد من الوصول للموقع في التاريخ والوقت المحددين.",
     }
+    INFO_ROW_VIRTUAL_TEXT = {
+        Language.EN: "A Labor Office agent will meet you virtually over video call, "
+        "please join the virtual appointment session on exact time you chose for the appointment in case "
+        "of no show or delay, unfortunately, the appointment will get canceled.",
+        Language.AR: "ستكون جلسة الموعد عبر الاتصال المرئي ، الرجاء الدخول الى جلسة"
+        " الموعد حسب الوقت المحدد في الموعد، في حال عدم دخول الجلسة أو التأخير سيتم الغاء الموعد.",
+    }
     GENERAL_INFO_REASON_TEXT = {
         Language.EN: "Appointment reason",
         Language.AR: "سبب الموعد",
