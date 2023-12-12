@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from data.constants import AppointmentReason, EService, Language
+from data.constants import EService, Language
 from data.dedicated.change_occupation.change_occupation_constants import (
     Eligibility,
     EstablishmentStatus,
@@ -25,6 +25,7 @@ from data.dedicated.enums import (
     SubServiceErrors,
 )
 from data.dedicated.models.services import change_occupation
+from data.lo.constants import AppointmentReason
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import employee_transfer_api
 from src.api.clients.ibm import ibm_api
