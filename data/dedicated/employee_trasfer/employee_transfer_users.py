@@ -7,9 +7,9 @@ from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 
 employer = User(
-    personal_number="1016316828",
-    labor_office_id="9",
-    sequence_number="3212",
+    personal_number="1006783110",
+    labor_office_id="4",
+    sequence_number="1067236",
     establishment_name_ar="مؤسسة دائره العلاقات عبداللة زكريا عبداللة المولد تجربة",
     establishment_number="1828954",
     name="عبدالله",
@@ -50,7 +50,7 @@ laborer_type_4_absent = Laborer(
 )
 
 laborer_between_my_establishments = Laborer(
-    personal_number=2016254472, birthdate="01-01-1976", transfer_type=type_4
+    personal_number=2045539257, birthdate="01-01-1976", transfer_type=type_4
 )
 laborer_between_my_establishments_existing_contract = Laborer(
     personal_number=2126951132, birthdate="01-03-1961", transfer_type=type_4
