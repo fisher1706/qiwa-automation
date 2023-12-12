@@ -40,7 +40,6 @@ def test_type_12_current_sponsor(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_type_12.login_id)
 
-    qiwa.dashboard_page.wait_dashboard_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     
     qiwa.code_verification.fill_in_code() \
@@ -61,8 +60,6 @@ def test_type_12_current_sponsor(status):
     qiwa.individual_page.navigate_to_services()
 
     qiwa.individual_page.select_service(ServicesAndTools.HOME_WORKERS_TRANSFER.value[Language.EN])
-
-    qiwa.employee_transfer_page.search_received_request(laborer_type_12.login_id)
 
     employee_transfer_actions.make_a_decision_as_current_sponsor(status)
 
@@ -95,7 +92,6 @@ def test_transfer_types_rejection_by_laborer(laborer):
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
 
-    qiwa.dashboard_page.wait_dashboard_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
@@ -137,7 +133,6 @@ def test_transfer_type_approval_by_laborer(laborer, status):
 
     employee_transfer_actions.navigate_to_individual(laborer.login_id)
 
-    qiwa.dashboard_page.wait_dashboard_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
