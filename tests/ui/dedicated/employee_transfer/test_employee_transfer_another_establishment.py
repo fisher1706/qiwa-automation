@@ -56,7 +56,7 @@ def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_another_establishment() \
         .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer_existing_contract.login_id) \
+        .fill_employee_iqama_number(laborer_existing_contract.personal_number) \
         .fill_date_of_birth(laborer_existing_contract.birthdate) \
         .click_btn_find_employee() \
         .click_btn_add_employee_to_transfer_request() \
@@ -77,11 +77,11 @@ def test_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm_button_
 )
 @case_id(123661, 123662, 123663, 123664)
 def test_laborer_able_to_make_a_decision_for_et_request(status):
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.personal_number)
     ibm_api.create_new_contract(employer, laborer_with_sponsor)
     ibm_api.create_employee_transfer_request_ae(employer, laborer_with_sponsor)
 
-    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -116,11 +116,11 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
 )
 @case_id(123667, 123668, 123670, 123671)
 def test_current_sponsor_able_to_make_a_decision_for_get_request(status):
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.personal_number)
     ibm_api.create_new_contract(employer, laborer_with_sponsor)
     ibm_api.create_employee_transfer_request_ae(employer, laborer_with_sponsor)
 
-    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -137,7 +137,7 @@ def test_current_sponsor_able_to_make_a_decision_for_get_request(status):
 
     employee_transfer_actions.navigate_to_et_service_current_sponsor(current_sponsor)
 
-    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.login_id)
+    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.personal_number)
 
     employee_transfer_actions.make_a_decision_as_current_sponsor(status)
 
@@ -162,7 +162,7 @@ def test_quota_should_be_decreased_after_submitting_et_request():
     qiwa.login_page.wait_login_page_to_load()
     qiwa.header.change_local(Language.EN)
 
-    employee_transfer_actions.navigate_to_individual(laborer.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -202,7 +202,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
     qiwa.login_page.wait_login_page_to_load()
     qiwa.header.change_local(Language.EN)
 
-    employee_transfer_actions.navigate_to_individual(laborer.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -227,7 +227,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
 @allure.title('Quota (Establishment Balance) increased after rejection of ET request by current sponsor')
 @case_id(123669)
 def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor():
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_with_sponsor.personal_number)
     ibm_api.create_new_contract(employer, laborer_with_sponsor)
 
     employee_transfer_actions.navigate_to_et_service(employer)
@@ -240,7 +240,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
     qiwa.login_page.wait_login_page_to_load()
     qiwa.header.change_local(Language.EN)
 
-    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -257,7 +257,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
 
     employee_transfer_actions.navigate_to_et_service_current_sponsor(current_sponsor)
 
-    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.login_id) \
+    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.personal_number) \
         .click_btn_reject() \
         .fill_rejection_reason() \
         .click_btn_reject_request()

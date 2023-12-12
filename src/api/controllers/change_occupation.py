@@ -3,7 +3,6 @@ from datetime import date
 
 import allure
 
-import config
 from data.shareable.change_occupation import RequestStatus
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.clients.ott_service import OttServiceApi

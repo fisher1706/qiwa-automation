@@ -25,7 +25,7 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 @allure.title('Verify user able to submit ET request from my own establishment')
 @case_id(123677)
 def test_bme_user_able_to_submit_et_request():
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.personal_number)
 
     employee_transfer_actions.navigate_to_et_service(employer) \
         .create_et_request_between_my_establishment(laborer_between_my_establishments)
@@ -39,8 +39,8 @@ def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_own_establishment() \
         .click_btn_next_step() \
-        .search_by_iqama_number(laborer_between_my_establishments_existing_contract.login_id) \
-        .select_first_employee(laborer_between_my_establishments_existing_contract.login_id) \
+        .search_by_iqama_number(laborer_between_my_establishments_existing_contract.personal_number) \
+        .select_first_employee(laborer_between_my_establishments_existing_contract.personal_number) \
         .click_btn_next_step() \
         .check_existence_of_a_contract()
 
@@ -54,13 +54,13 @@ def test_bme_if_laborer_already_has_a_contract_do_not_show_redirection_to_cm():
 )
 @case_id(123679, 123680, 123681, 123682)
 def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.personal_number)
     ibm_api.create_new_contract(employer, laborer_between_my_establishments)
     ibm_api.create_employee_transfer_request_bme(employer,
                                                  laborer_between_my_establishments,
                                                  TransferType.BETWEEN_MY_ESTABLISHMENTS.value)
 
-    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -85,7 +85,7 @@ def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
 @allure.title('Quota (Establishment Balance) Should be decreased after submitting ET request')
 @case_id(123683)
 def test_bme_quota_should_be_decreased_after_submitting_et_request():
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.personal_number)
     ibm_api.create_new_contract(employer, laborer_between_my_establishments)
 
     employee_transfer_actions.navigate_to_et_service(employer)
@@ -100,7 +100,7 @@ def test_bme_quota_should_be_decreased_after_submitting_et_request():
     qiwa.login_page.wait_login_page_to_load()
     qiwa.header.change_local(Language.EN)
 
-    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -125,7 +125,7 @@ def test_bme_quota_should_be_decreased_after_submitting_et_request():
 @allure.title('Quota (Establishment Balance) increased after rejection of ET request by Laborer')
 @case_id(123684)
 def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments.personal_number)
     ibm_api.create_new_contract(employer, laborer_between_my_establishments)
 
     employee_transfer_actions.navigate_to_et_service(employer)
@@ -140,7 +140,7 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
     qiwa.login_page.wait_login_page_to_load()
     qiwa.header.change_local(Language.EN)
 
-    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.login_id)
+    employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.personal_number)
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -163,7 +163,7 @@ def test_bme_quota_should_be_increased_after_rejection_of_et_request_by_laborer(
 @allure.title('Verify Quota does not decrease when transferring between my establishments same unified number')
 @case_id(123685)
 def test_quota_not_decrease_between_my_establishments_same_unified_number():
-    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments_quota.login_id)
+    employee_transfer_api.post_prepare_laborer_for_et_request(laborer_between_my_establishments_quota.personal_number)
     ibm_api.create_new_contract(employer, laborer_between_my_establishments_quota)
 
     employee_transfer_actions.navigate_to_et_service(employer_between_my_establishments)

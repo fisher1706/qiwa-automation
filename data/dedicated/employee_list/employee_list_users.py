@@ -8,4 +8,4 @@ employer = User(
     sequence_number="4533",
 )
 
-laborer = Laborer(login_id=2449079728, birthdate="11-07-1993", transfer_type=type_9)
+laborer = Laborer(personal_number=2449079728, birthdate="11-07-1993", transfer_type=type_9)

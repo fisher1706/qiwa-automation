@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import time
-
-from selene import command, have
+from selene import have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Titles
@@ -31,17 +29,20 @@ class ChangeOccupationPage:
         return self
 
     def find_expected_employee(self, personal_number: str) -> ChangeOccupationPage:
-        self.field_search.perform(command.js.set_value("")).type(personal_number)
+        self.field_search.clear().type(personal_number)
+        self.table_employee_list.cell(row=1, column=Label.IQAMA_NUMBER).wait_until(
+            have.text(personal_number)
+        )
         return self
 
     def check_employee_eligibility(self, eligible: str) -> ChangeOccupationPage:
-        self.table_employee_list.cell(row=1, column=4).should(have.exact_text(eligible))
+        self.table_employee_list.cell(row=1, column=Label.ELIGIBILITY).should(
+            have.exact_text(eligible)
+        )
         return self
 
     def click_btn_change_occupation(self) -> ChangeOccupationPage:
-        # TODO(dp): Find the possibility of avoiding sleep
-        time.sleep(3)
-        self.table_employee_list.cell(row=1, column=4).s("button").click()
+        self.table_employee_list.cell(row=1, column=Label.ACTIONS).s("button").click()
         return self
 
     def search_occupation(self, occupation: str) -> ChangeOccupationPage:

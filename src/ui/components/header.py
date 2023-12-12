@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import allure
-from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Language
+from utils.allure import allure_steps
 
 
+@allure_steps
 class Header:
     def __init__(self, web_element=None):
         self.web_element = web_element if web_element else s('[data-component="Navigation"]')
@@ -30,24 +31,16 @@ class Header:
             self.en_lang_btn.click()
         elif language == Language.AR:
             self.ar_lang_btn.click()
-
-    @allure.step
-    def check_personal_number_or_name(self, personal_number: str) -> Header:
-        self.profile.wait_until(be.visible)
-        self.profile.should(have.text(personal_number))
         return self
 
-    @allure.step
     def click_on_menu(self) -> Header:
         self.profile.click()
         return self
 
-    @allure.step
     def click_on_menu_individuals(self) -> Header:
         self.profile_individuals.click()
         return self
 
-    @allure.step
     def click_on_logout(self) -> Header:
         self.dropdown_profile.element(-1).click()
         return self
