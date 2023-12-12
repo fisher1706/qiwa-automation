@@ -1,4 +1,4 @@
-from selene import have
+from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
 from data.constants import Titles
@@ -18,6 +18,7 @@ class RequestsPage:
     btn_return_to_the_previous_page = s(".c-change-requests__action--back button")
 
     def check_request_title(self):
+        self.header.with_(timeout=150).wait_until(be.visible)
         self.header.hover().should(have.exact_text(Titles.CHANGE_OCCUPATION_REQUEST))
         return self
 

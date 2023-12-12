@@ -25,7 +25,7 @@ def login(user: User, service: Service):
 
     # login in UI
     qiwa.login_as_user(lo_sc_agent.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_sc_agent.name).change_local(Language.EN)
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
         .set_search_by(SearchingType.ID, booking_id) \
@@ -78,7 +78,7 @@ def test_if_establishment_not_included_in_nitaqat():
 
     # validation on the UI
     qiwa.login_as_user(lo_sc_nitaqat_not_included.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_sc_nitaqat_not_included.name).change_local(Language.EN)
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_company_account_with_sequence_number(lo_sc_nitaqat_not_included.sequence_number)
     qiwa.dashboard_page.wait_dashboard_page_to_load()
 
@@ -110,7 +110,7 @@ def test_if_establishment_has_red_nitaqat():
 
     # validation on the UI
     qiwa.login_as_user(lo_sc_red_nitaqat.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_sc_red_nitaqat.name).change_local(Language.EN)
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_company_account_with_sequence_number(lo_sc_red_nitaqat.sequence_number)
     qiwa.dashboard_page.wait_dashboard_page_to_load()
 

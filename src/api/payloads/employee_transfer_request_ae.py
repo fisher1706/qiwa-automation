@@ -37,7 +37,7 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor: 
                     LaborersDetailsItem=LaborersDetailsItem(
                         LaborerDetails=LaborerDetails(
                             LaborerName="",
-                            LaborerIdNo=laborer.login_id,
+                            LaborerIdNo=laborer.personal_number,
                             LaborerNationality=LaborerNationality(
                                 Code="340",
                                 NameAr="",

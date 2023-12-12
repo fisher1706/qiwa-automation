@@ -13,7 +13,7 @@ class EmployeeTransferApi:
         self.url_prepare_laborer_for_et_request = "http://192.168.168.29:5000"
 
     @allure.step
-    def post_prepare_laborer_for_et_request(self, laborer_id: int = laborer.login_id):
+    def post_prepare_laborer_for_et_request(self, laborer_id: int = laborer.personal_number):
         response = self.client.post(
             url=self.url_prepare_laborer_for_et_request,
             endpoint="/employeeTransfer/prepareLaborerForETrequest",

@@ -7,10 +7,7 @@ import config
 import src
 from data.dedicated.models.services import Service
 from data.dedicated.models.user import User
-from data.shareable.saudization_certificate.saudi_certificate import (
-    AppointmentStatus,
-    SaudiEstValidation,
-)
+from data.shareable.saudization_certificate.saudi_certificate import SaudiEstValidation
 from src.api.clients.ibm import ibm_api
 from src.api.constants.auth import CLIENT_ID, CLIENT_SECRET, HEADERS
 from src.api.constants.change_occupation import NonEligibilityReasons
@@ -21,11 +18,6 @@ from src.api.models.ibm.getworkpermitrequests import IBMWorkPermitRequestList
 from src.api.models.ibm.root import IBMResponse, IBMResponseData
 from src.api.models.ibm.usereligibleservices import ResponseUserEligibleServices
 from src.api.payloads.ibm.createnewappointment import Body, Header
-from src.api.payloads.ibm.getchangeoccupationlaborerslist import (
-    GetChangeOccupationLaborersListBody,
-    GetChangeOccupationLaborersListRq,
-    GetChangeOccupationLaborersListRqPayload,
-)
 from src.api.payloads.ibm.getusereligibleservices import (
     GetUserEligibleServicesRq,
     GetUserEligibleServicesRqBody,
@@ -132,8 +124,7 @@ class IBMApiController:
         )
         return json_model[IBMServicesResponse.SEARCH_CHANGE_OCCUPATION]
 
-    @staticmethod
-    def get_appointment_id(user: User, service: Service) -> int:
+    def get_appointment_id(self, user: User, service: Service) -> int:
         response = ibm_api.create_new_appointment(user, service)
         try:
             return response["CreateNewAppointmentRs"]["Body"]["AppointmentId"]
@@ -141,6 +132,7 @@ class IBMApiController:
             pytest.fail(
                 response["CreateNewAppointmentRs"]["Header"]["ResponseStatus"]["EnglishMsg"]
             )
+        return 0
 
     def get_first_unrelated_occupation(self, economic_activity_id: str) -> int:
         headers = HEADERS
@@ -154,28 +146,7 @@ class IBMApiController:
         return response.json()["occupationsList"][0]["descriptionAr"]
 
     def get_first_expected_employee(self, user: User) -> str:
-        header = Header(
-            TransactionId="0",
-            RequestTime="2019-10-10 00:00:00.555",
-            ServiceCode="GCOLL001",
-        ).dict(exclude_none=True)
-        body = GetChangeOccupationLaborersListBody(
-            LaborOfficeId=user.labor_office_id,
-            SequenceNumber=user.sequence_number,
-            PageSize=5,
-            PageIndex=1,
-        )
-        payload = GetChangeOccupationLaborersListRqPayload(
-            GetChangeOccupationLaborersListRq=GetChangeOccupationLaborersListRq(
-                Header=header, Body=body
-            )
-        )
-        response = self.client.post(
-            url=self.url,
-            endpoint=self.route + "/chgoccupation/getchangeoccupationlaborerslist",
-            headers=HEADERS,
-            json=payload.dict(),
-        )
+        response = ibm_api.get_change_occupation_laborers_list(user)
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         laborers_list_details = response.json()["GetChangeOccupationLaborersListRs"]["Body"][
             "LaborersList"
@@ -292,6 +263,26 @@ class IBMApiController:
         return ibm_api.get_establishment_information(employer)["GetEstablishmentInformationRs"][
             "Body"
         ]["EstablishmentDetails"]["EstablishmentId"]
+
+    def get_request_numbers(self, user: User, status_id: int = 3) -> list | None:
+        response = ibm_api.get_laborers_co_requests(user, status_id)
+
+        change_occupation_item = (
+            response.get("GetLaborersCORequestsRs", {})
+            .get("Body", {})
+            .get("ChangeOccupationList", {})
+            .get("ChangeOccupationItem")
+        )
+
+        if isinstance(change_occupation_item, dict):
+            return [change_occupation_item.get("RequestInformation", {}).get("RequestNumber")]
+        elif isinstance(change_occupation_item, list):
+            return [
+                request_number.get("RequestInformation", {}).get("RequestNumber")
+                for request_number in change_occupation_item
+            ]
+
+        return None
 
 
 ibm_api_controller = IBMApiController()
