@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.contract_details import (
     ContractDetails,
@@ -53,7 +55,9 @@ class ContractManagementActions:
         self.fill_employee_details()
         qiwa.contract_management_page.click_btn_next_step()
         self.fill_contract_details(laborer.transfer_type)
-        qiwa.contract_management_page.click_btn_next_step().select_terms_checkbox().click_btn_next_step()
+        qiwa.contract_management_page.click_btn_next_step()
+        time.sleep(1)
+        qiwa.contract_management_page.select_terms_checkbox().click_btn_next_step()
 
 
 contract_management_actions = ContractManagementActions()
