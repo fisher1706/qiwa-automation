@@ -12,6 +12,7 @@ from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.transfer_type import TransferType
 from src.ui.qiwa import qiwa
 from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -38,6 +39,7 @@ class ContractManagementActions:
 
     def fill_contract_details(self, transfer_type: TransferType) -> ContractManagementActions:
         contract_details = ContractDetails()
+        scroll_into_view_if_needed(qiwa.contract_management_page.field_job_title_en)
 
         if transfer_type.code != type_4.code:
             qiwa.contract_management_page.fill_field_occupation(contract_details.occupation)
@@ -55,9 +57,7 @@ class ContractManagementActions:
         self.fill_employee_details()
         qiwa.contract_management_page.click_btn_next_step()
         self.fill_contract_details(laborer.transfer_type)
-        qiwa.contract_management_page.click_btn_next_step()
-        time.sleep(1)
-        qiwa.contract_management_page.select_terms_checkbox().click_btn_next_step()
+        qiwa.contract_management_page.click_btn_next_step().select_terms_checkbox().click_btn_next_step()
 
 
 contract_management_actions = ContractManagementActions()
