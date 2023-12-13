@@ -15,7 +15,10 @@ from data.user_management.user_management_users import (
     owner_account,
     user_with_active_subscription,
     user_with_expired_subscription,
+    user_with_expired_subscription_always,
+    user_with_terminated_subscription,
     user_without_subscription,
+    user_without_subscription_always,
 )
 
 
@@ -273,6 +276,12 @@ class SelfSubscriptionData:
         ("without", user_without_subscription),
     ]
 
-    expired_terminated_subscription = [
+    expired_subscription = [
         ("expired", user_with_expired_subscription),
+    ]
+
+    all_users = [
+        ("active", user_with_active_subscription),
+        ("without", user_without_subscription_always),
+        ("expired", user_with_expired_subscription_always),
     ]

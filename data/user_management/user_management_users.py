@@ -160,16 +160,10 @@ user_with_active_subscription = User(
 
 user_with_expired_subscription = User(
     personal_number="1013051097",
+    user_id=2213978,
     labor_office_id=25,
     sequence_number=1769868,
     unified_number_id=1849511,
-)
-
-user_with_terminated_subscription = User(
-    personal_number="1039949845",
-    user_id=1644420,
-    labor_office_id=8,
-    sequence_number=1837074,
 )
 
 user_without_subscription = User(
@@ -177,4 +171,27 @@ user_without_subscription = User(
     labor_office_id=1,
     sequence_number=66754,
     unified_number_id=151472,
+)
+
+user_without_subscription_always = User(
+    personal_number="1018901262",
+    labor_office_id=31,
+    sequence_number=13021,
+    unified_number_id=379710,
+)
+
+user_with_expired_subscription_always = User(
+    personal_number="1061883045",
+    user_id=457665,
+    labor_office_id=9,
+    sequence_number=1950803,
+    unified_number_id=1688203,
+)
+
+user_with_terminated_subscription = User(
+    personal_number="1000531473",
+    user_id=2175974,
+    labor_office_id=15,
+    sequence_number=27600,
+    unified_number_id=187787,
 )

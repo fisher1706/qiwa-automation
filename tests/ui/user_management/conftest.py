@@ -1,6 +1,7 @@
-import pytest
+from sqlalchemy.exc import IntegrityError
 
 from data.dedicated.models.user import User
+from data.user_management import user_management_data
 from src.api.app import QiwaApi
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from src.database.actions.user_management_db_actions import delete_subscription
@@ -49,3 +50,14 @@ def prepare_data_for_add_access_to_company(owner: User, qiwa_api: QiwaApi, users
     subscription_cookie = get_subscription_cookie(owner)
     for user in users:
         prepare_data_for_free_subscription(qiwa_api, subscription_cookie, user)
+
+
+def expire_user_subscription(user: User):
+    try:
+        QiwaApi().user_management.expiry_user_subscription(
+            personal_number=user.personal_number,
+            unified_number=user.unified_number_id,
+            expiry_date=user_management_data.PAST_EXPIRY_DATE,
+        )
+    except (IntegrityError, AttributeError):
+        pass

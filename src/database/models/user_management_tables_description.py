@@ -61,6 +61,7 @@ class UMSubscriptions(Base):
     personal_number = Column("FK_Idno", VARCHAR(20), primary_key=True)
     subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
     expiry_date = Column("ExpireDate", DateTime)
+    modified_on = Column("ModifiedOn", DateTime)
     requester_id_number = Column("RequesterIdNo", NVARCHAR(150))
 
 
