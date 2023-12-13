@@ -48,9 +48,7 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor_i
                             TransferTypeId=laborer.transfer_type.code,
                         ),
                         SponsorDetails=SponsorDetails(
-                            SponsorIdNo=sponsor_id
-                            if isinstance(sponsor_id, User)
-                            else 0,
+                            SponsorIdNo=sponsor_id if isinstance(sponsor_id, User) else 0,
                             SponsorName="",
                         ),
                         SourceDetails=SourceDetails(
