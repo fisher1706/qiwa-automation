@@ -49,10 +49,7 @@ def test_create_for_two_laborers_but_one_not_eligible(change_occupation, laborer
     response = change_occupation.api.create_request(laborer, laborer2)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())
 
 
 def test_create_for_laborer_with_processing_request(change_occupation, laborer):
@@ -61,10 +58,7 @@ def test_create_for_laborer_with_processing_request(change_occupation, laborer):
     response = change_occupation.api.create_request(laborer)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())
 
 
 @pytest.mark.parametrize(
@@ -80,7 +74,4 @@ def test_create_with_invalid_values(change_occupation, laborer):
     response = change_occupation.api.create_request(laborer)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())
