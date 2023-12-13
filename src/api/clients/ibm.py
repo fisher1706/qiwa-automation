@@ -57,6 +57,11 @@ class IbmApi:
         return response.json()
 
     def create_new_contract(self, user: User, laborer: Laborer) -> None:
+        # TODO(dp): Do we need to separate how we update user data?
+        establishment_information = self.get_establishment_information(user)['GetEstablishmentInformationRs']['Body']['EstablishmentDetails']
+        user.unified_number_id = establishment_information['UnifiedNumberId']
+        user.entity_id = establishment_information['EntityId']
+
         response = self.client.post(
             url=self.url,
             endpoint="/takamol/staging/contractmanagement/createnewcontract",
