@@ -300,7 +300,7 @@ def test_self_subscription_user_with_active_subscription(user_type, user):
 @allure.step("Test renew expired subscription")
 @case_id(41781, 41800, 43159)
 @pytest.mark.parametrize("user_type, user", SelfSubscriptionData.expired_subscription)
-def test_update_expired_subscription(user_type, user):
+def test_update_self_expired_subscription(user_type, user):
     expire_user_subscription(user)
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
@@ -317,7 +317,7 @@ def test_update_expired_subscription(user_type, user):
 @allure.step("Test possibility open <Renew expired page>")
 @case_id(41795, 41798)
 @pytest.mark.parametrize("user_type, user", SelfSubscriptionData.all_users)
-def test_possibility_open_renew_expired_page(user_type, user):
+def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
