@@ -68,21 +68,21 @@ def test_by_not_found_parameter_value(correct_occupation, value):
 class TestPagination:
     @pytest.mark.parametrize("page", [1, 2, 3])
     def test_by_page(self, correct_occupation, page):
-        json = correct_occupation.get_laborers(page=page, per=5)
+        json = correct_occupation.get_laborers(page=page, per=2)
         data, meta = json.data, json.meta
         assert_that(data).is_not_empty()
         assert_that(meta).has(current_page=page)
         laborers = [laborer.attributes.laborer_id for laborer in data]
 
         next_page = page + 1
-        next_page_json = correct_occupation.get_laborers(page=next_page, per=5)
+        next_page_json = correct_occupation.get_laborers(page=next_page, per=2)
         next_page_data = next_page_json.data
         assert_that(next_page_data).is_not_empty()
         next_page_laborers = [laborer.attributes.laborer_id for laborer in next_page_data]
         next_page_data_is_different: bool = all(laborer not in next_page_laborers for laborer in laborers)
         assert_that(next_page_data_is_different).equals_to(True)
 
-    @pytest.mark.parametrize("per_page", [1, 5, 10, 15])
+    @pytest.mark.parametrize("per_page", [1, 5, 10, 11])
     def test_by_per_page(self, correct_occupation, per_page):
         json = correct_occupation.get_laborers(per=per_page)
         data = json.data

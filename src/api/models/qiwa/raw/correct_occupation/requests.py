@@ -21,3 +21,8 @@ class OccupationCorrectionRequestAttributes(QiwaBaseModel):
     current_occupation: Item
     new_occupation: Item
     status: Item
+
+
+class SubmitOccupationResponseAttributes(QiwaBaseModel):
+    id: int
+    request_id: str

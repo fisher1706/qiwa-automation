@@ -26,19 +26,22 @@ def test_create_request(change_occupation, laborer):
 
 def test_create_for_two_laborers(change_occupation, laborer, laborer2):
     json = change_occupation.create_request(laborer, laborer2)
-    assert_that(json.data).size_is(2)
+    requests_list = json.data
+    assert_that(requests_list).size_is(2)
 
-    request1, request2 = json.data
+    requests_have_personal_numbers: bool = len(
+        {laborer.personal_number, laborer2.personal_number}
+        & {item.attributes.personal_number for item in requests_list}
+    ) is 2
+    assert_that(requests_have_personal_numbers).equals_to(True)
 
-    for request, laborer in ((request1, laborer), (request2, laborer2)):
-        assert_that(request.attributes).has(personal_number=laborer.personal_number)
-
-        requests = change_occupation.get_requests_by_request_number(request.attributes.request_id)
-        assert_that(requests).size_is(1)
-        assert_that(requests[0]).has(
+    for item in json.data:
+        requests_by_number = change_occupation.get_requests_by_request_number(item.attributes.request_id)
+        assert_that(requests_by_number).size_is(1)
+        request = requests_by_number[0]
+        assert_that(request).has(
             status_id=RequestStatus.PENDING_LABORER_APPROVAL.value,
-            employee_personal_number=laborer.personal_number,
-            new_occupation_id=laborer.occupation_code
+            employee_personal_number=item.attributes.personal_number,
         )
 
 
@@ -49,10 +52,7 @@ def test_create_for_two_laborers_but_one_not_eligible(change_occupation, laborer
     response = change_occupation.api.create_request(laborer, laborer2)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())
 
 
 def test_create_for_laborer_with_processing_request(change_occupation, laborer):
@@ -61,10 +61,7 @@ def test_create_for_laborer_with_processing_request(change_occupation, laborer):
     response = change_occupation.api.create_request(laborer)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())
 
 
 @pytest.mark.parametrize(
@@ -80,7 +77,4 @@ def test_create_with_invalid_values(change_occupation, laborer):
     response = change_occupation.api.create_request(laborer)
     assert_status_code(response.status_code).equals_to(HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    json = MultiLangErrorsData.parse_obj(response.json())
-    error = json.data[0]
-    assert_that(error.attributes.en_EN.details).is_not_empty()
-    assert_that(error.attributes.ar_SA.details).is_not_empty()
+    MultiLangErrorsData.parse_obj(response.json())

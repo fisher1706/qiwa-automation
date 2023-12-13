@@ -7,6 +7,7 @@ from src.api.models.qiwa.raw.correct_occupation.correct_occupations import (
 from src.api.models.qiwa.raw.correct_occupation.laborers import LaborerAttributes
 from src.api.models.qiwa.raw.correct_occupation.requests import (
     OccupationCorrectionRequestAttributes,
+    SubmitOccupationResponseAttributes,
 )
 
 
@@ -26,3 +27,9 @@ class CorrectOccupation(QiwaBaseModel):
     id: str
     type: Literal["occupation"]
     attributes: CorrectOccupationAttributes
+
+
+class SubmitOccupationResponse(QiwaBaseModel):
+    id: str
+    type: Literal["submit-occupation-response"]
+    attributes: SubmitOccupationResponseAttributes
