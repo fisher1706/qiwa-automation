@@ -315,7 +315,7 @@ def test_update_self_expired_subscription(user_type="expired", user=owner_with_e
         .check_db_subscription_date(user)
 
 
-@allure.step("Test possibility open <Renew expired page>")
+@allure.step("Test possibility open 'Renew expired page'")
 @case_id(41795, 41798)
 @pytest.mark.parametrize("user_type, user", SelfSubscriptionData.all_users)
 def test_possibility_open_renew_expired_page_self_subscription(user_type, user):

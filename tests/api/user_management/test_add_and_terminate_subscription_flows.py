@@ -58,7 +58,7 @@ def test_free_subscription_flow():
 
 
 @allure.title("E2e terminate company from subscription to user")
-@case_id(5712857128)
+@case_id(57128)
 def test_terminate_company_from_subscription():
     owner = owner_account
     subscribed_user = delegator_for_add_and_terminate_subscription_flow
