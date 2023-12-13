@@ -54,6 +54,7 @@ def test_type_12_current_sponsor(status):
     individual_actions.approve_request()
 
     qiwa.header.click_on_menu_individuals().click_on_logout()
+    qiwa.login_page.wait_login_page_to_load()
 
     employee_transfer_actions.navigate_to_individual(current_sponsor_type_12.personal_number)
 
