@@ -16,6 +16,9 @@ from src.api.payloads.cancelchgoccrequest import (
 from src.api.payloads.change_occupation_laborers_list import (
     change_occupation_laborers_list_payload,
 )
+from src.api.payloads.checkandvatransemp import (
+    check_and_validate_transferred_employee_payload,
+)
 from src.api.payloads.contract_details import contract_details_payload
 from src.api.payloads.employee_transfer_request_ae import (
     employee_transfer_request_ae_payload,
@@ -56,11 +59,22 @@ class IbmApi:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
+    def check_and_validate_transferred_employee(self, personal_number: str) -> dict:
+        response = self.client.post(
+            url=self.url,
+            endpoint=self.route + "/changesponsor/checkandvatransemp",
+            headers=HEADERS,
+            json=check_and_validate_transferred_employee_payload(personal_number),
+        )
+        return response.json()
+
     def create_new_contract(self, user: User, laborer: Laborer) -> None:
-        # TODO(dp): Do we need to separate how we update user data?
-        establishment_information = self.get_establishment_information(user)['GetEstablishmentInformationRs']['Body']['EstablishmentDetails']
-        user.unified_number_id = establishment_information['UnifiedNumberId']
-        user.entity_id = establishment_information['EntityId']
+        # TODO(dp): Do we need to separate updating of this test data?
+        establishment_information = self.get_establishment_information(user)[
+            "GetEstablishmentInformationRs"
+        ]["Body"]["EstablishmentDetails"]
+        user.unified_number_id = establishment_information["UnifiedNumberId"]
+        user.entity_id = establishment_information["EntityId"]
 
         response = self.client.post(
             url=self.url,
@@ -94,11 +108,18 @@ class IbmApi:
     def create_employee_transfer_request_ae(
         self, user: User, laborer: Laborer, sponsor: User = None
     ) -> None:
+        # TODO(dp): Do we need to separate updating of this test data?
+        sponsor_id = None
+        if sponsor:
+            sponsor_id = self.check_and_validate_transferred_employee(
+                str(laborer.personal_number)
+            )["CheckandValidateTransferredEmployeeRs"]["Body"]["SponsorDetails"]["SponsorIdNo"]
+
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitcsrequests",
             headers=HEADERS,
-            json=employee_transfer_request_ae_payload(user, laborer, sponsor),
+            json=employee_transfer_request_ae_payload(user, laborer, int(sponsor_id)),
         )
         response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
         if response["Status"].lower() == "error":
