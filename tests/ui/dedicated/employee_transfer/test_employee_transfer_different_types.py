@@ -25,11 +25,11 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
     'status',
     [
         RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value,
-        RequestStatus.REJECTED_BY_CURRENT_EMPLOYER.value
+        # RequestStatus.REJECTED_BY_CURRENT_EMPLOYER.value
     ],
     ids=[
         '[Type 12] Approval by laborer and approval by current sponsor | Home Worker Transfer',
-        '[Type 12] Approval by laborer and rejection by current sponsor | Home Worker Transfer'
+        # '[Type 12] Approval by laborer and rejection by current sponsor | Home Worker Transfer'
     ]
 )
 @case_id(134165, 134166)

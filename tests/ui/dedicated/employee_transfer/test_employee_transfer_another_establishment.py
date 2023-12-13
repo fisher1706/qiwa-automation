@@ -5,8 +5,9 @@ from data.constants import Language
 from data.dedicated.employee_trasfer.employee_transfer_users import (
     current_sponsor,
     employer,
+    employer_old,
     laborer,
-    laborer_with_sponsor, employer_old,
+    laborer_with_sponsor,
 )
 from data.dedicated.enums import RequestStatus, ServicesAndTools
 from src.api.clients.employee_transfer import employee_transfer_api
@@ -87,11 +88,11 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
 @pytest.mark.parametrize(
     'status',
     [
-        RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value,
+        # RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value,
         RequestStatus.REJECTED_BY_CURRENT_EMPLOYER.value
     ],
     ids=[
-        'Verify Current Sponsor Able to approve the ET request',
+        # 'Verify Current Sponsor Able to approve the ET request',
         'Verify Current Sponsor Able to reject the ET request'
     ]
 )

@@ -6,7 +6,8 @@ from data.constants import Language
 from data.dedicated.employee_trasfer.employee_transfer_users import (
     employer,
     laborer_between_my_establishments,
-    laborer_between_my_establishments_quota, )
+    laborer_between_my_establishments_quota,
+)
 from data.dedicated.enums import RequestStatus, ServicesAndTools, TransferType
 from src.api.clients.employee_transfer import employee_transfer_api
 from src.api.clients.ibm import ibm_api
