@@ -13,12 +13,12 @@ from data.user_management.user_management_users import (
     establishment_type_four,
     establishment_type_one,
     owner_account,
-    user_with_active_subscription,
-    user_with_expired_subscription,
-    user_with_expired_subscription_always,
+    owner_with_active_subscription,
+    owner_with_expired_subscription,
+    owner_with_expired_subscription_always,
+    owner_without_subscription,
+    owner_without_subscription_always,
     user_with_terminated_subscription,
-    user_without_subscription,
-    user_without_subscription_always,
 )
 
 
@@ -269,19 +269,19 @@ class SubscriptionStatuses:
 @dataclasses.dataclass
 class SelfSubscriptionData:
     active_subscription = [
-        ("active", user_with_active_subscription),
+        ("active", owner_with_active_subscription),
     ]
 
     without_subscription = [
-        ("without", user_without_subscription),
+        ("without", owner_without_subscription),
     ]
 
     expired_subscription = [
-        ("expired", user_with_expired_subscription),
+        ("expired", owner_with_expired_subscription),
     ]
 
     all_users = [
-        ("active", user_with_active_subscription),
-        ("without", user_without_subscription_always),
-        ("expired", user_with_expired_subscription_always),
+        ("active", owner_with_active_subscription),
+        ("without", owner_without_subscription_always),
+        ("expired", owner_with_expired_subscription_always),
     ]
