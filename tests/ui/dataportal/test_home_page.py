@@ -148,6 +148,7 @@ def test_chart_dropdown(arg):
 
 
 @allure.title('Create Subscribe request with English loc')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 @case_id(5960, 5962)
 def test_en_subscribe_request():
     data_portal.open_home_page()
@@ -155,6 +156,7 @@ def test_en_subscribe_request():
 
 
 @allure.title('Create Subscribe request with Arabic loc')
+@pytest.mark.skip('Skipped due to https://employeesgate.atlassian.net/browse/LR-2763')
 @case_id(5961, 5962)
 def test_ar_subscribe_request():
     data_portal.open_home_page()

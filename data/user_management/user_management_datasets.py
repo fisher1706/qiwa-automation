@@ -62,7 +62,7 @@ class ArabicTranslations:
     privileges = "الصلاحيات"
     actions = "الإجراءات"
     establishment_delegator_details_breadcrumbs = "تفاصيل مفوض المنشأة"
-    add_access_btn = "أضف الوصول"
+    add_access_btn = "إضافة الصلاحية"
     title_on_add_access_modal = "اختيار صلاحيات المستخدم على المنشآت المختارة"
     selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
     all_privileges = "جميع الصلاحيات"
@@ -77,9 +77,9 @@ class ArabicTranslations:
     issue_working_permits_description = (
         "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
     )
-    edit_user_privileges_btn = "حرر امتيازات المستخدم"
+    edit_user_privileges_btn = "تعديل صلاحيات المستخدم"
     title_on_edit_privileges_modal = "تعديل صلاحيات المستخدم على المنشأة"
-    remove_access_btn = "حذف الصلاحية"
+    remove_access_btn = "إزالة المستخدم"
     save_and_close_btn = "حفظ وإغلاق"
 
 

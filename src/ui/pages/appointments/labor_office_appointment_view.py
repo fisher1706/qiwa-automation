@@ -200,9 +200,9 @@ class LaborOfficeAppointmentsViewPage:
         self.print_btn.should(be.visible)
 
     @allure.step("Verify general info row text and values exists")
-    def verify_general_info_row(self):
+    def verify_general_info_row(self, info=Av.INFO_ROW_TEXT):
         self.verify_pagination(Av.PAGINATION, self.language)
-        self.verify_info_row_text(Av.INFO_ROW_TEXT, self.language)
+        self.verify_info_row_text(info, self.language)
 
     @allure.step("Verify general table text and valuers exists")
     def verify_general_table(self):

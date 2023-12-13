@@ -55,8 +55,26 @@ class Footer:
     CONTACT_US_EN = "Contact us"
     CONTACT_US_AR = "تواصل معنا"
 
-    SECTORS_ITEM_EN = None
-    SECTORS_ITEM_AR = None
+    SECTORS_ITEM_EN = [
+        "Accommodation, Leisure, Tourism",
+        "Agriculture & Animal Production",
+        "Air & Sea Transportation",
+        "Basic goods and fuel",
+        "Boys Schools, Boys and Girls School Complexes",
+        "Business Services",
+        "Catering",
+        "Cleaning Workers for Homes",
+    ]
+    SECTORS_ITEM_AR = [
+        "إسناد الموظفين السعوديين",
+        "الإنتاج الزراعي والحيواني وخدماتها واندية الفروسية",
+        "الايواء والترفيه والسياحة",
+        "البنية التحتية لتقنية المعلومات",
+        "البنية التحتية للاتصالات",
+        "التشغيل والصيانة",
+        "التشغيل والصيانة لتقنية المعلومات",
+        "التشغيل والصيانة للاتصالات",
+    ]
 
 
 @dataclasses.dataclass
@@ -69,13 +87,45 @@ class Header:
     SECTORS_TITLE_EN = "Sectors"
     SECTORS_TITLE_AR = "نشاط اقتصادي"
 
-    ECONOMIC_ACTIVITIES_EN = "Economic Activities"
-    ECONOMIC_ACTIVITIES_AR = "الأنشطة الاقتصادية"
-    NITAQAT_ACTIVITIES_EN = "Nitaqat Activities"
-    NITAQAT_ACTIVITIES_AR = "الأنشطة حسب تصنيف نطاقات"
+    ISIC_4_CLASSIFICATION_EN = "ISIC 4 classification"
+    ISIC_4_CLASSIFICATION_AR = "تصنيف ISIC4"
+    NITAQAT_CLASSIFICATION_EN = "Nitaqat classification"
+    NITAQAT_CLASSIFICATION_AR = "تصنيف نطاقات"
 
-    SECTORS_ITEM_EN = None
-    SECTORS_ITEM_AR = None
+    SECTORS_ITEM_EN = [
+        "Agriculture, Forestry and Fishing",
+        "Mining and quarrying",
+        "Manufacturing",
+        "Electricity, gas, steam and air conditioning supply",
+        "Water supply; sewerage, waste management and remediation activities",
+        "Construction",
+        "Wholesale and retail trade; repair of motor vehicles and motorcycles",
+        "Transportation and storage",
+        "Accommodation and food services activities",
+        "Information and Communication",
+        "Financial and insurance activities",
+        "Real estate activities",
+        "Professional, scientific and technical activities",
+        "Administrative and support service activities",
+        "Public administration and defense; compulsory social security",
+    ]
+    SECTORS_ITEM_AR = [
+        "الباب ( أ ): الزراعة والحراجة وصيد الأسماك",
+        "الباب ( ب ): التعدين واستغلال المحاجر",
+        "الباب ( ج ): الصناعة التحويلية",
+        "الباب ( د ) : إمدادات الكهرباء والغاز والبخار وتكييف الهواء",
+        "الباب ( هـ ): إمدادات المياه وأنشطة الصرف الصحي وإدارة النفايات ومعالجتها",
+        "الباب (و):التشييد",
+        "الباب ( ز ): تجارة الجملة والتجزئة وإصلاح المركبات ذات المحركات والدرجات النارية",
+        "الباب ( ح ) : النقل والتخزين",
+        "الباب ( ط ): أنشطة خدمات الاقامة والطعام",
+        "الباب ( ي ) : المعلومات والاتصالات",
+        "الباب ( ك ) : الأنشطة المالية وأنشطة التأمين",
+        "الباب ( ل ): الأنشطة العقارية",
+        "الباب ( م ): الأنشطة المهنية والعلمية والتقنية",
+        "الباب ( ن ) : الخدمات الإدارية وخدمات الدعم",
+        "الباب ( س ) : الإدارة العامة والدفاع , الضمان الاجتماعي الالزامي",
+    ]
 
 
 @dataclasses.dataclass
@@ -92,8 +142,8 @@ class HomePageHero:
     )
     MARKET_OVERVIEW_HERO_AR = "نظرة عامة على سوق العمل"
 
-    BLOCK_DATA_HERO_1_EN = "Growth of labor market for last 5 years"
-    BLOCK_DATA_HERO_1_AR = "النمو في سوق العمل خلال آخر خمس سنوات"
+    BLOCK_DATA_HERO_1_EN = "Growth of labor market for last 2 years"
+    BLOCK_DATA_HERO_1_AR = "النمو في سوق العمل خلال آخر سنتين"
     BLOCK_DATA_HERO_2_EN = "Number Of Employees"
     BLOCK_DATA_HERO_2_AR = "إجمالي الموظفين"
     BLOCK_DATA_HERO_3_EN = "Number Of Establishments"
@@ -325,7 +375,7 @@ class AboutUs:
     ]
     BENEFITS_CARD_TITLE_AR = ["رؤى تطلعيّة", "تحليل الاتجاه", "بيانات سوق العمل", "أرقام تثق بها"]
     BENEFITS_CARD_DESCRIPTION_EN = [
-        "50 indicators for different segments. Accessible and actionable insights with"
+        "50+ indicators for different segments. Accessible and actionable insights with"
         " key takeaways, graphs, and reports",
         "Trend analysis and forecasting based on historical data.",
         "Comprehensive labor market overview.",
@@ -390,8 +440,8 @@ class AboutUs:
     ]
     QIWA_VISIT_TITLE_EN = "Visit Qiwa:"
     QIWA_VISIT_TITLE_AR = "قم بزيارة منصة قوى"
-    QIWA_VISIT_LINK_EN = ["Website", "LinkedIn", "Twitter"]
-    QIWA_VISIT_LINK_AR = ["الموقع الإلكتروني", "LinkedIn", "Twitter"]
+    QIWA_VISIT_LINK_EN = ["Website", "LinkedIn", "X"]
+    QIWA_VISIT_LINK_AR = ["الموقع الإلكتروني", "LinkedIn", "X"]
 
 
 @dataclasses.dataclass
@@ -402,11 +452,11 @@ class SubscribeBlock:
         "Keep up to date with our latest news and analysis by subscribing"
         " to our regular newsletter"
     )
-    DESCRIPTION_AR = "سجل بريدك الإلكتروني لمتابعة التحديثات والتقارير الجديدة"
+    DESCRIPTION_AR = "اشترك في النشرة البريدية لمتابعة التحديثات والتقارير الجديدة"
     PLACEHOLDER_EN = "Enter your e-mail address"
     PLACEHOLDER_AR = "ادخل بريدك الإلكتروني"
     BUTTON_EN = "Subscribe"
-    BUTTON_AR = "تسجيل"
+    BUTTON_AR = "اشتراك"
     SUCCESS_MESSAGE_EN = (
         "You have successfully subscribed to our newsletter!"
         " Thank you for joining our community."
@@ -422,13 +472,15 @@ class AllSectors:
     HERO_TITLE_AR = "نشاط اقتصادي"
     SEARCH_PLACEHOLDER_EN = "Search"
     SEARCH_PLACEHOLDER_AR = "بحث"
-    SEARCHING_CRITERIA = "ال"
+    SEARCHING_CRITERIA_EN = "te"
+    SEARCHING_CRITERIA_AR = "ال"
     SEARCH_ITEMS_EN = [
-        "أندية الخيل والفروسية",
-        "أنشطة البريد",
-        "إسناد الموظفين السعوديين",
-        "الإنتاج الزراعي والحيواني وخدماتها واندية الفروسية",
-        "الايواء والترفيه والسياحة",
+        "Activities of extraterritorial organizations and bodies",
+        "Activities of households as employers; undifferentiated goods- and servicesproducing"
+        " activities of households for own use",
+        "Arts, entertainment and recreation",
+        "Electricity, gas, steam and air conditioning supply",
+        "Professional, scientific and technical activities",
     ]
 
     SEARCH_ITEMS_AR = [
@@ -441,28 +493,144 @@ class AllSectors:
     NO_RESULTS_EN = ["No results found"]
     NO_RESULTS_AR = ["لم يتم العثور على نتائج"]
 
-    ECONOMIC_ACTIVITIES_EN = "Economic Activities"
-    ECONOMIC_ACTIVITIES_AR = "الأنشطة الاقتصادية"
-    NITAQAT_ACTIVITIES_EN = "Nitaqat Activities"
-    NITAQAT_ACTIVITIES_AR = "الأنشطة حسب تصنيف نطاقات"
+    ISIC_4_CLASSIFICATION_EN = "ISIC 4 classification"
+    ISIC_4_CLASSIFICATION_AR = "تصنيف ISIC4"
+    NITAQAT_CLASSIFICATION_EN = "Nitaqat classification"
+    NITAQAT_CLASSIFICATION_AR = "تصنيف نطاقات"
     LOAD_MORE_SECTORS_EN = "Load more sectors"
     LOAD_MORE_SECTORS_AR = "عرض كل الأنشطة"
 
-    SECTORS_EN = None
-    SECTORS_AR = None
+    ISIC_4_SECTORS_EN = [
+        "Accommodation and food services activities",
+        "Activities of extraterritorial organizations and bodies",
+        "Activities of households as employers; undifferentiated goods- "
+        "and servicesproducing activities of households for own use",
+        "Administrative and support service activities",
+        "Agriculture, Forestry and Fishing",
+        "Arts, entertainment and recreation",
+        "Construction",
+        "Education",
+        "Electricity, gas, steam and air conditioning supply",
+        "Financial and insurance activities",
+        "Human health and social work activities",
+        "Information and Communication",
+        "Manufacturing",
+        "Mining and quarrying",
+        "Other service activities",
+        "Professional, scientific and technical activities",
+        "Public administration and defense; compulsory social security",
+        "Real estate activities",
+        "Transportation and storage",
+        "Water supply; sewerage, waste management and remediation activities",
+        "Wholesale and retail trade; repair of motor vehicles and motorcycles",
+    ]
+    NITAQAT_SECTORS_EN = [
+        "Accommodation, Leisure, Tourism",
+        "Agriculture & Animal Production",
+        "Air & Sea Transportation",
+        "Basic goods and fuel",
+        "Boys Schools, Boys and Girls School Complexes",
+        "Business Services",
+        "Catering",
+        "Cleaning Workers for Homes",
+        "Cleaning Workers for Offices",
+        "Coffee and Drinks",
+        "Communication Infrastructure",
+        "Communication Solutions",
+        "Construction & Cleaning",
+        "Construction Contracts for the Two Holy Mosques",
+        "Equestrian Clubs",
+        "Family Support Services",
+        "Farmers, fishermen and shepherds (private)",
+        "Fast Food and Ice Cream",
+        "Finance",
+        "Girls Schools, Kindergartens, Babysitting",
+        "Government cleaning contracts (part III)",
+        "Government construction contracts (part IV)",
+        "Higher Education Providers",
+        "Infected Farms",
+        "International Schools",
+        "IT Infrastructure",
+        "IT Solutions",
+        "Labs and Health Services",
+        "Ladies Goods, Sales and Repair of Mobiles",
+        "Land Transportation and stortage",
+        "Manufacturing",
+        "Mining, Energy, Utilities",
+    ]
 
-    """Explore by sector block"""
-    TITLE_EN = "Explore by sector"
-    TITLE_AR = "تصفح حسب النشاط الاقتصادي"
-    SECTORS_NAME_EN = [
-        "أندية الخيل والفروسية",
-        "أنشطة البريد",
+    ISIC_4_SECTORS_AR = [
+        "الباب ( س ) : الإدارة العامة والدفاع , الضمان الاجتماعي الالزامي",
+        "الباب ( أ ): الزراعة والحراجة وصيد الأسماك",
+        "الباب ( ب ): التعدين واستغلال المحاجر",
+        "الباب ( ج ): الصناعة التحويلية",
+        "الباب ( ح ) : النقل والتخزين",
+        "الباب ( د ) : إمدادات الكهرباء والغاز والبخار وتكييف الهواء",
+        "الباب ( ر ) : أنشطة الاسر المعيشية"
+        " التي تستخدم أفراداً وأنشطة الأسر المعيشية في إنتاج سلع وخدمات غير مميزة لإستعمالها الخاص",
+        "الباب ( ز ): تجارة الجملة والتجزئة وإصلاح المركبات ذات المحركات والدرجات النارية",
+        "الباب ( ش ) : المنظمات والهيئات غير الخاضعة للولاية القضائية الوطنية",
+        "الباب ( ص ) : الفنون والترفيه والتسلية",
+        "الباب ( ط ): أنشطة خدمات الاقامة والطعام",
+        "الباب ( ع ) : التعليم",
+        "الباب ( ف ) : أنشطة صحة الانسان والعمل الاجتماعي",
+        "الباب ( ق ) : أنشطة الخدمات الأخرى",
+        "الباب ( ك ) : الأنشطة المالية وأنشطة التأمين",
+        "الباب ( ل ): الأنشطة العقارية",
+        "الباب ( م ): الأنشطة المهنية والعلمية والتقنية",
+        "الباب ( ن ) : الخدمات الإدارية وخدمات الدعم",
+        "الباب ( هـ ): إمدادات المياه وأنشطة الصرف الصحي وإدارة النفايات ومعالجتها",
+        "الباب ( ي ) : المعلومات والاتصالات",
+        "الباب (و):التشييد",
+    ]
+
+    NITAQAT_SECTORS_AR = [
         "إسناد الموظفين السعوديين",
         "الإنتاج الزراعي والحيواني وخدماتها واندية الفروسية",
         "الايواء والترفيه والسياحة",
         "البنية التحتية لتقنية المعلومات",
         "البنية التحتية للاتصالات",
         "التشغيل والصيانة",
+        "التشغيل والصيانة لتقنية المعلومات",
+        "التشغيل والصيانة للاتصالات",
+        "التعليم العالي",
+        "التموين والاعاشة",
+        "الجملة والتجزئة",
+        "الخدمات الاجتماعية",
+        "الخدمات الشخصية",
+        "الخدمات الصحية",
+        "الخدمات المساندة للأسرة",
+        "السلع النسائية، بيع الهواتف المحمولة وصيانتها",
+        "الصناعات",
+        "المؤسسات المالية",
+        "المدارس الأجنبية",
+        "المزارع الموبؤة",
+        "المزارعين والصيادين والرعاة (خاصة)",
+        "المقاهي و محلات تقديم المشروبات",
+        "المناجم والطاقة وخدماتها",
+        "النقل البحري والجوي",
+        "النقل البري والتخزين",
+        "أندية الخيل والفروسية",
+        "أنشطة البريد",
+        "بيع المحروقات",
+        "تأجير خدمات العمالة المنزلية",
+        "تأجير خدمات عمالة المنشآت",
+        "حلول الاتصالات",
+        "حلول تقنية المعلومات",
+    ]
+
+    """Explore by sector block"""
+    TITLE_EN = "Explore by sector"
+    TITLE_AR = "تصفح حسب النشاط الاقتصادي"
+    SECTORS_NAME_EN = [
+        "Accommodation, Leisure, Tourism",
+        "Agriculture & Animal Production",
+        "Air & Sea Transportation",
+        "Basic goods and fuel",
+        "Boys Schools, Boys and Girls School Complexes",
+        "Business Services",
+        "Catering",
+        "Cleaning Workers for Homes",
     ]
     SECTORS_NAME_AR = [
         "إسناد الموظفين السعوديين",
@@ -518,32 +686,10 @@ class WorkforceChart:
 class Reports:
     TITLE_EN = "Reports"
     TITLE_AR = "التقارير"
-    TOPIC_TITLES_EN = ["Indicators", "Saudi Economy", "Economic research topic"]
-    TOPIC_TITLES_AR = ["Indicators ar", "Saudi Economy ar", "Economic research topic ar"]
-    TOPIC_DESCRIPTIONS_EN = [
-        "Market Overview",
-        "Employee Turnover - 2023",
-        "Employee Tenure - 2023",
-        "Workplace environment report - 2023",
-        "Establishments and labor structure report - 2023",
-        "Establishment size report - 2023",
-        "Disaggregating the Saudi Employment Rate into its components - 2023",
-        "Gender productivity in the Saudi economy - 2023",
-        "The seven level of Saudi unemployment - 2023",
-        "Establishment size report - 2023",
-    ]
-    TOPIC_DESCRIPTIONS_AR = [
-        "Market Overview",
-        "Employee Turnover - 2023",
-        "Employee Tenure - 2023",
-        "Workplace environment report - 2023",
-        "Establishments and labor structure report - 2023",
-        "Establishment size report - 2023",
-        "Disaggregating the Saudi Employment Rate into its components - 2023",
-        "Gender productivity in the Saudi economy - 2023",
-        "The seven level of Saudi unemployment - 2023",
-        "Establishment size report - 2023",
-    ]
+    TOPIC_TITLES_EN = "Indicators"
+    TOPIC_TITLES_AR = "المؤشرات"
+    TOPIC_DESCRIPTIONS_EN = "Market overview"
+    TOPIC_DESCRIPTIONS_AR = "نظرة عامة على سوق العمل"
 
 
 @dataclasses.dataclass
@@ -620,6 +766,9 @@ class Admin:
     CHART = "chart"
     IMAGE = "image"
     IMAGE_PARAGRAPH = "image-paragraph"
+    KPI = "kpi_chart"
+    KPI_PARAGRAPH = "kpi_chart_paragraph"
+    KEY_POINT_CARDS = "key_point_cards"
     NUMBER = "number"
     CURRENCY = "currency"
     PERCENTAGE = "percentage"
@@ -636,3 +785,9 @@ class Admin:
     ALIGN_CENTER = "Align center"
     ALIGN_JUSTIFY = "Justify"
     GOOGLE_LINK = "https://www.google.com/"
+    RIGHT = "right"
+    LEFT = "left"
+    PERCENTAGE_33 = ["33.33333", "33.33333", "33.33333"]
+    PERCENTAGE_66 = ["66.66", "66.66", "66.66"]
+    PERCENTAGE_100 = ["100", "100", "100"]
+    PERCENTAGE_MIX = ["33.33333", "66.66", "100"]

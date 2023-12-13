@@ -84,14 +84,14 @@ class HeaderData:
 
     en_services_data = (
         (HeaderBlock.VIEW_ALL_SECTORS, Header.VIEW_ALL_SECTORS_EN),
-        (HeaderBlock.ECONOMIC_ACTIVITIES, Header.ECONOMIC_ACTIVITIES_EN),
-        (HeaderBlock.NITAQAT_ACTIVITIES, Header.NITAQAT_ACTIVITIES_EN),
+        (HeaderBlock.ISIC_4_CLASSIFICATION, Header.ISIC_4_CLASSIFICATION_EN),
+        (HeaderBlock.NITAQAT_CLASSIFICATION, Header.NITAQAT_CLASSIFICATION_EN),
     )
 
     ar_services_data = (
         (HeaderBlock.VIEW_ALL_SECTORS, Header.VIEW_ALL_SECTORS_AR),
-        (HeaderBlock.ECONOMIC_ACTIVITIES, Header.ECONOMIC_ACTIVITIES_AR),
-        (HeaderBlock.NITAQAT_ACTIVITIES, Header.NITAQAT_ACTIVITIES_AR),
+        (HeaderBlock.ISIC_4_CLASSIFICATION, Header.ISIC_4_CLASSIFICATION_AR),
+        (HeaderBlock.NITAQAT_CLASSIFICATION, Header.NITAQAT_CLASSIFICATION_AR),
     )
 
 
@@ -378,32 +378,48 @@ class AboutUsData:
 class AllSectorsData:
     en_element_data = (
         (AllSectorsPage.HERO_TITLE, AllSectors.HERO_TITLE_EN),
-        (AllSectorsPage.ECONOMIC_ACTIVITIES, AllSectors.ECONOMIC_ACTIVITIES_EN),
-        (AllSectorsPage.NITAQAT_ACTIVITIES, AllSectors.NITAQAT_ACTIVITIES_EN),
+        (AllSectorsPage.ISIC_4_CLASSIFICATION, AllSectors.ISIC_4_CLASSIFICATION_EN),
+        (AllSectorsPage.NITAQAT_CLASSIFICATION, AllSectors.NITAQAT_CLASSIFICATION_EN),
     )
 
     ar_element_data = (
         (AllSectorsPage.HERO_TITLE, AllSectors.HERO_TITLE_AR),
-        (AllSectorsPage.ECONOMIC_ACTIVITIES, AllSectors.ECONOMIC_ACTIVITIES_AR),
-        (AllSectorsPage.NITAQAT_ACTIVITIES, AllSectors.NITAQAT_ACTIVITIES_AR),
+        (AllSectorsPage.ISIC_4_CLASSIFICATION, AllSectors.ISIC_4_CLASSIFICATION_AR),
+        (AllSectorsPage.NITAQAT_CLASSIFICATION, AllSectors.NITAQAT_CLASSIFICATION_AR),
     )
 
     en_elements_data = (
-        (AllSectorsPage.ECONOMIC_ACTIVITIES, AllSectorsPage.SECTOR_TITLE, AllSectors.SECTORS_EN),
-        (AllSectorsPage.NITAQAT_ACTIVITIES, AllSectorsPage.SECTOR_TITLE, AllSectors.SECTORS_EN),
+        (
+            AllSectorsPage.ISIC_4_CLASSIFICATION,
+            AllSectorsPage.SECTOR_TITLE,
+            AllSectors.ISIC_4_SECTORS_EN,
+        ),
+        (
+            AllSectorsPage.NITAQAT_CLASSIFICATION,
+            AllSectorsPage.SECTOR_TITLE,
+            AllSectors.NITAQAT_SECTORS_EN,
+        ),
     )
 
     ar_elements_data = (
-        (AllSectorsPage.ECONOMIC_ACTIVITIES, AllSectorsPage.SECTOR_TITLE, AllSectors.SECTORS_AR),
-        (AllSectorsPage.NITAQAT_ACTIVITIES, AllSectorsPage.SECTOR_TITLE, AllSectors.SECTORS_AR),
+        (
+            AllSectorsPage.ISIC_4_CLASSIFICATION,
+            AllSectorsPage.SECTOR_TITLE,
+            AllSectors.ISIC_4_SECTORS_AR,
+        ),
+        (
+            AllSectorsPage.NITAQAT_CLASSIFICATION,
+            AllSectorsPage.SECTOR_TITLE,
+            AllSectors.NITAQAT_SECTORS_AR,
+        ),
     )
 
     en_search_data = (
-        (AllSectors.SEARCHING_CRITERIA, AllSectors.SEARCH_ITEMS_EN),
+        (AllSectors.SEARCHING_CRITERIA_EN, AllSectors.SEARCH_ITEMS_EN),
         (Variables.AUTOTEST, AllSectors.NO_RESULTS_EN),
     )
     ar_search_data = (
-        (AllSectors.SEARCHING_CRITERIA, AllSectors.SEARCH_ITEMS_AR),
+        (AllSectors.SEARCHING_CRITERIA_AR, AllSectors.SEARCH_ITEMS_AR),
         (Variables.AUTOTEST, AllSectors.NO_RESULTS_AR),
     )
 
@@ -715,3 +731,10 @@ class AdminData:
     )
 
     alignment_text = (Admin.ALIGN_LEFT, Admin.ALIGN_CENTER, Admin.ALIGN_RIGHT, Admin.ALIGN_JUSTIFY)
+
+    card_size = (
+        Admin.PERCENTAGE_33,
+        Admin.PERCENTAGE_66,
+        Admin.PERCENTAGE_100,
+        Admin.PERCENTAGE_MIX,
+    )

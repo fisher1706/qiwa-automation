@@ -34,7 +34,9 @@ def contract_details_payload(laborer: Laborer, employer: User) -> dict:
                 MWRequestTime="2019-10-10 00:00:00.555",
                 ServiceCode="CNC00001",
                 DebugFlag="1",
-                UserInfo=UserInfo(UserId=laborer.login_id, IDNumber=laborer.login_id),
+                UserInfo=UserInfo(
+                    UserId=laborer.personal_number, IDNumber=laborer.personal_number
+                ),
             ),
             Body=Body(
                 EstablishmentDetails=EstablishmentDetails(
@@ -48,7 +50,7 @@ def contract_details_payload(laborer: Laborer, employer: User) -> dict:
                     EstablishmentEmail="name@name",
                 ),
                 LaborerDetails=LaborerDetails(
-                    LaborerIdNo=laborer.login_id,
+                    LaborerIdNo=laborer.personal_number,
                     LaborerName="jana",
                     LaborerTypeId="2",
                     LaborerIdExpiryDate="2022-10-10 00:00:00.555",

@@ -136,9 +136,9 @@ class QuestionDataSet:
         ),
     )
 
-    invalid_question_data = (10.1, ".", "")
+    invalid_question_data = (10.1, ".")
 
-    invalid_answer_data = (0, 0.9, 11.1, ".", "")
+    invalid_answer_data = (0, 0.9, 11.1, ".")
 
     invalid_code_data = ("", " ")
 

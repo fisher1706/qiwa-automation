@@ -19,34 +19,36 @@ def test_create_dimension(login_lmi_user):
 @allure.title('Check edit dimension')
 @case_id(17269)
 def test_edit_dimension(login_lmi_user):
-    lmi.open_dimensions_weq_page()
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)
+    lmi.open_dimensions_weq_page()
     lmi.dimension_weq.edit_dimension()
 
 
 @allure.title('Check delete dimension')
 @case_id(17267)
 def test_delete_dimension(login_lmi_user):
-    lmi.open_dimensions_weq_page()
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)
+    lmi.open_dimensions_weq_page()
     lmi.dimension_weq.delete_dimension()
 
 
 @allure.title('Check cancel delete dimension')
 def test_cancel_edit_dimension(login_lmi_user):
-    lmi.open_dimensions_weq_page()
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)
+    lmi.open_dimensions_weq_page()
     lmi.dimension_weq.cancel_edit_dimension()
 
 
 @allure.title('Check cancel edit dimension')
 def test_cancel_delete_dimension(login_lmi_user):
+    lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT,
+                                                       lmi.cookie)
     lmi.open_dimensions_weq_page()
-    lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)
     lmi.dimension_weq.cancel_delete_dimension()
 
 
 @allure.title('Check create already created dimension')
+@pytest.mark.skip("Skipped due to https://employeesgate.atlassian.net/browse/LR-2796")
 @pytest.mark.parametrize('name_en, name_ar, message', DimensionDataSet.dimension_created_names_value)
 def test_create_already_created_dimension(login_lmi_user, name_en, name_ar, message):
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)
@@ -64,6 +66,7 @@ def test_create_dimension_with_invalid_values(login_lmi_user, name_en, name_ar):
 
 
 @allure.title('Check edit already created dimension')
+@pytest.mark.skip("Skipped due to https://employeesgate.atlassian.net/browse/LR-2796")
 @pytest.mark.parametrize('name_en, name_ar, message', DimensionDataSet.dimension_created_names_value)
 def test_edit_already_created_dimension(login_lmi_user, name_en, name_ar, message):
     lmi.qiwa_api.dimensions_api_actions.post_dimension(DimensionsInfo.NAME_EN_CODE, DimensionsInfo.NAME_AR_TEXT, lmi.cookie)

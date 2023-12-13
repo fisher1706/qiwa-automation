@@ -357,7 +357,7 @@ class UserDetailsPage:
     ) -> UserDetailsPage:
         self.success_message.should(
             have.text(
-                f"{user_management_data.SUCCESS_MESSAGE_AFTER_REMOVE_ACCESS.format(number_of_establishments, user_name)}"
+                f"{user_management_data.SUCCESS_TEXT_AFTER_REMOVE_ACCESS.format(number_of_establishments, user_name)}"
             )
         )
         return self
@@ -399,7 +399,7 @@ class UserDetailsPage:
     ) -> UserDetailsPage:
         self.selected_establishments_text_below_table.should(
             have.text(
-                f"{user_management_data.SELECTED_ESTABLISHMENTS_TEXT.format(all_establishments, all_establishments)}"
+                f"{user_management_data.SELECTED_WORKSPACES_TEXT.format(all_establishments, all_establishments)}"
             )
         )
         self.link_below_establishments_table.should(have.text(user_management_data.CLEAR_ALL_LINK))
@@ -410,7 +410,7 @@ class UserDetailsPage:
     ) -> UserDetailsPage:
         self.selected_establishments_text_below_table.should(
             have.text(
-                f"{user_management_data.SELECTED_ESTABLISHMENTS_TEXT.format(selected_establishments, all_establishments)}"
+                f"{user_management_data.SELECTED_WORKSPACES_TEXT.format(selected_establishments, all_establishments)}"
             )
         )
         self.link_below_establishments_table.should(

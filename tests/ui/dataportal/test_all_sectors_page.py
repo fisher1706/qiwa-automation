@@ -31,23 +31,23 @@ def test_ar_translation_element_on_the_page(element, translation):
 
 @allure.title('Check English translation of element on the page')
 @case_id(5500)
-@pytest.mark.skip('Skipped due to absents translations from PO')
-@pytest.mark.parametrize('elements, translation, activities_type', AllSectorsData.en_elements_data,
+@pytest.mark.parametrize('activities_type, elements, translation', AllSectorsData.en_elements_data,
                          ids=['Economic Sector Title en', 'Nitaqat Sector Title en'])
-def test_en_translation_elements_on_the_page(elements, translation, activities_type):
+def test_en_translation_elements_on_the_page(activities_type, elements, translation):
     data_portal.open_all_sectors_page()
-    data_portal.all_sectors_page.check_elements_on_the_page(elements, translation, activities_type)
+    data_portal.all_sectors_page.pick_activities(activities_type)
+    data_portal.all_sectors_page.check_elements_on_the_page(elements, translation)
 
 
 @allure.title('Check Arabic translation of element on the page')
 @case_id(5518, 5519)
-@pytest.mark.skip('Skipped due to absents translations from PO')
-@pytest.mark.parametrize('elements, translation, activities_type', AllSectorsData.ar_elements_data,
+@pytest.mark.parametrize('activities_type, elements, translation', AllSectorsData.ar_elements_data,
                          ids=['Economic Sector Title ar', 'Nitaqat Sector Title ar'])
-def test_ar_translation_elements_on_the_page(elements, translation, activities_type):
+def test_ar_translation_elements_on_the_page(activities_type, elements, translation):
     data_portal.open_all_sectors_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
-    data_portal.all_sectors_page.check_elements_on_the_page(elements, translation, activities_type)
+    data_portal.all_sectors_page.pick_activities(activities_type)
+    data_portal.all_sectors_page.check_elements_on_the_page(elements, translation)
 
 
 @allure.title('Check Search Sectors with English criteria')

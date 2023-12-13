@@ -1,3 +1,4 @@
+from selene import be
 from selene.support.shared.jquery_style import browser, s, ss
 
 from data.data_portal.constants import Links
@@ -28,7 +29,8 @@ class FooterBlock:
     ABOUT_US = s('(//div[@class="company text-start"]//a/span)[1]')
     CONTACT_US = s('(//div[@class="company text-start"]//a/span)[2]')
 
-    SECTORS_ITEM = ss('//div[@class="items sector-item"]/a[@href]/span')
+    SECTORS_ITEM = ss('[class^="items sector-item"]>a>span')
+    SECTORS_ITEMS = s('[class^="items sector-item"]')
 
     def check_redirection_to_linkedin(self):
         self.LINKEDIN_SOCIAL_MEDIA.click()
@@ -85,3 +87,6 @@ class FooterBlock:
     def check_navigation_to_contact_us_page(self):
         self.CONTACT_US.click()
         assert browser.driver.current_url == Links.CONTACT_US
+
+    def wait_sectors(self):
+        self.SECTORS_ITEMS.should(be.visible)

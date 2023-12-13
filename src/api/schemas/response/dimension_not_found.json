@@ -1,5 +1,5 @@
 {
-  "dimension_get": {
-    "type": "list"
-  }
+  ":trace_id": {"type": "string"},
+  ":span_id": {"type": "string"},
+  ":error": {"type": "string"}
 }

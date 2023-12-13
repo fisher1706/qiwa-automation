@@ -47,4 +47,4 @@ employee_po = User(
     sequence_number="59670",
     occupation=Occupation.ACCOUNTANT,
 )
-laborer = Laborer(login_id=2289438844, birthdate="20-10-1976")
+laborer = Laborer(personal_number=2289438844, birthdate="20-10-1976")

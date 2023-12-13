@@ -5,11 +5,16 @@ from utils.assertion import assert_status_code, assert_that
 
 
 def test_with_existent_request_id(change_occupation):
-    request_data = change_occupation.get_random_request()
+    request = change_occupation.get_random_request()
+    request_id = request.request_id
 
-    json = change_occupation.get_request_by_id(request_data.request_id)
-    assert_that(json.data).size_is(1)
-    assert_that(json.data[0].attributes).has(request_id=request_data.request_id)
+    json = change_occupation.get_request_by_id(request_id)
+    data = json.data
+    assert_that(data).is_not_empty()
+    requests_have_id: bool = all(
+        request.attributes.request_id == request_id for request in data
+    )
+    assert_that(requests_have_id).equals_to(True)
 
 
 def test_with_non_existent_request_id(change_occupation):

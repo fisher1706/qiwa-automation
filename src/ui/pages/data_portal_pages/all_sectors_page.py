@@ -4,23 +4,21 @@ from selene.support.shared.jquery_style import s, ss
 
 
 class AllSectorsPage:
-    HERO_TITLE = s('//section[@class="container sectors"]//h1')
+    HERO_TITLE = s('[class^="container"]>h1')
     SEARCH_FIELD = s('//div[@class="input-wrapper"]//input')
     SEARCH_RESULT = ss('//div[contains(@class, "body-02-paragraph")]')
     SECTORS_LIST = s(".sectors-list ")
     CLEAR_RESULT_BUTTON = s(".clear-icon-wrapper")
 
-    ECONOMIC_ACTIVITIES = s('(//section[@class="container sectors"]//div[2]//div)[1]')
-    NITAQAT_ACTIVITIES = s('(//section[@class="container sectors"]//div[2]//div)[2]')
+    ISIC_4_CLASSIFICATION = s('[class^="sectors-tabs-tab"]:nth-child(1)')
+    NITAQAT_CLASSIFICATION = s('[class^="sectors-tabs-tab"]:nth-child(2)')
     SERVICE_LINK = s('//a[@class="sector-card-link"]')
     SECTOR_CARD = s('//div[@class="sectors-list mt-6 sm-mt-8 xl-mt-6 d-flex flex-wrap"]//img')
-    SECTOR_TITLE = s('//div[@class="sectors-list mt-6 sm-mt-8 xl-mt-6 d-flex flex-wrap"]//span')
+    SECTOR_TITLE = ss("div[title]")
 
     """Explore by sector block"""
     TITLE = s('//section[@id="explore-sector"]/div/div[2]')
-    SECTORS_CARD = ss(
-        '//div[@class="sector-card body-02-highlight md-body-01-highlight relative simple-card"]/span'
-    )
+    SECTORS_CARD = ss('[class*="relative simple-card"]>span')
     VIEW_ALL_SECTORS_BUTTON = s('//a[@class="button button-regular button-secondary"]')
 
     def check_matched_items(self, target_items):

@@ -39,7 +39,7 @@ def test_view_appointments_page():
     qiwa.labor_office_appointments_page.should_new_tab_knowledge_center_be_opened()
 
 
-@allure.title("Appointments[Individual]: Book appointment")
+@allure.title("Appointments[Individual]: Book appointment with type In-Person")
 @case_id(39180, 54992)
 @pytest.mark.parametrize("language", (Language.EN, Language.AR))
 def test_book_individual_appointment(language):
@@ -342,6 +342,7 @@ def test_individual_cancel_appointment_from_details_appointments():
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 

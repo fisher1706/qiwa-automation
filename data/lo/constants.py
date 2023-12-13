@@ -132,6 +132,7 @@ class OfficesInfo:
     OFFICES_NAME = random_name
     OFFICE_NAME_TEST_OFFICE = "office 3216"
     OFFICE_NAME_VEUM_HANE = "Veum - Hane"
+    OFFICE_NAME_VIRTUAL = "Alina_Virtual"
     OFFICE_NAME_EDIT = "Voffgh"
     INACTIVE_TEST_OFFICE = "INACTIVE TEST OFFICE"
     INACTIVE_TEST_OFFICE_ID = 2389
@@ -180,6 +181,14 @@ class ServicesInfo:
     SUB_SERVICE_NAME_INDIVIDUALS = {
         Language.EN: "subservices_10/08",
         Language.AR: "subservices_10/08",
+    }
+    SERVICE_NAME_VIRTUAL = {
+        Language.EN: "Alina_Individuals_Virtual",
+        Language.AR: "Alina_Individuals_Virtual",
+    }
+    SUB_SERVICE_NAME_VIRTUAL = {
+        Language.EN: "Alina_New_Individuals",
+        Language.AR: "Alina_New_Individuals",
     }
     POLICIES_SERVICE = "Policies"
     POLICIES_SUB_SERVICE = "Submit Policies Request"
@@ -358,6 +367,13 @@ class AppointmentsView:
         Language.AR: "للحصول على تجربة أفضل في مكتب العمل،"
         " يرجى التأكد من الوصول للموقع في التاريخ والوقت المحددين.",
     }
+    INFO_ROW_VIRTUAL_TEXT = {
+        Language.EN: "A Labor Office agent will meet you virtually over video call, "
+        "please join the virtual appointment session on exact time you chose for the appointment in case "
+        "of no show or delay, unfortunately, the appointment will get canceled.",
+        Language.AR: "ستكون جلسة الموعد عبر الاتصال المرئي ، الرجاء الدخول الى جلسة"
+        " الموعد حسب الوقت المحدد في الموعد، في حال عدم دخول الجلسة أو التأخير سيتم الغاء الموعد.",
+    }
     GENERAL_INFO_REASON_TEXT = {
         Language.EN: "Appointment reason",
         Language.AR: "سبب الموعد",
@@ -397,7 +413,7 @@ class AppointmentsCancel:
 
 
 class AppointmentReason:
-    VIRTUAL = {"id": 0, "text": {Language.EN: "", Language.AR: ""}}
+    VIRTUAL = {"id": 0, "text": {Language.EN: "New request - virtual", Language.AR: ""}}
     IN_PERSON = {
         "id": 3,
         "text": {

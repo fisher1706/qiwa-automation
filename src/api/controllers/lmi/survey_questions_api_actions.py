@@ -18,7 +18,7 @@ class SurveyQuestionsApiAction(SurveyQuestionsApi):
         self, survey_id, question_id, question_weight, question_choices_id, question_choices_weight
     ):
         self.put_question_weight(
-            survey_id, question_choices_id, question_choices_weight, question_id, question_weight
+            survey_id, question_id, question_choices_weight, question_choices_id, question_weight
         )
         self.dashboard_api.get_surveys_detail(survey_id)
         assert (

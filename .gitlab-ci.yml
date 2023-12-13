@@ -505,3 +505,21 @@ lo_api_discord_notification:
   variables:
     WEBHOOK: $LO_API_DAILY
   needs: [lo_api_tests]
+
+lmi_ui_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $LMI_UI_DAILY
+  needs: [lmi_ui_tests]
+
+lmi_api_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $LMI_API_DAILY
+  needs: [lmi_api_tests]
+
+dataportal_ui_discord_notification:
+  <<: *discord_notification
+  variables:
+    WEBHOOK: $DATAPORTAL_UI_DAILY
+  needs: [dataportal_ui_tests]
