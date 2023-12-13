@@ -32,7 +32,7 @@ class RenewSubscription(BaseEstablishmentPayment):
     count_group_manager_content = 4
     count_establishment_group_details_content = 2
     count_establishment_subscription_content_new = 5
-    count_establishment_subscription_content_expired = 2
+    count_establishment_subscription_content_expired = 5
     count_summary_content = 6
 
     total_value = s("//*[@id='root']//table/tbody/tr[6]//div[1]/span")
