@@ -468,7 +468,7 @@ class UserManagementActions(
 
     @allure.step
     def possibility_open_renew_subscription_page(self) -> UserManagementActions:
-        self.switch_to_page()
+        self.open_expired_page()
         self.check_establishment_user_details()
         return self
 

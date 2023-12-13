@@ -4,6 +4,7 @@ import allure
 from selene import be, have
 from selene.support.shared.jquery_style import s, ss
 
+from data.user_management.user_management_datasets import RenewPageData
 from src.ui.pages.user_management_pages.base_establishment_payment_page import (
     BaseEstablishmentPayment,
 )
@@ -29,12 +30,6 @@ class RenewSubscription(BaseEstablishmentPayment):
     establishments_subscription_content = ss("//*[@data-component='Table']//tr")
     summary_content = ss("//*[@data-component='SimpleTable']//td")
 
-    count_group_manager_content = 4
-    count_establishment_group_details_content = 2
-    count_establishment_subscription_content_new = 5
-    count_establishment_subscription_content_expired = 5
-    count_summary_content = 6
-
     total_value = s("//*[@id='root']//table/tbody/tr[6]//div[1]/span")
 
     @allure.step
@@ -46,7 +41,7 @@ class RenewSubscription(BaseEstablishmentPayment):
     def check_group_manager_block(self) -> RenewSubscription:
         self.group_manager_text.should(be.visible)
         self.group_manager_content.should(be.visible.each).should(
-            have.size(self.count_group_manager_content)
+            have.size(RenewPageData.COUNT_GROUP_MANAGER_CONTENT)
         )
         return self
 
@@ -54,7 +49,7 @@ class RenewSubscription(BaseEstablishmentPayment):
     def check_establishment_group_details_block(self) -> RenewSubscription:
         self.establishment_group_details_text.should(be.visible)
         self.establishment_group_details_content.should(be.visible.each).should(
-            have.size(self.count_establishment_group_details_content)
+            have.size(RenewPageData.COUNT_ESTABLISHMENT_GROUP_DETAILS_CONTENT)
         )
         return self
 
@@ -63,18 +58,20 @@ class RenewSubscription(BaseEstablishmentPayment):
         self.establishments_subscription_text.should(be.visible)
         if user_type == "without":
             self.establishments_subscription_content.should(be.visible.each).should(
-                have.size(self.count_establishment_subscription_content_new)
+                have.size(RenewPageData.COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_NEW)
             )
         else:
             self.establishments_subscription_content.should(be.visible.each).should(
-                have.size(self.count_establishment_subscription_content_expired)
+                have.size(RenewPageData.COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_EXPIRED)
             )
         return self
 
     @allure.step
     def check_summary_block(self) -> RenewSubscription:
         self.summary_text.should(be.visible)
-        self.summary_content.should(be.visible.each).should(have.size(self.count_summary_content))
+        self.summary_content.should(be.visible.each).should(
+            have.size(RenewPageData.COUNT_SUMMARY_CONTENT)
+        )
         return self
 
     @allure.step
