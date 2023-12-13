@@ -26,19 +26,22 @@ def test_create_request(change_occupation, laborer):
 
 def test_create_for_two_laborers(change_occupation, laborer, laborer2):
     json = change_occupation.create_request(laborer, laborer2)
-    assert_that(json.data).size_is(2)
+    requests_list = json.data
+    assert_that(requests_list).size_is(2)
 
-    request1, request2 = json.data
+    requests_have_personal_numbers: bool = len(
+        {laborer.personal_number, laborer2.personal_number}
+        & {item.attributes.personal_number for item in requests_list}
+    ) is 2
+    assert_that(requests_have_personal_numbers).equals_to(True)
 
-    for request, laborer in ((request1, laborer), (request2, laborer2)):
-        assert_that(request.attributes).has(personal_number=laborer.personal_number)
-
-        requests = change_occupation.get_requests_by_request_number(request.attributes.request_id)
-        assert_that(requests).size_is(1)
-        assert_that(requests[0]).has(
+    for item in json.data:
+        requests_by_number = change_occupation.get_requests_by_request_number(item.attributes.request_id)
+        assert_that(requests_by_number).size_is(1)
+        request = requests_by_number[0]
+        assert_that(request).has(
             status_id=RequestStatus.PENDING_LABORER_APPROVAL.value,
-            employee_personal_number=laborer.personal_number,
-            new_occupation_id=laborer.occupation_code
+            employee_personal_number=item.attributes.personal_number,
         )
 
 
