@@ -11,7 +11,6 @@ from src.ui.qiwa import qiwa
 @pytest.fixture
 def visa_mock():
     mock = VisaMockApi()
-    mock.delete_company_address()
     yield mock
     mock.teardown_company()
     mock.change_visa_quantity(1, 4)
@@ -22,7 +21,10 @@ def visa_mock():
 
 @pytest.fixture(scope="function", autouse=True)
 def pre_test():
+    qiwa.login_page.open_login_page()
+    qiwa.header.change_local("en")
     qiwa.login_as_user(VisaUser.NAME, VisaUser.PASSWORD)
+    sleep(10)
     qiwa.header.change_local("en")
     qiwa.workspace_page.select_company_account_with_sequence_number(VisaUser.ESTABLISHMENT_ID)
     qiwa.open_visa_page()
@@ -32,4 +34,4 @@ def pre_test():
 def visa_db():
     db = VisaBalanceRequests()
     yield db
-    db.remove_blocking_status_record()
+    db.remove_balance_request_records()
