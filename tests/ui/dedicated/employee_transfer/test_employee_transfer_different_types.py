@@ -36,7 +36,7 @@ case_id = project(TestmoProject.EMPLOYEE_TRANSFER)
 def test_type_12_current_sponsor(status):
     employee_transfer_api.post_prepare_laborer_for_et_request(laborer_type_12.personal_number)
     ibm_api.create_new_contract(employer, laborer_type_12)
-    ibm_api.create_employee_transfer_request_ae(employer, laborer_type_12, current_sponsor_type_12)
+    ibm_api.create_employee_transfer_request_ae(employer, laborer_type_12)
 
     employee_transfer_actions.navigate_to_individual(laborer_type_12.personal_number)
 
