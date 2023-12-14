@@ -18,6 +18,10 @@ from data.user_management.user_management_users import (
     owner_account,
     owner_account_with_another_company,
     owner_for_self,
+    owner_with_active_subscription,
+    owner_with_expired_subscription,
+    owner_with_expired_subscription_always,
+    owner_without_subscription,
     user_type_three,
     user_type_three_employee,
     user_type_three_employee_for_add_access,
@@ -27,6 +31,7 @@ from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
     delete_self_subscription,
+    expire_user_subscription,
     get_subscription_cookie,
     log_in_and_open_establishment_account,
     log_in_and_open_user_management,
@@ -258,8 +263,7 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
 
 @allure.title("Test self subscription user without subscription")
 @case_id(41783, 41794, 41785, 41790)
-@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.without_subscription)
-def test_self_subscription_user_without_subscription(user_type, user):
+def test_self_subscription_user_without_subscription(user_type="without", user=owner_without_subscription):
     delete_self_subscription(user)
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
@@ -269,13 +273,13 @@ def test_self_subscription_user_without_subscription(user_type, user):
         .check_establishment_user_details()\
         .check_annual_subscription()\
         .make_establishment_payment()\
-        .check_thank_you_page()
+        .check_thank_you_page(user_type)
 
 
 @allure.title("Test self subscription user with expired or terminated subscription")
 @case_id(41780)
-@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.expired_terminated_subscription)
-def test_self_subscription_user_with_expired_terminated_subscription(user_type, user):
+def test_self_subscription_user_with_expired_terminated_subscription(user_type="expired",
+                                                                     user=owner_with_expired_subscription_always):
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
@@ -287,10 +291,38 @@ def test_self_subscription_user_with_expired_terminated_subscription(user_type, 
 
 @allure.title("Test self subscription user with active subscription")
 @case_id(41780)
-@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.active_subscription)
-def test_self_subscription_user_with_active_subscription(user_type, user):
+def test_self_subscription_user_with_active_subscription(user_type="active", user=owner_with_active_subscription):
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
     user_management\
         .possibility_switch_to_establishment_page(user_type)
+
+
+@allure.step("Test renew expired subscription")
+@case_id(41781, 41800, 43159)
+def test_update_self_expired_subscription(user_type="expired", user=owner_with_expired_subscription):
+    expire_user_subscription(user)
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_renew_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page(user_type)\
+        .check_db_subscription_date(user)
+
+
+@allure.step("Test possibility open 'Renew expired page'")
+@case_id(41795, 41798)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.all_users)
+def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .navigate_to_establishment_information(user)\
+        .possibility_open_renew_subscription_page()\
+        .check_opened_page(user_type)

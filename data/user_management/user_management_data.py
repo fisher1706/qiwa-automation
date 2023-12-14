@@ -102,3 +102,5 @@ SUCCESS_MESSAGE_AFTER_TERMINATE_FLOW: str = (
     "You have successfully deleted user from all establishments"
 )
 INACTIVE_STATUS: str = "Inactive"
+
+SUBSCRIPTION_TIME: int = 1

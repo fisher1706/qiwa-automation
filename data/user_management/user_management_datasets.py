@@ -13,9 +13,11 @@ from data.user_management.user_management_users import (
     establishment_type_four,
     establishment_type_one,
     owner_account,
-    user_with_active_subscription,
-    user_with_expired_subscription,
-    user_without_subscription,
+    owner_with_active_subscription,
+    owner_with_expired_subscription,
+    owner_with_expired_subscription_always,
+    owner_without_subscription,
+    owner_without_subscription_always,
 )
 
 
@@ -265,14 +267,23 @@ class SubscriptionStatuses:
 
 @dataclasses.dataclass
 class SelfSubscriptionData:
-    active_subscription = [
-        ("active", user_with_active_subscription),
+    all_users = [
+        ("active", owner_with_active_subscription),
+        ("without", owner_without_subscription_always),
+        ("expired", owner_with_expired_subscription_always),
     ]
 
-    without_subscription = [
-        ("without", user_without_subscription),
-    ]
 
-    expired_terminated_subscription = [
-        ("expired", user_with_expired_subscription),
-    ]
+@dataclasses.dataclass
+class RenewPageData:
+    COUNT_GROUP_MANAGER_CONTENT = 4
+    COUNT_ESTABLISHMENT_GROUP_DETAILS_CONTENT = 2
+    COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_NEW = 5
+    COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_EXPIRED = 5
+    COUNT_SUMMARY_CONTENT = 6
+
+
+@dataclasses.dataclass
+class ThankYouPageData:
+    COUNT_EXPIRED_SUBSCRIPTION = 11
+    COUNT_NEW_SUBSCRIPTION = 12

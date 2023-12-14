@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any, Tuple
 
 import config
 from src.database.client.db_client import DBClient
@@ -65,3 +66,17 @@ class UserManagementRequests:
         )
         self.session.commit()
         return privilege_audit_log.deleted_status
+
+    def get_subscription_data(self, personal_number: str, unified_number: int) -> tuple[Any, Any]:
+        subscription = (
+            self.session.query(UMSubscriptions)
+            .filter(
+                UMSubscriptions.personal_number == personal_number,
+                UMSubscriptions.unified_number == unified_number,
+            )
+            .first()
+        )
+        return (
+            subscription.subscription_status_id,
+            subscription.expiry_date.year - subscription.modified_on.year,
+        )

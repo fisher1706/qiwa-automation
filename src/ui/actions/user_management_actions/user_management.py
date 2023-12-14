@@ -454,7 +454,40 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def check_thank_you_page(self) -> UserManagementActions:
+    def check_thank_you_page(self, user_type: str) -> UserManagementActions:
         ThankYouPage.main_text.wait_until(be.visible)
-        self.check_data_thank_you_page()
+        self.check_data_thank_you_page(user_type)
+        return self
+
+    @allure.step
+    def navigate_to_establishment_information(self, user: User) -> UserManagementActions:
+        qiwa.workspace_page.business_account_list.element_by(
+            have.text(str(user.sequence_number))
+        ).click()
+        return self
+
+    @allure.step
+    def possibility_open_renew_subscription_page(self) -> UserManagementActions:
+        self.open_expired_page()
+        self.check_establishment_user_details()
+        return self
+
+    @allure.step
+    def check_opened_page(self, user_type: str) -> UserManagementActions:
+        if user_type in ["expired", "without"]:
+            RenewSubscription.main_text.wait_until(be.visible)
+            self.check_group_manager_block()
+            self.check_establishment_group_details_block()
+            self.check_establishment_subscription_block(user_type)
+            self.check_summary_block()
+            self.check_total_value()
+        else:
+            self.wait_until_page_is_loaded()
+            self.check_page_is_displayed()
+
+        return self
+
+    @allure.step
+    def check_db_subscription_date(self, user: User):
+        self.check_db_data(user)
         return self
