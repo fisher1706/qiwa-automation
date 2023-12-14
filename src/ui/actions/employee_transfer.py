@@ -63,9 +63,10 @@ class EmployeeTransferActions:
         contract_management_actions.create_contract(laborer)
 
         (
-            qiwa.employee_transfer_page.click_btn_next_step()
+            qiwa.employee_transfer_page.check_existence_of_a_contract()
+            .click_btn_next_step()
             .select_terms_checkbox()
-            .click_btn_submit()
+            .click_btn_submit_request()
             .check_success_msg()
             .check_request_status()
         )
@@ -89,7 +90,8 @@ class EmployeeTransferActions:
         contract_management_actions.create_contract(laborer)
 
         (
-            qiwa.employee_transfer_page.click_btn_next_step()
+            qiwa.employee_transfer_page.check_existence_of_a_contract()
+            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit_request()
             .check_success_msg()

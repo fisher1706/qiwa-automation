@@ -15,7 +15,7 @@ from src.api.payloads.ibm.submitcsrequests import (
 )
 
 
-def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor: User):
+def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor_id: int):
     return SubmitCSRequestRqPayload(
         SubmitCSRequestRq=SubmitCSRequestRq(
             Header=Header(
@@ -48,9 +48,7 @@ def employee_transfer_request_ae_payload(user: User, laborer: Laborer, sponsor: 
                             TransferTypeId=laborer.transfer_type.code,
                         ),
                         SponsorDetails=SponsorDetails(
-                            SponsorIdNo=int(sponsor.personal_number)
-                            if isinstance(sponsor, User)
-                            else 0,
+                            SponsorIdNo=sponsor_id if isinstance(sponsor_id, User) else 0,
                             SponsorName="",
                         ),
                         SourceDetails=SourceDetails(

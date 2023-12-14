@@ -29,8 +29,8 @@ class EmployeeTransferPage(
 
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
-    sent_requests_section = s("#requests-sent-by-you + div + div")
-    received_requests_section = s("#received-requests + div + div")
+    sent_requests_section = s("#requests-sent-by-you")
+    received_requests_section = s("#received-requests")
 
     sent_requests_table = Table(sent_requests_section.s("table"))
     received_requests_table = Table(received_requests_section.s("table"))
