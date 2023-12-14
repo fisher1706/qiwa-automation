@@ -13,6 +13,7 @@ from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_compa
     TransferFromExternalCompanyPage,
 )
 from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -88,10 +89,12 @@ class EmployeeTransferPage(
         self.received_requests_table.rows.should(have.size(rows))
 
     def search_sent_request(self, iqama_number: str) -> EmployeeTransferPage:
+        scroll_into_view_if_needed(self.sent_requests_section)
         self.search_sent_requests.type(iqama_number)
         return self
 
     def search_received_request(self, iqama_number: str) -> EmployeeTransferPage:
+        scroll_into_view_if_needed(self.received_requests_section)
         self.search_received_requests.type(iqama_number)
         return self
 
