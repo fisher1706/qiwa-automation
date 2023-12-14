@@ -41,6 +41,7 @@ class VisaUser:  # pylint: disable=R0903
     NAME = "1812066397"
     PASSWORD = "123456789aA@"
     ESTABLISHMENT_ID = "6-2273011"
+    COMPANY_ID = 685181
 
 
 class TIER:  # pylint: disable=R0903
@@ -137,6 +138,7 @@ BR_ERROR = BRRefundMessages(5, CANCEL_UPGRADE_REQUEST_TITLE, CANCEL_UPGRADE_REQU
 CAN_BE_REFUNDED = [1, 5]
 
 ERROR_CODE = "ODM0024"
+EXP_PERMIT_ERROR_CODE = "ED000020"
 WORK_VISA_CARD_ZERO_QUOTA_ERROR = (
     "You cannot issue Work Visas because your recruitment quota is 0."
 )
@@ -186,6 +188,7 @@ PERM_WORK_VISA_ELIGIBILITY_ERRORS = (
     "You cannot issue visas because you don’t meet the {} mandatory requirements.\n"
     "See unmet requirements"
 )
+PERM_WORK_VISA_ELIGIBILITY_ERRORS_LINK = "See unmet requirements"
 ESTABLISHMENT_FUND = "Establishment fund"
 RECRUITMENT_QUOTA = "Recruitment quota"
 ESTABLISHMENT_PHASE = "Establishment phase"
@@ -227,10 +230,26 @@ USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP = (
     "Exceptional expansion balance are only available for unified "
     "number owner to agree on exceptional program agreement"
 )
+GENERIC_EXP_WORK_PERMIT_ERROR_TEXT = (
+    "Sorry, the service is not available for establishments that have "
+    "employees without valid work permits in any of the unified number "
+    "establishments. Please issue / renew the necessary licenses through "
+    "the Work Permits Service and then try again."
+)
+GENERIC_EXP_WORK_PERMIT_ERROR_LINK = "Review expired work permits details"
+GENERIC_EXP_WORK_PERMIT_ERROR_TITLE = "Sorry, you are not eligible to issue a Work Visa"
+PERM_VISA_EXP_WORK_PERMIT_ERROR = "Validation Error: card isn't enabled"
+PERM_VISA_EXP_WORK_PERMIT_ERROR_LINK = "Review expired work permits details"
+SEASONAL_VISA_ZERO_BALANCE_ERROR = (
+    "You can't issue Seasonal work visas because your remaining balance for this season is 0."
+)
+SEASONAL_VISA_ZERO_BALANCE_ERROR_TITLE = (
+    "Sorry, you are not eligible to issue a Seasonal work visa"
+)
 # env variables:
 IS_SEASONAL_VISA_AVAILABLE = "IS_SEASONAL_VISA_AVAILABLE"
 IS_BALANCE_FLOW_AVAILABLE = "IS_BALANCE_FLOW_AVAILABLE"
-FIRST_TIER_ACTIVE = "FIRST_TIER_ACTIVE"
+FIRST_TIER_ACTIVE = "IS_AUTOMATIC_FIRST_TIER_ENABLED"
 IS_INSPECTOR_VISIT_FLOW_AVAILABLE = "IS_INSPECTOR_VISIT_FLOW_AVAILABLE"
 ENV_VARIABLES = [
     IS_SEASONAL_VISA_AVAILABLE,
@@ -241,3 +260,5 @@ ENV_VARIABLES = [
 
 KNOWLEDGE_CENTER_URL = "knowledge-center.qiwa.info"
 ESTABLISHMENT_LOCATION_MANAGEMENT_URL = "establishment-location-management"
+WORK_PERMIT_URL = "working-permits.qiwa.info"
+ISSUE_VISA_URL = "issue-visa"

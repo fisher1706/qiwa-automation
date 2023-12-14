@@ -6,8 +6,7 @@ from selene.support.shared import browser
 
 import config
 from data.constants import Language, UserInfo
-
-# from src.api.app import QiwaApi
+from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.delegation.localisation_change import (
@@ -20,6 +19,7 @@ from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
+from src.ui.components.payment_gateway import PaymentPage
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.appointments.labor_office_appointment_edit import (
     LaborOfficeAppointmentsEditPage,
@@ -108,7 +108,8 @@ class QiwaUiClient:
     visa_request = VisaRequestPage()
     issue_visa = IssueVisaPage()
     increase_quota = IncreaseQuotaPage()
-    balnce_request = BalanceRequest()
+    balance_request = BalanceRequest()
+    payment_gateway = PaymentPage()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
@@ -139,8 +140,8 @@ class QiwaUiClient:
         return self
 
     def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        # QiwaApi().sso.login_user(login, password)
-        # QiwaApi().sso.pass_account_security()
+        QiwaApi().sso.login_user(login, password)
+        QiwaApi().sso.pass_account_security()
         self.login_as_user(login, password)
         self.feedback.close_feedback()
         return self

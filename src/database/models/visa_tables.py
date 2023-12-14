@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Column, Text
+from sqlalchemy import BigInteger, Column, Integer, Text
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -11,3 +11,4 @@ class BalanceRequests(Base):  # pylint: disable=too-few-public-methods
     payment_id = Column("payment_id", Text, nullable=False)
     status = Column("status", Text, nullable=False)
     reference_number = Column("reference_number", Text, nullable=False)
+    company_id = Column("company_id", Integer, nullable=False)
