@@ -17,8 +17,8 @@ case_id = project(TestmoProject.LABOR_OFFICE)
 
 
 @allure.title("Appointments[Individual]: Book appointment with type Virtual")
-@case_id(71575)
-@pytest.mark.parametrize("language", [Language.EN])
+@case_id(71575, 71593)
+@pytest.mark.parametrize("language", [Language.EN, Language.AR])
 def test_book_virtual_appointment(language):
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.language = language
