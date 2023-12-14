@@ -67,6 +67,7 @@ class IbmApi:
             headers=HEADERS,
             json=check_and_validate_transferred_employee_payload(personal_number),
         )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.json()
 
     def create_new_contract(self, user: User, laborer: Laborer) -> None:
@@ -108,7 +109,7 @@ class IbmApi:
 
     def create_employee_transfer_request_ae(self, user: User, laborer: Laborer) -> None:
         # TODO(dp): Do we need to separate updating of this test data?
-        sponsor_id = None
+        sponsor_id = 0
         if laborer.transfer_type == type_12:
             sponsor_id = self.check_and_validate_transferred_employee(
                 str(laborer.personal_number)
