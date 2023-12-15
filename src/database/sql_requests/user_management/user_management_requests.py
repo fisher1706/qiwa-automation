@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Tuple
+from typing import Any
 
 import config
 from src.database.client.db_client import DBClient
 from src.database.models.user_management_tables_description import (
+    EstablishmentAddress,
     UMPrivilegesAuditLog,
     UMSubscriptions,
 )
@@ -26,7 +27,7 @@ class UserManagementRequests:
         return subscription.expiry_date
 
     def update_expiry_date_for_um_subscriptions(
-        self, personal_number: str, unified_number: int, expiry_date: datetime
+        self, personal_number: str, unified_number: int, expiry_date: datetime | str
     ) -> UserManagementRequests:
         subscription = (
             self.session.query(UMSubscriptions)
@@ -80,3 +81,19 @@ class UserManagementRequests:
             subscription.subscription_status_id,
             subscription.expiry_date.year - subscription.modified_on.year,
         )
+
+    def update_establishment_data_en(
+        self, labor_office: str | int, sequence_id: str | int, district_en: str, street_en: str
+    ) -> UserManagementRequests:
+        establishment_data = (
+            self.session.query(EstablishmentAddress)
+            .filter(
+                EstablishmentAddress.sequence_id == sequence_id,
+                EstablishmentAddress.labor_office == labor_office,
+            )
+            .first()
+        )
+        establishment_data.district_en = district_en
+        establishment_data.street_en = street_en
+        self.session.commit()
+        return self

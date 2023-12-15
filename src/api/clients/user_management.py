@@ -12,6 +12,7 @@ from src.api.payloads.raw.user_management.self_flows import SelfSubscription
 from src.api.payloads.user_management import (
     owner_subscription_payload,
     owner_subscription_payload_for_new_subscription_type,
+    update_establishment_address_payload,
 )
 from utils.assertion import assert_status_code
 from utils.crypto_manager import code_um_cookie
@@ -19,6 +20,7 @@ from utils.crypto_manager import code_um_cookie
 
 class UserManagementApi:  # pylint: disable=duplicate-code
     url = config.qiwa_urls.api_user_management
+    api_url = config.qiwa_urls.api
 
     def __init__(self, client: HTTPClient):
         self.client = client
@@ -264,3 +266,36 @@ class UserManagementApi:  # pylint: disable=duplicate-code
             headers=headers,
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+
+    @allure.step
+    def post_update_establishment_address(self, establishment_address: list) -> UserManagementApi:
+        token = self.client.session.cookies.get("qiwa.authorization")
+        headers = {"Cookie": f"qiwa.authorization={token}"}
+        response = self.client.post(
+            url=self.api_url,
+            endpoint="/establishment-updater/establishment-address",
+            headers=headers,
+            json=update_establishment_address_payload(*establishment_address),
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return self
+
+    def get_establishment_data(self, cookie: dict) -> dict:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.get(
+            url=self.url,
+            endpoint="/api/bff/establishments/current/vat",
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()
+
+    def get_user_subscription_status(self, cookie: dict, users_personal_number: str) -> int:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        response = self.client.get(
+            url=self.url,
+            endpoint=f"/api/bff/users/{users_personal_number}",
+            headers=headers,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        return response.json()["subscription"]["detailedStatus"]

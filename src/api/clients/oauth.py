@@ -44,6 +44,16 @@ class OAuthApi:
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.cookies
 
+    def get_user_data(self) -> tuple:
+        response = self.client.get(
+            url=self.url,
+            endpoint="/context/user",
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        notification_email = response.json()["data"]["attributes"]["notification-email"]
+        notification_phone = response.json()["data"]["attributes"]["notification-phone"]
+        return notification_email, notification_phone
+
     def delete_context(self):
         self.client.get(self.url, endpoint="/context")
         delete_context = self.client.delete(

@@ -16,7 +16,7 @@ class ThankYouPage:
     @allure.step
     def check_data_thank_you_page(self, user_type: str) -> ThankYouPage:
         self.payment.should(be.visible)
-        if user_type == "expired":
+        if user_type in ["expired", "owner_flow"]:
             self.payment_data.should(be.visible.each).should(
                 have.size(ThankYouPageData.COUNT_EXPIRED_SUBSCRIPTION)
             )

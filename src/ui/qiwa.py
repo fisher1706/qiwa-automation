@@ -222,5 +222,9 @@ class QiwaUiClient:
         browser.open(config.qiwa_urls.employee_list)
         return self
 
+    def open_payment_page(self, payment_id: int) -> QiwaUiClient:
+        browser.open(f"{config.qiwa_urls.payment_ui}/{payment_id}")
+        return self
+
 
 qiwa = QiwaUiClient()

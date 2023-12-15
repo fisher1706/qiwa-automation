@@ -3,6 +3,7 @@ from __future__ import annotations
 from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 
+import config
 from data.user_management import user_management_data
 from src.ui.components.raw.table import Table
 
@@ -34,6 +35,7 @@ class UserManagementMainPage:
     view_details_btn = s("button[data-testid='view-action'] p")
     view_detail_for_renew_btn = s("button[data-testid='renew-action'] p")
     renew_subscription_btn = s("button[data-testid='renew-action']")
+    action_button = "button[data-testid='{}']"
 
     next_btn_pagination = s("//button/span[contains(text(), 'Next')]")
     previous_btn_pagination = s("//button/span[contains(text(), 'Previous')]")
@@ -59,8 +61,8 @@ class UserManagementMainPage:
         super().__init__()
         self.users_count = None
 
-    def wait_until_page_is_loaded(self) -> UserManagementMainPage:
-        self.users_in_table.wait_until(be.visible)
+    def should_main_page_be_displayed(self) -> UserManagementMainPage:
+        self.users_in_table.should(be.visible)
         return self
 
     def check_page_is_displayed(self) -> UserManagementMainPage:
@@ -116,9 +118,7 @@ class UserManagementMainPage:
         ss(self.action_btn_table).first.should(be.visible).click()
         return self
 
-    def click_view_details_in_table_for_selected_user(
-        self, user_nid: str
-    ) -> UserManagementMainPage:
+    def click_actions_in_table_for_selected_user(self, user_nid: str) -> UserManagementMainPage:
         self.users_table.rows.element_by(have.text(user_nid)).s(self.action_btn_table).should(
             be.visible
         ).click()
@@ -126,6 +126,10 @@ class UserManagementMainPage:
 
     def navigate_to_view_details(self) -> UserManagementMainPage:
         self.view_details_btn.should(be.visible).click()
+        return self
+
+    def select_action(self, action_name: str) -> UserManagementMainPage:
+        s(self.action_button.format(action_name)).should(be.visible).click()
         return self
 
     def check_user_status(self) -> UserManagementMainPage:
@@ -214,4 +218,8 @@ class UserManagementMainPage:
         user_row.s(self.user_status_on_table).should(
             have.text(user_management_data.INACTIVE_STATUS)
         )
+        return self
+
+    def should_main_page_url_be_correct(self) -> UserManagementMainPage:
+        browser.should(have.url(f"{config.qiwa_urls.ui_user_management}/"))
         return self

@@ -102,5 +102,17 @@ SUCCESS_MESSAGE_AFTER_TERMINATE_FLOW: str = (
     "You have successfully deleted user from all establishments"
 )
 INACTIVE_STATUS: str = "Inactive"
+ACTIVE_STATUS: str = "Active"
 
 SUBSCRIPTION_TIME: int = 1
+
+CONFIRMATION_PAGE_TITLE = "Establishment and user details"
+ESTABLISHMENT_NAME_SECTION = "Establishment name and ID"
+CONTACT_INFO_SECTION = "Contact information"
+ESTABLISHMENT_ADDRESS_SECTION = "Establishment address"
+ZAKAT_TAX_SECTION = "Zakat, tax and customs authority details"
+ESTABLISHMENT_ADDRESS_SECTION_AR = "عنوان المنشأة"
+ZAKAT_TAX_SECTION_AR = "معلومات هيئة الزكاة والضريبة والجمارك"
+
+EXTEND_ACTION = "extend-action"
+RENEW_ACTION = "renew-action"
