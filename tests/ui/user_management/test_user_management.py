@@ -11,8 +11,9 @@ from data.user_management.user_management_datasets import (
     UsersTypes,
 )
 from data.user_management.user_management_users import (
-    delegator_for_add_and_terminate_subscription_flow,
-    delegator_for_edit_flow,
+    delegator_type_three,
+    delegator_type_three_1,
+    delegator_type_three_2,
     delegator_with_um,
     delegator_without_um,
     owner_account,
@@ -35,7 +36,10 @@ from tests.ui.user_management.conftest import (
     get_subscription_cookie,
     log_in_and_open_establishment_account,
     log_in_and_open_user_management,
+    prepare_data_for_checking_the_confirmation_page,
+    prepare_data_for_owner_subscriptions_flows,
     remove_establishment_from_subscription,
+    renew_owner_subscriptions,
 )
 from utils.allure import TestmoProject, project
 
@@ -156,7 +160,7 @@ def test_ar_localization_for_delegator_details_page():
 def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_add_and_terminate_subscription_flow
+    user = delegator_type_three_2
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
@@ -211,7 +215,7 @@ def test_add_access_to_establishment():
 def test_remove_access_flow():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_edit_flow
+    user = delegator_type_three
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     cookie = get_subscription_cookie(owner)
     prepare_data_for_terminate_company(qiwa_api, cookie, user)
@@ -229,7 +233,7 @@ def test_terminate_flow():
     owner = owner_account
     user = user_type_three
     log_in_and_open_user_management(owner, Language.EN)
-    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name).\
+    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name). \
         check_user_is_terminated(user.personal_number)
 
 
@@ -238,7 +242,7 @@ def test_terminate_flow():
 def test_interaction_with_establishments_list():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_edit_flow
+    user = delegator_type_three
     log_in_and_open_user_management(owner, Language.EN)
     user_management.navigate_to_user_details(user.personal_number) \
         .select_all_allowed_access_establishments_checkbox() \
@@ -326,3 +330,37 @@ def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
         .navigate_to_establishment_information(user)\
         .possibility_open_renew_subscription_page()\
         .check_opened_page(user_type)
+
+
+@allure.title("Test confirmation page for owner subscriptions")
+@case_id(17410)
+def test_confirmation_page_for_owner_subscriptions():
+    user_management = UserManagementActions()
+    owner = owner_account
+    user_for_extend_subscription = delegator_type_three
+    user_for_renew_expired_flow = delegator_type_three_1
+    user_for_renew_terminated_flow = delegator_type_three_2
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    prepare_data_for_owner_subscriptions_flows(owner, qiwa_api, user_for_extend_subscription,
+                                               user_for_renew_expired_flow, user_for_renew_terminated_flow)
+    user_management.check_confirmation_page_on_add_new_user_flow().return_to_main_page_from_confirmation_page()\
+        .check_confirmation_page_for_actions(user_for_extend_subscription.personal_number,
+                                             user_management_data.EXTEND_ACTION)\
+        .check_confirmation_page_for_actions(user_for_renew_expired_flow.personal_number,
+                                             user_management_data.RENEW_ACTION)\
+        .check_confirmation_page_for_actions(user_for_renew_terminated_flow.personal_number,
+                                             user_management_data.RENEW_ACTION)
+    renew_owner_subscriptions(owner, [user_for_extend_subscription, user_for_renew_expired_flow,
+                                      user_for_renew_terminated_flow], qiwa_api, user_management)
+
+
+@allure.title("Test content on confirmation page")
+@case_id(17411, 41496)
+def test_content_on_confirmation_page():
+    user_management = UserManagementActions()
+    owner = owner_account
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    establishment_data = prepare_data_for_checking_the_confirmation_page(owner, qiwa_api)
+    user_management.check_confirmation_page_on_add_new_user_flow()\
+        .check_content_on_confirmation_page_english_localization(establishment_data, owner)\
+        .check_content_on_confirmation_page_arabic_localization(establishment_data)

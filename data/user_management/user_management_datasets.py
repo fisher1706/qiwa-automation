@@ -14,9 +14,7 @@ from data.user_management.user_management_users import (
     establishment_type_one,
     owner_account,
     owner_with_active_subscription,
-    owner_with_expired_subscription,
     owner_with_expired_subscription_always,
-    owner_without_subscription,
     owner_without_subscription_always,
 )
 
@@ -287,3 +285,23 @@ class RenewPageData:
 class ThankYouPageData:
     COUNT_EXPIRED_SUBSCRIPTION = 11
     COUNT_NEW_SUBSCRIPTION = 12
+
+
+@dataclasses.dataclass
+class EstablishmentAddresses:
+    initial_address = [7492, 2899, 8, "حي الشرفية", "ذو النورين", 23218]
+    updated_address = [4594, 7551, 392, "الربوة", "الحميدات", 12814]
+    country = "Kingdom of Saudi Arabia"
+    district_en = "Al Rayan Dist."
+    street_en = "Kharis Branch Rd"
+    final_updated_address = [
+        "7551",
+        "الحميدات",
+        "الحميدات",
+        "عين دار الجديدة",
+        "Ain Dar Al Gadida",
+        "الربوة",
+        "الربوة",
+        4594,
+    ]
+    vat_number = "300559557700003"

@@ -2,6 +2,7 @@ import allure
 
 from data.dedicated.models.user import User
 from data.user_management.user_management_datasets import (
+    EstablishmentAddresses,
     PaymentHeaders,
     SubscriptionStatuses,
 )
@@ -46,3 +47,18 @@ def check_deleted_status_of_privilege_log(
         personal_number=personal_number, service_id=32, sequence_number=sequence_number
     )
     assert_that(deleted_status_of_subscription).equals_to(deleted_status)
+
+
+def prepare_data_for_update_establishment_address(qiwa: QiwaApi):
+    qiwa.user_management_api.post_update_establishment_address(
+        EstablishmentAddresses.initial_address
+    )
+
+
+def get_establishment_address(qiwa: QiwaApi, cookie: dict) -> dict:
+    establishment_data = qiwa.user_management_api.get_establishment_data(cookie)
+    establishment_address = list(establishment_data.values())[4:11] + [
+        establishment_data.get("additionalNumber")
+    ]
+    vat_number = establishment_data["vatNumber"]
+    return {"establishment_address": establishment_address, "vat_number": vat_number}

@@ -32,7 +32,7 @@ delegator_for_owner_new_flow = User(
     unified_number_id=9086,
 )
 
-delegator_for_edit_flow = User(
+delegator_type_three = User(
     personal_number="1096471568",
     user_id=1666054,
     labor_office_id=1,
@@ -42,7 +42,7 @@ delegator_for_edit_flow = User(
     name="نوف مشبب بن سعيد الاحمري",
 )
 
-delegator_for_add_and_terminate_subscription_flow = User(
+delegator_type_three_2 = User(
     personal_number="1028056867",
     user_id=91912,
     labor_office_id=9,
@@ -50,7 +50,7 @@ delegator_for_add_and_terminate_subscription_flow = User(
     unified_number_id=9086,
 )
 
-delegator_for_full_terminate_flow = User(
+delegator_type_three_1 = User(
     personal_number="1100824174",
     user_id=2082702,
     labor_office_id=9,
