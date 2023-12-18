@@ -108,18 +108,14 @@ class IbmApi:
             pytest.fail(reason=response["EnglishMsg"])
 
     def create_employee_transfer_request_ae(self, user: User, laborer: Laborer) -> None:
-        # TODO(dp): Do we need to separate updating of this test data?
-        sponsor_id = 0
-        if laborer.transfer_type == type_12:
-            sponsor_id = self.check_and_validate_transferred_employee(
-                str(laborer.personal_number)
-            )["CheckandValidateTransferredEmployeeRs"]["Body"]["SponsorDetails"]["SponsorIdNo"]
-
+        employee_info = self.check_and_validate_transferred_employee(str(laborer.personal_number))[
+            "CheckandValidateTransferredEmployeeRs"
+        ]["Body"]
         response = self.client.post(
             url=self.url,
             endpoint=self.route + "/changesponsor/submitcsrequests",
             headers=HEADERS,
-            json=employee_transfer_request_ae_payload(user, laborer, int(sponsor_id)),
+            json=employee_transfer_request_ae_payload(user, laborer, employee_info),
         )
         response = response.json()["SubmitCSRequestRs"]["Header"]["ResponseStatus"]
         if response["Status"].lower() == "error":

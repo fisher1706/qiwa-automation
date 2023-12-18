@@ -120,7 +120,7 @@ def test_current_sponsor_able_to_make_a_decision_for_get_request(status):
 
     employee_transfer_actions.navigate_to_et_service_current_sponsor(current_sponsor)
 
-    qiwa.employee_transfer_page.search_received_request(laborer_with_sponsor.personal_number)
+    qiwa.employee_transfer_page.search_received_requests_pending_decision(laborer_with_sponsor.personal_number)
 
     employee_transfer_actions.make_a_decision_as_current_sponsor(status)
 

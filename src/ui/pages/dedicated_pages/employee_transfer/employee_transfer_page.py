@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from selene import have, query
+from selene import be, have, query
 from selene.core.entity import Element
 from selene.support.shared.jquery_style import s, ss
 
@@ -31,6 +31,7 @@ class EmployeeTransferPage(
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
     sent_requests_section = s("#requests-sent-by-you")
+    received_requests_pending_decision = s("#requests-sent-by-you + div")
     received_requests_section = s("#received-requests")
 
     sent_requests_table = Table(sent_requests_section.s("table"))
@@ -44,6 +45,7 @@ class EmployeeTransferPage(
     received_requests_pagination_info = received_requests_section.s(pagination_info)
 
     search_sent_requests = sent_requests_section.s("#sent")
+    search_received_requests_pending = s("#SearchField-requests_pending")
     search_received_requests = received_requests_section.s("#received")
 
     btn_accept = s("//button[.='Accept']")
@@ -89,16 +91,24 @@ class EmployeeTransferPage(
         self.received_requests_table.rows.should(have.size(rows))
 
     def search_sent_request(self, iqama_number: str) -> EmployeeTransferPage:
+        self.sent_requests_section.should(be.visible)
         scroll_into_view_if_needed(self.sent_requests_section)
         self.search_sent_requests.type(iqama_number)
         return self
 
+    def search_received_requests_pending_decision(self, iqama_number: str) -> EmployeeTransferPage:
+        self.received_requests_pending_decision.should(be.visible)
+        scroll_into_view_if_needed(self.received_requests_pending_decision)
+        self.search_received_requests_pending.type(iqama_number)
+        return self
+
     def search_received_request(self, iqama_number: str) -> EmployeeTransferPage:
+        self.received_requests_section.should(be.visible)
         scroll_into_view_if_needed(self.received_requests_section)
         self.search_received_requests.type(iqama_number)
         return self
 
-    def click_btn_approve(self) -> EmployeeTransferPage:
+    def click_btn_accept(self) -> EmployeeTransferPage:
         self.btn_accept.click()
         return self
 
