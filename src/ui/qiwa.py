@@ -76,15 +76,14 @@ from src.ui.pages.visa_pages.transitional_page import TransitionalPage
 from src.ui.pages.visa_pages.visa_request_page import VisaRequestPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from src.ui.pages.wp_page import LoWorkPermitPage
-from src.ui.pages.violations_pages.violations_page import ViolationsPage
-from src.ui.pages.violations_pages.violation_details_page import ViolationDetails
+from utils.allure import allure_steps
+
 # from src.ui.pages.qiwa_wallet_pages.qiwa_wallet_homepage import QiwaWalletHomePage
 # from src.ui.pages.qiwa_wallet_pages.create_update_wallet_page import CreateWalletPage
 # from src.ui.pages.qiwa_wallet_pages.create_update_wallet_success_page import CreateWalletSuccessPage
 # from src.ui.pages.qiwa_wallet_pages.create_wallet_error_page import CreateWalletErrorPage
 # from src.ui.pages.qiwa_wallet_pages.transaction_details_page import TransactionDetailsPage
 
-from utils.allure import allure_steps
 
 # from src.ui.pages.qiwa_wallet_pages.qiwa_wallet_homepage import QiwaWalletHomePage
 # from src.ui.pages.qiwa_wallet_pages.create_update_wallet_page import CreateWalletPage

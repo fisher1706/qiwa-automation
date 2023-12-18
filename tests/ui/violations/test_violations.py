@@ -1,7 +1,5 @@
 import allure
 import pytest
-
-from data.constants import Language
 from data.establishment_violations.constants import (
     SortingData,
     TableColumns,
