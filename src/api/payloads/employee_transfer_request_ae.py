@@ -1,4 +1,4 @@
-from data.dedicated.employee_trasfer.employee_transfer_constants import type_12, type_9
+from data.dedicated.employee_trasfer.employee_transfer_constants import type_9, type_12
 from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.user import User
 from src.api.payloads.ibm.header import Header, UserInfo

@@ -11,7 +11,5 @@ class MeetQiwaPopup:
 
     @allure.step("Close Meet Qiwa popup")
     def close_meet_qiwa_popup_if_displayed(self) -> None:
-        if self.popup.matching(be.visible) and self.popup.s("h2").matching(
-            have.text("Meet Qiwa")
-        ):
+        if self.popup.matching(be.visible) and self.popup.s("h2").matching(have.text("Meet Qiwa")):
             self.close_icon.click()
