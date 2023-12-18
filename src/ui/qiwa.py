@@ -85,13 +85,6 @@ from utils.allure import allure_steps
 # from src.ui.pages.qiwa_wallet_pages.transaction_details_page import TransactionDetailsPage
 
 
-# from src.ui.pages.qiwa_wallet_pages.qiwa_wallet_homepage import QiwaWalletHomePage
-# from src.ui.pages.qiwa_wallet_pages.create_update_wallet_page import CreateWalletPage
-# from src.ui.pages.qiwa_wallet_pages.create_update_wallet_success_page import CreateWalletSuccessPage
-# from src.ui.pages.qiwa_wallet_pages.create_wallet_error_page import CreateWalletErrorPage
-# from src.ui.pages.qiwa_wallet_pages.transaction_details_page import TransactionDetailsPage
-
-
 @allure_steps
 class QiwaUiClient:
     # Pages
@@ -123,8 +116,7 @@ class QiwaUiClient:
     visa_request = VisaRequestPage()
     issue_visa = IssueVisaPage()
     increase_quota = IncreaseQuotaPage()
-    balance_request = BalanceRequest()
-    payment_gateway = PaymentPage()
+    balnce_request = BalanceRequest()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
@@ -162,8 +154,8 @@ class QiwaUiClient:
         return self
 
     def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        QiwaApi().sso.login_user(login, password)
-        QiwaApi().sso.pass_account_security()
+        # QiwaApi().sso.login_user(login, password)
+        # QiwaApi().sso.pass_account_security()
         self.login_as_user(login, password)
         self.feedback.close_feedback()
         return self
@@ -242,10 +234,6 @@ class QiwaUiClient:
 
     def open_employee_list_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.employee_list)
-        return self
-
-    def open_payment_page(self, payment_id: int) -> QiwaUiClient:
-        browser.open(f"{config.qiwa_urls.payment_ui}/{payment_id}")
         return self
 
 
