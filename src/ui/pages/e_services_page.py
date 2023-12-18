@@ -64,7 +64,8 @@ class EServicesPage:
     EMPLOYEE_TRANSFER_CARD = s("//p[.='Employee Transfer']")
     CERTIFICATES_CARD = s("//p[.='Certificates'']")
     LO = s("//p[.='Labor Office Appointments']")
-
+    VIOLATION_CARD = s("//p[.='Establishment Violations']")
+    QIWA_WALLET_CARD = s("//p[.='Qiwa Wallet']")
     def __init__(self):
         super().__init__()
         self.page_url = "/en/company/e-services/"
@@ -134,3 +135,9 @@ class EServicesPage:
     @allure.step
     def select_lo(self):
         self.LO.click()
+    @allure.step
+    def select_establishment_violations(self):
+        self.VIOLATION_CARD.click()
+    @allure.step
+    def select_qiwa_wallet(self):
+        self.QIWA_WALLET_CARD.click()
