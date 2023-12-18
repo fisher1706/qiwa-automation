@@ -10,7 +10,7 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AccountRequests:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
 
     def update_users_birthday(self, national_id: str) -> None:
         account_record = (

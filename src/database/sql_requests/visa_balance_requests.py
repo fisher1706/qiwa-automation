@@ -14,7 +14,7 @@ class VisaBalanceRequests:
         self.__payment_id = None
         self.last_payment_id = None
 
-    session = DBClient(db_url=config.settings.visa_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.visa_db_url).set_db_session
 
     def remove_blocking_status_record(self):
         statuses = [BALANCE_REQUESTS_WAITING_STATUS, BALANCE_REQUESTS_SUBMIT_FAILED_STATUS]

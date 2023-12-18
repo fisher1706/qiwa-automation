@@ -4,8 +4,10 @@ from data.account import Account
 from data.sso import account_data_constants as users_data
 from src.api.app import QiwaApi
 from src.database.actions.auth_db_actions import delete_account_data_from_db
-from src.database.sql_requests.account_lockouts import AccountLockoutsRequest
-from src.database.sql_requests.account_request import AccountRequests
+from src.database.sql_requests.sso_requests.account_lockouts import (
+    AccountLockoutsRequest,
+)
+from src.database.sql_requests.sso_requests.account_request import AccountRequests
 
 
 @pytest.fixture

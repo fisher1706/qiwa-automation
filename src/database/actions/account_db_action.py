@@ -1,5 +1,5 @@
-from src.database.sql_requests.account_request import AccountRequests
-from src.database.sql_requests.accounts_emails import AccountsEmailsRequest
+from src.database.sql_requests.sso_requests.account_request import AccountRequests
+from src.database.sql_requests.sso_requests.accounts_emails import AccountsEmailsRequest
 
 
 def update_account_email(iqama_id, created_at):

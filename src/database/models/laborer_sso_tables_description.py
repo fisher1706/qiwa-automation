@@ -247,3 +247,77 @@ class ResetPasswordActivityTrails(Base):
     wrong_otp_locked_until = Column("wrong_otp_locked_until", DateTime(timezone=False))
     created_at = Column("created_at", DateTime(timezone=False))
     updated_at = Column("updated_at", DateTime(timezone=False))
+
+
+class ChangePhoneOnLoginActivityTrails(Base):
+    __tablename__ = "change_phone_on_login_activity_trails"
+
+    id = Column("id", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("personal_number", Text)
+    init_absher_verification_counter = Column(
+        "init_absher_verification_counter", Integer, default=0
+    )
+    init_absher_verification_first_at = Column(
+        "init_absher_verification_first_at", DateTime(timezone=False)
+    )
+    resend_init_absher_verification_counter = Column(
+        "resend_init_absher_verification_counter", Integer, default=0
+    )
+    resend_init_absher_verification_first_at = Column(
+        "resend_init_absher_verification_first_at", DateTime(timezone=False)
+    )
+    init_phone_verification_counter = Column("init_phone_verification_counter", Integer, default=0)
+    init_phone_verification_first_at = Column(
+        "init_phone_verification_first_at", DateTime(timezone=False)
+    )
+    resend_init_phone_verification_counter = Column(
+        "resend_init_phone_verification_counter", Integer, default=0
+    )
+    resend_init_phone_verification_first_at = Column(
+        "resend_init_phone_verification_first_at", DateTime(timezone=False)
+    )
+    confirm_phone_verification_counter = Column(
+        "confirm_phone_verification_counter", Integer, default=0
+    )
+    confirm_phone_verification_first_at = Column(
+        "confirm_phone_verification_first_at", DateTime(timezone=False)
+    )
+    created_at = Column("created_at", DateTime(timezone=False))
+    updated_at = Column("updated_at", DateTime(timezone=False))
+
+
+class ChangePhoneOnResetPasswordActivityTrails(Base):
+    __tablename__ = "change_phone_on_reset_password_activity_trails"
+
+    id = Column("id", BigInteger, primary_key=True, nullable=False)
+    personal_number = Column("personal_number", Text)
+    init_absher_verification_counter = Column(
+        "init_absher_verification_counter", Integer, default=0
+    )
+    init_absher_verification_first_at = Column(
+        "init_absher_verification_first_at", DateTime(timezone=False)
+    )
+    resend_init_absher_verification_counter = Column(
+        "resend_init_absher_verification_counter", Integer, default=0
+    )
+    resend_init_absher_verification_first_at = Column(
+        "resend_init_absher_verification_first_at", DateTime(timezone=False)
+    )
+    init_phone_verification_counter = Column("init_phone_verification_counter", Integer, default=0)
+    init_phone_verification_first_at = Column(
+        "init_phone_verification_first_at", DateTime(timezone=False)
+    )
+    resend_init_phone_verification_counter = Column(
+        "resend_init_phone_verification_counter", Integer, default=0
+    )
+    resend_init_phone_verification_first_at = Column(
+        "resend_init_phone_verification_first_at", DateTime(timezone=False)
+    )
+    confirm_phone_verification_counter = Column(
+        "confirm_phone_verification_counter", Integer, default=0
+    )
+    confirm_phone_verification_first_at = Column(
+        "confirm_phone_verification_first_at", DateTime(timezone=False)
+    )
+    created_at = Column("created_at", DateTime(timezone=False))
+    updated_at = Column("updated_at", DateTime(timezone=False))

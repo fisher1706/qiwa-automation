@@ -48,8 +48,8 @@ class Authorize(QiwaBaseModel):
 
 
 class SecurityQuestion(QiwaBaseModel):
-    mother_dob: str = "1-1-2011"
-    mother_name: str = "Test name"
+    mother_name: Optional[str]
+    mother_dob: Optional[str]
 
 
 class Logout(QiwaBaseModel):

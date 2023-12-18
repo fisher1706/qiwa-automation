@@ -6,17 +6,21 @@ from sqlalchemy.orm import Session, sessionmaker
 
 class DBClient:
     def __init__(self, db_url: str):
-        self.db_url = db_url
+        self._db_url = db_url
 
     def __del__(self):
         self.close_db_session()
 
-    def set_db_session(self) -> Session:
-        engine = create_engine(url=self.db_url)
-        Session = sessionmaker(bind=engine)  # pylint: disable=C0103, W0621
-        session = Session()
-        return session
+    @property
+    def set_db_session(self):
+        try:
+            engine = create_engine(url=self._db_url)
+            Session = sessionmaker(bind=engine)  # pylint: disable=C0103, W0621
+            session = Session()
+            return session
+        except AttributeError:
+            return None
 
     def close_db_session(self):
         # should be always called in the end of the session
-        self.set_db_session().close()
+        self.set_db_session.close()

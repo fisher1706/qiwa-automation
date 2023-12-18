@@ -5,11 +5,16 @@ from sqlalchemy import or_
 
 import config
 from src.database.client.db_client import DBClient
-from src.database.models.laborer_sso_tables_description import AccountsPhone, Phones
+from src.database.models.laborer_sso_tables_description import (
+    AccountsPhone,
+    ChangePhoneOnLoginActivityTrails,
+    ChangePhoneOnResetPasswordActivityTrails,
+    Phones,
+)
 
 
 class AccountsPhonesRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
 
     def update_phone_enabled_time(self, account_id: str, new_time: datetime) -> None:
         phone_record = (
@@ -60,9 +65,22 @@ class AccountsPhonesRequest:
         self.session.query(AccountsPhone).filter(
             or_(AccountsPhone.phone_id == phone_id, AccountsPhone.account_id == account_id)
         ).delete()
+        self.session.commit()
 
     def delete_phone(self, phone_id: str) -> None:
         phone_records = self.session.query(Phones).filter(Phones.id == phone_id).all()
         for phone_record in phone_records:
             self.session.delete(phone_record)
             self.session.commit()
+
+    def delete_change_phone_activities_on_login_data(self, personal_number: str) -> None:
+        self.session.query(ChangePhoneOnLoginActivityTrails).filter(
+            ChangePhoneOnLoginActivityTrails.personal_number == personal_number
+        ).delete()
+        self.session.commit()
+
+    def delete_change_phone_activities_on_reset_pass_data(self, personal_number: str) -> None:
+        self.session.query(ChangePhoneOnResetPasswordActivityTrails).filter(
+            ChangePhoneOnResetPasswordActivityTrails.personal_number == personal_number
+        ).delete()
+        self.session.commit()

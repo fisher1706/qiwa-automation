@@ -7,7 +7,7 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AccountLockoutsRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
 
     def get_unlock_key(self, account_id: str) -> str:
         key_data = (

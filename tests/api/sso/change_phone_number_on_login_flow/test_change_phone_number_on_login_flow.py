@@ -1,15 +1,17 @@
+import time
 from datetime import datetime, timedelta, timezone
 
 import pytest
 
 from data.sso import account_data_constants as constants
-from data.sso import account_data_constants as users_data
-from data.sso import data_constants
 from data.sso.messages import INVALID_NID_FOR_INIT
 from src.api.app import QiwaApi
 from src.database.actions.account_db_action import update_account_email
-from src.database.sql_requests.account_request import AccountRequests
-from src.database.sql_requests.accounts_phone import AccountsPhonesRequest
+from src.database.sql_requests.sso_requests.account_request import AccountRequests
+from src.database.sql_requests.sso_requests.accounts_phone import AccountsPhonesRequest
+from tests.api.sso.change_phone_number_on_login_flow.conftest import (
+    waiting_to_resent_codes,
+)
 from utils.allure import TestmoProject, project
 from utils.assertion import assert_that
 
@@ -111,19 +113,49 @@ def test_change_phone_number_during_login_for_user_with_expired_email(expat_acco
     qiwa.sso.confirm_phone_verification_for_change_on_login()
 
 
-@case_id(167575)
-def test_resend_init_hsm_code_during_change_phone_on_login_page_flow(account_data):
+@case_id()
+@pytest.mark.xfail(reasone="number of init can be changed on the env")
+def test_init_hsm_and_resend_code_during_change_phone_on_login_page_flow_more_than_three_times(account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
     qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
     qiwa.sso.resend_init_hsm_for_change_phone_on_login()
+    waiting_to_resent_codes(31)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+    qiwa.sso.resend_init_hsm_for_change_phone_on_login()
+    waiting_to_resent_codes(31)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+    qiwa.sso.resend_init_hsm_for_change_phone_on_login()
+    waiting_to_resent_codes(31)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day, expected_code=422)
+    qiwa.sso.resend_init_hsm_for_change_phone_on_login(expected_code=422)
 
 
-@case_id(167576)
+@case_id()
+@pytest.mark.xfail(reasone="time of session can be changed on env")
 def test_resend_init_phone_during_change_phone_on_login_page_flow(account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
     qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
     qiwa.sso.activate_hsm_for_change_phone_on_login(account_data.absher_confirmation_code)
     qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    waiting_to_resent_codes(61)
     qiwa.sso.resend_phone_init_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    waiting_to_resent_codes(61)
+    qiwa.sso.resend_phone_init_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    waiting_to_resent_codes(61)
+    qiwa.sso.resend_phone_init_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER, expected_code=403)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER, expected_code=403)
+
+
+@case_id(42058)
+def test_resend_init_phone_do_not_work_during_change_phone_on_login_page_flow_after_init_phone_is_blocked(account_data):
+    qiwa = QiwaApi()
+    qiwa.sso.login(account_data.personal_number, account_data.password)
+    qiwa.sso.init_hsm_for_change_phone_on_login(account_data.personal_number, account_data.birth_day)
+    qiwa.sso.activate_hsm_for_change_phone_on_login(account_data.absher_confirmation_code)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER)
+    qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER, expected_code=422)
+    qiwa.sso.resend_phone_init_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER, expected_code=422)

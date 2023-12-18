@@ -4,7 +4,7 @@ from src.database.models.laborer_sso_tables_description import SecurityQuestions
 
 
 class SecurityQuestionsRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
 
     def delete_security_question_request(self, account_id: str) -> None:
         security_question_data = (

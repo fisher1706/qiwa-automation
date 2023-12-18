@@ -404,7 +404,7 @@ class AuthApiSSO:
         assert_status_code(response.status_code).equals_to(expected_code)
 
     @allure.step
-    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 422):
+    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 200):
         response = self.client.get(
             url=self.url, endpoint="/change-phone-on-reset-password/security-questions"
         )
@@ -413,8 +413,8 @@ class AuthApiSSO:
     @allure.step
     def validate_security_answer_for_chane_phone_on_reset_password(
         self,
-        first_answer: str = "firs_answer",
-        second_answer: str = "second_answer",
+        first_answer: str = "1-1-2011",
+        second_answer: str = "Test name",
         expected_code: int = 200,
     ):
         payload = security_question_payload(first_answer=first_answer, second_answer=second_answer)
@@ -444,5 +444,19 @@ class AuthApiSSO:
             url=self.url,
             endpoint="/change-phone-on-reset-password/confirm-verification",
             json=payload,
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_absher_for_change_phone_on_reset_pass_flow(self, expected_code: int = 200):
+        response = self.client.post(
+            url=self.url, endpoint="/change-phone-on-reset-password/high-security-mode/init/resend"
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_otp_for_change_phone_on_reset_pass_flow(self, expected_code: int = 200):
+        response = self.client.post(
+            url=self.url, endpoint="/change-phone-on-reset-password/init-verification/resend"
         )
         assert_status_code(response.status_code).equals_to(expected_code)

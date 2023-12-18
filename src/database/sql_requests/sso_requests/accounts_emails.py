@@ -7,7 +7,7 @@ from src.database.models.laborer_sso_tables_description import AccountsEmails, E
 
 
 class AccountsEmailsRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
 
     def get_email_confirmation_token_request(self, account_id: str, state: str = "pending") -> str:
         email_token_data = (
