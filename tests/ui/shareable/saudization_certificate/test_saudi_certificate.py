@@ -83,7 +83,7 @@ def test_if_establishment_not_included_in_nitaqat():
     qiwa.dashboard_page.wait_dashboard_page_to_load()
 
     # selecting e-services then lo
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.dashboard_page.select_e_services_menu_item()
     qiwa.e_services_page.select_lo()
 
@@ -115,7 +115,7 @@ def test_if_establishment_has_red_nitaqat():
     qiwa.dashboard_page.wait_dashboard_page_to_load()
 
     # selecting e-services then lo
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.dashboard_page.select_e_services_menu_item()
     qiwa.e_services_page.select_lo()
 

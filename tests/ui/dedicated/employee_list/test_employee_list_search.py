@@ -53,7 +53,7 @@ def test_search_functionality_works_correctly_when_searching_employees(by, text)
     qiwa.workspace_page.select_company_account_with_sequence_number(employer.sequence_number)
 
     qiwa.dashboard_page.wait_dashboard_page_to_load()
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.open_employee_list_page()
     qiwa.employee_list_page.search(by, text)
 
@@ -74,7 +74,7 @@ def test_search_non_existing_user(text):
     qiwa.workspace_page.select_company_account_with_sequence_number(employer.sequence_number)
 
     qiwa.dashboard_page.wait_dashboard_page_to_load()
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.open_employee_list_page()
     qiwa.employee_list_page.verify_nothing_was_found_message(text)
 
@@ -88,7 +88,7 @@ def test_search_with_empty_field():
     qiwa.workspace_page.select_company_account_with_sequence_number(employer.sequence_number)
 
     qiwa.dashboard_page.wait_dashboard_page_to_load()
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.open_employee_list_page()
     user_ids = qiwa.employee_list_page.get_users_ids_from_table()
     qiwa.employee_list_page.fill_random_search_and_clear()

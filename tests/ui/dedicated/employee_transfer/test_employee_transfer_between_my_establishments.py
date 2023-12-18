@@ -46,7 +46,7 @@ def test_bme_laborer_able_to_make_a_decision_for_et_request(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_between_my_establishments.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
