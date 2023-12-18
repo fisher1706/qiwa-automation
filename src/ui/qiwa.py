@@ -85,7 +85,6 @@ from utils.allure import allure_steps
 # from src.ui.pages.qiwa_wallet_pages.transaction_details_page import TransactionDetailsPage
 
 
-
 @allure_steps
 class QiwaUiClient:
     # Pages
