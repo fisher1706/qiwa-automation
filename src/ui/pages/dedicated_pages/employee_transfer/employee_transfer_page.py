@@ -32,7 +32,7 @@ class EmployeeTransferPage(
 
     sent_requests_section = s("#requests-sent-by-you")
     received_requests_pending_decision = s("#requests-sent-by-you + div")
-    received_requests_section = s("#received-requests")
+    received_requests_section = s("#received-requests + div + div")
 
     sent_requests_table = Table(sent_requests_section.s("table"))
     received_requests_table = Table(received_requests_section.s("table"))
@@ -44,9 +44,9 @@ class EmployeeTransferPage(
     sent_requests_pagination_info = sent_requests_section.s(pagination_info)
     received_requests_pagination_info = received_requests_section.s(pagination_info)
 
-    search_sent_requests = sent_requests_section.s("#sent")
+    search_sent_requests = s("#sent")
     search_received_requests_pending = s("#SearchField-requests_pending")
-    search_received_requests = received_requests_section.s("#received")
+    search_received_requests = s("#received")
 
     btn_accept = s("//button[.='Accept']")
     btn_accept_request = s("//button[.='Accept request']")
@@ -91,19 +91,19 @@ class EmployeeTransferPage(
         self.received_requests_table.rows.should(have.size(rows))
 
     def search_sent_request(self, iqama_number: str) -> EmployeeTransferPage:
-        self.sent_requests_section.should(be.visible)
+        self.sent_requests_section.should(be.present)
         scroll_into_view_if_needed(self.sent_requests_section)
         self.search_sent_requests.type(iqama_number)
         return self
 
     def search_received_requests_pending_decision(self, iqama_number: str) -> EmployeeTransferPage:
-        self.received_requests_pending_decision.should(be.visible)
+        self.received_requests_pending_decision.should(be.present)
         scroll_into_view_if_needed(self.received_requests_pending_decision)
         self.search_received_requests_pending.type(iqama_number)
         return self
 
     def search_received_request(self, iqama_number: str) -> EmployeeTransferPage:
-        self.received_requests_section.should(be.visible)
+        self.received_requests_section.should(be.present)
         scroll_into_view_if_needed(self.received_requests_section)
         self.search_received_requests.type(iqama_number)
         return self
