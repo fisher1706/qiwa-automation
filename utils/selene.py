@@ -30,6 +30,6 @@ def scroll_into_view_if_needed(element: Element):
     setTimeout(function() {
         element.scrollIntoViewIfNeeded(true);
         callback('timeout');
-    }, 2000);
+    }, 3000);
     """
     browser.driver.execute_async_script(script, element.locate())
