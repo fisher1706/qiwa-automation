@@ -1,7 +1,9 @@
 import allure
-from selene.support.shared.jquery_style import s, ss
 from selene import be, query
+from selene.support.shared.jquery_style import s, ss
+
 from data.establishment_violations.constants import ViolationDetailsPageText
+
 from .violations_page import ViolationsPage
 
 

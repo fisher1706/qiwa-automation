@@ -1,15 +1,16 @@
 import allure
 import pytest
+
+from data.constants import Language
 from data.establishment_violations.constants import (
-    TableFilters,
-    UserWithEstablishmentViolations,
     SortingData,
     TableColumns,
+    TableFilters,
+    UserWithEstablishmentViolations,
     ViolationDetailsPageText,
 )
 from src.ui.qiwa import qiwa
 from utils.allure import TestmoProject, project
-from data.constants import Language
 
 case_id = project(TestmoProject.VIOLATIONS)
 
@@ -96,8 +97,7 @@ class TestViolations:
                         qiwa.violations_page.validate_payment_status_table_data(filter_option)
                     elif column_name == "Objection ID":
                         qiwa.violations_page.validate_objection_id_table_data(filter_option)
-                    qiwa.violations_page.click_on_filters_btn().clear_search_filters().click_on_apply_filters().\
-                        wait_for_page_to_load()
+                    qiwa.violations_page.click_on_filters_btn().clear_search_filters().click_on_apply_filters().wait_for_page_to_load()
                 else:
                     qiwa.violations_page.open_filter_calendar(
                         filter_name=filter_data, filter_type=filter_option
@@ -109,8 +109,7 @@ class TestViolations:
                     qiwa.violations_page.validate_date_filter(
                         data, TableFilters.END_DATE_FOR_FILTER, filter_type=filter_option
                     )
-                    qiwa.violations_page.click_on_filters_btn().clear_search_filters().click_on_apply_filters().\
-                        wait_for_page_to_load()
+                    qiwa.violations_page.click_on_filters_btn().clear_search_filters().click_on_apply_filters().wait_for_page_to_load()
 
     @allure.title("Pagination")
     @case_id(33106)

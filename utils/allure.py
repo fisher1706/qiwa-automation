@@ -24,6 +24,7 @@ class TestmoProject(enum.Enum):
     VIOLATIONS = 24
     QWALLET = 35
 
+
 def project(project_id: TestmoProject) -> Callable:
     def testcase(*case_ids: int) -> Callable:
         def decorator(func: Callable) -> Callable:

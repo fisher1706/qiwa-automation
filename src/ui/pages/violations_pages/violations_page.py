@@ -1,14 +1,16 @@
 import math
+import re
 from datetime import datetime
+
 import allure
-from selene.support.shared.jquery_style import s, ss
 from selene import be, query
+from selene.support.shared.jquery_style import s, ss
+
 from data.establishment_violations.constants import (
-    TableFilters,
     PageText,
     PaginationOptions,
+    TableFilters,
 )
-import re
 
 
 class ViolationsPage:
@@ -101,6 +103,7 @@ class ViolationsPage:
             data = [self.extract_numbers(text) for text in data if text != "-"]
         assert data == sorted(data, reverse=reverse)
         return self
+
     @allure.step
     def validate_date_filter(self, data, date_filter, filter_type):
         date_filter = datetime.strptime(date_filter, "%d/%m/%Y")
@@ -241,8 +244,12 @@ class ViolationsPage:
 
     @allure.step
     def validate_pagination(self):
-        assert math.ceil(self.get_total_number_of_rows() / self.get_number_of_rows_per_page()) == self.get_number_of_pages()
+        assert (
+            math.ceil(self.get_total_number_of_rows() / self.get_number_of_rows_per_page())
+            == self.get_number_of_pages()
+        )
         return self
+
     @allure.step
     def validate_pagination_arrows(self):
         if math.ceil(self.get_total_number_of_rows() / self.get_number_of_rows_per_page()) > 1:
