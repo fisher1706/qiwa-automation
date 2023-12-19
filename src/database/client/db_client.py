@@ -12,14 +12,11 @@ class DBClient:
         self.close_db_session()
 
     @property
-    def set_db_session(self):
-        try:
-            engine = create_engine(url=self._db_url)
-            Session = sessionmaker(bind=engine)  # pylint: disable=C0103, W0621
-            session = Session()
-            return session
-        except AttributeError:
-            return None
+    def set_db_session(self) -> Session:
+        engine = create_engine(url=self._db_url)
+        Session = sessionmaker(bind=engine)  # pylint: disable=C0103, W0621
+        session = Session()
+        return session
 
     def close_db_session(self):
         # should be always called in the end of the session
