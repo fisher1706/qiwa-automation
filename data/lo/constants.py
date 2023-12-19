@@ -184,7 +184,7 @@ class ServicesInfo:
     }
     SERVICE_NAME_VIRTUAL = {
         Language.EN: "Alina_Individuals_Virtual",
-        Language.AR: "Alina_Individuals_Virtual",
+        Language.AR: "Alina_ndividualVirtual",
     }
     SUB_SERVICE_NAME_VIRTUAL = {
         Language.EN: "Alina_New_Individuals",

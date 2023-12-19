@@ -372,10 +372,9 @@ def test_individual_edit_appointment():
 
     qiwa.labor_office_appointments_page.check_context_action_menu_from_upcoming()
     qiwa.labor_office_appointments_page.edit_active_appointment()
-
     qiwa.labor_office_appointments_edit_page.open_knowledge_center()
     qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
-    utils.helpers.scroll_to_coordinates()
+
     qiwa.labor_office_appointments_edit_page.change_details_fields(
         region=OfficesInfo.REGION_MADINAH[Language.EN], office=OfficesInfo.OFFICE_NAME_VEUM_HANE
     )
@@ -417,7 +416,7 @@ def test_individual_edit_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON)
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON['id'])
     qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS[language])
     qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language])
     qiwa.labor_office_appointments_create_page.click_next_step_button()

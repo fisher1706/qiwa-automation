@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import be
+from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 
 from data.constants import Language
@@ -89,7 +90,7 @@ class LaborOfficeAppointmentsEditPage:
         Language.AR: s('//*[@data-component="Button"]//*[contains(text(), "الخطوات الإرشادية")]'),
     }
 
-    knowledge_center_logo_text = s('//*[@id="root"]/div[3]/div[1]/div/div/div/div[1]')
+    knowledge_center_section = s('//div[@class="service-overview-hero-section"]')
 
     summary_table_title_text = {
         Language.EN: s('//*[@id="summary"]/div//*[contains(text(), "Summary")]'),
@@ -185,7 +186,9 @@ class LaborOfficeAppointmentsEditPage:
 
     @allure.step("Verifying knowledge center is loaded")
     def verify_knowledge_center_page_load(self):
-        self.knowledge_center_logo_text.wait_until(be.visible)
+        browser.switch_to_next_tab()
+        self.knowledge_center_section.should(be.visible)
+        browser.switch_to_previous_tab()
 
     @allure.step("Changing details of app")
     def change_details_fields(self, region, office):
