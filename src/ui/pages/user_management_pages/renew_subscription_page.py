@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import allure
-from selene import be, have
+from selene import be, browser, have
 from selene.support.shared.jquery_style import s, ss
 
+import config
 from data.user_management.user_management_datasets import RenewPageData
 from src.ui.pages.user_management_pages.base_establishment_payment_page import (
     BaseEstablishmentPayment,
@@ -12,6 +13,7 @@ from src.ui.pages.user_management_pages.base_establishment_payment_page import (
 
 class RenewSubscription(BaseEstablishmentPayment):
     main_text = s("//p[contains(text(), 'Renew your expired subscription')]")
+    page_title_renew_subscription = s("[data-testid='layout-with-instruction'] > p")
     btn_go_to_payment = s("//button//p[contains(text(), 'Go to payment')]")
 
     group_manager_text = s("//p[contains(text(), 'Group Manager')]")
@@ -77,4 +79,18 @@ class RenewSubscription(BaseEstablishmentPayment):
     @allure.step
     def check_total_value(self) -> RenewSubscription:
         self.total_value.should(be.visible)
+        return self
+
+    @allure.step
+    def check_self_renew_expired_page_is_opened(
+        self, office_id: str, sequence_number: str
+    ) -> RenewSubscription:
+        self.page_title_renew_subscription.should(be.visible)
+        browser.should(
+            have.url(
+                f"{config.qiwa_urls.ui_user_management}/renew-subscription/expired?laborOfficeId={office_id}"
+                f"&sequenceNumber={sequence_number}"
+            )
+        )
+        self.btn_go_to_payment.should(be.visible)
         return self

@@ -106,13 +106,70 @@ ACTIVE_STATUS: str = "Active"
 
 SUBSCRIPTION_TIME: int = 1
 
-CONFIRMATION_PAGE_TITLE = "Establishment and user details"
-ESTABLISHMENT_NAME_SECTION = "Establishment name and ID"
-CONTACT_INFO_SECTION = "Contact information"
-ESTABLISHMENT_ADDRESS_SECTION = "Establishment address"
-ZAKAT_TAX_SECTION = "Zakat, tax and customs authority details"
-ESTABLISHMENT_ADDRESS_SECTION_AR = "عنوان المنشأة"
-ZAKAT_TAX_SECTION_AR = "معلومات هيئة الزكاة والضريبة والجمارك"
+CONFIRMATION_PAGE_TITLE: str = "Establishment and user details"
+ESTABLISHMENT_NAME_SECTION: str = "Establishment name and ID"
+CONTACT_INFO_SECTION: str = "Contact information"
+ESTABLISHMENT_ADDRESS_SECTION: str = "Establishment address"
+ZAKAT_TAX_SECTION: str = "Zakat, tax and customs authority details"
+ESTABLISHMENT_ADDRESS_SECTION_AR: str = "عنوان المنشأة"
+ZAKAT_TAX_SECTION_AR: str = "معلومات هيئة الزكاة والضريبة والجمارك"
 
-EXTEND_ACTION = "extend-action"
-RENEW_ACTION = "renew-action"
+EXTEND_ACTION: str = "extend-action"
+RENEW_ACTION: str = "renew-action"
+
+RENEW_TERMINATED_SUBSCRIPTION: str = "Renew Terminated Subscription"
+
+ERROR_TITLE: str = "There are missing information from your profile."
+VAT_ERROR_LINK: str = "VAT information is required to proceed with subscription."
+ADDRESS_ERROR_LINK: str = "Address information is required to proceed with subscription."
+
+ADDRESS_ERROR_TITLE: str = "The following address details are missing"
+MISSING_ADDRESS_DATA: list = [
+    "City",
+    "District",
+    "Street name",
+    "Building number",
+    "Additional number",
+]
+ADDRESS_BTN_TEXT: str = "Add address information"
+
+VAT_ERROR_TITLE: str = "You are missing VAT details"
+VAT_ERROR_DESCRIPTION: str = (
+    "This information is required in order to proceed with subscription. If your "
+    "establishment does not have VAT number register as establishment without VAT."
+)
+ADD_VAT_NUMBER_BTN: str = "Add VAT number"
+REGISTER_WITHOUT_VAT_BTN: str = "Register without VAT"
+
+ERROR_TITLE_AR: str = "هناك بعض المعلومات المطلوبة"
+VAT_ERROR_LINK_AR: str = "هناك بعض المعلومات المطلوبة"
+ADDRESS_ERROR_LINK_AR: str = "هناك بعض المعلومات المطلوبة"
+
+ADDRESS_ERROR_TITLE_AR: str = "هناك بعض المعلومات المطلوبة"
+MISSING_ADDRESS_DATA_AR: list = ["الحي", "اسم الشارع", "رقم المبنى", "الرقم الإضافي"]
+ADDRESS_BTN_TEXT_AR: str = "إضافة معلومات العنوان"
+
+VAT_ERROR_TITLE_AR: str = "معلومات رقم تسجيل ضريبة القيمة المضافة غير كاملة"
+VAT_ERROR_DESCRIPTION_AR: str = (
+    "هذه المعلومات مطلوبة لمتابعة عملية الاشتراك. إذا لم يكن لدى منشأتك رقم ضريبة القيمة "
+    "المضافة، قم بالتسجيل كمنشأة بدون رقم ضريبة القيمة المضافة."
+)
+ADD_VAT_NUMBER_BTN_AR: str = "إضافة رقم تسجيل ضريبة القيمة المضافة"
+REGISTER_WITHOUT_VAT_BTN_AR: str = "الاستمرار بدون تسجيل رقم ضريبة القيمة المضافة"
+
+UPDATED_CITY: str = "Ain Dar Al Gadida"
+UPDATED_CITY_AR: str = "عين دار الجديدة"
+UPDATED_DISTRICT: str = "الربوة"
+UPDATED_STREET: str = "الحميدات"
+UPDATED_BUILDING_NUMBER: str = "7551"
+UPDATED_ADDITIONAL_NUMBER: int = 4594
+COUNTRY: str = "Kingdom of Saudi Arabia"
+
+ESTABLISHMENT_INFO_TITLE: str = "Establishment Information"
+FINANCIAL_INFO_SECTION: str = "Financial information"
+
+THANK_YOU_TITLE: str = "Thank you!"
+BACK_TO_SUBSCRIPTION_BTN: str = "Back to Subscription flow"
+REGISTERED_WITHOUT_VAT: str = "Registered without VAT"
+EMPTY_ON_UI: str = "-"
+EMPTY_ON_API: str = ""

@@ -97,3 +97,24 @@ class UserManagementRequests:
         establishment_data.street_en = street_en
         self.session.commit()
         return self
+
+    def clear_establishment_data(
+        self, labor_office: str | int, sequence_id: str | int
+    ) -> UserManagementRequests:
+        establishment_data = (
+            self.session.query(EstablishmentAddress)
+            .filter(
+                EstablishmentAddress.sequence_id == sequence_id,
+                EstablishmentAddress.labor_office == labor_office,
+            )
+            .first()
+        )
+        establishment_data.district_ar = None
+        establishment_data.street_ar = None
+        establishment_data.building_number = None
+        establishment_data.additional_number = None
+        establishment_data.district_en = None
+        establishment_data.city_en = None
+        establishment_data.street_en = None
+        self.session.commit()
+        return self

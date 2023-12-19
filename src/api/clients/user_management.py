@@ -20,7 +20,7 @@ from utils.crypto_manager import code_um_cookie
 
 class UserManagementApi:  # pylint: disable=duplicate-code
     url = config.qiwa_urls.api_user_management
-    api_url = config.qiwa_urls.api
+    api_url = config.qiwa_urls.establishment_file_api
 
     def __init__(self, client: HTTPClient):
         self.client = client
@@ -273,11 +273,11 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         headers = {"Cookie": f"qiwa.authorization={token}"}
         response = self.client.post(
             url=self.api_url,
-            endpoint="/establishment-updater/establishment-address",
+            endpoint="/api/v2/establishments/billing-address",
             headers=headers,
             json=update_establishment_address_payload(*establishment_address),
         )
-        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        assert_status_code(response.status_code).equals_to(HTTPStatus.NO_CONTENT)
         return self
 
     def get_establishment_data(self, cookie: dict) -> dict:

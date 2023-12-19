@@ -195,3 +195,11 @@ user_with_terminated_subscription = User(
     sequence_number=27600,
     unified_number_id=187787,
 )
+
+owner_without_vat_number_and_address = User(
+    personal_number="1031048935",
+    user_id=2267504,
+    labor_office_id=13,
+    sequence_number=1950197,
+    unified_number_id=214967,
+)

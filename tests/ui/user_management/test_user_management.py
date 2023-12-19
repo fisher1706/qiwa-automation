@@ -5,8 +5,10 @@ from data.constants import Language
 from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
+    EstablishmentAddresses,
     Privileges,
     SelfSubscriptionData,
+    SelfSubscriptionType,
     Texts,
     UsersTypes,
 )
@@ -23,6 +25,7 @@ from data.user_management.user_management_users import (
     owner_with_expired_subscription,
     owner_with_expired_subscription_always,
     owner_without_subscription,
+    owner_without_vat_number_and_address,
     user_type_three,
     user_type_three_employee,
     user_type_three_employee_for_add_access,
@@ -31,6 +34,9 @@ from src.ui.actions.user_management_actions.user_management import UserManagemen
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
+    check_establishment_data_are_identical_for_both_localizations,
+    check_vat_number_is_empty,
+    clear_establishment_data,
     delete_self_subscription,
     expire_user_subscription,
     get_subscription_cookie,
@@ -38,8 +44,11 @@ from tests.ui.user_management.conftest import (
     log_in_and_open_user_management,
     prepare_data_for_checking_the_confirmation_page,
     prepare_data_for_owner_subscriptions_flows,
+    prepare_data_for_updating_establishment_data,
     remove_establishment_from_subscription,
     renew_owner_subscriptions,
+    renew_self_subscriptions,
+    terminate_user_subscription,
 )
 from utils.allure import TestmoProject, project
 
@@ -272,11 +281,11 @@ def test_self_subscription_user_without_subscription(user_type="without", user=o
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    user_management\
-        .possibility_switch_to_establishment_page(user_type)\
-        .check_establishment_user_details()\
-        .check_annual_subscription()\
-        .make_establishment_payment()\
+    user_management \
+        .possibility_switch_to_establishment_page(user_type) \
+        .check_establishment_user_details() \
+        .check_annual_subscription() \
+        .make_establishment_payment() \
         .check_thank_you_page(user_type)
 
 
@@ -287,9 +296,9 @@ def test_self_subscription_user_with_expired_terminated_subscription(user_type="
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    user_management\
-        .possibility_switch_to_establishment_page(user_type)\
-        .check_establishment_user_details()\
+    user_management \
+        .possibility_switch_to_establishment_page(user_type) \
+        .check_establishment_user_details() \
         .check_renew_subscription()
 
 
@@ -299,7 +308,7 @@ def test_self_subscription_user_with_active_subscription(user_type="active", use
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    user_management\
+    user_management \
         .possibility_switch_to_establishment_page(user_type)
 
 
@@ -310,12 +319,12 @@ def test_update_self_expired_subscription(user_type="expired", user=owner_with_e
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    user_management\
-        .possibility_switch_to_establishment_page(user_type)\
-        .check_establishment_user_details()\
-        .check_renew_subscription()\
-        .make_establishment_payment()\
-        .check_thank_you_page(user_type)\
+    user_management \
+        .possibility_switch_to_establishment_page(user_type) \
+        .check_establishment_user_details() \
+        .check_renew_subscription() \
+        .make_establishment_payment() \
+        .check_thank_you_page(user_type) \
         .check_db_subscription_date(user)
 
 
@@ -326,9 +335,9 @@ def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
-    user_management\
-        .navigate_to_establishment_information(user)\
-        .possibility_open_renew_subscription_page()\
+    user_management \
+        .navigate_to_establishment_information(user) \
+        .possibility_open_renew_subscription_page() \
         .check_opened_page(user_type)
 
 
@@ -341,26 +350,92 @@ def test_confirmation_page_for_owner_subscriptions():
     user_for_renew_expired_flow = delegator_type_three_1
     user_for_renew_terminated_flow = delegator_type_three_2
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
-    prepare_data_for_owner_subscriptions_flows(owner, qiwa_api, user_for_extend_subscription,
-                                               user_for_renew_expired_flow, user_for_renew_terminated_flow)
-    user_management.check_confirmation_page_on_add_new_user_flow().return_to_main_page_from_confirmation_page()\
-        .check_confirmation_page_for_actions(user_for_extend_subscription.personal_number,
-                                             user_management_data.EXTEND_ACTION)\
-        .check_confirmation_page_for_actions(user_for_renew_expired_flow.personal_number,
-                                             user_management_data.RENEW_ACTION)\
-        .check_confirmation_page_for_actions(user_for_renew_terminated_flow.personal_number,
-                                             user_management_data.RENEW_ACTION)
+    prepare_data_for_owner_subscriptions_flows(
+        owner, qiwa_api, user_for_extend_subscription, user_for_renew_expired_flow, user_for_renew_terminated_flow)
+    user_management.check_confirmation_page_on_add_new_user_flow().return_to_main_page_from_owner_subscription_flow() \
+        .check_confirmation_page_is_opened(
+        user_for_extend_subscription.personal_number, user_management_data.EXTEND_ACTION) \
+        .return_to_main_page_from_owner_subscription_flow() \
+        .check_confirmation_page_is_opened(
+        user_for_renew_expired_flow.personal_number, user_management_data.RENEW_ACTION) \
+        .return_to_main_page_from_owner_subscription_flow() \
+        .check_confirmation_page_is_opened(
+        user_for_renew_terminated_flow.personal_number, user_management_data.RENEW_ACTION) \
+        .return_to_main_page_from_owner_subscription_flow()
     renew_owner_subscriptions(owner, [user_for_extend_subscription, user_for_renew_expired_flow,
-                                      user_for_renew_terminated_flow], qiwa_api, user_management)
+                                      user_for_renew_terminated_flow], qiwa_api, user_management,
+                              SelfSubscriptionType.subscription_type)
 
 
 @allure.title("Test content on confirmation page")
-@case_id(17411, 41496)
+@case_id(17411, 41496, 41498)
 def test_content_on_confirmation_page():
     user_management = UserManagementActions()
     owner = owner_account
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     establishment_data = prepare_data_for_checking_the_confirmation_page(owner, qiwa_api)
-    user_management.check_confirmation_page_on_add_new_user_flow()\
-        .check_content_on_confirmation_page_english_localization(establishment_data, owner)\
-        .check_content_on_confirmation_page_arabic_localization(establishment_data)
+    user_management.check_confirmation_page_on_add_new_user_flow() \
+        .check_content_on_confirmation_page_english_localization(establishment_data, owner) \
+        .check_content_on_confirmation_page_arabic_localization(establishment_data)\
+        .update_establishment_data_for_both_localizations()
+    check_establishment_data_are_identical_for_both_localizations(owner, qiwa_api)
+
+
+@allure.title("Check confirmation page is hidden after subscription was started in the current session")
+@case_id(17412, 41497)
+def test_confirmation_page_is_hidden_after_subscription_was_started_in_the_current_session():
+    user_management = UserManagementActions()
+    owner = owner_account
+    user = delegator_type_three_2
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    terminate_user_subscription(owner, qiwa_api, user)
+    user_management.check_confirmation_page_is_hidden_after_opening_subscription_page(user) \
+        .check_confirmation_page_is_opened_after_changing_workspace(user)
+    qiwa.header.click_on_menu().click_on_logout()
+    qiwa.login_page.wait_login_page_to_load()
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.check_confirmation_page_is_opened_after_relogin(user)
+    renew_owner_subscriptions(owner, [user], qiwa_api, user_management, [SelfSubscriptionType.subscription_type[2]])
+
+
+@allure.title("Check that warning messages displayed if required data is missing on the confirmation page")
+@pytest.mark.skip("test is skipped due to localization issues")
+@case_id(17413)
+def test_warning_messages_if_required_data_is_missing_on_confirmation_page():
+    user_management = UserManagementActions()
+    owner = owner_without_vat_number_and_address
+    log_in_and_open_user_management(owner, Language.EN)
+    user_management.check_confirmation_page_on_add_new_user_flow() \
+        .check_english_localization_for_errors_on_confirmation_page()
+    qiwa.header.change_local(Language.AR)
+    user_management.check_arabic_localization_for_errors_on_confirmation_page()
+
+
+@allure.title("Check update Establishment address on the Confirmation page")
+@case_id(17414, 141722)
+def test_update_establishment_address_on_confirmation_page():
+    user_management = UserManagementActions()
+    user1 = owner_account
+    user2 = owner_with_expired_subscription
+    log_in_and_open_user_management(user1, Language.EN)
+    prepare_data_for_updating_establishment_data(user1, user2)
+    user_management.update_establishment_data_for_owner_subscription_flow()
+    qiwa.header.click_on_menu().click_on_logout()
+
+    qiwa.login_page.wait_login_page_to_load()
+    qiwa_api = log_in_and_open_establishment_account(user2, Language.EN)
+    user_management.update_establishment_data_for_self_subscription_flow("expired", user2)
+    renew_self_subscriptions(user2, qiwa_api, user_management, SelfSubscriptionType.subscription_type[1], "expired")
+
+
+@allure.title("Check user can proceed with subscription without VAT number")
+@case_id(41495)
+def test_user_can_proceed_with_subscription_without_vat_number():
+    user_management = UserManagementActions()
+    owner = owner_without_vat_number_and_address
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    qiwa_api.user_management_api.post_update_establishment_address(EstablishmentAddresses.updated_address)
+    user_management.check_vat_error_is_displayed().select_proceed_without_vat_on_confirmation_page()
+    check_vat_number_is_empty(owner, qiwa_api)
+    user_management.proceed_owner_subscription_on_confirmation_page()
+    clear_establishment_data(owner)

@@ -87,6 +87,7 @@ class QiwaUrls:
         self.e_services: str = f"{protocol}e-services.{domain}"
         self.workspaces: str = f"{protocol}workspaces.{domain}"
         self.employee_list: str = f"{protocol}employee-management.{domain}"
+        self.establishment_file_api: str = f"{protocol}establishment-file-api.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))

@@ -5,7 +5,7 @@ class CardDetails(QiwaBaseModel):
     Holder: str = "Jane Jones"
     Number: str = "4111111111111111"
     ExpiryMonth: str = "05"
-    ExpiryYear: str = "2034"
+    ExpiryYear: str = "34"
     CVV: str = "123"
 
 

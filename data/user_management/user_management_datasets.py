@@ -26,7 +26,7 @@ class Texts:
         "before its expiration."
     )
     establishment_user_details = "Establishment Delegator details"
-    add_new_workspace_user = "Add new Workspace User"
+    add_new_workspace_user = "Add new Establishment Delegator"
     establishment_and_user_details = "Establishment and user details"
 
 
@@ -291,17 +291,42 @@ class ThankYouPageData:
 class EstablishmentAddresses:
     initial_address = [7492, 2899, 8, "حي الشرفية", "ذو النورين", 23218]
     updated_address = [4594, 7551, 392, "الربوة", "الحميدات", 12814]
-    country = "Kingdom of Saudi Arabia"
+    country = user_management_data.COUNTRY
     district_en = "Al Rayan Dist."
     street_en = "Kharis Branch Rd"
     final_updated_address = [
-        "7551",
-        "الحميدات",
-        "الحميدات",
-        "عين دار الجديدة",
-        "Ain Dar Al Gadida",
-        "الربوة",
-        "الربوة",
-        4594,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_CITY_AR,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_ADDITIONAL_NUMBER,
     ]
     vat_number = "300559557700003"
+
+    update_address_data_on_ui = [
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        user_management_data.UPDATED_ADDITIONAL_NUMBER,
+    ]
+    updated_address_data_on_thank_you_popup = [
+        user_management_data.COUNTRY,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        user_management_data.UPDATED_STREET,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
+
+    updated_address_data_on_confirmation_page = [
+        user_management_data.COUNTRY,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
