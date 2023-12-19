@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 
+import allure
 from sqlalchemy.exc import IntegrityError
 
 from data.dedicated.models.user import User
 from data.user_management import user_management_data
-from data.user_management.user_management_datasets import (
-    EstablishmentAddresses,
-    SelfSubscriptionType,
-)
+from data.user_management.user_management_datasets import EstablishmentAddresses
 from src.api.app import QiwaApi
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from src.database.actions.user_management_db_actions import delete_subscription
@@ -20,6 +18,7 @@ from src.ui.pages.user_management_pages.base_establishment_payment_page import (
 )
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_free_subscription
+from utils.assertion import assert_that
 from utils.helpers import set_cookies_for_browser
 
 
@@ -36,12 +35,13 @@ def log_in_and_open_user_management(user: User, language: str, has_access: bool 
     return qiwa_api
 
 
-def log_in_and_open_establishment_account(user: User, language: str):
+def log_in_and_open_establishment_account(user: User, language: str) -> QiwaApi:
     qiwa_api = QiwaApi.login_as_user(user.personal_number)
     cookies = qiwa_api.sso.oauth_api.get_context()
     BaseEstablishmentPayment().open_establishment_account_page()
     set_cookies_for_browser(cookies)
     qiwa.header.change_local(language)
+    return qiwa_api
 
 
 def delete_self_subscription(user: User):
@@ -74,14 +74,20 @@ def expire_user_subscription(user: User):
         pass
 
 
+def terminate_user_subscription(owner: User, qiwa_api: QiwaApi, user: User):
+    cookie = get_subscription_cookie(owner)
+    status = qiwa_api.user_management.get_user_subscription_status(cookie, user.personal_number)
+    if status == user_management_data.ACTIVE_STATUS.upper():
+        qiwa_api.user_management.patch_terminate_subscription(cookie, user.personal_number)
+
+
 def prepare_data_for_owner_subscriptions_flows(
-    owner,
+    owner: User,
     qiwa_api: QiwaApi,
     user_for_extend_subscription: User,
     user_for_renew_expired_flow: User,
     user_for_renew_terminated_flow: User,
 ):
-    cookie = get_subscription_cookie(owner)
     current_date = datetime.now()
     future_date = current_date + timedelta(days=29)
     UserManagementRequests().update_expiry_date_for_um_subscriptions(
@@ -96,35 +102,47 @@ def prepare_data_for_owner_subscriptions_flows(
         unified_number=user_for_renew_expired_flow.unified_number_id,
         expiry_date=past_date.strftime("%Y-%m-%d %H:%M:%S.000"),
     )
-
-    status = qiwa_api.user_management.get_user_subscription_status(
-        cookie, user_for_renew_terminated_flow.personal_number
-    )
-    if status == user_management_data.ACTIVE_STATUS.upper():
-        qiwa_api.user_management.patch_terminate_subscription(
-            cookie, user_for_renew_terminated_flow.personal_number
-        )
+    terminate_user_subscription(owner, qiwa_api, user_for_renew_terminated_flow)
 
 
 def renew_owner_subscriptions(
-    owner: User, users: list, qiwa_api: QiwaApi, user_management: UserManagementActions
+    owner: User,
+    users: list,
+    qiwa_api: QiwaApi,
+    user_management: UserManagementActions,
+    subscription_types: list,
 ):
     cookie = get_subscription_cookie(owner)
-    for user, subscription_type in zip(users, SelfSubscriptionType.subscription_type):
+    for user, subscription_type in zip(users, subscription_types):
         payment_id = qiwa_api.user_management.renew_owner_subscription(
             cookie, user, subscription_type
         )
         user_management.confirm_payment_via_ui(payment_id, "owner_flow")
 
 
-def prepare_data_for_checking_the_confirmation_page(owner, qiwa_api: QiwaApi) -> dict:
+def renew_self_subscriptions(
+    user: User,
+    qiwa_api: QiwaApi,
+    user_management: UserManagementActions,
+    subscription_type: str,
+    user_type: str,
+):
+    cookie = get_subscription_cookie(user)
+    payment_id = qiwa_api.user_management.renew_self_subscription(cookie, user, subscription_type)
+    user_management.confirm_payment_via_ui(payment_id, user_type)
+
+
+def prepare_data_for_checking_the_confirmation_page(
+    owner, qiwa_api: QiwaApi, update_en_values: bool = True
+) -> dict:
     cookie = get_subscription_cookie(owner)
-    UserManagementRequests().update_establishment_data_en(
-        owner.labor_office_id,
-        owner.sequence_number,
-        EstablishmentAddresses.district_en,
-        EstablishmentAddresses.street_en,
-    )
+    if update_en_values:
+        UserManagementRequests().update_establishment_data_en(
+            owner.labor_office_id,
+            owner.sequence_number,
+            EstablishmentAddresses.district_en,
+            EstablishmentAddresses.street_en,
+        )
     notification_email, notification_phone = qiwa_api.sso.oauth_api.get_user_data()
     establishment_data = qiwa_api.user_management.get_establishment_data(cookie)
     establishment_name = establishment_data["name"]
@@ -153,3 +171,26 @@ def prepare_data_for_checking_the_confirmation_page(owner, qiwa_api: QiwaApi) ->
         "establishment_address_ar": establishment_address_ar,
         "vat_number": vat_number,
     }
+
+
+def clear_establishment_data(owner: User):
+    UserManagementRequests().clear_establishment_data(owner.labor_office_id, owner.sequence_number)
+
+
+@allure.step
+def check_vat_number_is_empty(owner: User, qiwa_api: QiwaApi):
+    establishment_data = prepare_data_for_checking_the_confirmation_page(owner, qiwa_api, False)
+    assert_that(establishment_data["vat_number"]).equals_to(user_management_data.EMPTY_ON_API)
+
+
+def prepare_data_for_updating_establishment_data(user1: User, user2: User):
+    for user in [user1, user2]:
+        clear_establishment_data(user)
+    expire_user_subscription(user2)
+
+
+def check_establishment_data_are_identical_for_both_localizations(owner: User, qiwa_api: QiwaApi):
+    cookie = get_subscription_cookie(owner)
+    establishment_data = qiwa_api.user_management.get_establishment_data(cookie)
+    assert_that(establishment_data["streetAr"]).equals_to(establishment_data["streetEn"])
+    assert_that(establishment_data["districtAr"]).equals_to(establishment_data["districtEn"])
