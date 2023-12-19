@@ -5,7 +5,9 @@ from src.database.models.visa_tables import BalanceRequests
 
 
 class VisaBalanceRequests:
-    session = DBClient(db_url=config.settings.visa_db_url).set_db_session
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.session = self.db_client.set_db_session
 
     def get_balance_request_reference_number(self):
         record = (
