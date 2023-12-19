@@ -121,16 +121,16 @@ def test_ar_translation_element_on_the_page(element, translation):
 
 @allure.title('Check element translation on the page')
 @case_id(5643)
-@pytest.mark.skip('Skipped due to absence translations')
 def test_en_translation_elements_on_the_page():
-    data_portal.open_about_us_page()
+    data_portal.open_home_page()
+    data_portal.footer.wait_sectors()
     base_methods.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_EN)
 
 
 @allure.title('Check element translation on the page')
 @case_id(5424)
-@pytest.mark.skip('Skipped due to absence translations')
 def test_ar_translation_elements_on_the_page():
-    data_portal.open_about_us_page()
+    data_portal.open_home_page()
     data_portal.header.setup_localization(Localization.AR_LOCAL)
+    data_portal.footer.wait_sectors()
     base_methods.check_elements_on_the_page(FooterBlock.SECTORS_ITEM, Footer.SECTORS_ITEM_AR)

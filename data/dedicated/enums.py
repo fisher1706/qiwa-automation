@@ -28,7 +28,7 @@ class RequestStatus(Enum):
     APPROVED = "Approved"
     REJECTED_BY_NIC = "Rejected By NIC"
     PENDING_FOR_NOTICE_PERIOD_COMPLETION = {
-        Language.EN: "Pending for Notice Period Completion",
+        Language.EN: "Pending notice period completion",
         Language.AR: "بانتظار إكمال فترة الإشعار",
     }
     AUTO_CANCELLED_FOR_MORE_THAN_14_DAYS = (

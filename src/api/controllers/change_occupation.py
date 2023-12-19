@@ -3,7 +3,6 @@ from datetime import date
 
 import allure
 
-import config
 from data.shareable.change_occupation import RequestStatus
 from src.api.clients.change_occupation import ChangeOccupationApi
 from src.api.clients.ott_service import OttServiceApi
@@ -20,6 +19,7 @@ from src.api.models.qiwa.change_occupation import (
 from src.api.models.qiwa.raw.change_occupations.count import (
     ChangeOccupationCountAttributes,
 )
+from src.api.models.qiwa.raw.change_occupations.occupations import OccupationAttributes
 from src.api.models.qiwa.raw.change_occupations.requests import Laborer, Request
 from src.api.models.qiwa.raw.change_occupations.requests_laborers import RequestLaborer
 from src.api.models.qiwa.raw.change_occupations.users import User
@@ -55,7 +55,7 @@ class ChangeOccupationController:
     def get_requests_laborers(
         self,
         page: int = 1,
-        per: int = 100,
+        per: int = 10,
         laborer_name: str = None,
         laborer_id: int = None,
         request_status: RequestStatus = None,
@@ -117,8 +117,10 @@ class ChangeOccupationController:
         return UsersData.parse_obj(response.json())
 
     @allure.step
-    def get_occupations(self, page: int = 1, per: int = 10) -> OccupationsData:
-        response = self.api.get_occupations(page, per)
+    def get_occupations(
+        self, page: int = 1, per: int = 10, english_name: str = None, arabic_name: str = None
+    ) -> OccupationsData:
+        response = self.api.get_occupations(page, per, english_name, arabic_name)
         assert_status_code(response.status_code).equals_to(200)
         return OccupationsData.parse_obj(response.json())
 
@@ -143,11 +145,17 @@ class ChangeOccupationController:
 
     @allure.step
     def get_random_laborer(self) -> RequestLaborer:
-        requests = self.get_requests_laborers(per=1000)
-        return random.choice(requests.data).attributes
+        laborers = self.get_requests_laborers(per=100)
+        laborers_with_name = list(filter(lambda l: bool(l.attributes.laborer_name), laborers.data))
+        return random.choice(laborers_with_name).attributes
 
     @allure.step
     def get_random_user(self, eligible: bool = True) -> User:
         users = self.get_users(per=1000)
         expression = f"data[?attributes.\"eligibility\"== '{int(eligible)}'].attributes"
         return User.parse_obj(random.choice(search_by_data(expression, users.dict())))
+
+    @allure.step
+    def get_random_occupation(self) -> OccupationAttributes:
+        occupations = self.get_occupations(per=100)
+        return random.choice(occupations.data).attributes

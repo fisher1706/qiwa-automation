@@ -43,7 +43,7 @@ class DataPortalAdmin:
         'li[@class="edit dropbutton__item dropbutton-action"]'
     )
     EDIT_CATEGORY_BUTTON = (
-        '//*[contains(text(),"{0}")]/../../../../td[2]//'
+        '//*[contains(text(),"{0}")]/../../../../td[3]//'
         'li[@class="edit dropbutton__item dropbutton-action"]'
     )
     EDIT_TAKEAWAY_BUTTON = '//*[contains(text(),"{0}")]/../..//td//li[@class="edit dropbutton__item dropbutton-action"]'
@@ -54,7 +54,7 @@ class DataPortalAdmin:
     )
     DELETE_CATEGORY_BUTTON = (
         '//*[contains(text(),"{0}")]/../../../../'
-        'td[2]//li[@class="delete dropbutton__item dropbutton-action secondary-action"]'
+        'td[3]//li[@class="delete dropbutton__item dropbutton-action secondary-action"]'
     )
     DELETE_BUTTON_MODAL = s('//div[@class="ui-dialog-buttonset form-actions"]/button')
     DELETE_TAKEAWAY_BUTTON = (
@@ -125,16 +125,14 @@ class DataPortalAdmin:
         '[id*="edit-field-blocks-form-0-field-tabs-1"][id*="subform-field-title-0-value"]'
     )
     TAB_DESCRIPTION_INPUT = s('[id*="edit-field-blocks-form"][id*="field-description-0-value"]')
-    TAB_SOURCE_INPUT = s('[id^="edit-field-blocks-form"][id*="subform-field-source-0-value"]')
+    TAB_SOURCE_INPUT = s('input[id^="edit-field-blocks-form"][id*="source"]')
     CREATE_CONTENT_BLOCK_BUTTON = s('[id^="edit-field-blocks-form"][id*="add-save"]')
     ADD_LINE_CHART_BUTTON = s('[id*="field-blocks-form"][id*="chart-line-chart-add-more"]')
     ADD_LINE_CHART_BUTTON_2 = s(
         '[id*="field-blocks-form-0-field-tabs-1"][id*="chart-line-chart-add-more"]'
     )
     ADD_CHART_TAB_BUTTON = s('[id*="field-blocks-form"][id*="chart-tab-add-more"]')
-    CHART_LABEL_INPUT = s(
-        '[id*="edit-field-blocks-form"][id*="subform-field-chart-label-0-value"]'
-    )
+    CHART_LABEL_INPUT = s('input[id*="edit-field-blocks-form"][id*="label"]')
     FORMAT_DROPDOWN = s('select[id*="edit-field-blocks-form"][id*="subform-field-format"]')
     FORMAT_DROPDOWN_2 = s(
         'select[id*="edit-field-blocks-form-0-field-tabs-1"][id*="subform-field-format"]'
@@ -166,6 +164,17 @@ class DataPortalAdmin:
     SPECIAL_CHARACTERS_DROPDOWN = s('[data-cke-tooltip-text="Special characters"]')
     EURO_SIGN = s('[title="Euro sign"]')
     HYPER_LINK_FIELD = '[class^="ck ck-input ck-input_focused"]'
+    NUMBER_VALUE_INPUT = s('[id^="edit-field-blocks-form"][id*="field-kpi-number-0-value"]')
+    MIN_VALUE_INPUT = s('[id^="edit-field-blocks-form"][id*="field-kpi-number-0-min"]')
+    MAX_VALUE_INPUT = s('[id^="edit-field-blocks-form"][id*="field-kpi-number-0-max"]')
+    KPI_DESCRIPTION_INPUT = s('[class*="ck-blurred"]')
+    KPI_TYPE_DROPDOWN = s('select[id*="edit-field-blocks-form"][id*="kpi-type"]')
+    KPI_PERCENTAGE_INPUT = s('input[id*="subform-field-percentage"]')
+    KPI_CHART_POSITION_DROPDOWN = s('select[id*="kpi-chart-position"]')
+    KEY_POINT_CARS_DESCRIPTION = 'textarea[id*="field-description"]'
+    KEY_POINT_CARS_WIDTH_DROPDOWN = 'select[id*="field-width"]'
+    KEY_POINT_CARS_WIDTH_OPTION = 'select[id*="field-width"]>option[value="{0}"]'
+    ADD_KEY_POINT_CARD_BUTTON = s('[id*="cards-key-point-card-add"]')
 
     def input_creds(self, login, password):
         self.USER_NAME.set_value(login)
@@ -685,3 +694,50 @@ class DataPortalAdmin:
         s(self.IMAGE_CAPTURE_INPUT).send_keys(Keys.CONTROL + "A")
         self.ALIGNMENT_FORMAT_DROPDOWN.click()
         s(self.TEXT_FORMAT.format(align)).click()
+
+    def fill_fields_for_kpi_chart(self):
+        self.TAB_TITLE_INPUT.set_value(Admin.AUTOMATION)
+        self.CHART_LABEL_INPUT.set_value(Admin.AUTOMATION)
+        self.KPI_DESCRIPTION_INPUT.set_value(Admin.AUTOMATION)
+        self.TAB_SOURCE_INPUT.set_value(Admin.AUTOMATION)
+        browser.driver.execute_script("window.scrollTo(0, 0);")
+
+    def select_number_format_and_set_values(self):
+        self.KPI_TYPE_DROPDOWN.click()
+        s(self.FORMAT_OPTION.format(Admin.NUMBER)).click()
+        self.NUMBER_VALUE_INPUT.set_value(100)
+        self.MIN_VALUE_INPUT.set_value(1)
+        self.MAX_VALUE_INPUT.set_value(100)
+
+    def select_percentage_format_and_set_values(self):
+        self.KPI_TYPE_DROPDOWN.click()
+        s(self.FORMAT_OPTION.format(Admin.PERCENTAGE)).click()
+        self.KPI_PERCENTAGE_INPUT.set_value(50)
+
+    def fill_fields_for_kpi_paragraph_chart(self):
+        self.KPI_DESCRIPTION_INPUT.set_value(Admin.AUTOMATION)
+        self.CHART_LABEL_INPUT.set_value(Admin.AUTOMATION)
+        browser.driver.execute_script("window.scrollTo(0, 0);")
+
+    def select_chart_kpi_position(self, position):
+        self.KPI_CHART_POSITION_DROPDOWN.click()
+        s(self.FORMAT_OPTION.format(position)).click()
+
+    def change_color(self):
+        self.COLOR_DROPDOWN.click()
+        s(self.COLOR_ALTERNATIVE.format(Admin.YELLOW)).click()
+
+    def add_key_point_card(self):
+        self.ADD_KEY_POINT_CARD_BUTTON.click()
+        self.SPINNER.should(be.visible)
+        self.SPINNER.should(be.not_.visible)
+
+    def fill_fields_for_key_point_cards(self):
+        for field in ss(self.KEY_POINT_CARS_DESCRIPTION):
+            field.set_value(Admin.AUTOMATION)
+        browser.driver.execute_script("window.scrollTo(0, 0);")
+
+    def set_card_size(self, card_size):
+        for index, element in enumerate(ss(self.KEY_POINT_CARS_WIDTH_DROPDOWN)):
+            element.click()
+            ss(self.KEY_POINT_CARS_WIDTH_OPTION.format(card_size[index])).element(index).click()

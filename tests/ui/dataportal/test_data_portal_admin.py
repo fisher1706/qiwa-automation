@@ -537,3 +537,123 @@ def test_ability_add_text_with_different_alignments_for_image_paragraph_block(lo
     data_portal.data_portal_admin.fill_required_fields_for_image_paragraph()
     data_portal.data_portal_admin.set_alignment(alignment)
     data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Report with simple number KPI chart')
+@case_id(71369)
+def test_create_report_with_number_kpi_chart(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI)
+    data_portal.data_portal_admin.fill_fields_for_kpi_chart()
+    data_portal.data_portal_admin.select_number_format_and_set_values()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Report with simple percentage KPI chart')
+@case_id(71368)
+def test_create_report_with_percentage_kpi_chart(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI)
+    data_portal.data_portal_admin.fill_fields_for_kpi_chart()
+    data_portal.data_portal_admin.select_percentage_format_and_set_values()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to add Report with number KPI chart (+paragraph)')
+@case_id(141571, 141569)
+def test_create_report_with_number_kpi_chart(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.select_number_format_and_set_values()
+    data_portal.data_portal_admin.select_chart_kpi_position(position=Admin.RIGHT)
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to add Report with percentage KPI chart (+paragraph)')
+@case_id(141571, 141568)
+def test_create_report_with_percentage_kpi_chart(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.select_percentage_format_and_set_values()
+    data_portal.data_portal_admin.select_chart_kpi_position(position=Admin.LEFT)
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to create KPI chart paragraph block with different colors (reccuring)')
+@case_id(141580)
+def test_ability_create_kpi_chart_paragraph_change_color(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.change_color()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to create KPI chart paragraph block with Bold, Italic, Underline'
+              ' and Strikethrough formats, Verify ability to create KPI chart paragraph block '
+              'with Superscript and Subscript formats')
+@case_id(141581, 141570)
+@pytest.mark.parametrize('format_text', AdminData.format_text,
+                         ids=['Bold', 'Italic', 'Underline', 'Strikethrough', 'Subscript', 'Superscript'])
+def test_create_kpi_chart_paragraph_with_text_format(login_to_data_portal_admin, clear_reports, format_text):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.set_format_text(format_text)
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to create KPI chart paragraph block with special characters')
+@case_id(123620)
+def test_ability_add_special_characters_for_image_paragraph_block(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.set_special_character()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to create KPI chart paragraph block with linked text')
+@case_id(141582)
+def test_ability_add_text_with_hyperlinks_for_image_paragraph_block(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.set_hyperlink()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Verify ability to create KPI chart paragraph block with linked text')
+@case_id(141582)
+def test_ability_add_text_with_hyperlinks_for_image_paragraph_block(login_to_data_portal_admin, clear_reports):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KPI_PARAGRAPH)
+    data_portal.data_portal_admin.fill_fields_for_kpi_paragraph_chart()
+    data_portal.data_portal_admin.set_hyperlink()
+    data_portal.data_portal_admin.save_report_with_content()
+
+
+@allure.title('Report with 3 Key point cards 33%, 66%, 100% and mix% size')
+@case_id(71488, 71489, 71490, 71491)
+@pytest.mark.parametrize('card_size', AdminData.card_size, ids=['with 33%', 'with 66%', 'with 100%', 'with mix%'])
+def test_key_point_cards_with_sizes(login_to_data_portal_admin, clear_reports, card_size):
+    data_portal.data_portal_admin.click_on_add_report_button()
+    data_portal.data_portal_admin.fill_mandatory_fields_for_report()
+    data_portal.data_portal_admin.select_content_block_type(block_type=Admin.KEY_POINT_CARDS)
+    for _ in range(2):
+        data_portal.data_portal_admin.add_key_point_card()
+    data_portal.data_portal_admin.fill_fields_for_key_point_cards()
+    data_portal.data_portal_admin.set_card_size(card_size)
+    data_portal.data_portal_admin.save_report_with_content()
+

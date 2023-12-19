@@ -11,4 +11,3 @@ def login_lmi_user():
     qiwa.login_as_user(UserInfo.LMI_ADMIN_LOGIN)
     qiwa.workspace_page.lmi_admin_card.wait_until(be.visible)
     lmi.perform_preconditions()
-    qiwa.workspace_page.select_lmi_admin()

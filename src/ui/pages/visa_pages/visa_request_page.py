@@ -19,7 +19,7 @@ from data.visa.constants import (
 from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.raw.table import Table
 from utils.assertion.soft_assertions import soft_assert_text
-from utils.helpers import scroll_to_top
+from utils.helpers import scroll_to_coordinates
 from utils.pdf_parser import get_downloaded_filename, verify_text_in_pdf
 
 
@@ -70,7 +70,7 @@ class VisaRequestPage:
             .s(self.visa_request_statuses)
             .get(query.text)
         )
-        scroll_to_top()
+        scroll_to_coordinates()
         self.visa_request_print_button.click()
         filename = get_downloaded_filename(timeout=20)
         verify_text_in_pdf(filename, check_data)

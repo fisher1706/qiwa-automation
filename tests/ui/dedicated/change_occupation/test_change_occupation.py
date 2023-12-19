@@ -25,6 +25,7 @@ from data.dedicated.enums import (
     SubServiceErrors,
 )
 from data.dedicated.models.services import change_occupation
+from data.lo.constants import AppointmentReason
 from src.api.app import QiwaApi
 from src.api.clients.employee_transfer import employee_transfer_api
 from src.api.clients.ibm import ibm_api
@@ -43,6 +44,20 @@ def pre_test():
 
 
 @pytest.fixture()
+def remove_co_requests():
+    request_number = ibm_api_controller.get_request_numbers(employee)
+    if request_number:
+        ibm_api.cancel_change_occupation_request(request_number[0])
+
+
+@pytest.fixture()
+def remove_co_requests_bulk(remove_co_requests):
+    request_number = ibm_api_controller.get_request_numbers(employee_1)
+    if request_number:
+        ibm_api.cancel_change_occupation_request(request_number[0])
+
+
+@pytest.fixture()
 def create_et_request():
     employee_transfer_api.post_prepare_laborer_for_et_request()
     ibm_api.create_new_contract(employer, laborer)
@@ -52,7 +67,7 @@ def create_et_request():
     qiwa.employee_transfer_page.click_btn_transfer_employee() \
         .select_another_establishment() \
         .click_btn_next_step() \
-        .fill_employee_iqama_number(laborer.login_id) \
+        .fill_employee_iqama_number(laborer.personal_number) \
         .fill_date_of_birth(laborer.birthdate) \
         .click_btn_find_employee() \
         .click_btn_add_employee_to_transfer_request() \
@@ -74,7 +89,7 @@ def login():
     booking_id = ibm_api_controller.get_appointment_id(lo_co_user, change_occupation)
 
     qiwa.login_as_user(lo_co_user.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_co_user.name).change_local(Language.EN)
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
         .click_btn_process_appointments() \
@@ -100,11 +115,12 @@ def test_check_if_establishment_and_cr_is_active(login):
 @case_id(32948)
 def test_check_if_cr_is_expired():
     qiwa.login_as_user(lo_co_expired_user.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_co_expired_user.personal_number).change_local(Language.EN)
-    qiwa.workspace_page.select_company_account_by_name(lo_co_expired_user.establishment_name_ar)
+    qiwa.header.change_local(Language.EN)
+    qiwa.workspace_page.select_company_account_with_sequence_number(lo_co_expired_user.sequence_number)
     qiwa.open_labor_office_appointments_page()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.select_establishment(lo_co_expired_user.establishment_name_ar) \
+        .select_appointment_reason(AppointmentReason.IN_PERSON) \
         .select_service(EService.CHANGE_OCCUPATION) \
         .select_sub_service(SubServiceChangeOccupation.SUBMIT_CHANGE_OCCUPATION.value) \
         .check_sub_service_error(SubServiceErrors.EXPIRED.value)
@@ -139,8 +155,7 @@ def test_check_co_request_is_moved_to_co_request_section(navigate_to_co):
 
 
 @allure.title('AS-298 Check if CO is submitted (extra case)')
-@pytest.mark.skip('Add step for the removing co request')
-def test_check_if_co_is_submitted(navigate_to_co):
+def test_check_if_co_is_submitted(remove_co_requests, navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(employee.personal_number) \
         .click_btn_change_occupation() \
         .select_occupation(Occupation.SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION) \
@@ -158,7 +173,7 @@ def test_check_if_co_is_submitted(navigate_to_co):
 
 @allure.title('AS-286 Check if CO submitted while there is ST')
 @case_id(32951)
-# @pytest.mark.skip('The ST (service transfer) is determined by PO as Employee Transfer')
+@pytest.mark.skip('The ST (service transfer) is determined by PO as Employee Transfer')
 def test_check_if_co_submitted_while_there_is_st(navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(laborer.personal_number) \
         .check_employee_eligibility(Eligibility.NOT_ELIGIBLE)
@@ -166,8 +181,7 @@ def test_check_if_co_submitted_while_there_is_st(navigate_to_co):
 
 @allure.title('AS-287 Check if CO submitted while there is another CO')
 @case_id(32952)
-@pytest.mark.skip('Add step for the removing co request')
-def test_check_if_co_submitted_while_there_is_another_co(navigate_to_co):
+def test_check_if_co_submitted_while_there_is_another_co(remove_co_requests, navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(employee.personal_number) \
         .click_btn_change_occupation() \
         .select_occupation(Occupation.SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION) \
@@ -190,8 +204,7 @@ def test_check_if_co_submitted_while_there_is_another_co(navigate_to_co):
 
 @allure.title('AS-288 Check if CO submitted for prohibited nationalities')
 @case_id(32953)
-@pytest.mark.skip('Add step for the removing co request')
-def test_check_if_co_submitted_for_prohibited_nationalities(navigate_to_co):
+def test_check_if_co_submitted_for_prohibited_nationalities(remove_co_requests, navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(employee_po.personal_number) \
         .click_btn_change_occupation() \
         .select_occupation(Occupation.SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION) \
@@ -223,7 +236,7 @@ def test_check_if_co_submitted_on_home_occupations():
     api.visits_api.cancel_active_visit(lo_co_ho_user.personal_number)
     booking_id = ibm_api_controller.get_appointment_id(lo_co_ho_user, change_occupation)
     qiwa.login_as_user(lo_co_ho_user.personal_number)
-    qiwa.header.check_personal_number_or_name(lo_co_ho_user.personal_number).change_local(Language.EN)
+    qiwa.header.change_local(Language.EN)
     qiwa.workspace_page.select_lo_agent()
     qiwa.appointment_page.set_and_confirm_otp() \
         .click_btn_process_appointments() \
@@ -266,9 +279,8 @@ def test_check_error_messages_scenarios():
 
 
 @allure.title('AS-294 Submit CO for multiple requests in one bulk')
-@pytest.mark.skip('Add step for the removing co request')
 @case_id(32962)
-def test_submit_co_for_multiple_requests_in_one_bulk(navigate_to_co):
+def test_submit_co_for_multiple_requests_in_one_bulk(remove_co_requests_bulk, navigate_to_co):
     qiwa.change_occupation_page.find_expected_employee(employee.personal_number) \
         .click_btn_change_occupation() \
         .select_occupation(Occupation.SECRETARY_GENERAL_OF_A_SPECIAL_INTEREST_ORGANIZATION) \

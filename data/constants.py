@@ -1,4 +1,7 @@
+from collections import namedtuple
 from dataclasses import dataclass
+
+from src.api.models.qiwa.base import QiwaBaseModel
 
 
 @dataclass
@@ -93,3 +96,34 @@ class SaudiCertificateDashboard:
         "Saudization certificate states that the company has achieved the required Saudization rates based "
         "on Nitaqat."
     )
+
+
+class CardDetails(QiwaBaseModel):
+    Holder: str = "Jane Jones"
+    Number: str = "4111111111111111"
+    ExpiryMonth: str = "05"
+    ExpiryYear: str = "2034"
+    CVV: str = "123"
+
+
+class PaymentRequest(QiwaBaseModel):
+    paymentBrand: str = "VISA"
+    card: CardDetails = CardDetails()
+
+
+PaymentTypes = namedtuple("PaymentTypes", ["name", "submit_button"])
+
+SADAD = PaymentTypes("sadad", "Pay")  # need to correct when is available
+WALLET = PaymentTypes("wallet", "Pay")  # need to correct when is available
+APPLE = PaymentTypes("apple", "Pay")
+CARD = PaymentTypes("card", "Submit and pay")
+
+
+class PaymentResult(QiwaBaseModel):
+    AUTHENTICATED = "AUTHENTICATED"
+    UNAUTHENTICATED = "UNAUTHENTICATED"
+    CANCELLED_AUTHENTICATION = "CANCELLED_AUTHENTICATION"
+    AUTHENTICATION_NOT_AVAILABLE = "AUTHENTICATION_NOT_AVAILABLE"
+    AUTHENTICATION_REJECTED = "AUTHENTICATION_REJECTED"
+    API_GW_ASM_POLICY_ERROR = "API_GW_ASM_POLICY_ERROR"
+    successful_results = [AUTHENTICATION_NOT_AVAILABLE, AUTHENTICATED]

@@ -11,5 +11,5 @@ class MeetQiwaPopup:
 
     @allure.step("Close Meet Qiwa popup")
     def close_meet_qiwa_popup(self) -> None:
-        if self.popup.matching(be.visible):
+        if self.popup.wait_until(be.visible):
             self.close_icon.click()

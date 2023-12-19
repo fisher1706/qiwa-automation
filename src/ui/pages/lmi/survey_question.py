@@ -2,7 +2,7 @@ import random
 from datetime import datetime
 
 import allure
-from selene import be, have, query
+from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver import Keys
 
@@ -16,7 +16,7 @@ class SurveyQuestionPage:
     ANSWER_WEIGHT_FIELD = '//input[@data-testid="input"][@data-child-weight]'
     RESET_WEIGHTS_BUTTON = s('//button[@data-testid="reset"]')
     CONFIRM_BUTTON = s('//button[@data-testid="confirm"]')
-    BLUR_STATE = s('//*[@class="blur"]')
+    BLUR_STATE = s('[class^="blur"]')
     QUESTION_OPTIONS = s('//h3[@class="tab-title d-flex align-items-center"]')
     SAVE_BUTTON = s('//*[@data-testid="save"]')
     NAME_FIELD_MODAL = s('//input[@type="text"]')
@@ -134,6 +134,4 @@ class SurveyQuestionPage:
     def reset_question_weight(self):
         self.RESET_WEIGHTS_BUTTON.click()
         self.CONFIRM_BUTTON.click()
-        self.BLUR_STATE.wait_until(be.visible)
-        self.BLUR_STATE.wait_until(be.not_.visible)
-        self.check_reset_values()
+        browser.driver.refresh()

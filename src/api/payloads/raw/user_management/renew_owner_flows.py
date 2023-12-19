@@ -9,3 +9,12 @@ class RenewExtendOwnerSubscription(QiwaBaseModel):
     lang: str = "en"
     idno: str
     establishments: List[Privileges]
+
+
+class UpdateEstablishmentAddress(QiwaBaseModel):
+    additional_no: int
+    building_no: int
+    city_id: int
+    district_area: str
+    street_name: str
+    zip_code: int

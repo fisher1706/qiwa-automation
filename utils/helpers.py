@@ -86,7 +86,3 @@ def scroll_to_coordinates(x: str = "0", y: str = "0"):
     for _ in range(2):
         sleep(3)
         browser.driver.execute_script(f"window.scrollTo({x}, {y});")
-
-
-def scroll_to_top():
-    browser.driver.execute_script("window.scrollTo(0, 0);")

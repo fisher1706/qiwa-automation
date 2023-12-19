@@ -5,10 +5,18 @@ import allure
 from dateutil.relativedelta import relativedelta
 from selene.api import be, command, have, not_, s, ss
 
-from data.visa.constants import FIRST_NAME, LAST_NAME, Numbers
+from data.constants import CARD
+from data.visa.constants import (
+    FIRST_NAME,
+    IS_INSPECTOR_VISIT_FLOW_AVAILABLE,
+    LAST_NAME,
+    Numbers,
+)
+from src.database.sql_requests.visa_balance_requests import VisaBalanceRequests
+from src.ui.components.payment_gateway import PaymentPage
 from src.ui.components.raw.table import Table
-from src.ui.pages.visa_pages.payment_gateway_page import PaymentGateWay
 from utils.assertion.selene_conditions import have_any_number
+from utils.helpers import get_session_variable
 
 
 class IncreaseQuotaPage:
@@ -51,25 +59,30 @@ class IncreaseQuotaPage:
     visit_time_input = s('//*[@data-testid="estabAddressSectionVisitTimeSelect"]')
     visit_time_options_box = floating_popup
     visit_time_options = visit_time_options_box.ss(".//ul/li")
-    payment = PaymentGateWay()
+    payment = PaymentPage()
     city_dropdown = s('//*[@id="inspection-cities-select"]')
     first_name = s('//*[@data-testid="estabAddressSectionpersonFirstName"]')
     last_name = s('//*[@data-testid="estabAddressSectionpersonLastName"]')
 
-    def get_to_tier(self, visa_db, tier, num_visas=0):
+    def get_to_tier(self, visa_db: VisaBalanceRequests, tier: int, num_visas: int = 0) -> str:
         self.sign_agreement(tier, num_visas)
         self.select_location()
         self.add_name()
         self.select_inspection()
         self.next_step_button_location.click()
         self.goto_payment_button.click()
-        self.payment.pay_successfully(visa_db)
+        self.payment.pay_completely_by(payment_type=CARD)
         self.verify_created_request()
         self.back_to_perm_work_visa_button.click()
         self.history_tier_upgrades_table.row(1).should(be.visible)
         return visa_db.get_balance_request_reference_number()
 
-    def create_balance_request(self, visa_db, visas_amount):
+    def create_balance_request(self, visa_db: VisaBalanceRequests, visas_amount: int) -> str:
+        self.create_balance_request_until_payment(visas_amount)
+        self.payment.pay_completely_by(payment_type=CARD)
+        return self.finish_balance_request(visa_db)
+
+    def create_balance_request_until_payment(self, visas_amount: int) -> None:
         sleep(4)  # TODO: remove when bug is fixed
         self.visas_amount_input_field.type(visas_amount)
         self.next_step_visas_amount_button.click()
@@ -81,16 +94,16 @@ class IncreaseQuotaPage:
         self.next_step_button_location.click()
         self.terms_agree_checkbox.click()
         self.goto_payment_button.click()
-        self.payment.pay_successfully(visa_db)
+
+    def finish_balance_request(self, visa_db: VisaBalanceRequests) -> str:
         self.payment_request_sent.should(have_any_number())
         self.back_to_perm_work_visa_button.click()
-        ref_number = visa_db.get_balance_request_reference_number()
-        return ref_number
+        return visa_db.get_balance_request_reference_number()
 
     def select_location(self, index=1):
-        self.select_city()
         self.location_dropdown.click()
         self.dropdown_options.element(index - 1).click()
+        self.select_city()
 
     @allure.step("Verify request is created/sent")
     def verify_created_request(self):
@@ -100,8 +113,9 @@ class IncreaseQuotaPage:
             self.payment_request_approved.should(have_any_number())
 
     def select_inspection(self, days=Numbers.ONE, option=Numbers.ONE):
-        self.select_visit_date(days=days)
-        self.select_visit_time(option=option)
+        if get_session_variable(IS_INSPECTOR_VISIT_FLOW_AVAILABLE):
+            self.select_visit_date(days=days)
+            self.select_visit_time(option=option)
 
     def select_visit_date(self, days):
         command.js.scroll_into_view(self.last_name)

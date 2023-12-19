@@ -7,8 +7,8 @@ from data.user_management.user_management_datasets import (
     SubscriptionStatuses,
 )
 from data.user_management.user_management_users import (
-    delegator_for_add_and_terminate_subscription_flow,
-    delegator_for_full_terminate_flow,
+    delegator_type_three_1,
+    delegator_type_three_2,
     owner_account,
     owner_account_for_expire_subscription,
 )
@@ -33,7 +33,7 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 @case_id(54991)
 def test_free_subscription_flow():
     owner = owner_account
-    subscribed_user = delegator_for_add_and_terminate_subscription_flow
+    subscribed_user = delegator_type_three_2
     qiwa = QiwaApi.login_as_user(owner.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=owner.user_id,
@@ -61,7 +61,7 @@ def test_free_subscription_flow():
 @case_id(57128)
 def test_terminate_company_from_subscription():
     owner = owner_account
-    subscribed_user = delegator_for_add_and_terminate_subscription_flow
+    subscribed_user = delegator_type_three_2
     qiwa = QiwaApi.login_as_user(owner.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=owner.user_id,
@@ -93,7 +93,7 @@ def test_terminate_company_from_subscription():
 @case_id(57129)
 def test_full_terminate_flow():
     owner = owner_account
-    subscribed_user = delegator_for_full_terminate_flow
+    subscribed_user = delegator_type_three_1
     qiwa = QiwaApi.login_as_user(owner.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=owner.user_id,

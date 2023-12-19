@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import time
-
 from selene import be, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
@@ -64,6 +62,7 @@ class ContractManagementPage:
     dropdown_transportation_allowance_frequency = s("")
 
     # Summary
+    summary = s("[data-testid='Summary'] > div")
     terms_checkbox = s("#terms")
 
     def wait_until_title_verification_code_appears(
@@ -121,9 +120,6 @@ class ContractManagementPage:
 
     # Contract Details
     def fill_field_occupation(self, data: str) -> ContractManagementPage:
-        scroll_into_view_if_needed(self.field_occupation)
-        # TODO(dm): Find the possibility of removing this sleep.
-        #   All methods and approaches were used
         self.field_occupation.click().clear().type(data)
         self.dropdown.element_by(have.text(data)).click()
         return self
@@ -141,8 +137,6 @@ class ContractManagementPage:
         return self
 
     def fill_field_contract_period(self) -> ContractManagementPage:
-        # TODO(dp): Find possibility to avoid this sleep
-        time.sleep(3)
         self.radiobtn_contract_period_type.click()
         return self
 
@@ -238,5 +232,6 @@ class ContractManagementPage:
 
     # Summary
     def select_terms_checkbox(self) -> ContractManagementPage:
+        scroll_into_view_if_needed(self.summary)
         self.terms_checkbox.press(Keys.SPACE)
         return self

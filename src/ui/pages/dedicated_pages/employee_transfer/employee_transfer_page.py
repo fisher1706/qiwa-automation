@@ -13,6 +13,7 @@ from src.ui.pages.dedicated_pages.employee_transfer.transfer_from_external_compa
     TransferFromExternalCompanyPage,
 )
 from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -29,13 +30,14 @@ class EmployeeTransferPage(
 
     btn_proceed_to_contract_management = s("//button[.='Proceed to Contract Management']")
 
-    sent_requests_section = s("#requests-sent-by-you + div + div")
-    received_requests_section = s("#received-requests + div + div")
+    sent_requests_section = s("#requests-sent-by-you")
+    received_requests_section = s("#received-requests")
 
     sent_requests_table = Table(sent_requests_section.s("table"))
     received_requests_table = Table(received_requests_section.s("table"))
 
     field_rejection_reason = s("#rejectReason")
+    field_sponsor_rejection_reason = s("#rejectionReason")
 
     pagination_info = '[data-component="Table"] + div > div > p'
     sent_requests_pagination_info = sent_requests_section.s(pagination_info)
@@ -44,8 +46,12 @@ class EmployeeTransferPage(
     search_sent_requests = sent_requests_section.s("#sent")
     search_received_requests = received_requests_section.s("#received")
 
+    btn_accept = s("//button[.='Accept']")
     btn_accept_request = s("//button[.='Accept request']")
+    btn_yes_accept_transfer = s("//button[.='Yes, accept transfer']")
+    btn_reject = s("//button[.='Reject']")
     btn_reject_request = s("//button[.='Reject request']")
+    btn_reject_transfer = s("//button[.='Reject transfer']")
 
     @staticmethod
     def _get_count_of_requests(web_element: Element) -> int:
@@ -83,31 +89,45 @@ class EmployeeTransferPage(
         self.received_requests_table.rows.should(have.size(rows))
 
     def search_sent_request(self, iqama_number: str) -> EmployeeTransferPage:
+        scroll_into_view_if_needed(self.sent_requests_section)
         self.search_sent_requests.type(iqama_number)
         return self
 
     def search_received_request(self, iqama_number: str) -> EmployeeTransferPage:
+        scroll_into_view_if_needed(self.received_requests_section)
         self.search_received_requests.type(iqama_number)
         return self
 
     def click_btn_approve(self) -> EmployeeTransferPage:
-        self.received_requests_table.cell(row=1, column=5).all("button").first.click()
+        self.btn_accept.click()
         return self
 
     def click_btn_reject(self) -> EmployeeTransferPage:
-        self.received_requests_table.cell(row=1, column=5).all("button").second.click()
+        self.btn_reject.click()
         return self
 
     def fill_rejection_reason(self) -> EmployeeTransferPage:
         self.field_rejection_reason.type("Rejection reason")
         return self
 
+    def fill_sponsor_rejection_reason(self) -> EmployeeTransferPage:
+        self.field_sponsor_rejection_reason.type("Rejection reason")
+        return self
+
     def click_btn_accept_request(self) -> EmployeeTransferPage:
         self.btn_accept_request.click()
         return self
 
+    def click_btn_yes_accept_transfer(self) -> EmployeeTransferPage:
+        self.btn_yes_accept_transfer.click()
+        return self
+
     def click_btn_reject_request(self) -> EmployeeTransferPage:
         self.btn_reject_request.click()
+        return self
+
+    def click_btn_reject_transfer(self) -> EmployeeTransferPage:
+        self.btn_reject_transfer.click()
         return self
 
     def check_sponsor_request_status(self, status: str) -> EmployeeTransferPage:

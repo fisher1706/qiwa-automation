@@ -2,7 +2,7 @@ import allure
 
 from data.user_management.user_management_datasets import Privileges
 from data.user_management.user_management_users import (
-    delegator_for_edit_flow,
+    delegator_type_three,
     owner_account,
 )
 from src.api.app import QiwaApi
@@ -17,7 +17,7 @@ case_id = project(TestmoProject.USER_MANAGEMENT)
 @case_id(54974)
 def test_update_privileges_flow():
     owner = owner_account
-    subscribed_user = delegator_for_edit_flow
+    subscribed_user = delegator_type_three
     qiwa = QiwaApi.login_as_user(owner.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=owner.user_id,
@@ -38,7 +38,7 @@ def test_update_privileges_flow():
 @case_id(7920)
 def test_check_users_privileges():
     owner = owner_account
-    subscribed_user = delegator_for_edit_flow
+    subscribed_user = delegator_type_three
     qiwa = QiwaApi.login_as_user(owner.personal_number).select_company()
     subscription_cookie = SubscriptionCookie(
         user_id=owner.user_id,

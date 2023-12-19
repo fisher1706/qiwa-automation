@@ -6,7 +6,7 @@ from data.dedicated.models.transfer_type import TransferType
 
 
 class Laborer(BaseModel):
-    login_id: int
+    personal_number: int
     birthdate: str
 
     transfer_type: Optional[TransferType]

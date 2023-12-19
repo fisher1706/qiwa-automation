@@ -19,7 +19,7 @@ case_id = project(TestmoProject.LABOR_OFFICE)
 
 
 @allure.title("Appointments[Individual]: View appointments list")
-@case_id(39179)
+@case_id(39179, 71514)
 def test_view_appointments_page():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -39,7 +39,7 @@ def test_view_appointments_page():
     qiwa.labor_office_appointments_page.should_new_tab_knowledge_center_be_opened()
 
 
-@allure.title("Appointments[Individual]: Book appointment")
+@allure.title("Appointments[Individual]: Book appointment with type In-Person")
 @case_id(39180, 54992)
 @pytest.mark.parametrize("language", (Language.EN, Language.AR))
 def test_book_individual_appointment(language):
@@ -71,7 +71,7 @@ def test_book_individual_appointment(language):
 
 
 @allure.title("Appointments[Individual]: View details via appointments history")
-@case_id(41776)
+@case_id(41776, 71578)
 def test_individual_view_appointment_from_history():
     qiwa.login_as_user(login=SubscribedUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -93,7 +93,7 @@ def test_individual_view_appointment_from_history():
 
 
 @allure.title("Appointments[Individual]: Filter appointments in appointments history")
-@case_id(39204)
+@case_id(39204, 71576)
 def test_individual_filter_appointments_history():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -155,7 +155,7 @@ def test_individual_filter_appointments_history():
 
 
 @allure.title("Appointments[Individual]: Multiple filter appointments in appointments history")
-@case_id(39219)
+@case_id(39219, 71577)
 def test_individual_multiple_filter_appointments_history():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -217,7 +217,7 @@ def test_individual_multiple_filter_appointments_history():
 
 
 @allure.title("Appointments[Individual]: View details via upcoming appointments")
-@case_id(43167)
+@case_id(43167, 71581)
 def test_individual_view_appointment_from_upcoming():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -342,6 +342,7 @@ def test_individual_cancel_appointment_from_details_appointments():
     qiwa.labor_office_appointments_page.cancel_app_wrapper_cancel_btn.click()
     qiwa.labor_office_appointments_page.button_close_modal.click()
 
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
     qiwa.labor_office_appointments_page.check_active_appointment_exist(exist=False)
 
 
@@ -457,7 +458,7 @@ def test_individual_edit_appointment_from_booking(language=Language.EN):
 @allure.title(
     "Appointments[Individual]: As LO User I see validation message when book appointment once exists"
 )
-@case_id(43426)
+@case_id(43426, 71584)
 def test_individual_verify_validation_error_on_book_appointment_once_exists():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()
@@ -484,7 +485,7 @@ def test_individual_verify_validation_error_on_book_appointment_once_exists():
 
 
 @allure.title("Appointments[Individual]: The validation messages on Appointment Details fields are present")
-@case_id(43168)
+@case_id(43168, 71594)
 def test_individual_verify_validation_error_appointment_details():
     qiwa.login_as_user(login=IndividualUser.ID)
     qiwa.workspace_page.should_have_workspace_list_appear()

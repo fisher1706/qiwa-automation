@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import allure
 from selene import Element, have
+from selene.support.conditions import be
 from selene.support.shared.jquery_style import ss
 
 from data.constants import Language
@@ -13,14 +14,28 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
+from src.ui.pages.user_management_pages.annual_subscription_page import (
+    AnnualSubscription,
+)
+from src.ui.pages.user_management_pages.confirmation_page import ConfirmationPage
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
+from src.ui.pages.user_management_pages.payment_summary_page import PaymentSummary
+from src.ui.pages.user_management_pages.renew_subscription_page import RenewSubscription
+from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
 from src.ui.qiwa import qiwa
 
 
 class UserManagementActions(
-    UserManagementMainPage, UserDetailsPage, OwnerFLowPage
+    UserManagementMainPage,
+    UserDetailsPage,
+    OwnerFLowPage,
+    ConfirmationPage,
+    AnnualSubscription,
+    PaymentSummary,
+    ThankYouPage,
+    RenewSubscription,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -43,7 +58,7 @@ class UserManagementActions(
 
     @allure.step
     def compare_number_of_users_in_table(self) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.get_number_of_subscribed_user_in_company()
         self.compare_count_of_users_in_table()
         self.compare_count_of_users_in_company_table()
@@ -54,7 +69,7 @@ class UserManagementActions(
         if user_nid is None:
             self.click_view_details_in_table()
         else:
-            self.click_view_details_in_table_for_selected_user(user_nid)
+            self.click_actions_in_table_for_selected_user(user_nid)
         self.navigate_to_view_details()
         self.check_user_details_title(Texts.establishment_user_details)
         self.check_users_info_block()
@@ -63,7 +78,7 @@ class UserManagementActions(
 
     @allure.title
     def navigate_to_owner_flow(self) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.click_subscribe_btn()
         self.check_title(Texts.establishment_and_user_details)
         self.click_proceed_with_subscription_btn()
@@ -398,6 +413,140 @@ class UserManagementActions(
     def check_user_is_terminated(self, national_id: str) -> UserManagementActions:
         self.check_success_message_after_terminate_user()
         self.close_success_modal()
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.check_user_is_inactive_on_users_table(national_id)
+        return self
+
+    @allure.step
+    def possibility_switch_to_establishment_page(self, user_type: str) -> UserManagementActions:
+        qiwa.workspace_page.click_btn_subscribe(user_type)
+        return self
+
+    @allure.step
+    def check_establishment_user_details(self) -> UserManagementActions:
+        ConfirmationPage.page_title.wait_until(be.visible)
+        self.click_btn_proceed_subscription()
+        return self
+
+    @allure.step
+    def check_annual_subscription(self) -> UserManagementActions:
+        AnnualSubscription.main_text.wait_until(be.visible)
+        self.check_checkbox_read_accept()
+        self.click_button_go_to_payment()
+        return self
+
+    @allure.step
+    def check_renew_subscription(self) -> UserManagementActions:
+        RenewSubscription.main_text.wait_until(be.visible)
+        self.check_checkbox_read_accept()
+        self.click_btn_go_to_payment()
+        return self
+
+    @allure.step
+    def make_establishment_payment(self, payment: str = None) -> UserManagementActions:
+        PaymentSummary.main_text.wait_until(be.visible)
+        self.choose_and_make_payment(payment_type=payment)
+        self.check_checkbox_read_accept()
+        self.click_btn_submit_pay()
+        self.complete_payment(payment_type=payment)
+        return self
+
+    @allure.step
+    def check_thank_you_page(self, user_type: str) -> UserManagementActions:
+        ThankYouPage.main_text.wait_until(be.visible)
+        self.check_data_thank_you_page(user_type)
+        return self
+
+    @allure.step
+    def navigate_to_establishment_information(self, user: User) -> UserManagementActions:
+        qiwa.workspace_page.business_account_list.element_by(
+            have.text(str(user.sequence_number))
+        ).click()
+        return self
+
+    @allure.step
+    def possibility_open_renew_subscription_page(self) -> UserManagementActions:
+        self.open_expired_page()
+        self.check_establishment_user_details()
+        return self
+
+    @allure.step
+    def check_opened_page(self, user_type: str) -> UserManagementActions:
+        if user_type in ["expired", "without"]:
+            RenewSubscription.main_text.wait_until(be.visible)
+            self.check_group_manager_block()
+            self.check_establishment_group_details_block()
+            self.check_establishment_subscription_block(user_type)
+            self.check_summary_block()
+            self.check_total_value()
+        else:
+            self.should_main_page_be_displayed()
+            self.check_page_is_displayed()
+
+        return self
+
+    @allure.step
+    def check_db_subscription_date(self, user: User):
+        self.check_db_data(user)
+        return self
+
+    @allure.step
+    def check_confirmation_page_on_add_new_user_flow(self) -> UserManagementActions:
+        self.click_subscribe_btn()
+        self.check_confirmation_page_is_opened()
+        return self
+
+    @allure.step
+    def return_to_main_page_from_confirmation_page(self) -> UserManagementActions:
+        self.click_back_btn_on_confirmation_page()
+        self.should_main_page_be_displayed()
+        self.should_main_page_url_be_correct()
+        return self
+
+    @allure.step
+    def check_confirmation_page_for_actions(
+        self, user_nid: str, action_name: str
+    ) -> UserManagementActions:
+        self.click_actions_in_table_for_selected_user(user_nid)
+        self.select_action(action_name)
+        self.check_confirmation_page_is_opened()
+        self.return_to_main_page_from_confirmation_page()
+        return self
+
+    @allure.step
+    def check_content_on_confirmation_page_english_localization(
+        self, establishment_data: dict, user: User
+    ) -> UserManagementActions:
+        establishment_number = f"{user.labor_office_id}-{user.sequence_number}"
+        self.check_content_on_establishment_section(
+            establishment_data["establishment_name"], establishment_number
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.CONTACT_INFO_SECTION,
+            [establishment_data["notification_email"], establishment_data["notification_phone"]],
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ESTABLISHMENT_ADDRESS_SECTION,
+            establishment_data["establishment_address_en"],
+        )
+        return self
+
+    @allure.step
+    def check_content_on_confirmation_page_arabic_localization(
+        self, establishment_data: dict
+    ) -> UserManagementActions:
+        qiwa.header.change_local(Language.AR)
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ESTABLISHMENT_ADDRESS_SECTION_AR,
+            establishment_data["establishment_address_ar"],
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ZAKAT_TAX_SECTION_AR, establishment_data["vat_number"]
+        )
+        return self
+
+    @allure.step
+    def confirm_payment_via_ui(self, payment_id: int, user_type: str) -> UserManagementActions:
+        qiwa.open_payment_page(payment_id)
+        self.make_establishment_payment().check_thank_you_page(user_type)
         return self

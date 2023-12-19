@@ -13,6 +13,9 @@ from data.user_management.user_management_users import (
     establishment_type_four,
     establishment_type_one,
     owner_account,
+    owner_with_active_subscription,
+    owner_with_expired_subscription_always,
+    owner_without_subscription_always,
 )
 
 
@@ -56,7 +59,7 @@ class ArabicTranslations:
     privileges = "الصلاحيات"
     actions = "الإجراءات"
     establishment_delegator_details_breadcrumbs = "تفاصيل مفوض المنشأة"
-    add_access_btn = "أضف الوصول"
+    add_access_btn = "إضافة الصلاحية"
     title_on_add_access_modal = "اختيار صلاحيات المستخدم على المنشآت المختارة"
     selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
     all_privileges = "جميع الصلاحيات"
@@ -71,9 +74,9 @@ class ArabicTranslations:
     issue_working_permits_description = (
         "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
     )
-    edit_user_privileges_btn = "حرر امتيازات المستخدم"
+    edit_user_privileges_btn = "تعديل صلاحيات المستخدم"
     title_on_edit_privileges_modal = "تعديل صلاحيات المستخدم على المنشأة"
-    remove_access_btn = "حذف الصلاحية"
+    remove_access_btn = "إزالة المستخدم"
     save_and_close_btn = "حفظ وإغلاق"
 
 
@@ -258,3 +261,47 @@ class SubscriptionStatuses:
     active = 1
     expired = 2
     terminated = 3
+
+
+@dataclasses.dataclass
+class SelfSubscriptionData:
+    all_users = [
+        ("active", owner_with_active_subscription),
+        ("without", owner_without_subscription_always),
+        ("expired", owner_with_expired_subscription_always),
+    ]
+
+
+@dataclasses.dataclass
+class RenewPageData:
+    COUNT_GROUP_MANAGER_CONTENT = 4
+    COUNT_ESTABLISHMENT_GROUP_DETAILS_CONTENT = 2
+    COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_NEW = 5
+    COUNT_ESTABLISHMENT_SUBSCRIPTION_CONTENT_EXPIRED = 5
+    COUNT_SUMMARY_CONTENT = 6
+
+
+@dataclasses.dataclass
+class ThankYouPageData:
+    COUNT_EXPIRED_SUBSCRIPTION = 11
+    COUNT_NEW_SUBSCRIPTION = 12
+
+
+@dataclasses.dataclass
+class EstablishmentAddresses:
+    initial_address = [7492, 2899, 8, "حي الشرفية", "ذو النورين", 23218]
+    updated_address = [4594, 7551, 392, "الربوة", "الحميدات", 12814]
+    country = "Kingdom of Saudi Arabia"
+    district_en = "Al Rayan Dist."
+    street_en = "Kharis Branch Rd"
+    final_updated_address = [
+        "7551",
+        "الحميدات",
+        "الحميدات",
+        "عين دار الجديدة",
+        "Ain Dar Al Gadida",
+        "الربوة",
+        "الربوة",
+        4594,
+    ]
+    vat_number = "300559557700003"

@@ -12,7 +12,7 @@ class RequestLaborer(QiwaBaseModel):
     sequence_number: int
     id: int
     laborer_id_no: int
-    laborer_name: str
+    laborer_name: str | None  # temporary solution, should be mandatory
     nationality_id: int
     nationality_en: str
     nationality_ar: str

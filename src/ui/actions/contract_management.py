@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from data.dedicated.employee_trasfer.employee_transfer_constants import type_4
 from data.dedicated.models.contract_details import (
     ContractDetails,
@@ -10,6 +12,7 @@ from data.dedicated.models.laborer import Laborer
 from data.dedicated.models.transfer_type import TransferType
 from src.ui.qiwa import qiwa
 from utils.allure import allure_steps
+from utils.selene import scroll_into_view_if_needed
 
 
 @allure_steps
@@ -36,6 +39,7 @@ class ContractManagementActions:
 
     def fill_contract_details(self, transfer_type: TransferType) -> ContractManagementActions:
         contract_details = ContractDetails()
+        scroll_into_view_if_needed(qiwa.contract_management_page.field_job_title_en)
 
         if transfer_type.code != type_4.code:
             qiwa.contract_management_page.fill_field_occupation(contract_details.occupation)

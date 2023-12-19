@@ -34,21 +34,23 @@ def contract_details_payload(laborer: Laborer, employer: User) -> dict:
                 MWRequestTime="2019-10-10 00:00:00.555",
                 ServiceCode="CNC00001",
                 DebugFlag="1",
-                UserInfo=UserInfo(UserId=laborer.login_id, IDNumber=laborer.login_id),
+                UserInfo=UserInfo(
+                    UserId=laborer.personal_number, IDNumber=laborer.personal_number
+                ),
             ),
             Body=Body(
                 EstablishmentDetails=EstablishmentDetails(
                     LaborOfficeId=employer.labor_office_id,
                     SequenceNumber=employer.sequence_number,
                     EstablishmentId=employer.establishment_id,
-                    UnifiedNumberId="10529",
-                    EntityId="1-3419-460",
+                    UnifiedNumberId=str(employer.unified_number_id),
+                    EntityId=employer.entity_id,
                     EstablishmentNameAr="Name",
                     EstablishmentNameEn="Name",
                     EstablishmentEmail="name@name",
                 ),
                 LaborerDetails=LaborerDetails(
-                    LaborerIdNo=laborer.login_id,
+                    LaborerIdNo=laborer.personal_number,
                     LaborerName="jana",
                     LaborerTypeId="2",
                     LaborerIdExpiryDate="2022-10-10 00:00:00.555",

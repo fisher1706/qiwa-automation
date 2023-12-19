@@ -6,17 +6,23 @@ from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ErrorsMessage,
     Privileges,
+    SelfSubscriptionData,
     Texts,
     UsersTypes,
 )
 from data.user_management.user_management_users import (
-    delegator_for_add_and_terminate_subscription_flow,
-    delegator_for_edit_flow,
+    delegator_type_three,
+    delegator_type_three_1,
+    delegator_type_three_2,
     delegator_with_um,
     delegator_without_um,
     owner_account,
     owner_account_with_another_company,
     owner_for_self,
+    owner_with_active_subscription,
+    owner_with_expired_subscription,
+    owner_with_expired_subscription_always,
+    owner_without_subscription,
     user_type_three,
     user_type_three_employee,
     user_type_three_employee_for_add_access,
@@ -25,9 +31,15 @@ from src.ui.actions.user_management_actions.user_management import UserManagemen
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
+    delete_self_subscription,
+    expire_user_subscription,
     get_subscription_cookie,
+    log_in_and_open_establishment_account,
     log_in_and_open_user_management,
-    prepare_data_for_add_access_to_company,
+    prepare_data_for_checking_the_confirmation_page,
+    prepare_data_for_owner_subscriptions_flows,
+    remove_establishment_from_subscription,
+    renew_owner_subscriptions,
 )
 from utils.allure import TestmoProject, project
 
@@ -123,7 +135,7 @@ def test_error_for_user_without_um_service():
     user = delegator_without_um
     employee = user_type_three_employee
     user_management = UserManagementActions()
-    log_in_and_open_user_management(user, Language.EN)
+    log_in_and_open_user_management(user, Language.EN, False)
     user_management.check_error_message_for_um_page_without_permission(
         ErrorsMessage.user_doesnt_have_access_to_um, ErrorsMessage.no_access_error_description
     ).navigate_to_user_details_without_um_permission(employee.personal_number) \
@@ -148,8 +160,9 @@ def test_ar_localization_for_delegator_details_page():
 def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_add_and_terminate_subscription_flow
-    log_in_and_open_user_management(owner, Language.EN)
+    user = delegator_type_three_2
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data) \
@@ -163,7 +176,8 @@ def test_interaction_with_privileges_list():
     user_management = UserManagementActions()
     owner = owner_account_with_another_company
     user = user_type_three_employee
-    log_in_and_open_user_management(owner, Language.EN)
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE) \
@@ -186,14 +200,14 @@ def test_add_access_to_establishment():
     user = user_type_three_employee
     user_for_add_access = user_type_three_employee_for_add_access
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
-    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+    remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
     user_management.navigate_to_user_details(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .add_access_with_fundamental_privileges(user.sequence_number) \
         .open_select_privileges_modal_for_no_access_workspace(user_for_add_access.sequence_number) \
         .add_access_with_not_fundamental_privileges(user_for_add_access) \
         .check_privileges_after_add_access_with_not_fundamental_privileges(user_for_add_access.sequence_number)
-    prepare_data_for_add_access_to_company(owner, qiwa_api, [user, user_for_add_access])
+    remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
 
 
 @allure.title("test_remove_establishment_from_subscription")
@@ -201,7 +215,7 @@ def test_add_access_to_establishment():
 def test_remove_access_flow():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_edit_flow
+    user = delegator_type_three
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     cookie = get_subscription_cookie(owner)
     prepare_data_for_terminate_company(qiwa_api, cookie, user)
@@ -219,7 +233,7 @@ def test_terminate_flow():
     owner = owner_account
     user = user_type_three
     log_in_and_open_user_management(owner, Language.EN)
-    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name).\
+    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name). \
         check_user_is_terminated(user.personal_number)
 
 
@@ -228,7 +242,7 @@ def test_terminate_flow():
 def test_interaction_with_establishments_list():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_for_edit_flow
+    user = delegator_type_three
     log_in_and_open_user_management(owner, Language.EN)
     user_management.navigate_to_user_details(user.personal_number) \
         .select_all_allowed_access_establishments_checkbox() \
@@ -238,7 +252,7 @@ def test_interaction_with_establishments_list():
 
 
 @allure.title("Check AR localization for Add access/Edit privileges modals")
-@pytest.mark.skip("test is skipped due to translations issues")
+@pytest.mark.skip("test is skipped due to UM-6483, UM-6482")
 @case_id(7933)
 def test_ar_localization_for_add_access_and_edit_privileges_modals():
     user_management = UserManagementActions()
@@ -249,3 +263,104 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
         .check_localization_for_add_access_modal(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal() \
         .check_localization_for_edit_privileges_modal().check_privileges_are_grouped(Privileges.groups_data_ar)
+
+
+@allure.title("Test self subscription user without subscription")
+@case_id(41783, 41794, 41785, 41790)
+def test_self_subscription_user_without_subscription(user_type="without", user=owner_without_subscription):
+    delete_self_subscription(user)
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_annual_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page(user_type)
+
+
+@allure.title("Test self subscription user with expired or terminated subscription")
+@case_id(41780)
+def test_self_subscription_user_with_expired_terminated_subscription(user_type="expired",
+                                                                     user=owner_with_expired_subscription_always):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_renew_subscription()
+
+
+@allure.title("Test self subscription user with active subscription")
+@case_id(41780)
+def test_self_subscription_user_with_active_subscription(user_type="active", user=owner_with_active_subscription):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)
+
+
+@allure.step("Test renew expired subscription")
+@case_id(41781, 41800, 43159)
+def test_update_self_expired_subscription(user_type="expired", user=owner_with_expired_subscription):
+    expire_user_subscription(user)
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .possibility_switch_to_establishment_page(user_type)\
+        .check_establishment_user_details()\
+        .check_renew_subscription()\
+        .make_establishment_payment()\
+        .check_thank_you_page(user_type)\
+        .check_db_subscription_date(user)
+
+
+@allure.step("Test possibility open 'Renew expired page'")
+@case_id(41795, 41798)
+@pytest.mark.parametrize("user_type, user", SelfSubscriptionData.all_users)
+def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
+    user_management = UserManagementActions()
+    log_in_and_open_establishment_account(user, Language.EN)
+
+    user_management\
+        .navigate_to_establishment_information(user)\
+        .possibility_open_renew_subscription_page()\
+        .check_opened_page(user_type)
+
+
+@allure.title("Test confirmation page for owner subscriptions")
+@case_id(17410)
+def test_confirmation_page_for_owner_subscriptions():
+    user_management = UserManagementActions()
+    owner = owner_account
+    user_for_extend_subscription = delegator_type_three
+    user_for_renew_expired_flow = delegator_type_three_1
+    user_for_renew_terminated_flow = delegator_type_three_2
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    prepare_data_for_owner_subscriptions_flows(owner, qiwa_api, user_for_extend_subscription,
+                                               user_for_renew_expired_flow, user_for_renew_terminated_flow)
+    user_management.check_confirmation_page_on_add_new_user_flow().return_to_main_page_from_confirmation_page()\
+        .check_confirmation_page_for_actions(user_for_extend_subscription.personal_number,
+                                             user_management_data.EXTEND_ACTION)\
+        .check_confirmation_page_for_actions(user_for_renew_expired_flow.personal_number,
+                                             user_management_data.RENEW_ACTION)\
+        .check_confirmation_page_for_actions(user_for_renew_terminated_flow.personal_number,
+                                             user_management_data.RENEW_ACTION)
+    renew_owner_subscriptions(owner, [user_for_extend_subscription, user_for_renew_expired_flow,
+                                      user_for_renew_terminated_flow], qiwa_api, user_management)
+
+
+@allure.title("Test content on confirmation page")
+@case_id(17411, 41496)
+def test_content_on_confirmation_page():
+    user_management = UserManagementActions()
+    owner = owner_account
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    establishment_data = prepare_data_for_checking_the_confirmation_page(owner, qiwa_api)
+    user_management.check_confirmation_page_on_add_new_user_flow()\
+        .check_content_on_confirmation_page_english_localization(establishment_data, owner)\
+        .check_content_on_confirmation_page_arabic_localization(establishment_data)

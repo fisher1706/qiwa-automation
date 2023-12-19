@@ -9,7 +9,7 @@ from sqlalchemy import (
     Integer,
     Text,
 )
-from sqlalchemy.dialects.mssql import BIT
+from sqlalchemy.dialects.mssql import BIT, UNIQUEIDENTIFIER
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -61,6 +61,7 @@ class UMSubscriptions(Base):
     personal_number = Column("FK_Idno", VARCHAR(20), primary_key=True)
     subscription_status_id = Column("FK_SubscriptionStatusId", Integer)
     expiry_date = Column("ExpireDate", DateTime)
+    modified_on = Column("ModifiedOn", DateTime)
     requester_id_number = Column("RequesterIdNo", NVARCHAR(150))
 
 
@@ -107,3 +108,19 @@ class UMPrivilegesAuditLog(Base):
     service_id = Column("FK_ServiceId", BigInteger)
     deleted_status = Column("Deleted", BIT)
     log_create_date = Column("LogCreatedOn", DateTime)
+
+
+class EstablishmentAddress(Base):
+    __tablename__ = "EstablishmentAddress"
+
+    id = Column("ID", UNIQUEIDENTIFIER, primary_key=True, nullable=False)
+    labor_office = Column("LaborOfficeID", Integer)
+    sequence_id = Column("EstablishmentSequenceID", Integer)
+    city_ar = Column("City", NVARCHAR(150))
+    district_ar = Column("District", NVARCHAR(150))
+    street_ar = Column("Street", NVARCHAR(150))
+    building_number = Column("BuildingNumber", NVARCHAR(50))
+    additional_number = Column("AdditionalNo", Integer)
+    city_en = Column("CityEn", NVARCHAR(100))
+    district_en = Column("DistrictEn", NVARCHAR(100))
+    street_en = Column("StreetEn", NVARCHAR(100))
