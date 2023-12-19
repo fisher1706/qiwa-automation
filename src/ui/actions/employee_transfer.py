@@ -18,7 +18,7 @@ class EmployeeTransferActions:
         qiwa.workspace_page.select_company_account_with_sequence_number(user.sequence_number)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
-        qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+        qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
         qiwa.open_e_services_page()
         qiwa.e_services_page.select_employee_transfer()
         return self
@@ -30,7 +30,7 @@ class EmployeeTransferActions:
         qiwa.workspace_page.select_company_account_by_name(user.establishment_name_ar)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
-        qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
+        qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
         qiwa.open_e_services_page()
         qiwa.e_services_page.select_employee_transfer()
         return self
@@ -101,7 +101,7 @@ class EmployeeTransferActions:
 
     def make_a_decision_as_current_sponsor(self, status: dict):
         if status == RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value:
-            qiwa.employee_transfer_page.click_btn_approve().click_btn_yes_accept_transfer()
+            qiwa.employee_transfer_page.click_btn_accept().click_btn_accept_request()
             qiwa.code_verification.fill_in_code().click_confirm_button()
         else:
             qiwa.employee_transfer_page.click_btn_reject().fill_sponsor_rejection_reason().click_btn_reject_transfer()
