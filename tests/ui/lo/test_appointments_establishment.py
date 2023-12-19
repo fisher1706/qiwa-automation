@@ -329,7 +329,7 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
 
 @allure.title("Appointments: As LO User I have possibility to Edit Appointment")
 @case_id(22172, 71445)
-@pytest.mark.parametrize("language", [Language.EN])
+@pytest.mark.parametrize("language", [Language.EN, Language.AR])
 def test_edit_establishment_appointment(language):
     qiwa.login_as_user(login=SubscribedUser.ID)
     qiwa.workspace_page.language = language
@@ -357,7 +357,6 @@ def test_edit_establishment_appointment(language):
     qiwa.labor_office_appointments_page.edit_active_appointment()
     qiwa.labor_office_appointments_edit_page.open_knowledge_center()
     qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
-    browser.switch_to_previous_tab()
     qiwa.labor_office_appointments_edit_page.verify_edit_page_typical(
         appointment_reason=AppointmentReason.IN_PERSON['text'][language],
         appointment_type=AppointmentType.IN_PERSON[language],
@@ -366,7 +365,7 @@ def test_edit_establishment_appointment(language):
         region=OfficesInfo.REGION_MADINAH[language],
         office=OfficesInfo.OFFICE_NAME_TEST_OFFICE
     )
-    utils.helpers.scroll_to_coordinates()
+
     qiwa.labor_office_appointments_edit_page.change_details_fields(
         region=OfficesInfo.REGION_MADINAH[language], office=OfficesInfo.OFFICE_NAME_TEST_OFFICE
     )
@@ -430,14 +429,12 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_create_page.verify_service_and_subservice_blocks_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
 
+    utils.helpers.scroll_to_coordinates()
     qiwa.labor_office_appointments_create_page.edit_reason_btn.click()
     qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
 
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(
-        AppointmentReason.IN_PERSON['id']
-    )
-
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON['id'])
     qiwa.labor_office_appointments_create_page.select_service(
         ServicesInfo.SERVICE_NAME_POLICIES[language]
     )
