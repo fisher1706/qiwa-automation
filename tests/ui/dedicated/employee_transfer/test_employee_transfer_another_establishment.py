@@ -65,7 +65,6 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.individual_page.wait_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -106,7 +105,6 @@ def test_current_sponsor_able_to_make_a_decision_for_get_request(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.individual_page.wait_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -229,7 +227,6 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.individual_page.wait_page_to_load()
     qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
