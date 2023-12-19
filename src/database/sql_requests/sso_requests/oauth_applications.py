@@ -9,7 +9,9 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AppRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.session = self.db_client.set_db_session
 
     def create_applications_request(self, account_id: str, application_add):
         application_add = OauthApplications(

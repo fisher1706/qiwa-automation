@@ -14,7 +14,9 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AccountsPhonesRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.session = self.db_client.set_db_session
 
     def update_phone_enabled_time(self, account_id: str, new_time: datetime) -> None:
         phone_record = (
