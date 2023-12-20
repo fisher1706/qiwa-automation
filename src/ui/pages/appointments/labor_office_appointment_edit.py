@@ -5,6 +5,7 @@ from selene import be
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 
+import utils.helpers
 from data.constants import Language
 from src.ui.pages.appointments.labor_office_appointments_create import (
     LaborOfficeAppointmentsCreatePage,
@@ -182,6 +183,7 @@ class LaborOfficeAppointmentsEditPage:
     @allure.step("Verify more info block and open knowledge center")
     def open_knowledge_center(self):
         self.need_more_information_block.should(be.visible)
+        utils.helpers.scroll_to_element_into_view(self.need_more_information_block)
         self.need_more_information_block_sbs_btn[self.language].click()
 
     @allure.step("Verifying knowledge center is loaded")

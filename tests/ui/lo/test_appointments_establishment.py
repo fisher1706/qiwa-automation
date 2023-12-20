@@ -1,6 +1,5 @@
 import allure
 import pytest
-from selene.support.shared import browser
 
 import utils.helpers
 from data.constants import Language
@@ -114,10 +113,11 @@ def test_view_establishment_appointment_from_history(language=Language.EN):
 
 @allure.title("Appointments: View appointments list")
 @case_id(22142)
-def test_view_appointments_list():
+def test_view_appointments_list(language=Language.EN):
     qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.language = language
     qiwa.workspace_page.should_have_workspace_list_appear()
-    qiwa.header.change_local(Language.EN)
+    qiwa.header.change_local(language)
     qiwa.workspace_page.select_company_account_with_sequence_number(SubscribedUser.SEQUENCE_NUMBER)
     qiwa.open_labor_office_appointments_page()
     qiwa.labor_office_appointments_page.should_upcoming_appointments_section_be_visible()
@@ -394,6 +394,7 @@ def test_edit_establishment_appointment(language):
 @case_id(22143)
 def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.language = language
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(language)
     qiwa.workspace_page.select_company_account_with_sequence_number(SubscribedUser.SEQUENCE_NUMBER)

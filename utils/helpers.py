@@ -1,3 +1,4 @@
+import time
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 from time import sleep
@@ -6,6 +7,7 @@ from urllib import parse
 
 from requests import Response
 from requests.cookies import RequestsCookieJar
+from selene import Element, command
 from selene.api import have
 from selene.support.shared import browser
 
@@ -13,7 +15,6 @@ from data.visa.constants import ENV_VARIABLES
 from utils.logger import yaml_logger
 
 logger = yaml_logger.setup_logging(__name__)
-
 
 GET_SESSION_VARS_JS = """var ls = window.sessionStorage, items = {};
                          for (var i = 0, k; i < ls.length; ++i)  
@@ -86,3 +87,8 @@ def scroll_to_coordinates(x: str = "0", y: str = "0"):
     for _ in range(2):
         sleep(3)
         browser.driver.execute_script(f"window.scrollTo({x}, {y});")
+
+
+def scroll_to_element_into_view(element: Element, timeout=0.5):
+    element.perform(command.js.scroll_into_view)
+    time.sleep(timeout)

@@ -7,6 +7,7 @@ from selene import be, have
 from selene.api import command
 from selene.support.shared.jquery_style import s, ss
 
+import utils.helpers
 from src.ui.components.raw.dropdown import Dropdown
 
 
@@ -157,8 +158,7 @@ class LaborOfficeAppointmentsCreatePage:
     def select_region(self, name) -> LaborOfficeAppointmentsCreatePage:
         self.input_region.wait_until(be.visible)
         time.sleep(0.5)  # todo: investigate to remove this sleep
-        self.input_region.perform(command.js.scroll_into_view)
-        time.sleep(0.5)
+        utils.helpers.scroll_to_element_into_view(self.input_region)
         self.input_region.double_click()
         self.dropdown_select_region.select_by_text(name)
         return self
