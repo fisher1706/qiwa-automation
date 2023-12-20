@@ -14,7 +14,7 @@ from src.database.sql_requests.sso_requests.accounts_phone import AccountsPhones
 @pytest.fixture
 def first_account_data():
     account = Account(
-        personal_number=users_data.SAUDI_FOR_SIGN_IN, email="email-for-signin@gmail.com"
+        personal_number=users_data.SAUDI_FOR_SIGN_IN, email="email-for-sign-in@gmail.com"
     )
     qiwa = QiwaApi()
     try:
@@ -30,7 +30,7 @@ def first_account_data():
 @pytest.fixture
 def second_account_data():
     account = Account(
-        personal_number=users_data.SECOND_ACCOUNT_FOR_SIGN_IN, email="email-for-signin@gmail.com"
+        personal_number=users_data.SECOND_ACCOUNT_FOR_SIGN_IN, email="email-for-signin2@gmail.com"
     )
     qiwa = QiwaApi()
     try:

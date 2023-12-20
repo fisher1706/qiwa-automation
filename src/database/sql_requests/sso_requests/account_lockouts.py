@@ -7,7 +7,6 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AccountLockoutsRequest:
-
     def __init__(self):
         self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
         self.session = self.db_client.set_db_session

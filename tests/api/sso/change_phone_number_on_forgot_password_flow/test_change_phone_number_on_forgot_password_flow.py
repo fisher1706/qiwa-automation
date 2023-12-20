@@ -117,4 +117,3 @@ def test_resend_unifonic_code_on_mobile_verification_step_after_init_phone_is_bl
     qiwa.sso.verify_phone_number_on_reset_password(new_phone=constants.NEW_PHONE_NUMBER)
     qiwa.sso.verify_phone_number_on_reset_password(new_phone=constants.NEW_PHONE_NUMBER, expected_code=422)
     qiwa.sso.resend_otp_for_change_phone_on_reset_pass_flow(expected_code=422)
-
