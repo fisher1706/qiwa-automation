@@ -7,7 +7,9 @@ from src.database.models.laborer_sso_tables_description import (
 
 
 class AccountPasswordResetRequest:
-    session = DBClient(db_url=config.settings.sso_auth_db_url).set_db_session()
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.session = self.db_client.set_db_session
 
     def delete_account_password_reset_keys(self, account_id: str) -> None:
         password_reset_key_records = (

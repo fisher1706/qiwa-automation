@@ -7,7 +7,9 @@ from src.database.models.delegation_tables import (
 
 
 class DelegationRequests:
-    session = DBClient(db_url=config.settings.um_db_url).set_db_session()
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.session = self.db_client.set_db_session
 
     def get_sms_request(self, phone_number: str):
         sms_data = (

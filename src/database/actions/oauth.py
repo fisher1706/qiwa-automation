@@ -2,7 +2,7 @@ import allure
 from sqlalchemy import DateTime
 
 from data.sso.application import Application
-from src.database.sql_requests.oauth_applications import AppRequest
+from src.database.sql_requests.sso_requests.oauth_applications import AppRequest
 
 
 @allure.step
