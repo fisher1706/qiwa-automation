@@ -65,7 +65,7 @@ def test_resend_otp_code_endpoint_on_mobile_verification_step(account_data):
     qiwa.sso.resend_otp_for_change_phone_on_reset_pass_flow()
 
 
-@case_id()
+@case_id(183274, 183275, 183276)
 @pytest.mark.xfail(reasone="number of init can be changed on the env")
 def test_init_and_resend_is_blocked_after_the_third_init_hsm(account_data):
     qiwa = QiwaApi()
@@ -85,7 +85,7 @@ def test_init_and_resend_is_blocked_after_the_third_init_hsm(account_data):
     qiwa.sso.resend_absher_for_change_phone_on_reset_pass_flow(expected_code=422)
 
 
-@case_id()
+@case_id(183278)
 @pytest.mark.xfail(reasone="time of session can be changed on env")
 def test_resend_otp_code_endpoint_on_mobile_verification_step_is_blocked_after_third_try(account_data):
     qiwa = QiwaApi()
@@ -106,7 +106,7 @@ def test_resend_otp_code_endpoint_on_mobile_verification_step_is_blocked_after_t
     qiwa.sso.verify_phone_number_on_reset_password(new_phone=constants.NEW_PHONE_NUMBER, expected_code=403)
 
 
-@case_id()
+@case_id(183280, 183281)
 def test_resend_unifonic_code_on_mobile_verification_step_after_init_phone_is_blocked(account_data):
     qiwa = QiwaApi()
     qiwa.sso.init_reset_password(account_data.personal_number)
