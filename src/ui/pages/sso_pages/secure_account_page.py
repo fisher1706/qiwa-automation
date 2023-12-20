@@ -15,7 +15,7 @@ class SecureAccountPage:
     first_question_dropdown = Dropdown(
         element=ss('input[id="test-id-0"]').first, option_element_locator='[id=":r3:-list"]'
     )
-    verify_email_box = CodeVerification(s(".jjSdgF"))
+    verify_email_box = CodeVerification(s(".eOPJMF"))
 
     @allure.step
     def secure_account_page_should_have_title(self, title: str) -> SecureAccountPage:
