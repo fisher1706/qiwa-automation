@@ -113,7 +113,7 @@ def test_change_phone_number_during_login_for_user_with_expired_email(expat_acco
     qiwa.sso.confirm_phone_verification_for_change_on_login()
 
 
-@case_id()
+@case_id(183256, 183258)
 @pytest.mark.xfail(reasone="number of init can be changed on the env")
 def test_init_hsm_and_resend_code_during_change_phone_on_login_page_flow_more_than_three_times(account_data):
     qiwa = QiwaApi()
@@ -131,7 +131,7 @@ def test_init_hsm_and_resend_code_during_change_phone_on_login_page_flow_more_th
     qiwa.sso.resend_init_hsm_for_change_phone_on_login(expected_code=422)
 
 
-@case_id()
+@case_id(183257)
 @pytest.mark.xfail(reasone="time of session can be changed on env")
 def test_resend_init_phone_during_change_phone_on_login_page_flow(account_data):
     qiwa = QiwaApi()
@@ -150,7 +150,7 @@ def test_resend_init_phone_during_change_phone_on_login_page_flow(account_data):
     qiwa.sso.phone_verification_for_change_phone_on_login(phone_number=constants.NEW_PHONE_NUMBER, expected_code=403)
 
 
-@case_id(42058)
+@case_id(183262, 183265)
 def test_resend_init_phone_do_not_work_during_change_phone_on_login_page_flow_after_init_phone_is_blocked(account_data):
     qiwa = QiwaApi()
     qiwa.sso.login(account_data.personal_number, account_data.password)
