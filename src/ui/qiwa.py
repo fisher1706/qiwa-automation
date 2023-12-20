@@ -66,7 +66,7 @@ from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPag
 from src.ui.pages.sso_pages.login_page import LoginPage
 from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
-from src.ui.pages.violations_pages.violation_details_page import ViolationDetails
+from src.ui.pages.violations_pages.violation_details_page import ViolationDetailsPage
 from src.ui.pages.violations_pages.violations_page import ViolationsPage
 from src.ui.pages.visa_pages.balance_request import BalanceRequest
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
@@ -77,12 +77,6 @@ from src.ui.pages.visa_pages.visa_request_page import VisaRequestPage
 from src.ui.pages.workspaces_page import WorkspacesPage
 from src.ui.pages.wp_page import LoWorkPermitPage
 from utils.allure import allure_steps
-
-# from src.ui.pages.qiwa_wallet_pages.qiwa_wallet_homepage import QiwaWalletHomePage
-# from src.ui.pages.qiwa_wallet_pages.create_update_wallet_page import CreateWalletPage
-# from src.ui.pages.qiwa_wallet_pages.create_update_wallet_success_page import CreateWalletSuccessPage
-# from src.ui.pages.qiwa_wallet_pages.create_wallet_error_page import CreateWalletErrorPage
-# from src.ui.pages.qiwa_wallet_pages.transaction_details_page import TransactionDetailsPage
 
 
 @allure_steps
@@ -127,12 +121,7 @@ class QiwaUiClient:
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
     violations_page = ViolationsPage()
-    violation_details_page = ViolationDetails()
-    # qiwa_wallet_home = QiwaWalletHomePage()
-    # create_update_wallet = CreateWalletPage()
-    # create_update_wallet_success_page = CreateWalletSuccessPage()
-    # create_update_wallet_error_page = CreateWalletErrorPage()
-    # qwallet_transaction_details_page = TransactionDetailsPage()
+    violation_details_page = ViolationDetailsPage()
 
     # Components
     header = Header()
