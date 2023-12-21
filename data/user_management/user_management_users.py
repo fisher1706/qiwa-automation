@@ -211,3 +211,11 @@ owner_without_vat_number_and_address = User(
     sequence_number=1950197,
     unified_number_id=214967,
 )
+
+owner_for_changing_address_data = User(
+    personal_number="1003843206",
+    user_id=2266596,
+    labor_office_id=9,
+    sequence_number=1961667,
+    unified_number_id=2250719,
+)

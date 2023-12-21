@@ -18,7 +18,7 @@ class EstablishmentInfoPage:
     additional_number_input = s("[name='additionalNumber']")
     submit_btn = s("[type='submit']")
     thank_you_title = s("[role='heading']")
-    establishment_data_values_on_thank_you_popup = ss("p.gtnWDv")
+    establishment_data_values_on_thank_you_popup = ss("p.fVmszV")
     buttons_on_thank_you_popup = ss("[data-component='Button']")
 
     def check_financial_info_section_is_displayed(self) -> EstablishmentInfoPage:
