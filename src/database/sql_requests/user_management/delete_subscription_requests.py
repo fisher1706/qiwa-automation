@@ -16,7 +16,7 @@ from src.database.models.user_management_tables_description import (
 
 class UserManagementRequestsDeleteSubscription:
     def __init__(self):
-        self.db_client = DBClient(db_url=config.settings.sso_auth_db_url)
+        self.db_client = DBClient(db_url=config.settings.um_db_url)
         self.session = self.db_client.set_db_session
 
     def get_transaction_id(self, personal_number: str, unified_number: int) -> int:
