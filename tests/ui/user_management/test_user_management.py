@@ -16,7 +16,7 @@ from data.user_management.user_management_users import (
     delegator_type_three,
     delegator_type_three_1,
     delegator_type_three_2,
-    delegator_with_um,
+    delegator_type_three_another_company,
     delegator_without_um,
     owner_account,
     owner_account_with_another_company,
@@ -32,7 +32,10 @@ from data.user_management.user_management_users import (
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
-from tests.conftest import prepare_data_for_terminate_company
+from tests.conftest import (
+    prepare_data_for_free_subscription,
+    prepare_data_for_terminate_company,
+)
 from tests.ui.user_management.conftest import (
     check_establishment_data_are_identical_for_both_localizations,
     check_vat_number_is_empty,
@@ -48,6 +51,7 @@ from tests.ui.user_management.conftest import (
     remove_establishment_from_subscription,
     renew_owner_subscriptions,
     renew_self_subscriptions,
+    subscribe_user_to_establishment,
     terminate_user_subscription,
 )
 from utils.allure import TestmoProject, project
@@ -201,7 +205,7 @@ def test_interaction_with_privileges_list():
         .check_expanding_privilege_group_list().check_collapsing_privilege_group_list().close_select_privileges_modal()
 
 
-@allure.title("test_add_access_to_establishment")
+@allure.title("Check add access to establishment")
 @case_id(7928, 7932)
 def test_add_access_to_establishment():
     user_management = UserManagementActions()
@@ -219,7 +223,7 @@ def test_add_access_to_establishment():
     remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
 
 
-@allure.title("test_remove_establishment_from_subscription")
+@allure.title("Check remove establishment from subscription")
 @case_id(7936, 34197)
 def test_remove_access_flow():
     user_management = UserManagementActions()
@@ -233,7 +237,7 @@ def test_remove_access_flow():
     prepare_data_for_terminate_company(qiwa_api, cookie, user)
 
 
-@allure.title("test_remove_access_to_all_establishments")
+@allure.title("Check remove access to all establishments")
 @pytest.mark.skip("confirm payment is unavailable on api side")
 # TODO: add renew subscription and payment after the test
 @case_id(7930, 12405)
@@ -246,13 +250,15 @@ def test_terminate_flow():
         check_user_is_terminated(user.personal_number)
 
 
-@allure.title("test_interaction_with_establishments_list")
+@allure.title("Check interaction with establishments list")
 @case_id(7929, 7935)
 def test_interaction_with_establishments_list():
     user_management = UserManagementActions()
     owner = owner_account
     user = delegator_type_three
-    log_in_and_open_user_management(owner, Language.EN)
+    user1 = delegator_type_three_another_company
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    subscribe_user_to_establishment(owner, qiwa_api, [user, user1])
     user_management.navigate_to_user_details(user.personal_number) \
         .select_all_allowed_access_establishments_checkbox() \
         .unselect_all_allowed_access_establishments_checkbox() \
@@ -261,17 +267,21 @@ def test_interaction_with_establishments_list():
 
 
 @allure.title("Check AR localization for Add access/Edit privileges modals")
-@pytest.mark.skip("test is skipped due to UM-6483, UM-6482")
 @case_id(7933)
 def test_ar_localization_for_add_access_and_edit_privileges_modals():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_with_um
-    log_in_and_open_user_management(owner, Language.AR)
+    user = user_type_three_employee
+    user1 = user_type_three_employee_for_add_access
+    cookie = get_subscription_cookie(owner)
+    qiwa_api = log_in_and_open_user_management(owner, Language.AR)
+    prepare_data_for_terminate_company(qiwa_api, cookie, user)
+    prepare_data_for_free_subscription(qiwa_api, cookie, user1)
     user_management.navigate_to_user_details(user.personal_number) \
-        .check_localization_for_add_access_modal(user.sequence_number) \
+        .check_localization_for_add_access_modal(user1.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal() \
-        .check_localization_for_edit_privileges_modal().check_privileges_are_grouped(Privileges.groups_data_ar)
+        .check_localization_for_edit_privileges_modal(user.sequence_number)\
+        .check_privileges_are_grouped(Privileges.groups_data_ar)
 
 
 @allure.title("Test self subscription user without subscription")
@@ -399,7 +409,7 @@ def test_confirmation_page_is_hidden_after_subscription_was_started_in_the_curre
 
 
 @allure.title("Check that warning messages displayed if required data is missing on the confirmation page")
-@pytest.mark.skip("test is skipped due to localization issues")
+@pytest.mark.skip("test is skipped due to UM-6527")
 @case_id(17413)
 def test_warning_messages_if_required_data_is_missing_on_confirmation_page():
     user_management = UserManagementActions()

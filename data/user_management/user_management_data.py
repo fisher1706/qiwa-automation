@@ -33,7 +33,7 @@ USER_MANAGEMENT: str = "User Management"
 QIWA_WALLET: str = "Qiwa Wallet"
 DELEGATIONS: str = "Delegations"
 
-EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة الموظفين "
+EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة الموظفين"
 WAGE_PROTECTION_CERTIFICATE_AR: str = "شهادة الالتزام بنظام حماية الأجور"
 OCCUPATION_MANAGEMENT_AR: str = "إدارة المهن"
 EMPLOYEE_TRANSFER_AR: str = "خدمة نقل الخدمات"
@@ -64,9 +64,9 @@ LABOR_MARKET_INDEX_AR: str = "مؤشرات العمل"
 ESTABLISHMENT_PERFORMANCE_REPORT_AR: str = "تقرير أداء المنشأة"
 
 WORKSPACES_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة حسابات المنشأة"
-USER_MANAGEMENT_AR: str = "إدارة مستخدمي المنشأة"
+USER_MANAGEMENT_AR: str = "إدارة المستخدمين"
 QIWA_WALLET_AR: str = "محفظة قوى"
-DELEGATIONS_AR: str = "خدمة التفويض"
+DELEGATIONS_AR: str = "التفاويض"
 
 PAST_EXPIRY_DATE: str = "2023-11-18 00:00:00.000"
 

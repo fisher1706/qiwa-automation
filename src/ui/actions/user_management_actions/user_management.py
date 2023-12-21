@@ -156,7 +156,7 @@ class UserManagementActions(
             ArabicTranslations.selected_establishment_text_on_add_access_modal,
             ArabicTranslations.all_privileges,
             ArabicTranslations.hide_privileges,
-            f"{ArabicTranslations.show_more_privileges_for_2nd_group.format(hidden_privileges)}",
+            f"{ArabicTranslations.show_more_privileges.format(hidden_privileges)}",
             ArabicTranslations.occupation_management_description,
             ArabicTranslations.employee_transfer_description,
             ArabicTranslations.issue_working_permits_description,
@@ -172,17 +172,20 @@ class UserManagementActions(
 
     @allure.step
     def check_localization_for_edit_privileges_modal(
-        self, hidden_privileges: str = 7
+        self, establishment: str, hidden_privileges: str = 7
     ) -> UserManagementActions:
         self.switch_to_tab_on_user_details(ArabicTranslations.allowed_access)
-        self.check_actions_ar_texts_on_allowed_access_table()
+        establishment_with_access = self.get_establishment_row_on_allowed_access_table(
+            establishment
+        )
+        self.check_actions_ar_texts_on_allowed_access_table(establishment_with_access)
         self.select_edit_privileges_action()
         self.check_edit_privileges_modal_is_displayed()
         self.check_ar_localization_for_content_on_select_privileges_modal(
             ArabicTranslations.selected_establishment_text_on_add_access_modal,
             ArabicTranslations.all_privileges,
             ArabicTranslations.hide_privileges,
-            f"{ArabicTranslations.show_more_privileges_for_2nd_group.format(hidden_privileges)}",
+            f"{ArabicTranslations.show_more_privileges.format(hidden_privileges)}",
             ArabicTranslations.occupation_management_description,
             ArabicTranslations.employee_transfer_description,
             ArabicTranslations.issue_working_permits_description,

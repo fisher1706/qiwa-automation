@@ -42,6 +42,14 @@ delegator_type_three = User(
     name="نوف مشبب بن سعيد الاحمري",
 )
 
+delegator_type_three_another_company = User(
+    personal_number="1096471568",
+    user_id=1666054,
+    labor_office_id=9,
+    sequence_number=11871,
+    unified_number_id=9086,
+)
+
 delegator_type_three_2 = User(
     personal_number="1028056867",
     user_id=91912,
