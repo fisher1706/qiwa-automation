@@ -20,6 +20,7 @@ from data.user_management.user_management_users import (
     delegator_without_um,
     owner_account,
     owner_account_with_another_company,
+    owner_for_changing_address_data,
     owner_for_self,
     owner_with_active_subscription,
     owner_with_expired_subscription,
@@ -416,7 +417,7 @@ def test_warning_messages_if_required_data_is_missing_on_confirmation_page():
 def test_update_establishment_address_on_confirmation_page():
     user_management = UserManagementActions()
     user1 = owner_account
-    user2 = owner_with_expired_subscription
+    user2 = owner_for_changing_address_data
     log_in_and_open_user_management(user1, Language.EN)
     prepare_data_for_updating_establishment_data(user1, user2)
     user_management.update_establishment_data_for_owner_subscription_flow()

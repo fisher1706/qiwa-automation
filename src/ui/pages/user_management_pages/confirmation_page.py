@@ -16,7 +16,7 @@ class ConfirmationPage(BaseEstablishmentPayment):
     btn_proceed_subscription = ss("//button//p[contains(text(), 'Proceed with subscription')]")
     content_sections = ss("div.Bntha")
     back_btn = s("[data-testid='breadcrumps'] a")
-    establishment_name = "[data-testid='named-row'] p.hCLJZp"
+    establishment_name = "[data-testid='named-row'] > p"
     establishment_number = "[role='status']"
     establishment_data = "[data-testid='named-row'] p.gtnWDv"
     error_message = "[data-component='Message']"
