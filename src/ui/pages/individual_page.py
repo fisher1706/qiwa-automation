@@ -56,6 +56,7 @@ class IndividualPage:
         return self
 
     def select_service(self, text: str) -> IndividualPage:
+        self.service_card.element_by(have.text(text)).wait_until(be.visible)
         self.service_card.element_by(have.text(text)).click()
         return self
 
