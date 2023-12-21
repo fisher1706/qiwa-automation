@@ -17,7 +17,10 @@ from src.ui.pages.user_management_pages.base_establishment_payment_page import (
     BaseEstablishmentPayment,
 )
 from src.ui.qiwa import qiwa
-from tests.conftest import prepare_data_for_free_subscription
+from tests.conftest import (
+    prepare_data_for_free_subscription,
+    prepare_data_for_terminate_company,
+)
 from utils.assertion import assert_that
 from utils.helpers import set_cookies_for_browser
 
@@ -61,6 +64,12 @@ def remove_establishment_from_subscription(owner: User, qiwa_api: QiwaApi, users
     subscription_cookie = get_subscription_cookie(owner)
     for user in users:
         prepare_data_for_free_subscription(qiwa_api, subscription_cookie, user)
+
+
+def subscribe_user_to_establishment(owner: User, qiwa_api: QiwaApi, users: list):
+    subscription_cookie = get_subscription_cookie(owner)
+    for user in users:
+        prepare_data_for_terminate_company(qiwa_api, subscription_cookie, user)
 
 
 def expire_user_subscription(user: User):

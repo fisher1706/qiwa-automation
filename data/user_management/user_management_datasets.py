@@ -64,7 +64,7 @@ class ArabicTranslations:
     selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
     all_privileges = "جميع الصلاحيات"
     hide_privileges = "إخفاء الصلاحيات الغير مختارة"
-    show_more_privileges_for_2nd_group = "إظهار {} الصلاحيات الغير مختارة"
+    show_more_privileges = "إظهار {} الصلاحيات الغير مختارة"
     occupation_management_description = (
         "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
     )
@@ -311,7 +311,7 @@ class EstablishmentAddresses:
         user_management_data.UPDATED_DISTRICT,
         user_management_data.UPDATED_STREET,
         user_management_data.UPDATED_BUILDING_NUMBER,
-        user_management_data.UPDATED_ADDITIONAL_NUMBER,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
     ]
     updated_address_data_on_thank_you_popup = [
         user_management_data.COUNTRY,
