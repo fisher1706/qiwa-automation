@@ -221,7 +221,7 @@ def test_individual_multiple_filter_appointments_history(language=Language.EN):
 @case_id(43167, 71581)
 def test_individual_view_appointment_from_upcoming(language=Language.EN):
     qiwa.login_as_user(login=IndividualUser.ID)
-    qiwa.labor_office_appointments_view_page=language
+    qiwa.labor_office_appointments_view_page.language = language
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(language)
     qiwa.workspace_page.select_individual_account()
@@ -353,6 +353,10 @@ def test_individual_cancel_appointment_from_details_appointments(language=Langua
 @case_id(43425)
 def test_individual_edit_appointment(language=Language.EN):
     qiwa.login_as_user(login=IndividualUser.ID)
+    qiwa.workspace_page.language = language
+    qiwa.labor_office_appointments_edit_page.language = language
+    qiwa.labor_office_appointments_view_page.language = language
+
     qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(language)
     qiwa.workspace_page.select_individual_account()
