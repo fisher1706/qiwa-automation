@@ -55,7 +55,7 @@ def test_book_individual_appointment(language):
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -423,9 +423,15 @@ def test_individual_edit_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_page.cancel_active_appointment()
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON['id'])
-    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_INDIVIDUALS[language])
-    qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language])
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.IN_PERSON["id"]
+    )
+    qiwa.labor_office_appointments_create_page.select_service(
+        ServicesInfo.SERVICE_NAME_INDIVIDUALS[language]
+    )
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[language]
+    )
     qiwa.labor_office_appointments_create_page.click_next_step_button()
     qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_MADINAH[language])
     qiwa.labor_office_appointments_create_page.select_office(OfficesInfo.OFFICE_NAME_VEUM_HANE)
@@ -439,10 +445,16 @@ def test_individual_edit_appointment_from_booking(language=Language.EN):
 
     utils.helpers.scroll_to_coordinates()
     qiwa.labor_office_appointments_create_page.edit_reason_btn.click()
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.VIRTUAL['id'])
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.VIRTUAL["id"]
+    )
 
-    qiwa.labor_office_appointments_create_page.select_service(ServicesInfo.SERVICE_NAME_EDIT[language])
-    qiwa.labor_office_appointments_create_page.select_sub_service(ServicesInfo.SUB_SERVICE_NAME_EDIT[language])
+    qiwa.labor_office_appointments_create_page.select_service(
+        ServicesInfo.SERVICE_NAME_EDIT[language]
+    )
+    qiwa.labor_office_appointments_create_page.select_sub_service(
+        ServicesInfo.SUB_SERVICE_NAME_EDIT[language]
+    )
     qiwa.labor_office_appointments_create_page.click_next_step_button()
 
     qiwa.labor_office_appointments_create_page.select_region(OfficesInfo.REGION_RIYADH[language])
@@ -490,7 +502,9 @@ def test_individual_verify_validation_error_on_book_appointment_once_exists(lang
     qiwa.labor_office_appointments_create_page.should_validation_additional_appointment_be()
 
 
-@allure.title("Appointments[Individual]: The validation messages on Appointment Details fields are present")
+@allure.title(
+    "Appointments[Individual]: The validation messages on Appointment Details fields are present"
+)
 @case_id(43168, 71594)
 def test_individual_verify_validation_error_appointment_details(language=Language.EN):
     qiwa.login_as_user(login=IndividualUser.ID)
@@ -521,3 +535,58 @@ def test_individual_verify_validation_error_appointment_details(language=Languag
     qiwa.labor_office_appointments_create_page.should_validation_message_office_be()
     qiwa.labor_office_appointments_create_page.should_validation_message_date_be()
     qiwa.labor_office_appointments_create_page.should_validation_message_time_be()
+
+
+@allure.title(
+    "Appointments[Individual]: The validation messages from 'Upcoming "
+    "appointment' and 'Appointment history' tables are present."
+)
+@case_id(43427)
+def test_validate_error_messages_in_upcoming_and_history_table(
+    inspected_driver_setup, language=Language.EN
+):
+    qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(language)
+    blocking_urls = ("appointment/upcoming", "appointment/archived")
+    qiwa.labor_office_appointments_page.blocking_urls = blocking_urls
+    qiwa.labor_office_appointments_page.block_requests()
+    qiwa.open_labor_office_appointments_page()
+    qiwa.labor_office_appointments_page.check_error_messages()
+    qiwa.labor_office_appointments_page.del_request_interceptor()
+
+
+@allure.title("The validation message for 'Appointment details' page is present.")
+@case_id(54995)
+def test_validate_error_messages_in_appointment_details_table(
+    inspected_driver_setup, language=Language.EN
+):
+    qiwa.login_as_user(login=SubscribedUser.ID)
+    qiwa.workspace_page.should_have_workspace_list_appear()
+    qiwa.header.change_local(language)
+
+    qiwa.open_labor_office_appointments_page()
+
+    qiwa.labor_office_appointments_page.cancel_active_appointment()
+    qiwa.labor_office_appointments_page.click_book_appointment_btn()
+
+    qiwa.labor_office_appointments_create_page.book_appointment_flow(
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
+        service=ServicesInfo.SERVICE_NAME_INDIVIDUALS[Language.EN],
+        sub_service=ServicesInfo.SUB_SERVICE_NAME_INDIVIDUALS[Language.EN],
+        region=OfficesInfo.REGION_MADINAH[Language.EN],
+        office=OfficesInfo.OFFICE_NAME_VEUM_HANE,
+    )
+
+    qiwa.labor_office_appointments_create_confirmation_page.go_back_to_appointments_page()
+    qiwa.labor_office_appointments_page.should_active_appointment_be_visible()
+
+    blocking_urls = "appointment/"
+    qiwa.labor_office_appointments_page.blocking_urls = blocking_urls
+    qiwa.labor_office_appointments_page.block_requests()
+
+    qiwa.labor_office_appointments_page.view_active_appointment()
+
+    qiwa.labor_office_appointments_view_page.check_error_messages()
+
+    qiwa.labor_office_appointments_page.del_request_interceptor()
