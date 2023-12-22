@@ -104,7 +104,7 @@ class EmployeeTransferActions:
             qiwa.employee_transfer_page.click_btn_accept().click_btn_accept_request()
             qiwa.code_verification.fill_in_code().click_confirm_button()
         else:
-            qiwa.employee_transfer_page.click_btn_reject().fill_sponsor_rejection_reason().click_btn_reject_transfer()
+            qiwa.employee_transfer_page.click_btn_reject().fill_rejection_reason().click_btn_reject_request()
 
         return self
 
