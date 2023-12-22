@@ -109,6 +109,11 @@ class LaborOfficeAppointmentsPage:
     )
     cancel_app_wrapper_close_btn = s("//button[@aria-label='Close modal']")
 
+    error_active_text = s("//*[@id='upcoming']//*[contains(text(), 'Something went wrong.')]")
+    error_active_link = s("//*[@id='upcoming']//*[contains(text(), 'Please try again.')]")
+    error_history_text = s("//*[@id='archieved']//*[contains(text(), 'Something went wrong.')]")
+    error_history_link = s("//*[@id='archieved']//*[contains(text(), 'Please try again.')]")
+
     @allure.step("Wait Appointments page to load")
     def wait_page_to_load(self) -> LaborOfficeAppointmentsPage:
         self.appointments.wait_until(be.visible)
@@ -151,6 +156,7 @@ class LaborOfficeAppointmentsPage:
             self.button_action_cancel_upcoming_appointment.click()
             self.cancel_app_wrapper_cancel_btn.click()
             self.button_close_modal.click()
+            time.sleep(3)
             # refreshing page strictly to ensure appointment cancelled (UI without refresh might still show appointment)
             browser.driver.refresh()
             self.wait_page_to_load()
@@ -336,3 +342,23 @@ class LaborOfficeAppointmentsPage:
         browser.switch_to_next_tab()
         assert_that(browser.driver.current_url.startswith(config.qiwa_urls.appointment_booking))
         return self
+
+    blocking_urls = ()
+
+    @allure.step("Verify error messages in appointments history and active appointment table")
+    def check_error_messages(self):
+        self.error_active_text.wait_until(be.visible)
+        self.error_active_link.wait_until(be.visible)
+        self.error_history_text.wait_until(be.visible)
+        self.error_history_link.wait_until(be.visible)
+
+    def _request_interceptor(self, request):
+        if request.path.endswith(self.blocking_urls):
+            request.abort()
+
+    def del_request_interceptor(self):
+        del browser.driver.request_interceptor
+
+    @allure.step("Blocking requests via list")
+    def block_requests(self):
+        browser.driver.request_interceptor = self._request_interceptor

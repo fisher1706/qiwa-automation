@@ -39,7 +39,7 @@ def test_book_establishment_appointment(language):
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -70,7 +70,7 @@ def test_view_establishment_appointment_from_upcoming(language=Language.EN):
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -184,7 +184,7 @@ def test_view_service_list_subscribed_user():
         SubscribedUser.ESTABLISHMENT[Language.EN]
     )
     qiwa.labor_office_appointments_create_page.select_appointment_reason(
-        AppointmentReason.IN_PERSON['id']
+        AppointmentReason.IN_PERSON["id"]
     )
     qiwa.labor_office_appointments_create_page.dropdown_select_service.expand()
     qiwa.labor_office_appointments_create_page.should_service_list_be()
@@ -227,7 +227,7 @@ def test_view_service_list_unsubscribed_user():
         UnSubscribedUser.ESTABLISHMENT[Language.EN]
     )
     qiwa.labor_office_appointments_create_page.select_appointment_reason(
-        AppointmentReason.IN_PERSON['id']
+        AppointmentReason.IN_PERSON["id"]
     )
     qiwa.labor_office_appointments_create_page.dropdown_select_service.expand()
     qiwa.labor_office_appointments_create_page.should_service_list_be()
@@ -249,7 +249,7 @@ def test_cancel_appointment_from_active_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -296,7 +296,7 @@ def test_cancel_appointment_from_details_appointments(language=Language.EN):
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
 
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -344,7 +344,7 @@ def test_edit_establishment_appointment(language):
 
     qiwa.labor_office_appointments_page.click_book_appointment_btn()
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
@@ -358,12 +358,12 @@ def test_edit_establishment_appointment(language):
     qiwa.labor_office_appointments_edit_page.open_knowledge_center()
     qiwa.labor_office_appointments_edit_page.verify_knowledge_center_page_load()
     qiwa.labor_office_appointments_edit_page.verify_edit_page_typical(
-        appointment_reason=AppointmentReason.IN_PERSON['text'][language],
+        appointment_reason=AppointmentReason.IN_PERSON["text"][language],
         appointment_type=AppointmentType.IN_PERSON[language],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],
-        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE
+        office=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
     )
 
     qiwa.labor_office_appointments_edit_page.change_details_fields(
@@ -371,7 +371,8 @@ def test_edit_establishment_appointment(language):
     )
     qiwa.labor_office_appointments_edit_page.next_step_btn_click()
     qiwa.labor_office_appointments_edit_page.verify_summary_table(
-        office_name=OfficesInfo.OFFICE_NAME_TEST_OFFICE, type_value=AppointmentType.IN_PERSON[language]
+        office_name=OfficesInfo.OFFICE_NAME_TEST_OFFICE,
+        type_value=AppointmentType.IN_PERSON[language],
     )
     qiwa.labor_office_appointments_edit_page.book_app_btn_click()
 
@@ -424,7 +425,7 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
 
     qiwa.labor_office_appointments_create_page.select_appointment_reason(
-        AppointmentReason.IN_PERSON['id']
+        AppointmentReason.IN_PERSON["id"]
     )
 
     qiwa.labor_office_appointments_create_page.verify_service_and_subservice_blocks_visible()
@@ -435,7 +436,9 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
     qiwa.labor_office_appointments_create_page.verify_appointment_reason_blocks_visible()
     qiwa.labor_office_appointments_create_page.verify_next_btn_visible()
 
-    qiwa.labor_office_appointments_create_page.select_appointment_reason(AppointmentReason.IN_PERSON['id'])
+    qiwa.labor_office_appointments_create_page.select_appointment_reason(
+        AppointmentReason.IN_PERSON["id"]
+    )
     qiwa.labor_office_appointments_create_page.select_service(
         ServicesInfo.SERVICE_NAME_POLICIES[language]
     )
@@ -471,7 +474,7 @@ def test_edit_establishment_appointment_from_booking(language=Language.EN):
 
     qiwa.labor_office_appointments_create_page.edit_creators_info_btn.click()
     qiwa.labor_office_appointments_create_page.book_appointment_flow(
-        appointment_reason=AppointmentReason.IN_PERSON['id'],
+        appointment_reason=AppointmentReason.IN_PERSON["id"],
         service=ServicesInfo.SERVICE_NAME_POLICIES[language],
         sub_service=ServicesInfo.SUB_SERVICE_NAME_POLICIES[language],
         region=OfficesInfo.REGION_MADINAH[language],

@@ -127,6 +127,9 @@ class LaborOfficeAppointmentsViewPage:
         "//*[@id='root']/div/span/div[1]/div/span[1]/div/div/div/div[2]/div[2]/div/button[2]"
     )
 
+    error_text = s("//*[contains(text(), 'Something went wrong.')]")
+    error_link = s("//*[contains(text(), 'Please try again.')]")
+
     @allure.step("Verify last element of pagination text")
     def verify_pagination(self, text: dict, locale: str):
         self.appointments_view_pagination.should(have.text(text[locale]))
@@ -251,3 +254,8 @@ class LaborOfficeAppointmentsViewPage:
         self.verify_copy_map_form_text(Av.COPY_MAP_TEXT, self.language)
         self.close_map_btn.click()
         self.verify_general_info_row()
+
+    @allure.step("Verify error messages appointment view table")
+    def check_error_messages(self):
+        self.error_text.wait_until(be.visible)
+        self.error_link.wait_until(be.visible)
