@@ -10,8 +10,8 @@ from requests import Response
 import config
 from data.account import Account
 from src.api.http_client import HTTPClient
-from src.api.payloads.raw.sso_oauth import Authorize
-from src.api.payloads.sso_oauth_payloads import (
+from src.api.payloads.raw.sso.sso_oauth import Authorize
+from src.api.payloads.sso.sso_oauth_payloads import (
     activate_sso_hsm_payload,
     email_verification_payload,
     hsm_payload,
