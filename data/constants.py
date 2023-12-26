@@ -64,7 +64,7 @@ class EService:
 
 @dataclass
 class SupportedBrowser:
-    version = {"chrome": "114.0", "firefox": "93.0"}
+    version = {"chrome": "120.0", "firefox": "93.0"}
 
 
 @dataclass

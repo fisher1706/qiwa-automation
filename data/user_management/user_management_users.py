@@ -104,6 +104,8 @@ user_type_three_employee = User(
     labor_office_id=1,
     sequence_number=1910,
     unified_number_id=9086,
+    establishment_name_ar="شركة الاتحاد الهندسي السعودية للاستشارات الهندسية خطيب وعلمي",
+    name="أحمد عبدالمجيد بن سلمان العلوان",
 )
 
 user_type_three = User(

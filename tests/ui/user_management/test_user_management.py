@@ -16,7 +16,6 @@ from data.user_management.user_management_users import (
     delegator_type_three,
     delegator_type_three_1,
     delegator_type_three_2,
-    delegator_type_three_another_company,
     delegator_without_um,
     owner_account,
     owner_account_with_another_company,
@@ -174,7 +173,7 @@ def test_ar_localization_for_delegator_details_page():
 def test_privileges_data():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_type_three_2
+    user = user_type_three_employee
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     remove_establishment_from_subscription(owner, qiwa_api, [user])
     user_management.navigate_to_view_details_page(user.personal_number) \
@@ -229,7 +228,7 @@ def test_add_access_to_establishment():
 def test_remove_access_flow():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_type_three
+    user = user_type_three_employee
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     cookie = get_subscription_cookie(owner)
     prepare_data_for_terminate_company(qiwa_api, cookie, user)
@@ -256,8 +255,8 @@ def test_terminate_flow():
 def test_interaction_with_establishments_list():
     user_management = UserManagementActions()
     owner = owner_account
-    user = delegator_type_three
-    user1 = delegator_type_three_another_company
+    user = user_type_three_employee
+    user1 = user_type_three_employee_for_add_access
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
     subscribe_user_to_establishment(owner, qiwa_api, [user, user1])
     user_management.navigate_to_user_details(user.personal_number) \
