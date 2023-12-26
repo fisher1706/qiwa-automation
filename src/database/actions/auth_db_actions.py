@@ -36,10 +36,10 @@ def delete_account_data_from_db(personal_number: str):
         )
     finally:
         pass
+    AccountRequests().delete_account_auth_audit_logs(account_id=account_id)
     LoginRequest().delete_login_data_request(account_id=account_id)
     AccountRequests().delete_account_previous_password_hashes(account_id=account_id)
     AccountRequests().delete_accounts_password_hashes(account_id=account_id)
-    AccountRequests().delete_account_auth_audit_logs(account_id=account_id)
     AccountRequests().delete_account_active_session_key(account_id=account_id)
     AppRequest().delete_oauth_grants_data_request(account_id=account_id)
     AccountLockoutsRequest().delete_login_failure(account_id=account_id)
