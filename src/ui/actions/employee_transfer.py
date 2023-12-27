@@ -18,7 +18,7 @@ class EmployeeTransferActions:
         qiwa.workspace_page.select_company_account_with_sequence_number(user.sequence_number)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
-        qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+        qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
         qiwa.open_e_services_page()
         qiwa.e_services_page.select_employee_transfer()
         return self
@@ -30,7 +30,7 @@ class EmployeeTransferActions:
         qiwa.workspace_page.select_company_account_by_name(user.establishment_name_ar)
 
         qiwa.dashboard_page.wait_dashboard_page_to_load()
-        qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+        qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
         qiwa.open_e_services_page()
         qiwa.e_services_page.select_employee_transfer()
         return self

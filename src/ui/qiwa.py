@@ -65,6 +65,8 @@ from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPag
 from src.ui.pages.sso_pages.login_page import LoginPage
 from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
+from src.ui.pages.violations_pages.violation_details_page import ViolationDetailsPage
+from src.ui.pages.violations_pages.violations_page import ViolationsPage
 from src.ui.pages.visa_pages.balance_request import BalanceRequest
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
@@ -107,8 +109,7 @@ class QiwaUiClient:
     visa_request = VisaRequestPage()
     issue_visa = IssueVisaPage()
     increase_quota = IncreaseQuotaPage()
-    balance_request = BalanceRequest()
-    payment_gateway = PaymentPage()
+    balnce_request = BalanceRequest()
     labor_office_appointments_page = LaborOfficeAppointmentsPage()
     labor_office_appointments_view_page = LaborOfficeAppointmentsViewPage()
     labor_office_appointments_create_page = LaborOfficeAppointmentsCreatePage()
@@ -118,6 +119,8 @@ class QiwaUiClient:
     employee_list_page = EmployeeListPage()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
+    violations_page = ViolationsPage()
+    violation_details_page = ViolationDetailsPage()
 
     # Components
     header = Header()
@@ -212,10 +215,6 @@ class QiwaUiClient:
 
     def open_employee_list_page(self) -> QiwaUiClient:
         browser.open(config.qiwa_urls.employee_list)
-        return self
-
-    def open_payment_page(self, payment_id: int) -> QiwaUiClient:
-        browser.open(f"{config.qiwa_urls.payment_ui}/{payment_id}")
         return self
 
 
