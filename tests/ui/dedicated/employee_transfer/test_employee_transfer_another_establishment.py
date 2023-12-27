@@ -65,7 +65,7 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
@@ -94,7 +94,7 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
     ],
     ids=[
         'Verify Current Sponsor Able to approve the ET request',
-        'Verify Current Sponsor Able to reject the ET request'
+        # 'Verify Current Sponsor Able to reject the ET request'
     ]
 )
 @case_id(123667, 123668, 123670, 123671)
@@ -105,7 +105,7 @@ def test_current_sponsor_able_to_make_a_decision_for_get_request(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
@@ -149,7 +149,7 @@ def test_quota_should_be_decreased_after_submitting_et_request():
 
     employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
@@ -189,7 +189,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_by_laborer():
 
     employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
@@ -229,7 +229,7 @@ def test_quota_should_be_increased_after_rejection_of_et_request_current_sponsor
 
     employee_transfer_actions.navigate_to_individual(laborer_with_sponsor.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
 
