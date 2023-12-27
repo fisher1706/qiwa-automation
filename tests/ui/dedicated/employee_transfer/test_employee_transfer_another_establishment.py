@@ -94,7 +94,7 @@ def test_laborer_able_to_make_a_decision_for_et_request(status):
     ],
     ids=[
         'Verify Current Sponsor Able to approve the ET request',
-        # 'Verify Current Sponsor Able to reject the ET request'
+        'Verify Current Sponsor Able to reject the ET request'
     ]
 )
 @case_id(123667, 123668, 123670, 123671)
