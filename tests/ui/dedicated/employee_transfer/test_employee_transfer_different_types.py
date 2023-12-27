@@ -40,7 +40,7 @@ def test_type_12_current_sponsor(status):
 
     employee_transfer_actions.navigate_to_individual(laborer_type_12.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
     
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -93,7 +93,7 @@ def test_transfer_types_rejection_by_laborer(laborer):
 
     employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
@@ -134,7 +134,7 @@ def test_transfer_type_approval_by_laborer(laborer, status):
 
     employee_transfer_actions.navigate_to_individual(laborer.personal_number)
 
-    qiwa.meet_qiwa_popup.close_meet_qiwa_popup_if_displayed()
+    qiwa.meet_qiwa_popup.close_meet_qiwa_popup()
 
     qiwa.code_verification.fill_in_code() \
         .click_confirm_button()
