@@ -19,10 +19,10 @@ def first_account_data():
     qiwa = QiwaApi()
     try:
         qiwa.sso.register_account_via_sso_api(account)
-        qiwa.sso.login_user(account.personal_number, account.password)
-        qiwa.sso.pass_account_security()
     except AssertionError:
         pass
+    qiwa.sso.login_user(account.personal_number, account.password)
+    qiwa.sso.pass_account_security()
     yield account
     delete_account_data_from_db(account.personal_number)
 
@@ -35,10 +35,10 @@ def second_account_data():
     qiwa = QiwaApi()
     try:
         qiwa.sso.register_account_via_sso_api(account)
-        qiwa.sso.login_user(account.personal_number, account.password)
-        qiwa.sso.pass_account_security()
     except AssertionError:
         pass
+    qiwa.sso.login_user(account.personal_number, account.password)
+    qiwa.sso.pass_account_security()
     yield account
     delete_account_data_from_db(account.personal_number)
 
