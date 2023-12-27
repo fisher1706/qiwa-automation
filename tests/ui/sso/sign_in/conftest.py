@@ -21,7 +21,8 @@ def first_account_data():
         qiwa.sso.register_account_via_sso_api(account)
     except AssertionError:
         pass
-    qiwa.sso.login_user(account.personal_number, account.password)
+    qiwa.sso.login(login=account.personal_number, password=account.password)
+    qiwa.sso.login_with_otp()
     qiwa.sso.pass_account_security()
     yield account
     delete_account_data_from_db(account.personal_number)
@@ -37,7 +38,8 @@ def second_account_data():
         qiwa.sso.register_account_via_sso_api(account)
     except AssertionError:
         pass
-    qiwa.sso.login_user(account.personal_number, account.password)
+    qiwa.sso.login(login=account.personal_number, password=account.password)
+    qiwa.sso.login_with_otp()
     qiwa.sso.pass_account_security()
     yield account
     delete_account_data_from_db(account.personal_number)
