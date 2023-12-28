@@ -1,11 +1,16 @@
 from http import HTTPStatus
 
 from src.api.models.qiwa.change_occupation import MultiLangErrorsData
+from src.api.payloads.raw.change_occupation import Laborer
 from utils.assertion import assert_status_code, assert_that
 
 
-def test_validation_for_laborer_registered_in_portal(change_occupation, laborer):
-    response = change_occupation.api.validate_laborer(laborer.personal_number, laborer.occupation_code)
+def test_validation_for_laborer_registered_in_portal(change_occupation):
+    laborer_registered_in_portal = Laborer(personal_number="2000316311")
+    response = change_occupation.api.validate_laborer(
+        laborer_registered_in_portal.personal_number,
+        laborer_registered_in_portal.occupation_code
+    )
     assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
     assert_that(response.json()).has(valid=True)
 

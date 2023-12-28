@@ -10,7 +10,7 @@ from src.api.models.qiwa.raw.correct_occupation.laborers import LaborerAttribute
 
 @pytest.fixture(scope="module")
 def correct_occupation() -> CorrectOccupationController:
-    qiwa = QiwaApi.login_as_user("1048285405").select_company(sequence_number=136401)
+    qiwa = QiwaApi.login_as_user("1020215578").select_company(sequence_number=391349)
     return CorrectOccupationController(qiwa.client)
 
 

@@ -7,7 +7,7 @@ from src.api.payloads.raw.change_occupation import Laborer
 @pytest.fixture(scope="module")
 def change_occupation() -> ChangeOccupationController:
     controller = ChangeOccupationController.pass_ott_authorization(
-        office_id="1", sequence_number="136401", personal_number="1048285405"
+        office_id="1", sequence_number="391349", personal_number="1020215578"
     )
     return controller
 
