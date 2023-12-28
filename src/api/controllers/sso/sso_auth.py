@@ -38,7 +38,6 @@ class AuthApiSSOController(AuthApiSSO):
         self.verify_email_with_otp_code()
         self.confirm_verify_email_with_otp_code()
         self.answer_security_question()
-        self.logout()
 
     @allure.step
     def logout(self) -> None:

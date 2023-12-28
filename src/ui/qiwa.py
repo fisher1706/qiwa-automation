@@ -6,7 +6,6 @@ from selene.support.shared import browser
 
 import config
 from data.constants import Language, UserInfo
-from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.delegation.localisation_change import (
@@ -140,13 +139,6 @@ class QiwaUiClient:
         self.header.change_local(Language.EN)
         (self.login_page.enter_login(login).enter_password(password).click_login_button())
         (self.login_page.otp_pop_up.fill_in_code().click_confirm_button())
-        return self
-
-    def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        # QiwaApi().sso.login_user(login, password)
-        # QiwaApi().sso.pass_account_security()
-        self.login_as_user(login, password)
-        self.feedback.close_feedback()
         return self
 
     def login_as_admin(self) -> QiwaUiClient:
