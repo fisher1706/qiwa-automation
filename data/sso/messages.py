@@ -13,3 +13,6 @@ TOO_MANY_ABSHER_ATTEMPTS = (
 INVALID_NID_FOR_INIT = (
     "The Identity number you provided in this process and during login don't match."
 )
+
+NAFATH_INVALID_ATTEMPT = "Nafath login attempt is not authenticated."
+USER_HAS_SESSION_MESSAGE = "Action is available only for guest"

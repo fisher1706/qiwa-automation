@@ -228,6 +228,7 @@ class AuthApiSSO:
     def get_session(self, expected_code=200):
         response = self.client.get(url=self.url, endpoint="/session")
         assert_status_code(response.status_code).equals_to(expected_code)
+        return response.json()
 
     @allure.step
     def login(self, login: str, password: str, expected_code: int = 200) -> None:
