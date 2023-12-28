@@ -1,6 +1,11 @@
 from typing import Type
 
+from pydantic import BaseModel
+
 from src.api.models.qiwa.data import change_occupation
+from src.api.models.qiwa.raw.change_occupations.establishment_validate import (
+    EstablishmentValidateMeta,
+)
 from src.api.models.qiwa.raw.change_occupations.meta import Meta
 from src.api.models.qiwa.raw.change_occupations.occupations import OccupationsMeta
 from src.api.models.qiwa.raw.root import Root
@@ -15,4 +20,8 @@ ChangeOccupationsCountData = Root[
 UsersData = Root[list[change_occupation.user], Type[None], Meta]
 EstablishmentValidationData = Root[change_occupation.Establishment, Type[None], Type[None]]
 OccupationsData = Root[list[change_occupation.Occupation], Type[None], OccupationsMeta]
-MultiLangErrorsData = Root[list[change_occupation.MultiLangError], Type[None], Type[None]]
+
+
+class MultiLangErrorsData(BaseModel):
+    data: list[change_occupation.MultiLangError]
+    meta: EstablishmentValidateMeta | None

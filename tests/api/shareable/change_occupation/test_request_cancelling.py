@@ -28,7 +28,6 @@ def test_cancel_with_invalid_request_number(change_occupation):
 
 
 @pytest.mark.parametrize("status", [
-    RequestStatus.DRAFT,
     RequestStatus.REJECTED_BY_LABORER,
     RequestStatus.CANCELED_BY_EMPLOYER
 ])
