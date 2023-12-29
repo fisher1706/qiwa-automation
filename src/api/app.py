@@ -10,6 +10,7 @@ from src.api.clients.lo.users import UsersApi
 from src.api.clients.payment import PaymentApi
 from src.api.clients.saudization_certificate import SaudizationCertificateApi
 from src.api.clients.spaces import SpacesApi
+from src.api.clients.sso.nafath_auth import NafathApiSSO
 from src.api.clients.user_management import UserManagementApi
 from src.api.clients.work_permit import WorkPermitsApi
 from src.api.clients.wp_debts import WPDebtsApi
@@ -42,6 +43,7 @@ class QiwaApi:  # pylint: disable=too-many-instance-attributes
         self.client = HTTPClient()
         self.auth = WorkspacesApiController(self.client)
         self.sso = AuthApiSSOController(self.client)
+        self.nafath_sso = NafathApiSSO(self.client)
         # APIs
         self.saudi_api = SaudizationCertificateApi(self.client)
         self.wp_debts_api = WPDebtsApi(self.client)

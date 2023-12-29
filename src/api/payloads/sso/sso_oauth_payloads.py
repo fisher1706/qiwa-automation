@@ -1,5 +1,5 @@
 from data.account import Account
-from src.api.payloads.raw.sso_oauth import (
+from src.api.payloads.raw.sso.sso_oauth import (
     Auth,
     CreateAccount,
     Hsm,

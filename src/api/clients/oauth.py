@@ -6,7 +6,7 @@ from requests.cookies import RequestsCookieJar
 
 import config
 from src.api.http_client import HTTPClient
-from src.api.payloads.sso_oauth_payloads import (
+from src.api.payloads.sso.sso_oauth_payloads import (
     oauth_callback_payload,
     oauth_init_payload,
 )

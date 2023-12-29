@@ -10,8 +10,8 @@ from requests import Response
 import config
 from data.account import Account
 from src.api.http_client import HTTPClient
-from src.api.payloads.raw.sso_oauth import Authorize
-from src.api.payloads.sso_oauth_payloads import (
+from src.api.payloads.raw.sso.sso_oauth import Authorize
+from src.api.payloads.sso.sso_oauth_payloads import (
     activate_sso_hsm_payload,
     email_verification_payload,
     hsm_payload,
@@ -228,6 +228,7 @@ class AuthApiSSO:
     def get_session(self, expected_code=200):
         response = self.client.get(url=self.url, endpoint="/session")
         assert_status_code(response.status_code).equals_to(expected_code)
+        return response.json()
 
     @allure.step
     def login(self, login: str, password: str, expected_code: int = 200) -> None:
