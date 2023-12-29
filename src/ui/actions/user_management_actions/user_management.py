@@ -17,6 +17,9 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
+from src.database.sql_requests.user_management.user_management_requests import (
+    UserManagementRequests,
+)
 from src.ui.pages.establishment_info_page import EstablishmentInfoPage
 from src.ui.pages.user_management_pages.annual_subscription_page import (
     AnnualSubscription,
@@ -29,6 +32,7 @@ from src.ui.pages.user_management_pages.renew_subscription_page import RenewSubs
 from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
 from src.ui.qiwa import qiwa
+from utils.assertion import assert_that
 
 
 class UserManagementActions(
@@ -788,4 +792,56 @@ class UserManagementActions(
         self.check_updated_address_data_on_confirmation_page(
             EstablishmentAddresses.updated_address_data_on_confirmation_page
         )
+        return self
+
+    @allure.step
+    def open_owner_extend_subscription_page(self, user: User) -> UserManagementActions:
+        self.check_confirmation_page_is_opened(
+            user.personal_number, user_management_data.EXTEND_ACTION
+        )
+        self.click_btn_proceed_subscription()
+        self.check_extend_subscription_page_is_opened(user.personal_number)
+        return self
+
+    @allure.step
+    def check_establishment_with_not_allowed_activities_is_hidden_from_owner_subscription_flow(
+        self, user: User
+    ) -> UserManagementActions:
+        browser.driver.refresh()
+        self.open_owner_extend_subscription_page(user)
+        self.check_establishment_list_is_displayed_on_owner_subscription_page(
+            sorted(user_management_data.ALLOWED_ESTABLISHMENT_LIST)
+        )
+        self.check_establishment_is_hidden_on_owner_subscription_page(
+            user_management_data.ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES
+        )
+        self.select_terms_and_conditions_checkbox_on_owner_subscription_page().click_go_to_payment_btn()
+        self.make_establishment_payment().check_thank_you_page("owner_flow")
+        establishment_list_from_db = UserManagementRequests().get_establishment_access_list(
+            user.personal_number, user.unified_number_id
+        )
+        assert_that(establishment_list_from_db).equals_to(
+            user_management_data.ALLOWED_ESTABLISHMENT_LIST
+        )
+        return self
+
+    def extend_owner_subscription_and_check_added_establishments(
+        self, subscribed_user: User, establishments_list: list
+    ) -> UserManagementActions:
+        self.second_page_btn_on_users_table.click()
+        self.open_owner_extend_subscription_page(subscribed_user)
+        self.check_establishment_list_is_displayed_on_owner_subscription_page(establishments_list)
+        self.select_terms_and_conditions_checkbox_on_owner_subscription_page().click_go_to_payment_btn()
+        self.make_establishment_payment().check_thank_you_page("owner_flow")
+        self.click_go_back_to_um_btn()
+        qiwa.main_page.should_main_page_be_displayed()
+        self.second_page_btn_on_users_table.click()
+        self.check_user_status_on_users_table(
+            subscribed_user.personal_number, user_management_data.ACTIVE_STATUS
+        )
+        self.click_actions_in_table_for_selected_user(subscribed_user.personal_number)
+        self.navigate_to_view_details()
+        for establishment in establishments_list:
+            establishment_row = self.get_establishment_row_on_allowed_access_table(establishment)
+            self.check_establishment_is_displayed_on_table(establishment_row)
         return self

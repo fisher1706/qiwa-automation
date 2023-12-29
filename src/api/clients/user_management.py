@@ -6,6 +6,7 @@ from urllib import parse
 import allure
 
 import config
+from data.user_management import user_management_data
 from src.api.http_client import HTTPClient
 from src.api.payloads.raw.user_management.edit_privileges import Privileges
 from src.api.payloads.raw.user_management.self_flows import SelfSubscription
@@ -14,7 +15,7 @@ from src.api.payloads.user_management import (
     owner_subscription_payload_for_new_subscription_type,
     update_establishment_address_payload,
 )
-from utils.assertion import assert_status_code
+from utils.assertion import assert_status_code, assert_that
 from utils.crypto_manager import code_um_cookie
 
 
@@ -135,6 +136,37 @@ class UserManagementApi:  # pylint: disable=duplicate-code
         parsed_url = parse.urlparse(payment_url).path
         payment_id = parsed_url.strip("/").split("/")[0]
         return payment_id
+
+    @allure.step
+    def post_owner_subscription_flow_for_not_allowed_establishment(
+        self,
+        cookie: dict,
+        subscription_type: str,
+        subscription_price: float,
+        personal_number: str,
+        labor_office_id: str,
+        sequence_number: str,
+        privilege_ids: list,
+    ) -> UserManagementApi:
+        headers = {"Cookie": f"qiwa.authorization={code_um_cookie(cookie)}"}
+        json = owner_subscription_payload(
+            subscription_price,
+            personal_number,
+            labor_office_id,
+            sequence_number,
+            privilege_ids,
+        )
+        response = self.client.post(
+            url=self.url,
+            endpoint=f"/api/bff/subscriptions/owner/{subscription_type}",
+            headers=headers,
+            json=json,
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.BAD_REQUEST)
+        assert_that(response.json()["message"]).equals_to(
+            f"{user_management_data.ERROR_FOR_ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES.format(personal_number)}"
+        )
+        return self
 
     @allure.step
     def get_user_privileges(self, cookie: dict, users_personal_number: str) -> dict:

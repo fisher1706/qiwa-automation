@@ -40,7 +40,7 @@ class UserManagementMainPage:
     next_btn_pagination = s("//button/span[contains(text(), 'Next')]")
     previous_btn_pagination = s("//button/span[contains(text(), 'Previous')]")
     first_page_btn = s("//button[contains(@aria-label, 'Page 1')]")
-    second_page_btn = s("//button[contains(@aria-label, 'Page 2')]")
+    second_page_btn_on_users_table = s("//button[contains(@aria-label, 'Page 2')]")
 
     change_language_icon = s("//div[2]/div[contains(@data-component, 'MenuTrigger')]/button")
     arabic_language = s("//*[contains(text(), 'العربية')]")
@@ -118,6 +118,14 @@ class UserManagementMainPage:
         ss(self.action_btn_table).first.should(be.visible).click()
         return self
 
+    def check_user_status_on_users_table(
+        self, user_nid: str, status: str
+    ) -> UserManagementMainPage:
+        self.users_table.rows.element_by(have.text(user_nid)).s(self.user_status_on_table).should(
+            have.text(status)
+        )
+        return self
+
     def click_actions_in_table_for_selected_user(self, user_nid: str) -> UserManagementMainPage:
         self.users_table.rows.element_by(have.text(user_nid)).s(self.action_btn_table).should(
             be.visible
@@ -152,7 +160,7 @@ class UserManagementMainPage:
 
     def check_pagination_btns(self) -> UserManagementMainPage:
         self.select_users_in_establishment_tab()
-        self.second_page_btn.click()
+        self.second_page_btn_on_users_table.click()
         self.previous_btn_pagination.matching(be.visible)
         self.next_btn_pagination.matching(be.not_.visible)
 

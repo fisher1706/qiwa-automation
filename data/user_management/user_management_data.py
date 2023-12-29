@@ -118,6 +118,7 @@ EXTEND_ACTION: str = "extend-action"
 RENEW_ACTION: str = "renew-action"
 
 RENEW_TERMINATED_SUBSCRIPTION: str = "Renew Terminated Subscription"
+EXTEND_SUBSCRIPTION: str = "Extend Subscription"
 
 ERROR_TITLE: str = "There are missing information from your profile."
 VAT_ERROR_LINK: str = "VAT information is required to proceed with subscription."
@@ -173,3 +174,9 @@ BACK_TO_SUBSCRIPTION_BTN: str = "Back to Subscription flow"
 REGISTERED_WITHOUT_VAT: str = "Registered without VAT"
 EMPTY_ON_UI: str = "-"
 EMPTY_ON_API: str = ""
+
+ALLOWED_ESTABLISHMENT_LIST = ["6-8449", "6-16576", "6-1944791"]
+ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES: str = "11-1183901"
+ERROR_FOR_ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES: str = (
+    "At least 1 establishment should be selected for  userPersonalNumber={}"
+)

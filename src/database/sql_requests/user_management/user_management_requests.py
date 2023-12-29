@@ -7,6 +7,7 @@ import config
 from src.database.client.db_client import DBClient
 from src.database.models.user_management_tables_description import (
     EstablishmentAddress,
+    UMEstablishmentAccess,
     UMPrivilegesAuditLog,
     UMSubscriptions,
 )
@@ -120,3 +121,20 @@ class UserManagementRequests:
         establishment_data.street_en = None
         self.session.commit()
         return self
+
+    def get_establishment_access_list(self, personal_number: str, unified_number: int) -> list:
+        establishment_access_list = (
+            self.session.query(UMEstablishmentAccess)
+            .filter(
+                UMEstablishmentAccess.personal_number == personal_number,
+                UMEstablishmentAccess.unified_number == unified_number,
+            )
+            .all()
+        )
+        establishment_list = []
+        for establishment in establishment_access_list:
+            establishment_value = (
+                f"{establishment.labor_office_id}-{establishment.sequence_number}"
+            )
+            establishment_list.append(establishment_value)
+        return establishment_list

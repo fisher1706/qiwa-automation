@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import allure
 
@@ -59,12 +59,32 @@ class UserManagementControllers(UserManagementApi):
                 cookie=cookie,
                 subscription_type=subscription_type,
                 subscription_price=subscription_price,
+                subscribed_user_personal_number=subscribed_user.personal_number,
                 labor_office_id=subscribed_user.labor_office_id,
                 sequence_number=subscribed_user.sequence_number,
                 privilege_ids=Privileges.default_privileges,
-                subscribed_user_personal_number=subscribed_user.personal_number,
             )
         )
+
+    @allure.step
+    def check_error_on_renew_owner_subscription_for_not_allowed_establishment(
+        self, cookie: dict, subscribed_user: User, subscription_type: str
+    ) -> UserManagementControllers:
+        subscription_price = float(
+            self.get_owner_subscription_price(
+                cookie=cookie, subscribed_user_personal_number=subscribed_user.personal_number
+            )
+        )
+        self.post_owner_subscription_flow_for_not_allowed_establishment(
+            cookie=cookie,
+            subscription_type=subscription_type,
+            subscription_price=subscription_price,
+            personal_number=subscribed_user.personal_number,
+            labor_office_id=subscribed_user.labor_office_id,
+            sequence_number=subscribed_user.sequence_number,
+            privilege_ids=Privileges.default_privileges,
+        )
+        return self
 
     def renew_self_subscription(self, cookie: dict, user: User, subscription_type: str) -> int:
         self_price = float(
@@ -83,3 +103,14 @@ class UserManagementControllers(UserManagementApi):
                 subscription_type=subscription_type,
             )
         )
+
+    @allure.step
+    def update_expiry_date_for_owner_subscription(self, user: User) -> UserManagementControllers:
+        current_date = datetime.now()
+        future_date = current_date + timedelta(days=29)
+        UserManagementRequests().update_expiry_date_for_um_subscriptions(
+            personal_number=user.personal_number,
+            unified_number=user.unified_number_id,
+            expiry_date=future_date.strftime("%Y-%m-%d %H:%M:%S.000"),
+        )
+        return self

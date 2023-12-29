@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import allure
 from selene import be, browser, command
 from selene.support.shared.jquery_style import s
@@ -74,6 +76,7 @@ class PaymentSummary(BaseEstablishmentPayment):
     @allure.step
     def complete_payment(self, payment_type: str = None) -> PaymentSummary:
         if not payment_type:
+            time.sleep(5)
             browser.switch_to.frame(self.iframe.should(be.visible)())
             self.btn_submit.should(be.visible).click()
         else:
