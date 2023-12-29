@@ -16,6 +16,15 @@ owner_account_with_another_company = User(
     unified_number_id=9086,
 )
 
+user_type_1 = User(
+    personal_number="1004705388",
+    user_id=2213979,
+    labor_office_id=1,
+    sequence_number=142717,
+    unified_number_id=362061,
+)
+
+
 owner_account_for_expire_subscription = User(
     personal_number="1017836568",
     user_id=2292101,
@@ -74,6 +83,21 @@ delegator_with_um = User(
     unified_number_id=9086,
 )
 
+user_type_two = User(
+    personal_number="1019865797",
+    user_id=1667090,
+    labor_office_id=15,
+    sequence_number=2722,
+    unified_number_id=9086,
+)
+user_type_two_1 = User(
+    personal_number="1019865797",
+    user_id=1667090,
+    labor_office_id=9,
+    sequence_number=11871,
+    unified_number_id=9086,
+)
+
 delegator_without_um = User(
     personal_number="1014157000",
     user_id=1668068,
@@ -109,21 +133,29 @@ user_type_three_employee = User(
 )
 
 user_type_three = User(
-    personal_number="1106495433",
-    user_id=424198,
+    personal_number="1122043027",
+    user_id=1122043027,
     labor_office_id=1,
     sequence_number=1910,
     unified_number_id=9086,
-    name="حمود جمال حمود المهوس",
+    name="عهود تركي زيد الحربي",
 )
 
-user_type_three_employee_for_add_access = User(
+user_type_three_employee_1 = User(
     personal_number="1070111305",
     user_id=1668068,
     labor_office_id=15,
     sequence_number=2722,
     unified_number_id=9086,
     establishment_name_ar="فرع شركةالاتحادالهندسي السعوديةللاستشارات الهندسية||(خطيب و",
+)
+
+user_type_three_employee_2 = User(
+    personal_number="1070111305",
+    user_id=1668068,
+    labor_office_id=9,
+    sequence_number=11871,
+    unified_number_id=9086,
 )
 
 establishment_type_one = User(
@@ -220,4 +252,52 @@ owner_for_changing_address_data = User(
     labor_office_id=9,
     sequence_number=1961667,
     unified_number_id=2250719,
+)
+
+owner_in_establishment_with_not_allowed_activities = User(
+    personal_number="1030050270",
+    user_id=2276951,
+    labor_office_id=6,
+    sequence_number=16576,
+    unified_number_id=279855,
+)
+
+user_type_three_1 = User(
+    personal_number="1070111305",
+    user_id=1668068,
+    labor_office_id=6,
+    sequence_number=16576,
+    unified_number_id=279855,
+)
+
+user_type_three_in_establishment_with_not_allowed_activities = User(
+    personal_number="1070111305",
+    user_id=1668068,
+    labor_office_id=11,
+    sequence_number=1183901,
+    unified_number_id=279855,
+)
+
+user_type_three_2 = User(
+    personal_number="1106495433",
+    user_id=424198,
+    labor_office_id=1,
+    sequence_number=1910,
+    unified_number_id=9086,
+)
+
+user_type_three_3 = User(
+    personal_number="1106495433",
+    user_id=424198,
+    labor_office_id=9,
+    sequence_number=11871,
+    unified_number_id=9086,
+)
+
+user_type_three_4 = User(
+    personal_number="1106495433",
+    user_id=424198,
+    labor_office_id=15,
+    sequence_number=2722,
+    unified_number_id=9086,
 )

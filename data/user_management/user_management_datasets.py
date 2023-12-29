@@ -16,6 +16,11 @@ from data.user_management.user_management_users import (
     owner_with_active_subscription,
     owner_with_expired_subscription_always,
     owner_without_subscription_always,
+    user_type_three_employee,
+    user_type_three_employee_1,
+    user_type_three_employee_2,
+    user_type_two,
+    user_type_two_1,
 )
 
 
@@ -92,12 +97,41 @@ class SelfSubscriptionType:
 
 @dataclasses.dataclass
 class UsersTypes:
-    users = [owner_account, delegator_with_um]
+    users = [owner_account, user_type_two_1]
 
 
 @dataclasses.dataclass
 class Privileges:
     default_privileges = [1, 5, 8, 11, 13, 16, 20, 23, 29, 31]
+    all_privileges = [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+    ]
     groups_data = [
         {
             "title": user_management_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
@@ -329,4 +363,17 @@ class EstablishmentAddresses:
         user_management_data.UPDATED_STREET,
         user_management_data.UPDATED_BUILDING_NUMBER,
         str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
+
+
+@dataclasses.dataclass
+class UserAccess:
+    users = [
+        (
+            user_type_three_employee,
+            [user_type_three_employee_1, user_type_three_employee_2, user_type_three_employee],
+            ["1-1910"],
+        ),
+        (user_type_two_1, [delegator_with_um, user_type_two, user_type_two_1], ["9-11871"]),
+        (owner_account, None, ["1-1910", "9-11871", "15-2722"]),
     ]

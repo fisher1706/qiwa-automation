@@ -10,6 +10,7 @@ from data.user_management.user_management_datasets import (
     SelfSubscriptionData,
     SelfSubscriptionType,
     Texts,
+    UserAccess,
     UsersTypes,
 )
 from data.user_management.user_management_users import (
@@ -21,14 +22,22 @@ from data.user_management.user_management_users import (
     owner_account_with_another_company,
     owner_for_changing_address_data,
     owner_for_self,
+    owner_in_establishment_with_not_allowed_activities,
     owner_with_active_subscription,
     owner_with_expired_subscription,
     owner_with_expired_subscription_always,
     owner_without_subscription,
     owner_without_vat_number_and_address,
+    user_type_1,
     user_type_three,
+    user_type_three_1,
+    user_type_three_2,
+    user_type_three_3,
+    user_type_three_4,
     user_type_three_employee,
-    user_type_three_employee_for_add_access,
+    user_type_three_employee_1,
+    user_type_three_employee_2,
+    user_type_three_in_establishment_with_not_allowed_activities,
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
 from src.ui.qiwa import qiwa
@@ -37,6 +46,7 @@ from tests.conftest import (
     prepare_data_for_terminate_company,
 )
 from tests.ui.user_management.conftest import (
+    check_access_and_update_permissions,
     check_establishment_data_are_identical_for_both_localizations,
     check_vat_number_is_empty,
     clear_establishment_data,
@@ -46,6 +56,7 @@ from tests.ui.user_management.conftest import (
     log_in_and_open_establishment_account,
     log_in_and_open_user_management,
     prepare_data_for_checking_the_confirmation_page,
+    prepare_data_for_owner_extend_active_subscription_flow,
     prepare_data_for_owner_subscriptions_flows,
     prepare_data_for_updating_establishment_data,
     remove_establishment_from_subscription,
@@ -175,8 +186,10 @@ def test_privileges_data():
     owner = owner_account
     user = user_type_three_employee
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    cookie = get_subscription_cookie(owner)
+    check_access_and_update_permissions(qiwa_api, cookie, user, Privileges.default_privileges)
     remove_establishment_from_subscription(owner, qiwa_api, [user])
-    user_management.navigate_to_view_details_page(user.personal_number) \
+    user_management.navigate_to_user_details(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data) \
         .check_privileges_are_selected(privilege_names=Privileges.default_ui_privileges, active_state=False) \
@@ -187,12 +200,15 @@ def test_privileges_data():
 @case_id(7924, 165306, 7927, 7926)
 def test_interaction_with_privileges_list():
     user_management = UserManagementActions()
-    owner = owner_account_with_another_company
+    owner = owner_account
     user = user_type_three_employee
+    user_another_establishment = user_type_three_employee_2
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
-    remove_establishment_from_subscription(owner, qiwa_api, [user])
-    user_management.navigate_to_view_details_page(user.personal_number) \
-        .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
+    cookie = get_subscription_cookie(owner)
+    check_access_and_update_permissions(qiwa_api, cookie, user, Privileges.all_privileges)
+    remove_establishment_from_subscription(owner, qiwa_api, [user_another_establishment])
+    user_management.navigate_to_view_details_page(user_another_establishment.personal_number) \
+        .open_select_privileges_modal_for_no_access_workspace(user_another_establishment.sequence_number) \
         .select_all_privileges().unselect_the_privilege(user_management_data.VISA_ISSUANCE_SERVICE) \
         .select_all_privileges().unselect_all_privileges() \
         .select_paired_privileges([user_management_data.OCCUPATION_MANAGEMENT],
@@ -211,8 +227,11 @@ def test_add_access_to_establishment():
     user_management = UserManagementActions()
     owner = owner_account_with_another_company
     user = user_type_three_employee
-    user_for_add_access = user_type_three_employee_for_add_access
+    user_for_add_access = user_type_three_employee_1
+    user_2 = user_type_three_employee_2
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    cookie = get_subscription_cookie(owner)
+    prepare_data_for_terminate_company(qiwa_api, cookie, user_2)
     remove_establishment_from_subscription(owner, qiwa_api, [user, user_for_add_access])
     user_management.navigate_to_user_details(user.personal_number) \
         .open_select_privileges_modal_for_no_access_workspace(user.sequence_number) \
@@ -246,8 +265,8 @@ def test_terminate_flow():
     owner = owner_account
     user = user_type_three
     log_in_and_open_user_management(owner, Language.EN)
-    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name). \
-        check_user_is_terminated(user.personal_number)
+    user_management.navigate_to_user_details(user.personal_number).terminate_user_from_all_establishments(user.name)\
+        .check_user_is_terminated(user.personal_number)
 
 
 @allure.title("Check interaction with establishments list")
@@ -256,9 +275,10 @@ def test_interaction_with_establishments_list():
     user_management = UserManagementActions()
     owner = owner_account
     user = user_type_three_employee
-    user1 = user_type_three_employee_for_add_access
+    user1 = user_type_three_employee_1
     qiwa_api = log_in_and_open_user_management(owner, Language.EN)
-    subscribe_user_to_establishment(owner, qiwa_api, [user, user1])
+    cookie = get_subscription_cookie(owner)
+    subscribe_user_to_establishment(qiwa_api, cookie, [user, user1])
     user_management.navigate_to_user_details(user.personal_number) \
         .select_all_allowed_access_establishments_checkbox() \
         .unselect_all_allowed_access_establishments_checkbox() \
@@ -272,15 +292,15 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
     user_management = UserManagementActions()
     owner = owner_account
     user = user_type_three_employee
-    user1 = user_type_three_employee_for_add_access
+    user1 = user_type_three_employee_1
     cookie = get_subscription_cookie(owner)
     qiwa_api = log_in_and_open_user_management(owner, Language.AR)
-    prepare_data_for_terminate_company(qiwa_api, cookie, user)
+    check_access_and_update_permissions(qiwa_api, cookie, user, Privileges.default_privileges)
     prepare_data_for_free_subscription(qiwa_api, cookie, user1)
     user_management.navigate_to_user_details(user.personal_number) \
         .check_localization_for_add_access_modal(user1.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data_ar).close_select_privileges_modal() \
-        .check_localization_for_edit_privileges_modal(user.sequence_number)\
+        .check_localization_for_edit_privileges_modal(user.sequence_number) \
         .check_privileges_are_grouped(Privileges.groups_data_ar)
 
 
@@ -386,10 +406,12 @@ def test_content_on_confirmation_page():
     establishment_data = prepare_data_for_checking_the_confirmation_page(owner, qiwa_api)
     user_management.check_confirmation_page_on_add_new_user_flow() \
         .check_content_on_confirmation_page_english_localization(establishment_data, owner) \
-        .check_content_on_confirmation_page_arabic_localization(establishment_data)\
+        .check_content_on_confirmation_page_arabic_localization(establishment_data) \
         .update_establishment_data_for_both_localizations()
     check_establishment_data_are_identical_for_both_localizations(owner, qiwa_api)
 
+
+#
 
 @allure.title("Check confirmation page is hidden after subscription was started in the current session")
 @case_id(17412, 41497)
@@ -425,7 +447,7 @@ def test_warning_messages_if_required_data_is_missing_on_confirmation_page():
 @case_id(17414, 141722)
 def test_update_establishment_address_on_confirmation_page():
     user_management = UserManagementActions()
-    user1 = owner_account
+    user1 = user_type_1
     user2 = owner_for_changing_address_data
     log_in_and_open_user_management(user1, Language.EN)
     prepare_data_for_updating_establishment_data(user1, user2)
@@ -449,3 +471,32 @@ def test_user_can_proceed_with_subscription_without_vat_number():
     check_vat_number_is_empty(owner, qiwa_api)
     user_management.proceed_owner_subscription_on_confirmation_page()
     clear_establishment_data(owner)
+
+
+@allure.title("Check that Establishments with not allowed activities are excluded from the Owner "
+              "Extend subscription flow")
+@case_id(141018, 141020)
+def test_establishments_with_not_allowed_activities_are_excluded_from_owner_extend_flow():
+    user_management = UserManagementActions()
+    owner = owner_in_establishment_with_not_allowed_activities
+    user = user_type_three_1
+    user_with_not_allowed_activities = user_type_three_in_establishment_with_not_allowed_activities
+    cookie = get_subscription_cookie(owner)
+    qiwa_api = log_in_and_open_user_management(owner, Language.EN)
+    qiwa_api.user_management.update_expiry_date_for_owner_subscription(user)
+    qiwa_api.user_management.check_error_on_renew_owner_subscription_for_not_allowed_establishment(
+        cookie, user_with_not_allowed_activities, SelfSubscriptionType.subscription_type[0])
+    user_management.check_establishment_with_not_allowed_activities_is_hidden_from_owner_subscription_flow(user)
+
+
+@allure.title("Verify users can provide access to establishments only where they have User Management Permission for "
+              "Extend Active Subscription flow")
+@case_id(141591)
+@pytest.mark.parametrize("user, users_list, establishments_list", UserAccess.users)
+def test_users_can_provide_access_to_establishments_where_they_have_UM_privilege(user, users_list, establishments_list):
+    user_management = UserManagementActions()
+    owner = owner_account
+    subscribed_user = [user_type_three_2, user_type_three_3, user_type_three_4]
+    prepare_data_for_owner_extend_active_subscription_flow(user, subscribed_user, owner, users_list)
+    log_in_and_open_user_management(user, Language.EN)
+    user_management.extend_owner_subscription_and_check_added_establishments(subscribed_user[0], establishments_list)

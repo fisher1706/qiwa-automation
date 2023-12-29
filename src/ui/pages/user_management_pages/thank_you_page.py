@@ -12,6 +12,7 @@ class ThankYouPage:
     main_text = s("//p[contains(text(), 'Thank you!')]")
     payment = s("//*[@id='root']//strong")
     payment_data = ss("//*[@data-component='SimpleTable']//td")
+    go_back_to_um_btn = s("[data-testid='back-button']")
 
     @allure.step
     def check_data_thank_you_page(self, user_type: str) -> ThankYouPage:
@@ -24,4 +25,9 @@ class ThankYouPage:
             self.payment_data.should(be.visible.each).should(
                 have.size(ThankYouPageData.COUNT_NEW_SUBSCRIPTION)
             )
+        return self
+
+    @allure.step
+    def click_go_back_to_um_btn(self) -> ThankYouPage:
+        self.go_back_to_um_btn.click()
         return self

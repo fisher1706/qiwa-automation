@@ -5,7 +5,10 @@ from sqlalchemy.exc import IntegrityError
 
 from data.dedicated.models.user import User
 from data.user_management import user_management_data
-from data.user_management.user_management_datasets import EstablishmentAddresses
+from data.user_management.user_management_datasets import (
+    EstablishmentAddresses,
+    Privileges,
+)
 from src.api.app import QiwaApi
 from src.api.models.qiwa.raw.user_management_models import SubscriptionCookie
 from src.database.actions.user_management_db_actions import delete_subscription
@@ -13,9 +16,6 @@ from src.database.sql_requests.user_management.user_management_requests import (
     UserManagementRequests,
 )
 from src.ui.actions.user_management_actions.user_management import UserManagementActions
-from src.ui.pages.user_management_pages.base_establishment_payment_page import (
-    BaseEstablishmentPayment,
-)
 from src.ui.qiwa import qiwa
 from tests.conftest import (
     prepare_data_for_free_subscription,
@@ -40,10 +40,10 @@ def log_in_and_open_user_management(user: User, language: str, has_access: bool 
 
 def log_in_and_open_establishment_account(user: User, language: str) -> QiwaApi:
     qiwa_api = QiwaApi.login_as_user(user.personal_number)
-    cookies = qiwa_api.sso.oauth_api.get_context()
-    BaseEstablishmentPayment().open_establishment_account_page()
-    set_cookies_for_browser(cookies)
+    qiwa.login_as_user(login=user.personal_number)
+    qiwa.workspace_page.should_have_workspace_list_appear()
     qiwa.header.change_local(language)
+    qiwa.workspace_page.select_business_account()
     return qiwa_api
 
 
@@ -66,10 +66,9 @@ def remove_establishment_from_subscription(owner: User, qiwa_api: QiwaApi, users
         prepare_data_for_free_subscription(qiwa_api, subscription_cookie, user)
 
 
-def subscribe_user_to_establishment(owner: User, qiwa_api: QiwaApi, users: list):
-    subscription_cookie = get_subscription_cookie(owner)
+def subscribe_user_to_establishment(qiwa_api: QiwaApi, cookie: dict, users: list):
     for user in users:
-        prepare_data_for_terminate_company(qiwa_api, subscription_cookie, user)
+        prepare_data_for_terminate_company(qiwa_api, cookie, user)
 
 
 def expire_user_subscription(user: User):
@@ -97,14 +96,10 @@ def prepare_data_for_owner_subscriptions_flows(
     user_for_renew_expired_flow: User,
     user_for_renew_terminated_flow: User,
 ):
-    current_date = datetime.now()
-    future_date = current_date + timedelta(days=29)
-    UserManagementRequests().update_expiry_date_for_um_subscriptions(
-        personal_number=user_for_extend_subscription.personal_number,
-        unified_number=user_for_extend_subscription.unified_number_id,
-        expiry_date=future_date.strftime("%Y-%m-%d %H:%M:%S.000"),
+    qiwa_api.user_management.update_expiry_date_for_owner_subscription(
+        user_for_extend_subscription
     )
-
+    current_date = datetime.now()
     past_date = current_date - timedelta(days=5)
     qiwa_api.user_management.expiry_user_subscription(
         personal_number=user_for_renew_expired_flow.personal_number,
@@ -203,3 +198,37 @@ def check_establishment_data_are_identical_for_both_localizations(owner: User, q
     establishment_data = qiwa_api.user_management.get_establishment_data(cookie)
     assert_that(establishment_data["streetAr"]).equals_to(establishment_data["streetEn"])
     assert_that(establishment_data["districtAr"]).equals_to(establishment_data["districtEn"])
+
+
+def check_access_and_update_permissions(
+    qiwa_api: QiwaApi, cookie: dict, user: User, privileges: list
+):
+    prepare_data_for_terminate_company(qiwa_api=qiwa_api, cookie=cookie, subscribed_user=user)
+    qiwa_api.user_management.post_update_privileges(
+        cookie=cookie,
+        users_personal_number=user.personal_number,
+        labor_office_id=user.labor_office_id,
+        sequence_number=user.sequence_number,
+        privileges=privileges,
+    )
+
+
+def prepare_data_for_owner_extend_active_subscription_flow(
+    user: User, subscribed_user: list, owner: User, users_list: list
+):
+    qiwa_api = QiwaApi.login_as_user(user.personal_number).select_company(
+        int(user.sequence_number)
+    )
+    qiwa_api.user_management.update_expiry_date_for_owner_subscription(subscribed_user[0])
+    cookie = get_subscription_cookie(owner)
+    subscribe_user_to_establishment(qiwa_api, cookie, subscribed_user)
+    privileges_without_um_permission = Privileges.all_privileges.copy()
+    privileges_without_um_permission.remove(12)
+    if users_list is not None:
+        check_access_and_update_permissions(
+            qiwa_api, cookie, users_list[0], privileges_without_um_permission
+        )
+        prepare_data_for_free_subscription(qiwa_api, cookie, users_list[1])
+        check_access_and_update_permissions(
+            qiwa_api, cookie, users_list[2], Privileges.all_privileges
+        )
