@@ -346,7 +346,6 @@ def test_establishment_delegator_flow(subscriber, user_one, user_two):
         .verify_possibility_add_additional_users_as_delegator(user_two)\
         .verify_establishment_user_have_access(user_one, user_two)\
         .go_to_payment_page()
-    # time.sleep(20)
 
 
 @allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
@@ -360,8 +359,7 @@ def test_verify_btn_edit(subscriber, user_one, user_two):
         .check_open_add_establishment_delegator_page()\
         .verify_edit_establishment_delegator_section(user_one, user_two)\
         .select_deselect_all_establishment()\
-        .check_field_search(999, subscriber.sequence_number)
-    time.sleep(10)
+        .check_field_search(user_management_data.INCORRECT_ESTABLISHMENT, subscriber.sequence_number)
 
 
 @allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
@@ -371,17 +369,9 @@ def test_verify_select_all(subscriber, user_one, user_two):
     user_management = UserManagementActions()
     log_in_and_open_user_management(subscriber, Language.EN)
 
-    # user_management\
-    #     .check_open_add_establishment_delegator_page()\
-    #     .verify_possibility_add_few_users_as_delegator(user_one, user_two)\
-    #     .verify_ability_select_all_privileges_for_all_establishment()\
-    #     .verify_warning_message()\
-    #     .go_to_payment_page() \
-    #     .make_establishment_payment()\
-    #
-    # time.sleep(10)
-
-    user_management.delete_user_from_establishment_flow('1070111305')
-    # time.sleep(10)
-
-
+    user_management\
+        .check_open_add_establishment_delegator_page()\
+        .verify_possibility_add_few_users_as_delegator(user_one, user_two)\
+        .verify_ability_select_all_privileges_for_all_establishment()\
+        .verify_warning_message()\
+        .go_to_payment_page()

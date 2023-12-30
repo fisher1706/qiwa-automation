@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import time
-
 import allure
 from selene import Element, have
 from selene.support.conditions import be
@@ -617,10 +615,4 @@ class UserManagementActions(
     def verify_warning_message(self) -> UserManagementActions:
         self.click_btn_go_to_payment()
         self.check_warning_message()
-        return self
-
-    @allure.step
-    def delete_users_from_establishment(self, *args: User) -> UserManagementActions:
-        for arg in args:
-            self.delete_user_from_establishment_flow(arg.personal_number)
         return self

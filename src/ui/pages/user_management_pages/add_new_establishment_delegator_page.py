@@ -91,9 +91,7 @@ class AddNewEstablishmentDelegator:
     @allure.step
     def verify_total_selected(self, *args: str) -> AddNewEstablishmentDelegator:
         self.number_of_added_users_value.should(have.exact_text(str(len(args))))
-        # self.subscription_period_value.should(have.text('1 year'))
         self.subscription_period_value.should(have.text(user_management_data.SUBSCRIPTION_PERIOD))
-        # self.total_summary_value.should(be.visible).should(have.text('SAR'))
         self.total_summary_value.should(be.visible).should(have.text(user_management_data.SUBSCRIPTION_CURRENCY))
         return self
 
@@ -143,10 +141,8 @@ class AddNewEstablishmentDelegator:
     @allure.step
     def verify_summary_section(self, *args: str) -> AddNewEstablishmentDelegator:
         self.number_of_added_users_value.should(have.exact_text(str(len(args))))
-        # self.subscription_period_value.should(have.text('1 year'))
         self.subscription_period_value.should(have.text(user_management_data.SUBSCRIPTION_PERIOD))
         self.subscription_expiration_data_value.should(be.visible)
-        # self.summary_section_total_value[0].should(be.visible).should(have.text('SAR'))
         self.summary_section_total_value[0].should(be.visible)\
             .should(have.text(user_management_data.SUBSCRIPTION_CURRENCY))
         return self
@@ -198,31 +194,36 @@ class AddNewEstablishmentDelegator:
     def verify_fundamental_privileges(self) -> AddNewEstablishmentDelegator:
         self.fundamental_privileges.wait_until(be.visible)
         self.fundamental_privileges.should(be.visible)
-        self.fundamental_privileges_item.should(be.visible.each).should(have.size(7))
+        self.fundamental_privileges_item.should(be.visible.each)\
+            .should(have.size(user_management_data.COUNT_FUNDAMENTAL_PRIVILEGES))
         return self
 
     @allure.step
     def verify_employees_management(self) -> AddNewEstablishmentDelegator:
         self.employees_management.should(be.visible)
-        self.employees_management_item.should(be.visible.each).should(have.size(10))
+        self.employees_management_item.should(be.visible.each)\
+            .should(have.size(user_management_data.COUNT_EMPLOYEES_MANAGEMENT))
         return self
 
     @allure.step
     def verify_establishment_management(self) -> AddNewEstablishmentDelegator:
         self.employees_management.should(be.visible)
-        self.establishment_management_item.should(be.visible.each).should(have.size(10))
+        self.establishment_management_item.should(be.visible.each)\
+            .should(have.size(user_management_data.COUNT_ESTABLISHMENT_MANAGEMENT))
         return self
 
     @allure.step
     def verify_establishment_performance(self) -> AddNewEstablishmentDelegator:
         self.establishment_performance.should(be.visible)
-        self.establishment_performance_item.should(be.visible.each).should(have.size(4))
+        self.establishment_performance_item.should(be.visible.each)\
+            .should(have.size(user_management_data.COUNT_ESTABLISHMENT_PERFORMANCE))
         return self
 
     @allure.step
     def verify_workspaces_management(self) -> AddNewEstablishmentDelegator:
         self.workspaces_management.should(be.visible)
-        self.workspaces_management_item.should(be.visible.each).should(have.size(3))
+        self.workspaces_management_item.should(be.visible.each)\
+            .should(have.size(user_management_data.COUNT_WORKSPACES_MANAGEMENT))
         return self
 
     @allure.step

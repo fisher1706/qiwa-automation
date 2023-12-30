@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-import time
-
 from selene import be, browser, have, query
 from selene.support.shared.jquery_style import s, ss
-from selenium.common import InvalidSelectorException
 
 from data.user_management import user_management_data
 from src.ui.components.raw.table import Table
@@ -57,13 +54,6 @@ class UserManagementMainPage:
     ).first
     tabs_on_users_table = ss("button[role='tab']")
     close_btn_on_modal = s("[data-testid='close-button']")
-
-    users = s('//*[@id="root"]/div/div[2]/div[2]/div/div[2]/div/div/div/div/button[2]/div/p')
-    # btn_next = ss("//span[contains(text(), 'Next')]").first
-    btn_next = s('//*[@id="tabpanel-:r0:-0"]/div/div[2]/div/div/nav/button')
-    delete_user_from_establishment = s("//span[contains(text(), 'Delete user from all establishments')]")
-    btn_delete_user = s("//button/p[contains(text(), 'Delete user')]")
-    btn_back_to_user_management = s("//button/p[contains(text(), 'Back to User Management')]")
 
     def __init__(self):
         super().__init__()
@@ -225,76 +215,3 @@ class UserManagementMainPage:
             have.text(user_management_data.INACTIVE_STATUS)
         )
         return self
-
-    # def delete_user_from_establishment_flow(self, national_id: str) -> UserManagementMainPage:
-    #     self.tabs_on_users_table.first.click()
-    #     try:
-    #         user_row = self.users_table.rows.element_by(have.text(national_id))
-    #         while not user_row:
-    #             self.btn_next[0].should(be.visible).click()
-    #             user_row = self.users_table.rows.element_by(have.text(national_id))
-    #         if user_row:
-    #             print(user_row)
-    #             user_row.s(self.action_btn_table).click()
-    #             self.view_details_btn.should(be.visible).click()
-    #             self.delete_user_from_establishment.should(be.visible).click()
-    #             self.btn_delete_user.should(be.visible).click()
-    #             self.btn_back_to_user_management.should(be.visible).click()
-    #         else:
-    #             return self
-    #     except (InvalidSelectorException, AttributeError):
-    #         pass
-    #     return self
-
-    # def delete_user_from_establishment_flow(self, national_id: str) -> UserManagementMainPage:
-    #     # self.tabs_on_users_table.first.click()
-    #     user_row = self.users_table.rows.element_by(have.text(national_id))
-    #     # while not user_row:
-    #     #     self.btn_next[0].should(be.visible).click()
-    #     #     user_row = self.users_table.rows.element_by(have.text(national_id))
-    #     if user_row:
-    #         print(user_row)
-    #         user_row.wait_until(be.visible)
-    #         user_row.s(self.action_btn_table).click()
-    #         self.view_details_btn.should(be.visible).click()
-    #         self.delete_user_from_establishment.should(be.visible).click()
-    #         self.btn_delete_user.should(be.visible).click()
-    #         self.btn_back_to_user_management.should(be.visible).click()
-    #     return self
-
-    def delete_user_from_establishment_flow(self, national_id: str) -> UserManagementMainPage:
-        # self.tabs_on_users_table.first.click()
-        self.users.should(be.visible).click()
-        # user = s(f"//td[contains(text(), '{national_id}')]").matching(be.visible)
-        # print(f"user_before: {user}")
-        # while not user:
-        #     self.btn_next[0].should(be.visible).click()
-        #     user = s(f"//td[contains(text(), '{national_id}')]").matching(be.visible)
-        #     print(f"user_after: {user}")
-        # time.sleep(10)
-
-
-        user = s(f"//td[contains(text(), '{national_id}')]").matching(be.visible)
-        print(f"user_before: {user}")
-        while not user:
-            print('%%%%%%%%%%%%%')
-            self.btn_next.should(be.visible).click()
-            time.sleep(5)
-            print("next")
-            # self.tabs_on_users_table.first.click()
-
-            user = s(f"//td[contains(text(), '{national_id}')]").matching(be.visible)
-            print(f"user_after : {user}")
-
-        # self.tabs_on_users_table.first.click()
-        user_row = self.users_table.rows.element_by(have.text(national_id))
-        user_row.wait_until(be.visible)
-        print(user_row)
-        user_row.wait_until(be.visible)
-        user_row.s(self.action_btn_table).click()
-        self.view_details_btn.should(be.visible).click()
-        self.delete_user_from_establishment.should(be.visible).click()
-        self.btn_delete_user.should(be.visible).click()
-        self.btn_back_to_user_management.should(be.visible).click()
-        return self
-
