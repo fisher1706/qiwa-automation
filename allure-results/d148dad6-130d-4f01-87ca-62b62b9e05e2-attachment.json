@@ -1,0 +1,324 @@
+{
+  "data": [
+    {
+      "id": "1666054-2-12652",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "owner",
+        "personal-number": "1001530987",
+        "company-id": 12652,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 1910,
+        "company-unified-number-id": "9086",
+        "company-name": "شركة الاتحاد الهندسي السعودية للاستشارات الهندسية خطيب وعلمي",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-10-10T00:00:00.000+00:00",
+        "company-number": "1-1910",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-12655",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "owner",
+        "personal-number": "1001530987",
+        "company-id": 12655,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 101166,
+        "company-unified-number-id": "329521",
+        "company-name": "فرع مؤسسة بيت المعمار للتجاره",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-09T02:06:34.560+00:00",
+        "company-number": "1-101166",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-12656",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "owner",
+        "personal-number": "1001530987",
+        "company-id": 12656,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 150281,
+        "company-unified-number-id": "329521",
+        "company-name": "مؤسسة بيت المعمار للمقاولات",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-09T02:06:34.560+00:00",
+        "company-number": "1-150281",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-22524",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "user",
+        "personal-number": "1001530987",
+        "company-id": 22524,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 1177836,
+        "company-unified-number-id": "399236",
+        "company-name": "فرع شركة ابرار للاتصالات",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": "2024-10-26T00:00:00.000+00:00",
+        "company-number": "1-1177836",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-22525",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "user",
+        "personal-number": "1001530987",
+        "company-id": 22525,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 1457556,
+        "company-unified-number-id": "399236",
+        "company-name": "فرع شركة ابرار للاتصالات",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": "2024-10-26T00:00:00.000+00:00",
+        "company-number": "1-1457556",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-12653",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "owner",
+        "personal-number": "1001530987",
+        "company-id": 12653,
+        "company-labor-office-id": 9,
+        "company-sequence-number": 11871,
+        "company-unified-number-id": "9086",
+        "company-name": "فرع شركة الاتحاد الهندسي السعوديه",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-10-10T00:00:00.000+00:00",
+        "company-number": "9-11871",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-22529",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "user",
+        "personal-number": "1001530987",
+        "company-id": 22529,
+        "company-labor-office-id": 9,
+        "company-sequence-number": 1752504,
+        "company-unified-number-id": "399236",
+        "company-name": "شركة نيزك العلم",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": "2024-10-26T00:00:00.000+00:00",
+        "company-number": "9-1752504",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-22526",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "user",
+        "personal-number": "1001530987",
+        "company-id": 22526,
+        "company-labor-office-id": 9,
+        "company-sequence-number": 1759176,
+        "company-unified-number-id": "399236",
+        "company-name": "وكالة نيزك العلم",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": "2024-10-26T00:00:00.000+00:00",
+        "company-number": "9-1759176",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-2-12654",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": "owner",
+        "personal-number": "1001530987",
+        "company-id": 12654,
+        "company-labor-office-id": 15,
+        "company-sequence-number": 2722,
+        "company-unified-number-id": "9086",
+        "company-name": "فرع شركةالاتحادالهندسي السعوديةللاستشارات الهندسية||(خطيب و",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-10-10T00:00:00.000+00:00",
+        "company-number": "15-2722",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "1666054-31-0",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 1666054,
+        "user-name": "1001530987",
+        "user-role": null,
+        "personal-number": "1001530987",
+        "company-id": null,
+        "company-labor-office-id": null,
+        "company-sequence-number": null,
+        "company-unified-number-id": null,
+        "company-name": null,
+        "company-main-branch": null,
+        "space-id": 31,
+        "space-type": "individual",
+        "space-default-url": {
+          "ar": "https://i.qiwa.info/",
+          "en": "https://i.qiwa.info/"
+        },
+        "space-name": {
+          "ar": "الحساب الشخصي",
+          "en": "Individual account"
+        },
+        "space-redirect-key-name": "redirect_uri_individual",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "-",
+        "show-extend-subscription-note": null
+      }
+    }
+  ]
+}

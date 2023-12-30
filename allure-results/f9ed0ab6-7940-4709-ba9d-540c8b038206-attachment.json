@@ -1,0 +1,11 @@
+{
+  "data": {
+    "id": null,
+    "type": "otp",
+    "attributes": {
+      "notification": {
+        "last_phone_digits": "166"
+      }
+    }
+  }
+}

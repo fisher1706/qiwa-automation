@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 import allure
 from selene import Element, have
 from selene.support.conditions import be
@@ -14,6 +16,7 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
+from src.ui.pages.user_management_pages.add_new_establishment_delegator_page import AddNewEstablishmentDelegator
 from src.ui.pages.user_management_pages.annual_subscription_page import (
     AnnualSubscription,
 )
@@ -38,6 +41,7 @@ class UserManagementActions(
     PaymentSummary,
     ThankYouPage,
     RenewSubscription,
+    AddNewEstablishmentDelegator,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -484,10 +488,139 @@ class UserManagementActions(
         else:
             self.wait_until_page_is_loaded()
             self.check_page_is_displayed()
-
         return self
 
     @allure.step
     def check_db_subscription_date(self, user: User):
         self.check_db_data(user)
+        return self
+
+    @allure.step
+    def check_open_add_establishment_delegator_page(self) -> UserManagementActions:
+        self.click_subscribe_btn()
+        EstablishmentUser.main_text.wait_until(be.visible)
+        self.click_btn_proceed_subscription()
+        AddNewEstablishmentDelegator.main_text.wait_until(be.visible)
+        return self
+
+    @allure.step
+    def verify_possibility_upload_data_of_few_users_as_delegator(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            self.upload_establishment_delegator_data(arg.personal_number)
+            self.verify_user_identity(arg.personal_number)
+            self.click_btn_check_another_users_data()
+        return self
+
+    @allure.step
+    def verify_possibility_add_few_users_as_delegator(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            self.upload_establishment_delegator_data(arg.personal_number)
+            self.verify_user_identity(arg.personal_number)
+            self.click_btn_add_establishment_delegator()
+            self.verify_add_selected_user(arg.personal_number)
+            if arg != args[-1]:
+                self.click_btn_add_another_establishment_delegator()
+        self.check_href_how_calculate_subscription_price()
+        self.verify_total_selected(*args)
+        return self
+
+    @allure.step
+    def verify_possibility_add_additional_users_as_delegator(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            self.click_btn_add_another_establishment_delegator()
+            self.upload_establishment_delegator_data(arg.personal_number)
+            self.verify_user_identity(arg.personal_number)
+            self.click_btn_add_establishment_delegator()
+            self.verify_add_selected_user(arg.personal_number)
+            if arg != args[-1]:
+                self.click_btn_add_another_establishment_delegator()
+        return self
+
+    @allure.step
+    def delete_establishment_delegator(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            self.delete_user_from_new_establishment_delegators(arg.personal_number)
+        return self
+
+    @allure.step
+    def verify_establishment_user_have_access(self, *args: User) -> UserManagementActions:
+        self.click_btn_next_step()
+        self.click_btn_next_step()
+        self.verify_error_message()
+        for arg in args:
+            self.verify_added_users_into_workspace(arg.personal_number)
+            self.select_establishment()
+            self.click_btn_next_step()
+            self.verify_selected_establishment()
+            self.click_btn_customize_privileges()
+
+            self.verify_fundamental_privileges()
+            self.verify_employees_management()
+            self.verify_establishment_management()
+            self.verify_establishment_performance()
+            self.verify_workspaces_management()
+
+            self.click_btn_next_step()
+        self.verify_access_and_privileges(*args)
+        self.verify_summary_section(*args)
+        return self
+
+    @allure.step
+    def verify_edit_establishment_delegator_section(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            if arg != args[0]:
+                self.click_btn_add_another_establishment_delegator()
+            self.upload_establishment_delegator_data(arg.personal_number)
+            self.click_btn_add_establishment_delegator()
+            self.click_btn_next_step()
+            self.verify_added_users_into_workspace(arg.personal_number)
+            if arg == args[0]:
+                self.click_btn_edit()
+        return self
+
+    @allure.step
+    def go_to_payment_page(self) -> UserManagementActions:
+        self.check_checkbox_read_accept()
+        self.click_btn_go_to_payment()
+        return self
+
+    @allure.step
+    def select_deselect_all_establishment(self) -> UserManagementActions:
+        self.select_all_establishment()
+        self.clear_all_establishment()
+        return self
+
+    @allure.step
+    def check_field_search(self, *args: [str, int]) -> UserManagementActions:
+        for arg in args:
+            self.fill_field_search(arg)
+            self.verify_field_search(arg) if arg != args[0] else self.verify_no_result_found()
+        return self
+
+    @allure.step
+    def verify_ability_select_all_privileges_for_all_establishment(self) -> UserManagementActions:
+        self.click_btn_next_step()
+        self.select_establishment()
+        self.click_btn_next_step()
+        self.click_btn_customize_privileges()
+        self.check_random_checkbox()
+        self.click_btn_save_privileges()
+        self.click_btn_next_step()
+        self.select_all_establishment()
+        self.click_btn_next_step()
+        self.click_btn_customize_privileges()
+        self.check_all_privileges_checkbox()
+        self.click_btn_save_and_go_to_next_step()
+        return self
+
+    @allure.step
+    def verify_warning_message(self) -> UserManagementActions:
+        self.click_btn_go_to_payment()
+        self.check_warning_message()
+        return self
+
+    @allure.step
+    def delete_users_from_establishment(self, *args: User) -> UserManagementActions:
+        for arg in args:
+            self.delete_user_from_establishment_flow(arg.personal_number)
         return self

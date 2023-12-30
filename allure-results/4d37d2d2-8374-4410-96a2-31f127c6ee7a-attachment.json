@@ -1,0 +1,600 @@
+{
+  "data": [
+    {
+      "id": "963397-2-12652",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "user",
+        "personal-number": "1001340536",
+        "company-id": 12652,
+        "company-labor-office-id": 1,
+        "company-sequence-number": 1910,
+        "company-unified-number-id": "9086",
+        "company-name": "شركة الاتحاد الهندسي السعودية للاستشارات الهندسية خطيب وعلمي",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": "2024-09-29T00:00:00.000+00:00",
+        "company-number": "1-1910",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4159",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4159,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 59327,
+        "company-unified-number-id": "756715",
+        "company-name": "شركة المجدوعي ودي رايكه المحدوده",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-08T16:26:54.180+00:00",
+        "company-number": "4-59327",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4160",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4160,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 95355,
+        "company-unified-number-id": "1328837",
+        "company-name": "شركة المجدوعي للوجستيات المحدودة",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-16T19:24:17.217+00:00",
+        "company-number": "4-95355",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4146",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4146,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1378802,
+        "company-unified-number-id": "1679056",
+        "company-name": "شركة راية للتمويل مساهمة مقفلة",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-22T00:00:00.000+00:00",
+        "company-number": "4-1378802",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4151",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4151,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1066414,
+        "company-unified-number-id": "1328837",
+        "company-name": "لوجستيات المجدوعي / فرع شركة المجدوعي للوجستيات المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-16T19:24:17.217+00:00",
+        "company-number": "4-1066414",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4152",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4152,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1946618,
+        "company-unified-number-id": "1328837",
+        "company-name": "لوجستيات المجدوعي",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "enabled",
+        "eligible-for-extend-subscription": true,
+        "subscription-expiry-date": "2024-08-16T19:24:17.217+00:00",
+        "company-number": "4-1946618",
+        "show-extend-subscription-note": false
+      }
+    },
+    {
+      "id": "963397-2-4150",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4150,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 34985,
+        "company-unified-number-id": "440561",
+        "company-name": "مكتب عبدالله علي المجدوعي للتخليص الجمركي",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "expired_self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-34985"
+      }
+    },
+    {
+      "id": "963397-2-4147",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4147,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 95348,
+        "company-unified-number-id": "1328774",
+        "company-name": "شركة مجد للتنمية العقارية",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-95348"
+      }
+    },
+    {
+      "id": "963397-2-4156",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4156,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 95353,
+        "company-unified-number-id": "1328776",
+        "company-name": "شركة المجدوعي للأغدية المحدودة",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-95353"
+      }
+    },
+    {
+      "id": "963397-2-4155",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4155,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 99634,
+        "company-unified-number-id": "1390781",
+        "company-name": "شركة ساينوترانس المجدوعي الشرق الاوسط",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-99634"
+      }
+    },
+    {
+      "id": "963397-2-4162",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4162,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1947443,
+        "company-unified-number-id": "2099251",
+        "company-name": "شركة المجدوعي للصناعات",
+        "company-main-branch": true,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1947443"
+      }
+    },
+    {
+      "id": "963397-2-4145",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4145,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 110717,
+        "company-unified-number-id": "1328774",
+        "company-name": "مجد للمقاولات",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-110717"
+      }
+    },
+    {
+      "id": "963397-2-4158",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4158,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1077070,
+        "company-unified-number-id": "1328776",
+        "company-name": "مصنع أرياف للأغذية",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1077070"
+      }
+    },
+    {
+      "id": "963397-2-4154",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4154,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1319276,
+        "company-unified-number-id": "1328776",
+        "company-name": "مخابز أرياف - فرع شركة المجدوعي للأغذية المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1319276"
+      }
+    },
+    {
+      "id": "963397-2-4148",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4148,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1411221,
+        "company-unified-number-id": "1328776",
+        "company-name": "قهوة ليوان - فرع شركة المجدوعي للأغذية المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1411221"
+      }
+    },
+    {
+      "id": "963397-2-4149",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4149,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1946671,
+        "company-unified-number-id": "1328776",
+        "company-name": "قهوة ليوان  فرع شركة المجدوعي للأغذية المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1946671"
+      }
+    },
+    {
+      "id": "963397-2-4161",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4161,
+        "company-labor-office-id": 4,
+        "company-sequence-number": 1947849,
+        "company-unified-number-id": "1328776",
+        "company-name": "مخابز إرياف  فرع شركة المجدوعي للأغذية المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "4-1947849"
+      }
+    },
+    {
+      "id": "963397-2-4163",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": "owner",
+        "personal-number": "1001340536",
+        "company-id": 4163,
+        "company-labor-office-id": 10,
+        "company-sequence-number": 1946791,
+        "company-unified-number-id": "1328776",
+        "company-name": "مخابز أرياف  فرع شركة المجدوعي للأغذية المحدودة",
+        "company-main-branch": false,
+        "space-id": 2,
+        "space-type": "company",
+        "space-default-url": {
+          "en": "https://spa.qiwa.info/en/",
+          "ar": "https://spa.qiwa.info/ar/"
+        },
+        "space-name": {
+          "en": "Establishment account",
+          "ar": "حساب المنشأه"
+        },
+        "space-redirect-key-name": "redirect_uri_company",
+        "status": "self_pending",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "10-1946791"
+      }
+    },
+    {
+      "id": "963397-31-0",
+      "type": "workspace",
+      "attributes": {
+        "user-id": 963397,
+        "user-name": "عبدالله المجدوعي",
+        "user-role": null,
+        "personal-number": "1001340536",
+        "company-id": null,
+        "company-labor-office-id": null,
+        "company-sequence-number": null,
+        "company-unified-number-id": null,
+        "company-name": null,
+        "company-main-branch": null,
+        "space-id": 31,
+        "space-type": "individual",
+        "space-default-url": {
+          "ar": "https://i.qiwa.info/",
+          "en": "https://i.qiwa.info/"
+        },
+        "space-name": {
+          "ar": "الحساب الشخصي",
+          "en": "Individual account"
+        },
+        "space-redirect-key-name": "redirect_uri_individual",
+        "status": "enabled",
+        "eligible-for-extend-subscription": false,
+        "subscription-expiry-date": null,
+        "company-number": "-",
+        "show-extend-subscription-note": null
+      }
+    }
+  ]
+}

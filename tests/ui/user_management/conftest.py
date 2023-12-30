@@ -34,8 +34,9 @@ def log_in_and_open_establishment_account(user: User, language: str):
     qiwa.header.change_local(language)
 
 
-def delete_self_subscription(user: User):
-    return delete_subscription(user.personal_number, user.unified_number_id)
+def delete_subscriptions(*args: User):
+    for arg in args:
+        return delete_subscription(arg.personal_number, arg.unified_number_id)
 
 
 def get_subscription_cookie(owner: User) -> dict:

@@ -13,6 +13,7 @@ from src.database.sql_requests.user_management.user_management_requests import (
     UserManagementRequests,
 )
 from utils.assertion import assert_that
+from selene.support.conditions import be
 
 
 class BaseEstablishmentPayment:
@@ -36,5 +37,6 @@ class BaseEstablishmentPayment:
 
     @allure.step
     def check_checkbox_read_accept(self) -> BaseEstablishmentPayment:
+        self.checkbox_read_accept.wait_until(be.visible)
         self.checkbox_read_accept.press(Keys.SPACE)
         return self

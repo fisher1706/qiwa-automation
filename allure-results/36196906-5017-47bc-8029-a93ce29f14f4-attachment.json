@@ -1,0 +1,53 @@
+{
+  "account": "13499",
+  "states": [],
+  "user": "2292096",
+  "personal_number": "1014157000",
+  "full_name": [
+    "مروان",
+    "بن اسماعيل",
+    "بن محمد",
+    "خالدى"
+  ],
+  "company_number": "9-1196371",
+  "company": "31100",
+  "memberships": {
+    "admin": 1914870
+  },
+  "permissions": {
+    "saudization_certificate": true,
+    "change_occupation": true,
+    "transferring_worker": true,
+    "working_permits": true,
+    "nitaqat_calculator": true,
+    "visa_issuance": true,
+    "ajeer_program": true,
+    "compliance_index": true,
+    "company_performance_report": true,
+    "wage_disbursement": true,
+    "labor_award": true,
+    "subscription_service": false,
+    "labor_market_index": true,
+    "labor_policies": true,
+    "employee_information": true,
+    "establishment_dashboard": true,
+    "violation_service": true,
+    "contract_management": true,
+    "skill_verification": true,
+    "government_contracts": true,
+    "location_management": true,
+    "appointments_service": true,
+    "trainings_management": true,
+    "salary_certificate": true,
+    "e_wallet": true,
+    "delegation": false,
+    "recruitment_service": true,
+    "wage_protection_system_certificate": true,
+    "debt_certificate": false
+  },
+  "language": "en",
+  "memberships-states": {
+    "admin": "enabled"
+  },
+  "login-time": "2023-12-21 13:35:24 +0000"
+}

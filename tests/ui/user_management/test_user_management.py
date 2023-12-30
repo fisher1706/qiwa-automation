@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 
@@ -9,6 +11,7 @@ from data.user_management.user_management_datasets import (
     SelfSubscriptionData,
     Texts,
     UsersTypes,
+    AddEstablishmentDelegatorData,
 )
 from data.user_management.user_management_users import (
     delegator_for_add_and_terminate_subscription_flow,
@@ -30,7 +33,7 @@ from src.ui.actions.user_management_actions.user_management import UserManagemen
 from src.ui.qiwa import qiwa
 from tests.conftest import prepare_data_for_terminate_company
 from tests.ui.user_management.conftest import (
-    delete_self_subscription,
+    delete_subscriptions,
     expire_user_subscription,
     get_subscription_cookie,
     log_in_and_open_establishment_account,
@@ -264,7 +267,7 @@ def test_ar_localization_for_add_access_and_edit_privileges_modals():
 @allure.title("Test self subscription user without subscription")
 @case_id(41783, 41794, 41785, 41790)
 def test_self_subscription_user_without_subscription(user_type="without", user=owner_without_subscription):
-    delete_self_subscription(user)
+    delete_subscriptions(user)
     user_management = UserManagementActions()
     log_in_and_open_establishment_account(user, Language.EN)
 
@@ -326,3 +329,59 @@ def test_possibility_open_renew_expired_page_self_subscription(user_type, user):
         .navigate_to_establishment_information(user)\
         .possibility_open_renew_subscription_page()\
         .check_opened_page(user_type)
+
+
+@allure.step("Test 'Add new Establishment Delegator' flow")
+@case_id(41421, 41592, 7890, 7892, 7981, 7889, 7898)
+@pytest.mark.parametrize("subscriber, user_one, user_two", AddEstablishmentDelegatorData.users)
+def test_establishment_delegator_flow(subscriber, user_one, user_two):
+    user_management = UserManagementActions()
+    log_in_and_open_user_management(subscriber, Language.EN)
+
+    user_management\
+        .check_open_add_establishment_delegator_page()\
+        .verify_possibility_upload_data_of_few_users_as_delegator(user_one, user_two)\
+        .verify_possibility_add_few_users_as_delegator(user_one, user_two)\
+        .delete_establishment_delegator(user_two)\
+        .verify_possibility_add_additional_users_as_delegator(user_two)\
+        .verify_establishment_user_have_access(user_one, user_two)\
+        .go_to_payment_page()
+    # time.sleep(20)
+
+
+@allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
+@case_id(7894, 7895, 7897, 7934)
+@pytest.mark.parametrize("subscriber, user_one, user_two", AddEstablishmentDelegatorData.users)
+def test_verify_btn_edit(subscriber, user_one, user_two):
+    user_management = UserManagementActions()
+    log_in_and_open_user_management(subscriber, Language.EN)
+
+    user_management\
+        .check_open_add_establishment_delegator_page()\
+        .verify_edit_establishment_delegator_section(user_one, user_two)\
+        .select_deselect_all_establishment()\
+        .check_field_search(999, subscriber.sequence_number)
+    time.sleep(10)
+
+
+@allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
+@case_id(7899, 33014, 43165, 71517, 71518)
+@pytest.mark.parametrize("subscriber, user_one, user_two", AddEstablishmentDelegatorData.users)
+def test_verify_select_all(subscriber, user_one, user_two):
+    user_management = UserManagementActions()
+    log_in_and_open_user_management(subscriber, Language.EN)
+
+    # user_management\
+    #     .check_open_add_establishment_delegator_page()\
+    #     .verify_possibility_add_few_users_as_delegator(user_one, user_two)\
+    #     .verify_ability_select_all_privileges_for_all_establishment()\
+    #     .verify_warning_message()\
+    #     .go_to_payment_page() \
+    #     .make_establishment_payment()\
+    #
+    # time.sleep(10)
+
+    user_management.delete_user_from_establishment_flow('1070111305')
+    # time.sleep(10)
+
+

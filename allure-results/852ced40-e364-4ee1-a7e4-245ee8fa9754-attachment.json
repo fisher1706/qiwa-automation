@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "name": "فرع شركة الاتحاد الهندسي السعوديه",
+      "laborOfficeId": 9,
+      "sequenceNumber": 11871,
+      "idno": "1070111305",
+      "numberOfPrivileges": 10,
+      "active": true,
+      "employee": false,
+      "userType": 3
+    }
+  ],
+  "pageable": {
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 1,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "empty": false,
+    "sorted": true,
+    "unsorted": false
+  },
+  "first": true,
+  "numberOfElements": 1,
+  "empty": false
+}

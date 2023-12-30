@@ -34,6 +34,7 @@ class RenewSubscription(BaseEstablishmentPayment):
 
     @allure.step
     def click_btn_go_to_payment(self) -> RenewSubscription:
+        self.checkbox_read_accept.wait_until(be.visible)
         self.btn_go_to_payment.should(be.visible).click()
         return self
 

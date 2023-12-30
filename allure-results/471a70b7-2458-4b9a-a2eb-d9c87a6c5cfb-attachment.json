@@ -1,0 +1,10 @@
+{
+  "data": {
+    "id": "1",
+    "type": "oauth-init",
+    "attributes": {
+      "id": "1",
+      "redirect-uri": "https://sso.qiwa.info/authorized?client_id=qiwa&redirect_uri=https%3A%2F%2Fauth.qiwa.info%2Foauth%2Fcallback&response_type=code&scope=openid%20email%20phone%20profile&state=55HcRz0K6vxLz_mdohpbanHDyte3Jf1hwSh0BA27HGo&code_challenge=RAu2XU0WrRJkIP3QpngcWXQu1Dqfbc0liot1bUW9IjM&code_challenge_method=S256"
+    }
+  }
+}

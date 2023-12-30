@@ -17,7 +17,8 @@ from data.user_management.user_management_users import (
     owner_with_expired_subscription,
     owner_with_expired_subscription_always,
     owner_without_subscription,
-    owner_without_subscription_always,
+    owner_without_subscription_always, owner_group_manager, establishment_delegator_type_three,
+    establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two,
 )
 
 
@@ -287,3 +288,12 @@ class RenewPageData:
 class ThankYouPageData:
     COUNT_EXPIRED_SUBSCRIPTION = 11
     COUNT_NEW_SUBSCRIPTION = 12
+
+
+@dataclasses.dataclass
+class AddEstablishmentDelegatorData:
+    users = [
+        # (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
+        # (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
+        (establishment_delegator_type_three, user_for_subscription_one, user_for_subscription_two),
+    ]
