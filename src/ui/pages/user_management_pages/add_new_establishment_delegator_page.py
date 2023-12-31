@@ -26,7 +26,8 @@ class AddNewEstablishmentDelegator:
     total_summary_value = s("//p[contains(text(), 'Total')]/../div/p/span[1]")
     btn_next_step = s("//p[contains(text(), 'Next step')]")
     checkbox_select_establishment = ss("[data-component='Checkbox'] input")
-    error_message = s("//p[contains(text(), 'Please select the establishments to which this user can have access.')]")
+    error_message_establishment = s("//p[contains(text(), "
+                                    "'Please select the establishments to which this user can have access.')]")
     access_and_privileges = ss("//p[contains(text(), 'Access and privileges')]/../../p")
     selected_establishments = ss("//p[contains(text(), 'Selected establishments')]/../div//p[2]")
     btn_customize_privileges = s("//*[@id='one']/../span")
@@ -53,8 +54,8 @@ class AddNewEstablishmentDelegator:
     btn_save_and_go_to_next_step = s("//p[contains(text(), 'Save and go to next step')]/..")
     href_how_calculate_subscription_price = s("//span[contains(text(), "
                                               "'How is the price of subscription calculated?')]/..")
-    warning_message = s("//p[contains(text(), "
-                        "'Please read and accept Qiwa’s Terms and Conditions to submit the request')]")
+    warning_message_establishment = s("//p[contains(text(), "
+                                      "'Please read and accept Qiwa’s Terms and Conditions to submit the request')]")
 
     @allure.step
     def upload_establishment_delegator_data(self, personal_number: str) -> AddNewEstablishmentDelegator:
@@ -115,7 +116,7 @@ class AddNewEstablishmentDelegator:
 
     @allure.step
     def verify_error_message(self) -> AddNewEstablishmentDelegator:
-        self.error_message.should(be.visible)
+        self.error_message_establishment.should(be.visible)
         return self
 
     @allure.step
@@ -253,5 +254,5 @@ class AddNewEstablishmentDelegator:
 
     @allure.step
     def check_warning_message(self) -> AddNewEstablishmentDelegator:
-        self.warning_message.should(be.visible)
+        self.warning_message_establishment.should(be.visible)
         return self
