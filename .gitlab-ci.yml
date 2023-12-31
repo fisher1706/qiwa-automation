@@ -197,11 +197,11 @@ um_api_tests:
     ENV: stage
     TEST_SUITE: tests/api/user_management
 
-shareable_api_tests:
+occupation_management_api_tests:
   <<: *testrun
   variables:
     ENV: stage
-    TEST_SUITE: tests/api/shareable
+    TEST_SUITE: tests/api/occupation_management
     SUITE_NAME: API
 
 lmi_api_tests:
@@ -410,11 +410,11 @@ um_api_allure_report:
     ALLURE_PROJECT_ID: aqa-um-api
   needs: [um_api_tests]
 
-shareable_api_allure_report:
+occupation_management_api_allure_report:
   <<: *allure_report
   variables:
-    ALLURE_PROJECT_ID: aqa-ss-api-stage
-  needs: [shareable_api_tests]
+    ALLURE_PROJECT_ID: aqa-om-api
+  needs: [occupation_management_api_tests]
 
 lmi_api_allure_report:
   <<: *allure_report
@@ -482,11 +482,11 @@ um_api_discord_notification:
     WEBHOOK: $UM_API_DAILY
   needs: [um_api_tests]
 
-shareable_api_discord_notification:
+occupation_management_api_discord_notification:
   <<: *discord_notification
   variables:
-    WEBHOOK: $SHAREABLE_AUTOTEST_RESULTS
-  needs: [shareable_api_tests]
+    WEBHOOK: $OCCUPATION_MANAGEMENT_AUTOTEST_RESULTS
+  needs: [occupation_management_api_tests]
 
 visa_ui_discord_notification:
   <<: *discord_notification

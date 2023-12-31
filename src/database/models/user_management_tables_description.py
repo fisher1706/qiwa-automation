@@ -9,7 +9,7 @@ from sqlalchemy import (
     Integer,
     Text,
 )
-from sqlalchemy.dialects.mssql import BIT
+from sqlalchemy.dialects.mssql import BIT, UNIQUEIDENTIFIER
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -108,3 +108,19 @@ class UMPrivilegesAuditLog(Base):
     service_id = Column("FK_ServiceId", BigInteger)
     deleted_status = Column("Deleted", BIT)
     log_create_date = Column("LogCreatedOn", DateTime)
+
+
+class EstablishmentAddress(Base):
+    __tablename__ = "EstablishmentAddress"
+
+    id = Column("ID", UNIQUEIDENTIFIER, primary_key=True, nullable=False)
+    labor_office = Column("LaborOfficeID", Integer)
+    sequence_id = Column("EstablishmentSequenceID", Integer)
+    city_ar = Column("City", NVARCHAR(150), nullable=True)
+    district_ar = Column("District", NVARCHAR(150), nullable=True)
+    street_ar = Column("Street", NVARCHAR(150), nullable=True)
+    building_number = Column("BuildingNumber", NVARCHAR(50), nullable=True)
+    additional_number = Column("AdditionalNo", Integer, nullable=True)
+    city_en = Column("CityEn", NVARCHAR(100), nullable=True)
+    district_en = Column("DistrictEn", NVARCHAR(100), nullable=True)
+    street_en = Column("StreetEn", NVARCHAR(100), nullable=True)

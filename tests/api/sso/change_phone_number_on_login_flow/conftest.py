@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from data.account import Account
@@ -40,3 +42,7 @@ def second_account_data():
         pass
     yield account
     delete_account_data_from_db(personal_number=account.personal_number)
+
+
+def waiting_to_resent_codes(waiting_time: int):
+    time.sleep(waiting_time)

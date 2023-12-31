@@ -14,11 +14,18 @@ from data.user_management.user_management_users import (
     establishment_type_one,
     owner_account,
     owner_with_active_subscription,
-    owner_with_expired_subscription,
     owner_with_expired_subscription_always,
-    owner_without_subscription,
-    owner_without_subscription_always, owner_group_manager, establishment_delegator_type_three,
-    establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two,
+    owner_group_manager,
+    establishment_delegator_type_three,
+    establishment_delegator_type_two,
+    user_for_subscription_one,
+    user_for_subscription_two,
+    owner_without_subscription_always,
+    user_type_three_employee,
+    user_type_three_employee_1,
+    user_type_three_employee_2,
+    user_type_two,
+    user_type_two_1,
 )
 
 
@@ -29,7 +36,7 @@ class Texts:
         "before its expiration."
     )
     establishment_user_details = "Establishment Delegator details"
-    add_new_workspace_user = "Add new Workspace User"
+    add_new_workspace_user = "Add new Establishment Delegator"
     establishment_and_user_details = "Establishment and user details"
 
 
@@ -67,7 +74,7 @@ class ArabicTranslations:
     selected_establishment_text_on_add_access_modal = "المنشآت المختارة"
     all_privileges = "جميع الصلاحيات"
     hide_privileges = "إخفاء الصلاحيات الغير مختارة"
-    show_more_privileges_for_2nd_group = "إظهار {} الصلاحيات الغير مختارة"
+    show_more_privileges = "إظهار {} الصلاحيات الغير مختارة"
     occupation_management_description = (
         "إذا قمت باختيار هذه الصلاحية, سيتم اختيارصلاحية معلومات الموظفين تلقائياً"
     )
@@ -95,12 +102,41 @@ class SelfSubscriptionType:
 
 @dataclasses.dataclass
 class UsersTypes:
-    users = [owner_account, delegator_with_um]
+    users = [owner_account, user_type_two_1]
 
 
 @dataclasses.dataclass
 class Privileges:
     default_privileges = [1, 5, 8, 11, 13, 16, 20, 23, 29, 31]
+    all_privileges = [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+    ]
     groups_data = [
         {
             "title": user_management_data.EMPLOYEE_MANAGEMENT_GROUP_TITLE,
@@ -291,9 +327,67 @@ class ThankYouPageData:
 
 
 @dataclasses.dataclass
+class EstablishmentAddresses:
+    initial_address = [7492, 2899, 8, "حي الشرفية", "ذو النورين", 23218]
+    updated_address = [4594, 7551, 392, "الربوة", "الحميدات", 12814]
+    country = user_management_data.COUNTRY
+    district_en = "Al Rayan Dist."
+    street_en = "Kharis Branch Rd"
+    final_updated_address = [
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_CITY_AR,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_ADDITIONAL_NUMBER,
+    ]
+    vat_number = "300559557700003"
+
+    update_address_data_on_ui = [
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
+    updated_address_data_on_thank_you_popup = [
+        user_management_data.COUNTRY,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        user_management_data.UPDATED_STREET,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
+
+    updated_address_data_on_confirmation_page = [
+        user_management_data.COUNTRY,
+        user_management_data.UPDATED_CITY,
+        user_management_data.UPDATED_DISTRICT,
+        user_management_data.UPDATED_STREET,
+        user_management_data.UPDATED_BUILDING_NUMBER,
+        str(user_management_data.UPDATED_ADDITIONAL_NUMBER),
+    ]
+
+
+@dataclasses.dataclass
+class UserAccess:
+    users = [
+        (
+            user_type_three_employee,
+            [user_type_three_employee_1, user_type_three_employee_2, user_type_three_employee],
+            ["1-1910"],
+        ),
+        (user_type_two_1, [delegator_with_um, user_type_two, user_type_two_1], ["9-11871"]),
+        (owner_account, None, ["1-1910", "9-11871", "15-2722"]),
+    ]
+
+
+@dataclasses.dataclass
 class AddEstablishmentDelegatorData:
     users = [
-        # (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
-        # (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
+        (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
+        (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
         (establishment_delegator_type_three, user_for_subscription_one, user_for_subscription_two),
     ]

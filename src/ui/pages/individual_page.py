@@ -10,8 +10,10 @@ from selenium.webdriver.common.keys import Keys
 from data.constants import Language
 from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
 from src.ui.components.raw.table import Table
+from utils.allure import allure_steps
 
 
+@allure_steps
 class IndividualPage:
     service_card = ss('[data-component="ActionTile"] div')
     field_confirmation_code = ss('[inputmode="numeric"]')
@@ -54,6 +56,7 @@ class IndividualPage:
         return self
 
     def select_service(self, text: str) -> IndividualPage:
+        self.service_card.element_by(have.text(text)).wait_until(be.visible)
         self.service_card.element_by(have.text(text)).click()
         return self
 

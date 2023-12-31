@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from selene import be
+from selene import be, have
 from selene.support.shared.jquery_style import s
 
 
@@ -11,5 +11,5 @@ class MeetQiwaPopup:
 
     @allure.step("Close Meet Qiwa popup")
     def close_meet_qiwa_popup(self) -> None:
-        if self.popup.matching(be.visible):
+        if self.popup.wait_until(be.visible) and self.popup.matching(have.text("Meet Qiwa")):
             self.close_icon.click()

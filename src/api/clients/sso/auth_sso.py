@@ -10,8 +10,8 @@ from requests import Response
 import config
 from data.account import Account
 from src.api.http_client import HTTPClient
-from src.api.payloads.raw.sso_oauth import Authorize
-from src.api.payloads.sso_oauth_payloads import (
+from src.api.payloads.raw.sso.sso_oauth import Authorize
+from src.api.payloads.sso.sso_oauth_payloads import (
     activate_sso_hsm_payload,
     email_verification_payload,
     hsm_payload,
@@ -228,6 +228,7 @@ class AuthApiSSO:
     def get_session(self, expected_code=200):
         response = self.client.get(url=self.url, endpoint="/session")
         assert_status_code(response.status_code).equals_to(expected_code)
+        return response.json()
 
     @allure.step
     def login(self, login: str, password: str, expected_code: int = 200) -> None:
@@ -404,7 +405,7 @@ class AuthApiSSO:
         assert_status_code(response.status_code).equals_to(expected_code)
 
     @allure.step
-    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 422):
+    def get_security_question_for_change_phone_on_reset_password(self, expected_code: int = 200):
         response = self.client.get(
             url=self.url, endpoint="/change-phone-on-reset-password/security-questions"
         )
@@ -413,8 +414,8 @@ class AuthApiSSO:
     @allure.step
     def validate_security_answer_for_chane_phone_on_reset_password(
         self,
-        first_answer: str = "firs_answer",
-        second_answer: str = "second_answer",
+        first_answer: str = "1-1-2011",
+        second_answer: str = "Test name",
         expected_code: int = 200,
     ):
         payload = security_question_payload(first_answer=first_answer, second_answer=second_answer)
@@ -444,5 +445,19 @@ class AuthApiSSO:
             url=self.url,
             endpoint="/change-phone-on-reset-password/confirm-verification",
             json=payload,
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_absher_for_change_phone_on_reset_pass_flow(self, expected_code: int = 200):
+        response = self.client.post(
+            url=self.url, endpoint="/change-phone-on-reset-password/high-security-mode/init/resend"
+        )
+        assert_status_code(response.status_code).equals_to(expected_code)
+
+    @allure.step
+    def resend_otp_for_change_phone_on_reset_pass_flow(self, expected_code: int = 200):
+        response = self.client.post(
+            url=self.url, endpoint="/change-phone-on-reset-password/init-verification/resend"
         )
         assert_status_code(response.status_code).equals_to(expected_code)

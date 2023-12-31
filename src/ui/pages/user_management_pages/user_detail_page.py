@@ -150,8 +150,10 @@ class UserDetailsPage:
             element.should(have.text(text))
         return self
 
-    def check_actions_ar_texts_on_allowed_access_table(self) -> UserDetailsPage:
-        s(self.actions_buttons).click()
+    def check_actions_ar_texts_on_allowed_access_table(
+        self, establishment_row: Element
+    ) -> UserDetailsPage:
+        establishment_row.s(self.actions_buttons).click()
         self.edit_user_privilege_btn_on_table.should(
             have.text(ArabicTranslations.edit_user_privileges_btn)
         )

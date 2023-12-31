@@ -23,7 +23,7 @@ class User(QiwaBaseModel):
     occupation_code: str
     occupation_name_en: str
     occupation_name_ar: str
-    entry_date: datetime
+    entry_date: datetime | None
     eligibility: str
     iqama_border_number: str
     reasons: list[Reason] | None

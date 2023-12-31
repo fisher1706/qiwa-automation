@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Tuple
+from typing import Any
 
 import config
 from src.database.client.db_client import DBClient
 from src.database.models.user_management_tables_description import (
+    EstablishmentAddress,
+    UMEstablishmentAccess,
     UMPrivilegesAuditLog,
     UMSubscriptions,
 )
 
 
 class UserManagementRequests:
-    session = DBClient(db_url=config.settings.um_db_url).set_db_session()
+    def __init__(self):
+        self.db_client = DBClient(db_url=config.settings.um_db_url)
+        self.session = self.db_client.set_db_session
 
     def get_expired_date(self, personal_number: str, unified_number: int) -> datetime:
         subscription = (
@@ -26,7 +30,7 @@ class UserManagementRequests:
         return subscription.expiry_date
 
     def update_expiry_date_for_um_subscriptions(
-        self, personal_number: str, unified_number: int, expiry_date: datetime
+        self, personal_number: str, unified_number: int, expiry_date: datetime | str
     ) -> UserManagementRequests:
         subscription = (
             self.session.query(UMSubscriptions)
@@ -80,3 +84,57 @@ class UserManagementRequests:
             subscription.subscription_status_id,
             subscription.expiry_date.year - subscription.modified_on.year,
         )
+
+    def update_establishment_data_en(
+        self, labor_office: str | int, sequence_id: str | int, district_en: str, street_en: str
+    ) -> UserManagementRequests:
+        establishment_data = (
+            self.session.query(EstablishmentAddress)
+            .filter(
+                EstablishmentAddress.sequence_id == sequence_id,
+                EstablishmentAddress.labor_office == labor_office,
+            )
+            .first()
+        )
+        establishment_data.district_en = district_en
+        establishment_data.street_en = street_en
+        self.session.commit()
+        return self
+
+    def clear_establishment_data(
+        self, labor_office: str | int, sequence_id: str | int
+    ) -> UserManagementRequests:
+        establishment_data = (
+            self.session.query(EstablishmentAddress)
+            .filter(
+                EstablishmentAddress.sequence_id == sequence_id,
+                EstablishmentAddress.labor_office == labor_office,
+            )
+            .first()
+        )
+        establishment_data.district_ar = None
+        establishment_data.street_ar = None
+        establishment_data.building_number = None
+        establishment_data.additional_number = None
+        establishment_data.district_en = None
+        establishment_data.city_en = None
+        establishment_data.street_en = None
+        self.session.commit()
+        return self
+
+    def get_establishment_access_list(self, personal_number: str, unified_number: int) -> list:
+        establishment_access_list = (
+            self.session.query(UMEstablishmentAccess)
+            .filter(
+                UMEstablishmentAccess.personal_number == personal_number,
+                UMEstablishmentAccess.unified_number == unified_number,
+            )
+            .all()
+        )
+        establishment_list = []
+        for establishment in establishment_access_list:
+            establishment_value = (
+                f"{establishment.labor_office_id}-{establishment.sequence_number}"
+            )
+            establishment_list.append(establishment_value)
+        return establishment_list

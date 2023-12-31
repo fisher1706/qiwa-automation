@@ -6,7 +6,7 @@ from requests.cookies import RequestsCookieJar
 
 import config
 from src.api.http_client import HTTPClient
-from src.api.payloads.sso_oauth_payloads import (
+from src.api.payloads.sso.sso_oauth_payloads import (
     oauth_callback_payload,
     oauth_init_payload,
 )
@@ -43,6 +43,16 @@ class OAuthApi:
         )
         assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
         return response.cookies
+
+    def get_user_data(self) -> tuple:
+        response = self.client.get(
+            url=self.url,
+            endpoint="/context/user",
+        )
+        assert_status_code(response.status_code).equals_to(HTTPStatus.OK)
+        notification_email = response.json()["data"]["attributes"]["notification-email"]
+        notification_phone = response.json()["data"]["attributes"]["notification-phone"]
+        return notification_email, notification_phone
 
     def delete_context(self):
         self.client.get(self.url, endpoint="/context")

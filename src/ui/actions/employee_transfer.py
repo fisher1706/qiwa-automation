@@ -63,9 +63,10 @@ class EmployeeTransferActions:
         contract_management_actions.create_contract(laborer)
 
         (
-            qiwa.employee_transfer_page.click_btn_next_step()
+            qiwa.employee_transfer_page.check_existence_of_a_contract()
+            .click_btn_next_step()
             .select_terms_checkbox()
-            .click_btn_submit()
+            .click_btn_submit_request()
             .check_success_msg()
             .check_request_status()
         )
@@ -89,7 +90,8 @@ class EmployeeTransferActions:
         contract_management_actions.create_contract(laborer)
 
         (
-            qiwa.employee_transfer_page.click_btn_next_step()
+            qiwa.employee_transfer_page.check_existence_of_a_contract()
+            .click_btn_next_step()
             .select_terms_checkbox()
             .click_btn_submit_request()
             .check_success_msg()
@@ -99,10 +101,10 @@ class EmployeeTransferActions:
 
     def make_a_decision_as_current_sponsor(self, status: dict):
         if status == RequestStatus.PENDING_COMPLETING_TRANSFER_IN_ABSHER_BY_NEW_EMPLOYER.value:
-            qiwa.employee_transfer_page.click_btn_approve().click_btn_yes_accept_transfer()
+            qiwa.employee_transfer_page.click_btn_accept().click_btn_accept_request()
             qiwa.code_verification.fill_in_code().click_confirm_button()
         else:
-            qiwa.employee_transfer_page.click_btn_reject().fill_sponsor_rejection_reason().click_btn_reject_transfer()
+            qiwa.employee_transfer_page.click_btn_reject().fill_rejection_reason().click_btn_reject_request()
 
         return self
 

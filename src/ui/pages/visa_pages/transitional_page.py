@@ -1,18 +1,28 @@
 import datetime
 import os
+from typing import Union
 
 import allure
 from dateutil.relativedelta import relativedelta
 from selene.api import be, browser, have, not_, query, s, ss
 
+import config
 from data.visa.constants import (
+    GENERIC_EXP_WORK_PERMIT_ERROR_LINK,
+    GENERIC_EXP_WORK_PERMIT_ERROR_TEXT,
+    GENERIC_EXP_WORK_PERMIT_ERROR_TITLE,
     INCREASE_ABSHER_MODAL_TITLE,
     INCREASE_ALLOWED_QUOTA,
     IS_SEASONAL_VISA_AVAILABLE,
     ISSUE_VISA_TEXT,
+    ISSUE_VISA_URL,
+    KNOWLEDGE_CENTER_URL,
     PERM_WORK_VISA_DESCRIPTION,
     PERM_WORK_VISA_ELIGIBILITY_ERRORS,
+    PERM_WORK_VISA_ELIGIBILITY_ERRORS_LINK,
     PERM_WORK_VISA_TITLE,
+    SEASONAL_VISA_ZERO_BALANCE_ERROR,
+    SEASONAL_VISA_ZERO_BALANCE_ERROR_TITLE,
     SEASONAL_WORK_VISA_BLOCKED_TEXT,
     SEASONAL_WORK_VISA_DESCRIPTION,
     SEASONAL_WORK_VISA_TITLE,
@@ -21,13 +31,14 @@ from data.visa.constants import (
     TEMPORARY_WORK_VISA_TITLE,
     TIER,
     TRANSITIONAL_CARDS_TITLE_TEXT,
+    WORK_PERMIT_URL,
     WORK_VISA_CARD_WARNING,
     DateFormats,
     Numbers,
 )
 from utils.assertion.selene_conditions import have_any_number, have_in_text_number
 from utils.assertion.soft_assertions import soft_assert_list, soft_assert_text
-from utils.helpers import get_session_variable
+from utils.helpers import get_session_variable, verify_new_tab_url_contains
 
 
 class TransitionalPage:
@@ -90,9 +101,10 @@ class TransitionalPage:
     global_warning_banner_link = s('//*[@data-testid="commonEligibilityWarningMessageLink"]')
     global_error_banner_link = s('//*[@data-testid="commonEligibilityErrorMessageLink"]')
     modal_popup_window = s('//div[contains(@class, "Modal__ModalWrapper")]')
-    modal_popup_window_error_list = ss('//div[contains(@class, "Modal__ModalWrapper")]//li')
-    modal_popup_window_close_button = s('//div[contains(@class, "Modal__ModalWrapper")]//button')
-    modal_popup_window_x_button = s('//div[contains(@class, "Modal__ModalWrapper")]//span')
+    modal_popup_window_error_list = modal_popup_window.ss(".//li")
+    modal_popup_window_close_button = modal_popup_window.s(".//button")
+    modal_popup_window_x_button = modal_popup_window.s(".//span")
+    modal_popup_window_title = modal_popup_window.s(".//p")
     perm_work_visa_error_banner = s('//*[@data-testid="workVisaEligibilityErrorMessageCard"]')
     perm_work_visa_error_link = s('//*[@data-testid="workVisaEligibilityErrorMessageLink"]')
     temp_work_visa_error_banner = s('//*[@data-testid="visitVisaEligibilityErrorMessageCard"]')
@@ -115,12 +127,16 @@ class TransitionalPage:
     temp_work_visa_card = s('//*[@data-testid="visit-visa"]')
     seasonal_work_visa_card = s('//*[@data-testid="seasonal-visa"]')
     perm_work_visa_card_exp_date = s('//*[@data-testid="workVisaEligibilityExpirationDateValue"]')
+    seasonal_work_visa_card_error_banner = s(
+        '//*[@data-testid="seasonalVisaEligibilityErrorMessageCard"]'
+    )
     # errors:
     error_message = s('//*[@data-testid="customErrorMessage"]')
     error_message_link = s('//*[@data-testid="customErrorMessageLink"]')
     error_message_modal = s('//*[@data-testid="dataLoadErrorModal"]')
     error_button = s('//button[text() = "Retry"]')
     error_messages = [error_message, error_message_link, error_message_modal, error_button]
+    LINK = ".//a"
 
     def page_is_loaded(self):
         for _ in range(3):
@@ -262,11 +278,32 @@ class TransitionalPage:
         self.global_error_banner.s(self.banner_icon).should(be.hidden)
 
     @allure.step("Verify modal popup window")
-    def verify_modal_popup_window(self, error_list_size):
+    def verify_modal_popup_window(
+        self,
+        error_list_size: int,
+        title_text: str = None,
+        text: Union[str | list] = None,
+        links: bool = False,
+    ):
         self.modal_popup_window.should(be.visible)
         self.modal_popup_window_close_button.should(be.visible)
         self.modal_popup_window_x_button.should(be.visible)
         self.modal_popup_window_error_list.should(have.size(error_list_size))
+        if title_text:
+            soft_assert_text(
+                element=self.modal_popup_window_title, text=title_text, element_name="Modal title"
+            )
+        if text:
+            if isinstance(text, str):
+                soft_assert_text(
+                    element=self.modal_popup_window_error_list.first,
+                    text=text,
+                    element_name="Modal title",
+                )
+            else:
+                soft_assert_list(self.modal_popup_window_error_list, text)
+        if links:
+            self.modal_popup_window_error_list.all(self.LINK).should(have.size(error_list_size))
 
     @allure.step("Verify work visa error banner has text and amount of errors")
     def verify_work_visa_error_shown(self, text):
@@ -333,9 +370,7 @@ class TransitionalPage:
 
     @allure.step("Verifies generic error permanent work visa error are shown")
     def verify_generic_error_and_perm_visa_error_shown(self):
-        self.global_error_banner.should(be.visible)
-        self.global_error_banner_link.should(be.hidden)
-        self.global_error_banner.s(self.banner_icon).should(be.visible)
+        self.verify_global_banner()
         error_text = self.global_error_banner.get(query.text)
         self.perm_work_visa_error_banner.should(be.visible)
         self.perm_work_visa_error_banner.should(
@@ -541,3 +576,112 @@ class TransitionalPage:
 
     def any_errors_on_page(self):
         return any(message.matching(be.visible) for message in self.error_messages)
+
+    @allure.step("Verify generic expired work permit error banner")
+    def verify_generic_exp_work_permit_error_shown(self):
+        self.verify_global_banner(
+            visible=True,
+            text=GENERIC_EXP_WORK_PERMIT_ERROR_TEXT,
+            icon=True,
+            link_text=GENERIC_EXP_WORK_PERMIT_ERROR_LINK,
+        )
+        self.global_error_banner_link.click()
+        verify_new_tab_url_contains(WORK_PERMIT_URL)
+
+    @allure.step("Verify permanent work visa card expired work permit error banner")
+    def verify_perm_visa_card_exp_work_permit_error_shown(self):
+        self.verify_work_visa_error_shown(PERM_WORK_VISA_ELIGIBILITY_ERRORS.format(Numbers.TWO))
+        soft_assert_text(
+            element=self.perm_work_visa_error_link,
+            text=PERM_WORK_VISA_ELIGIBILITY_ERRORS_LINK,
+            element_name="Perm work visa card error link",
+        )
+        self.perm_work_visa_error_link.click()
+        self.verify_modal_popup_window(
+            Numbers.TWO,
+            title_text=GENERIC_EXP_WORK_PERMIT_ERROR_TITLE,
+            text=[GENERIC_EXP_WORK_PERMIT_ERROR_TEXT, GENERIC_EXP_WORK_PERMIT_ERROR_TEXT],
+            links=True,
+        )
+        for link in self.modal_popup_window_error_list.all(self.LINK):
+            link.click()
+            verify_new_tab_url_contains(WORK_PERMIT_URL)
+        self.modal_popup_window_close_button.click()
+
+    def verify_global_banner(self, visible=True, text=None, icon=False, link_text=None):
+        banner_visible = be.visible if visible else be.hidden
+        icon_visible = be.visible if icon else be.hidden
+        link_visible = be.visible if link_text else be.hidden
+        self.global_error_banner.should(banner_visible)
+        self.global_error_banner_link.should(link_visible)
+        self.global_error_banner.s(self.banner_icon).should(icon_visible)
+        if text:
+            soft_assert_text(
+                element=self.global_error_banner,
+                text=text,
+                element_name="Global error banner text",
+            )
+        if link_text:
+            soft_assert_text(
+                element=self.global_error_banner,
+                text=link_text,
+                element_name="Global error banner link text",
+            )
+
+    @allure.step("Verify if link to Knowledge Center coresponds chosen language")
+    def verify_local_link_knowledge_center(self, language):
+        self.increase_absher_link.click()
+        self.increase_absher_modal.s(self.LINK).should(be.visible)
+        self.increase_absher_modal.s(self.LINK).click()
+        verify_new_tab_url_contains(KNOWLEDGE_CENTER_URL + "/" + language)
+        self.increase_absher_modal_close_button.click()
+
+    @allure.step("Verify if issue button is locked with error modal")
+    def verify_seasonal_visa_issue_button(self):
+        self.verify_seasonal_visa_card_banner(text=SEASONAL_VISA_ZERO_BALANCE_ERROR)
+        self.seasonal_work_visa_issue_visa.s(self.banner_icon).should(be.visible)
+        self.verify_seasonal_visa_issue_button_modal_error()
+
+    @allure.step("Verify seasonal visa card zero balance error")
+    def verify_seasonal_visa_card_banner(self, text):
+        soft_assert_text(
+            element=self.seasonal_work_visa_card_error_banner,
+            text=text,
+            element_name="Seasonal visa card error banner",
+        )
+        self.seasonal_work_visa_card_error_banner.s(self.banner_icon).should(be.visible)
+
+    @allure.step("Verify seasonal visa card zero balance issue button modal error")
+    def verify_seasonal_visa_issue_button_modal_error(self):
+        self.seasonal_work_visa_issue_visa.click()
+        self.verify_modal_popup_window(
+            error_list_size=Numbers.ONE,
+            title_text=SEASONAL_VISA_ZERO_BALANCE_ERROR_TITLE,
+            text=SEASONAL_VISA_ZERO_BALANCE_ERROR,
+        )
+        self.modal_popup_window_close_button.click()
+        self.modal_popup_window.should(be.hidden)
+        self.seasonal_work_visa_issue_visa.click()
+        self.verify_modal_popup_window(
+            error_list_size=Numbers.ONE,
+            title_text=SEASONAL_VISA_ZERO_BALANCE_ERROR_TITLE,
+            text=SEASONAL_VISA_ZERO_BALANCE_ERROR,
+        )
+        self.modal_popup_window_x_button.click()
+        self.modal_popup_window.should(be.hidden)
+
+    @allure.step("Verify permanent visa card issue visa button enabled")
+    def verify_issue_visa_enabled(self, new_tab: bool = False) -> None:
+        driver = browser.driver
+        if new_tab:
+            driver.execute_script("window.open()")
+            driver.switch_to.window(driver.window_handles[-1])
+        driver.get(config.qiwa_urls.visa_web_url)
+        self.page_is_loaded()
+        self.perm_work_visa_issue_visa.s(self.banner_icon).should(be.hidden)
+        self.perm_work_visa_issue_visa.click()
+        browser.should(have.url_containing(ISSUE_VISA_URL))
+        driver.back()
+        if new_tab:
+            browser.driver.close()
+            browser.driver.switch_to.window(browser.driver.window_handles[0])

@@ -33,7 +33,7 @@ USER_MANAGEMENT: str = "User Management"
 QIWA_WALLET: str = "Qiwa Wallet"
 DELEGATIONS: str = "Delegations"
 
-EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة الموظفين "
+EMPLOYEE_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة الموظفين"
 WAGE_PROTECTION_CERTIFICATE_AR: str = "شهادة الالتزام بنظام حماية الأجور"
 OCCUPATION_MANAGEMENT_AR: str = "إدارة المهن"
 EMPLOYEE_TRANSFER_AR: str = "خدمة نقل الخدمات"
@@ -64,9 +64,9 @@ LABOR_MARKET_INDEX_AR: str = "مؤشرات العمل"
 ESTABLISHMENT_PERFORMANCE_REPORT_AR: str = "تقرير أداء المنشأة"
 
 WORKSPACES_MANAGEMENT_GROUP_TITLE_AR: str = "إدارة حسابات المنشأة"
-USER_MANAGEMENT_AR: str = "إدارة مستخدمي المنشأة"
+USER_MANAGEMENT_AR: str = "إدارة المستخدمين"
 QIWA_WALLET_AR: str = "محفظة قوى"
-DELEGATIONS_AR: str = "خدمة التفويض"
+DELEGATIONS_AR: str = "التفاويض"
 
 PAST_EXPIRY_DATE: str = "2023-11-18 00:00:00.000"
 
@@ -102,9 +102,11 @@ SUCCESS_MESSAGE_AFTER_TERMINATE_FLOW: str = (
     "You have successfully deleted user from all establishments"
 )
 INACTIVE_STATUS: str = "Inactive"
+ACTIVE_STATUS: str = "Active"
 
 SUBSCRIPTION_TIME: int = 1
 
+<<<<<<< HEAD
 SUBSCRIPTION_PERIOD: str = '1 year'
 SUBSCRIPTION_CURRENCY: str = 'SAR'
 INCORRECT_ESTABLISHMENT = 999
@@ -115,3 +117,79 @@ COUNT_ESTABLISHMENT_PERFORMANCE = 4
 COUNT_WORKSPACES_MANAGEMENT = 3
 
 
+=======
+CONFIRMATION_PAGE_TITLE: str = "Establishment and user details"
+ESTABLISHMENT_NAME_SECTION: str = "Establishment name and ID"
+CONTACT_INFO_SECTION: str = "Contact information"
+ESTABLISHMENT_ADDRESS_SECTION: str = "Establishment address"
+ZAKAT_TAX_SECTION: str = "Zakat, tax and customs authority details"
+ESTABLISHMENT_ADDRESS_SECTION_AR: str = "عنوان المنشأة"
+ZAKAT_TAX_SECTION_AR: str = "معلومات هيئة الزكاة والضريبة والجمارك"
+
+EXTEND_ACTION: str = "extend-action"
+RENEW_ACTION: str = "renew-action"
+
+RENEW_TERMINATED_SUBSCRIPTION: str = "Renew Terminated Subscription"
+EXTEND_SUBSCRIPTION: str = "Extend Subscription"
+
+ERROR_TITLE: str = "There are missing information from your profile."
+VAT_ERROR_LINK: str = "VAT information is required to proceed with subscription."
+ADDRESS_ERROR_LINK: str = "Address information is required to proceed with subscription."
+
+ADDRESS_ERROR_TITLE: str = "The following address details are missing"
+MISSING_ADDRESS_DATA: list = [
+    "City",
+    "District",
+    "Street name",
+    "Building number",
+    "Additional number",
+]
+ADDRESS_BTN_TEXT: str = "Add address information"
+
+VAT_ERROR_TITLE: str = "You are missing VAT details"
+VAT_ERROR_DESCRIPTION: str = (
+    "This information is required in order to proceed with subscription. If your "
+    "establishment does not have VAT number register as establishment without VAT."
+)
+ADD_VAT_NUMBER_BTN: str = "Add VAT number"
+REGISTER_WITHOUT_VAT_BTN: str = "Register without VAT"
+
+ERROR_TITLE_AR: str = "هناك بعض المعلومات المطلوبة"
+VAT_ERROR_LINK_AR: str = "هناك بعض المعلومات المطلوبة"
+ADDRESS_ERROR_LINK_AR: str = "هناك بعض المعلومات المطلوبة"
+
+ADDRESS_ERROR_TITLE_AR: str = "هناك بعض المعلومات المطلوبة"
+MISSING_ADDRESS_DATA_AR: list = ["الحي", "اسم الشارع", "رقم المبنى", "الرقم الإضافي"]
+ADDRESS_BTN_TEXT_AR: str = "إضافة معلومات العنوان"
+
+VAT_ERROR_TITLE_AR: str = "معلومات رقم تسجيل ضريبة القيمة المضافة غير كاملة"
+VAT_ERROR_DESCRIPTION_AR: str = (
+    "هذه المعلومات مطلوبة لمتابعة عملية الاشتراك. إذا لم يكن لدى منشأتك رقم ضريبة القيمة "
+    "المضافة، قم بالتسجيل كمنشأة بدون رقم ضريبة القيمة المضافة."
+)
+ADD_VAT_NUMBER_BTN_AR: str = "إضافة رقم تسجيل ضريبة القيمة المضافة"
+REGISTER_WITHOUT_VAT_BTN_AR: str = "الاستمرار بدون تسجيل رقم ضريبة القيمة المضافة"
+
+UPDATED_CITY: str = "Ain Dar Al Gadida"
+UPDATED_CITY_AR: str = "عين دار الجديدة"
+UPDATED_DISTRICT: str = "الربوة"
+UPDATED_STREET: str = "الحميدات"
+UPDATED_BUILDING_NUMBER: str = "7551"
+UPDATED_ADDITIONAL_NUMBER: int = 4594
+COUNTRY: str = "Kingdom of Saudi Arabia"
+
+ESTABLISHMENT_INFO_TITLE: str = "Establishment Information"
+FINANCIAL_INFO_SECTION: str = "Financial information"
+
+THANK_YOU_TITLE: str = "Thank you!"
+BACK_TO_SUBSCRIPTION_BTN: str = "Back to Subscription flow"
+REGISTERED_WITHOUT_VAT: str = "Registered without VAT"
+EMPTY_ON_UI: str = "-"
+EMPTY_ON_API: str = ""
+
+ALLOWED_ESTABLISHMENT_LIST = ["6-8449", "6-16576", "6-1944791"]
+ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES: str = "11-1183901"
+ERROR_FOR_ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES: str = (
+    "At least 1 establishment should be selected for  userPersonalNumber={}"
+)
+>>>>>>> master

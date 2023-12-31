@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from data.account import Account
@@ -12,6 +14,9 @@ def account_data():
     qiwa = QiwaApi()
     try:
         qiwa.sso.register_account_via_sso_api(account)
+        qiwa.sso.login_user(account.personal_number, account.password)
+        qiwa.sso.check_acceptance_criteria()
+        qiwa.sso.pass_account_security()
     except AssertionError:
         pass
     yield account
@@ -40,3 +45,8 @@ def second_account_data():
         pass
     yield account
     delete_account_data_from_db(personal_number=account.personal_number)
+
+
+def waiting_to_resent_codes(waiting_time: int):
+    # This sleep is needed because we have a timeout on sending reset codes on changing phone number flow
+    time.sleep(waiting_time)

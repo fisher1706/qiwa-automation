@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import time
+
 import allure
-from selene import Element, have
+from selene import Element, browser, have
 from selene.support.conditions import be
 from selene.support.shared.jquery_style import ss
 
@@ -11,16 +13,21 @@ from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
     ArabicTranslations,
     ErrorsMessage,
+    EstablishmentAddresses,
     Privileges,
     Texts,
 )
+
 from src.ui.pages.user_management_pages.add_new_establishment_delegator_page import AddNewEstablishmentDelegator
+
+from src.database.sql_requests.user_management.user_management_requests import (
+    UserManagementRequests,
+)
+from src.ui.pages.establishment_info_page import EstablishmentInfoPage
 from src.ui.pages.user_management_pages.annual_subscription_page import (
     AnnualSubscription,
 )
-from src.ui.pages.user_management_pages.establishment_user_details_page import (
-    EstablishmentUser,
-)
+from src.ui.pages.user_management_pages.confirmation_page import ConfirmationPage
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
 from src.ui.pages.user_management_pages.owner_flow_page import OwnerFLowPage
 from src.ui.pages.user_management_pages.payment_summary_page import PaymentSummary
@@ -28,18 +35,20 @@ from src.ui.pages.user_management_pages.renew_subscription_page import RenewSubs
 from src.ui.pages.user_management_pages.thank_you_page import ThankYouPage
 from src.ui.pages.user_management_pages.user_detail_page import UserDetailsPage
 from src.ui.qiwa import qiwa
+from utils.assertion import assert_that
 
 
 class UserManagementActions(
     UserManagementMainPage,
     UserDetailsPage,
     OwnerFLowPage,
-    EstablishmentUser,
+    ConfirmationPage,
     AnnualSubscription,
     PaymentSummary,
     ThankYouPage,
     RenewSubscription,
     AddNewEstablishmentDelegator,
+    EstablishmentInfoPage,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
     def log_in_and_navigate_to_um(self, user, sequence_number) -> UserManagementActions:
@@ -62,7 +71,7 @@ class UserManagementActions(
 
     @allure.step
     def compare_number_of_users_in_table(self) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.get_number_of_subscribed_user_in_company()
         self.compare_count_of_users_in_table()
         self.compare_count_of_users_in_company_table()
@@ -73,19 +82,19 @@ class UserManagementActions(
         if user_nid is None:
             self.click_view_details_in_table()
         else:
-            self.click_view_details_in_table_for_selected_user(user_nid)
+            self.click_actions_in_table_for_selected_user(user_nid)
         self.navigate_to_view_details()
         self.check_user_details_title(Texts.establishment_user_details)
         self.check_users_info_block()
         self.check_companies_table_is_displayed()
         return self
 
-    @allure.title
+    @allure.step
     def navigate_to_owner_flow(self) -> UserManagementActions:
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.click_subscribe_btn()
         self.check_title(Texts.establishment_and_user_details)
-        self.click_proceed_with_subscription_btn()
+        self.click_btn_proceed_subscription()
         self.check_title(Texts.add_new_workspace_user)
         return self
 
@@ -155,7 +164,7 @@ class UserManagementActions(
             ArabicTranslations.selected_establishment_text_on_add_access_modal,
             ArabicTranslations.all_privileges,
             ArabicTranslations.hide_privileges,
-            f"{ArabicTranslations.show_more_privileges_for_2nd_group.format(hidden_privileges)}",
+            f"{ArabicTranslations.show_more_privileges.format(hidden_privileges)}",
             ArabicTranslations.occupation_management_description,
             ArabicTranslations.employee_transfer_description,
             ArabicTranslations.issue_working_permits_description,
@@ -171,17 +180,20 @@ class UserManagementActions(
 
     @allure.step
     def check_localization_for_edit_privileges_modal(
-        self, hidden_privileges: str = 7
+        self, establishment: str, hidden_privileges: str = 7
     ) -> UserManagementActions:
         self.switch_to_tab_on_user_details(ArabicTranslations.allowed_access)
-        self.check_actions_ar_texts_on_allowed_access_table()
+        establishment_with_access = self.get_establishment_row_on_allowed_access_table(
+            establishment
+        )
+        self.check_actions_ar_texts_on_allowed_access_table(establishment_with_access)
         self.select_edit_privileges_action()
         self.check_edit_privileges_modal_is_displayed()
         self.check_ar_localization_for_content_on_select_privileges_modal(
             ArabicTranslations.selected_establishment_text_on_add_access_modal,
             ArabicTranslations.all_privileges,
             ArabicTranslations.hide_privileges,
-            f"{ArabicTranslations.show_more_privileges_for_2nd_group.format(hidden_privileges)}",
+            f"{ArabicTranslations.show_more_privileges.format(hidden_privileges)}",
             ArabicTranslations.occupation_management_description,
             ArabicTranslations.employee_transfer_description,
             ArabicTranslations.issue_working_permits_description,
@@ -417,7 +429,7 @@ class UserManagementActions(
     def check_user_is_terminated(self, national_id: str) -> UserManagementActions:
         self.check_success_message_after_terminate_user()
         self.close_success_modal()
-        self.wait_until_page_is_loaded()
+        self.should_main_page_be_displayed()
         self.check_user_is_inactive_on_users_table(national_id)
         return self
 
@@ -428,7 +440,7 @@ class UserManagementActions(
 
     @allure.step
     def check_establishment_user_details(self) -> UserManagementActions:
-        EstablishmentUser.main_text.wait_until(be.visible)
+        ConfirmationPage.page_title.wait_until(be.visible)
         self.click_btn_proceed_subscription()
         return self
 
@@ -484,13 +496,357 @@ class UserManagementActions(
             self.check_summary_block()
             self.check_total_value()
         else:
-            self.wait_until_page_is_loaded()
+            self.should_main_page_be_displayed()
             self.check_page_is_displayed()
         return self
 
     @allure.step
     def check_db_subscription_date(self, user: User):
         self.check_db_data(user)
+        return self
+
+    @allure.step
+    def check_confirmation_page_on_add_new_user_flow(self) -> UserManagementActions:
+        self.click_subscribe_btn()
+        self.check_confirmation_page_is_displayed()
+        return self
+
+    @allure.step
+    def return_to_main_page_from_owner_subscription_flow(self) -> UserManagementActions:
+        self.click_back_btn_on_owner_subscription_flow()
+        self.should_main_page_be_displayed()
+        self.should_main_page_url_be_correct()
+        return self
+
+    @allure.step
+    def check_confirmation_page_is_opened(
+        self, user_nid: str, action_name: str
+    ) -> UserManagementActions:
+        self.click_actions_in_table_for_selected_user(user_nid)
+        self.select_action(action_name)
+        self.check_confirmation_page_is_displayed()
+        return self
+
+    @allure.step
+    def check_confirmation_page_is_hidden(
+        self, user_nid: str, action_name: str
+    ) -> UserManagementActions:
+        self.click_actions_in_table_for_selected_user(user_nid)
+        self.select_action(action_name)
+        self.check_renew_terminated_page_is_opened(user_nid)
+        return self
+
+    @allure.step
+    def check_content_on_confirmation_page_english_localization(
+        self, establishment_data: dict, user: User
+    ) -> UserManagementActions:
+        establishment_number = f"{user.labor_office_id}-{user.sequence_number}"
+        self.check_content_on_establishment_section(
+            establishment_data["establishment_name"], establishment_number
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.CONTACT_INFO_SECTION,
+            [establishment_data["notification_email"], establishment_data["notification_phone"]],
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ESTABLISHMENT_ADDRESS_SECTION,
+            establishment_data["establishment_address_en"],
+        )
+        return self
+
+    @allure.step
+    def check_content_on_confirmation_page_arabic_localization(
+        self, establishment_data: dict
+    ) -> UserManagementActions:
+        qiwa.header.change_local(Language.AR)
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ESTABLISHMENT_ADDRESS_SECTION_AR,
+            establishment_data["establishment_address_ar"],
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ZAKAT_TAX_SECTION_AR, establishment_data["vat_number"]
+        )
+        return self
+
+    @allure.step
+    def confirm_payment_via_ui(self, payment_id: int, user_type: str) -> UserManagementActions:
+        qiwa.open_payment_page(payment_id)
+        self.make_establishment_payment().check_thank_you_page(user_type)
+        return self
+
+    @allure.step
+    def check_confirmation_page_is_hidden_after_opening_subscription_page(
+        self, user: User
+    ) -> UserManagementActions:
+        browser.driver.refresh()
+        self.check_confirmation_page_is_opened(
+            user.personal_number, user_management_data.RENEW_ACTION
+        )
+        self.click_btn_proceed_subscription()
+        self.check_renew_terminated_page_is_opened(user.personal_number)
+        self.return_to_main_page_from_owner_subscription_flow()
+        self.check_confirmation_page_is_hidden(
+            user.personal_number, user_management_data.RENEW_ACTION
+        )
+        self.return_to_main_page_from_owner_subscription_flow()
+        return self
+
+    @allure.step
+    def check_confirmation_page_is_opened_after_changing_workspace(
+        self, user: User
+    ) -> UserManagementActions:
+        qiwa.header.click_on_menu()
+        self.click_change_workspace_btn()
+        qiwa.workspace_page.select_company_account_with_sequence_number(user.sequence_number)
+        self.check_confirmation_page_is_opened(
+            user.personal_number, user_management_data.RENEW_ACTION
+        )
+        return self
+
+    @allure.step
+    def check_confirmation_page_is_opened_after_relogin(self, user: User) -> UserManagementActions:
+        self.check_confirmation_page_is_opened(
+            user.personal_number, user_management_data.RENEW_ACTION
+        )
+        self.click_btn_proceed_subscription(1)
+        self.check_renew_terminated_page_is_opened(user.personal_number)
+        return self
+
+    @allure.step
+    def check_english_localization_for_errors_on_confirmation_page(self) -> UserManagementActions:
+        self.check_texts_for_main_error_block(
+            user_management_data.ERROR_TITLE,
+            [user_management_data.VAT_ERROR_LINK, user_management_data.ADDRESS_ERROR_LINK],
+        )
+        self.check_texts_for_address_error_block(
+            user_management_data.ADDRESS_ERROR_TITLE,
+            user_management_data.MISSING_ADDRESS_DATA,
+            user_management_data.ADDRESS_BTN_TEXT,
+        )
+        self.check_texts_for_vat_error_block(
+            user_management_data.VAT_ERROR_TITLE,
+            user_management_data.VAT_ERROR_DESCRIPTION,
+            [
+                user_management_data.ADD_VAT_NUMBER_BTN,
+                user_management_data.REGISTER_WITHOUT_VAT_BTN,
+            ],
+        )
+        return self
+
+    @allure.step
+    def check_arabic_localization_for_errors_on_confirmation_page(self) -> UserManagementActions:
+        self.check_texts_for_main_error_block(
+            user_management_data.ERROR_TITLE_AR,
+            [user_management_data.VAT_ERROR_LINK_AR, user_management_data.ADDRESS_ERROR_LINK_AR],
+        )
+        self.check_texts_for_address_error_block(
+            user_management_data.ADDRESS_ERROR_TITLE_AR,
+            user_management_data.MISSING_ADDRESS_DATA_AR,
+            user_management_data.ADDRESS_BTN_TEXT_AR,
+        )
+        self.check_texts_for_vat_error_block(
+            user_management_data.VAT_ERROR_TITLE_AR,
+            user_management_data.VAT_ERROR_DESCRIPTION_AR,
+            [
+                user_management_data.ADD_VAT_NUMBER_BTN_AR,
+                user_management_data.REGISTER_WITHOUT_VAT_BTN_AR,
+            ],
+        )
+        return self
+
+    @allure.step
+    def check_establishment_data_error_is_displayed(self) -> UserManagementActions:
+        self.check_confirmation_page_on_add_new_user_flow()
+        self.check_texts_for_main_error_block(
+            user_management_data.ERROR_TITLE,
+            [user_management_data.ADDRESS_ERROR_LINK],
+        )
+        self.check_texts_for_address_error_block(
+            user_management_data.ADDRESS_ERROR_TITLE,
+            user_management_data.MISSING_ADDRESS_DATA,
+            user_management_data.ADDRESS_BTN_TEXT,
+        )
+        self.click_btn_proceed_subscription()
+        time.sleep(3)
+        self.check_confirmation_page_is_displayed()
+        return self
+
+    @allure.step
+    def check_vat_error_is_displayed(self) -> UserManagementActions:
+        self.check_confirmation_page_on_add_new_user_flow()
+        self.check_texts_for_main_error_block(
+            user_management_data.ERROR_TITLE,
+            [user_management_data.VAT_ERROR_LINK],
+        )
+        self.check_texts_for_vat_error_block(
+            user_management_data.VAT_ERROR_TITLE,
+            user_management_data.VAT_ERROR_DESCRIPTION,
+            [
+                user_management_data.ADD_VAT_NUMBER_BTN,
+                user_management_data.REGISTER_WITHOUT_VAT_BTN,
+            ],
+        )
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ZAKAT_TAX_SECTION, [user_management_data.EMPTY_ON_UI]
+        )
+        self.click_btn_proceed_subscription()
+        time.sleep(3)
+        self.check_confirmation_page_is_displayed()
+        return self
+
+    @allure.step
+    def update_address_data_from_confirmation_page(
+        self,
+        establishment_data: list,
+        address_values_on_thank_you_popup: list,
+        all_establishment_values: bool = True,
+    ) -> UserManagementActions:
+        self.check_financial_info_section_is_displayed()
+        self.click_change_establishment_address_link()
+        if all_establishment_values:
+            self.enter_all_establishment_data(*establishment_data)
+        else:
+            self.update_district_and_street_data(*establishment_data)
+        self.click_submit_btn()
+        self.check_establishment_data_on_thank_you_popup(address_values_on_thank_you_popup)
+        return self
+
+    @allure.step
+    def check_updated_address_data_on_confirmation_page(
+        self,
+        address_values_on_confirmation_page: list,
+        owner_for_self_subscription: User = None,
+    ) -> UserManagementActions:
+        self.click_back_to_subscription_flow_btn()
+        self.check_confirmation_page_is_displayed()
+        self.check_error_message_is_not_displayed()
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ESTABLISHMENT_ADDRESS_SECTION, address_values_on_confirmation_page
+        )
+        if owner_for_self_subscription is None:
+            self.proceed_owner_subscription_on_confirmation_page()
+        else:
+            self.proceed_self_subscription_on_confirmation_page(
+                owner_for_self_subscription.labor_office_id,
+                owner_for_self_subscription.sequence_number,
+            )
+        return self
+
+    @allure.step
+    def proceed_owner_subscription_on_confirmation_page(self) -> UserManagementActions:
+        self.click_btn_proceed_subscription()
+        self.check_subscribe_user_page_is_opened()
+        return self
+
+    def proceed_self_subscription_on_confirmation_page(
+        self, office_id: str, sequence_number: str
+    ) -> UserManagementActions:
+        self.click_btn_proceed_subscription()
+        self.check_self_renew_expired_page_is_opened(office_id, sequence_number)
+        return self
+
+    @allure.step
+    def select_proceed_without_vat_on_confirmation_page(self) -> UserManagementActions:
+        self.click_register_without_vat_btn()
+        self.check_sections_content_on_confirmation_page(
+            user_management_data.ZAKAT_TAX_SECTION, [user_management_data.REGISTERED_WITHOUT_VAT]
+        )
+        self.check_error_message_is_not_displayed()
+        return self
+
+    @allure.step
+    def update_establishment_data_for_owner_subscription_flow(self) -> UserManagementActions:
+        self.check_establishment_data_error_is_displayed()
+        self.click_add_address_info_btn_on_confirmation_page()
+        self.update_address_data_from_confirmation_page(
+            EstablishmentAddresses.update_address_data_on_ui,
+            EstablishmentAddresses.updated_address_data_on_thank_you_popup,
+        )
+        self.check_updated_address_data_on_confirmation_page(
+            EstablishmentAddresses.updated_address_data_on_confirmation_page
+        )
+        return self
+
+    @allure.step
+    def update_establishment_data_for_self_subscription_flow(
+        self, user_type: str, owner: User
+    ) -> UserManagementActions:
+        self.possibility_switch_to_establishment_page(user_type)
+        self.check_confirmation_page_is_displayed()
+        self.click_add_address_info_btn_on_confirmation_page()
+        self.update_address_data_from_confirmation_page(
+            EstablishmentAddresses.update_address_data_on_ui,
+            EstablishmentAddresses.updated_address_data_on_thank_you_popup,
+        )
+        self.check_updated_address_data_on_confirmation_page(
+            EstablishmentAddresses.updated_address_data_on_confirmation_page, owner
+        )
+        return self
+
+    @allure.step
+    def update_establishment_data_for_both_localizations(self) -> UserManagementActions:
+        qiwa.header.change_local(Language.EN)
+        self.click_edit_btn_for_section(user_management_data.ESTABLISHMENT_ADDRESS_SECTION)
+        self.update_address_data_from_confirmation_page(
+            EstablishmentAddresses.update_address_data_on_ui[:3],
+            EstablishmentAddresses.updated_address_data_on_thank_you_popup,
+            False,
+        )
+        self.check_updated_address_data_on_confirmation_page(
+            EstablishmentAddresses.updated_address_data_on_confirmation_page
+        )
+        return self
+
+    @allure.step
+    def open_owner_extend_subscription_page(self, user: User) -> UserManagementActions:
+        self.check_confirmation_page_is_opened(
+            user.personal_number, user_management_data.EXTEND_ACTION
+        )
+        self.click_btn_proceed_subscription()
+        self.check_extend_subscription_page_is_opened(user.personal_number)
+        return self
+
+    @allure.step
+    def check_establishment_with_not_allowed_activities_is_hidden_from_owner_subscription_flow(
+        self, user: User
+    ) -> UserManagementActions:
+        browser.driver.refresh()
+        self.open_owner_extend_subscription_page(user)
+        self.check_establishment_list_is_displayed_on_owner_subscription_page(
+            sorted(user_management_data.ALLOWED_ESTABLISHMENT_LIST)
+        )
+        self.check_establishment_is_hidden_on_owner_subscription_page(
+            user_management_data.ESTABLISHMENT_WITH_NOT_ALLOWED_ACTIVITIES
+        )
+        self.select_terms_and_conditions_checkbox_on_owner_subscription_page().click_go_to_payment_btn()
+        self.make_establishment_payment().check_thank_you_page("owner_flow")
+        establishment_list_from_db = UserManagementRequests().get_establishment_access_list(
+            user.personal_number, user.unified_number_id
+        )
+        assert_that(establishment_list_from_db).equals_to(
+            user_management_data.ALLOWED_ESTABLISHMENT_LIST
+        )
+        return self
+
+    def extend_owner_subscription_and_check_added_establishments(
+        self, subscribed_user: User, establishments_list: list
+    ) -> UserManagementActions:
+        self.second_page_btn_on_users_table.click()
+        self.open_owner_extend_subscription_page(subscribed_user)
+        self.check_establishment_list_is_displayed_on_owner_subscription_page(establishments_list)
+        self.select_terms_and_conditions_checkbox_on_owner_subscription_page().click_go_to_payment_btn()
+        self.make_establishment_payment().check_thank_you_page("owner_flow")
+        self.click_go_back_to_um_btn()
+        qiwa.main_page.should_main_page_be_displayed()
+        self.second_page_btn_on_users_table.click()
+        self.check_user_status_on_users_table(
+            subscribed_user.personal_number, user_management_data.ACTIVE_STATUS
+        )
+        self.click_actions_in_table_for_selected_user(subscribed_user.personal_number)
+        self.navigate_to_view_details()
+        for establishment in establishments_list:
+            establishment_row = self.get_establishment_row_on_allowed_access_table(establishment)
+            self.check_establishment_is_displayed_on_table(establishment_row)
         return self
 
     @allure.step

@@ -6,8 +6,6 @@ from selene.support.shared import browser
 
 import config
 from data.constants import Language, UserInfo
-
-# from src.api.app import QiwaApi
 from src.ui.components.code_verification import CodeVerification
 from src.ui.components.dedicated.email_confirmation_pop_up import EmailConfirmationPopup
 from src.ui.components.delegation.localisation_change import (
@@ -20,6 +18,7 @@ from src.ui.components.feedback_pop_up import FeedbackPopup
 from src.ui.components.footer import Footer
 from src.ui.components.header import Header
 from src.ui.components.meet_qiwa_popup import MeetQiwaPopup
+from src.ui.components.payment_gateway import PaymentPage
 from src.ui.pages.admin_page import AdminPage
 from src.ui.pages.appointments.labor_office_appointment_edit import (
     LaborOfficeAppointmentsEditPage,
@@ -66,6 +65,8 @@ from src.ui.pages.sso_pages.change_phone_number_page import ChangePhoneNumberPag
 from src.ui.pages.sso_pages.login_page import LoginPage
 from src.ui.pages.sso_pages.secure_account_page import SecureAccountPage
 from src.ui.pages.user_management_pages.main_page import UserManagementMainPage
+from src.ui.pages.violations_pages.violation_details_page import ViolationDetailsPage
+from src.ui.pages.violations_pages.violations_page import ViolationsPage
 from src.ui.pages.visa_pages.balance_request import BalanceRequest
 from src.ui.pages.visa_pages.increse_quota_page import IncreaseQuotaPage
 from src.ui.pages.visa_pages.issue_visa import IssueVisaPage
@@ -118,6 +119,8 @@ class QiwaUiClient:
     employee_list_page = EmployeeListPage()
     contract_management_page = ContractManagementPage()
     lo_saudization_certificate_page = LoSaudiCertificatePage()
+    violations_page = ViolationsPage()
+    violation_details_page = ViolationDetailsPage()
 
     # Components
     header = Header()
@@ -136,13 +139,6 @@ class QiwaUiClient:
         self.header.change_local(Language.EN)
         (self.login_page.enter_login(login).enter_password(password).click_login_button())
         (self.login_page.otp_pop_up.fill_in_code().click_confirm_button())
-        return self
-
-    def login_as_new_user(self, login: str, password: str = UserInfo.PASSWORD) -> QiwaUiClient:
-        # QiwaApi().sso.login_user(login, password)
-        # QiwaApi().sso.pass_account_security()
-        self.login_as_user(login, password)
-        self.feedback.close_feedback()
         return self
 
     def login_as_admin(self) -> QiwaUiClient:

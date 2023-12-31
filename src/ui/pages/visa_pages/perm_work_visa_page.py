@@ -29,6 +29,8 @@ from data.visa.constants import (
     KNOWLEDGE_CENTER_URL,
     OTHER_VISAS_NO_RESULTS,
     OTHER_VISAS_TITLE,
+    PERM_VISA_EXP_WORK_PERMIT_ERROR,
+    PERM_VISA_EXP_WORK_PERMIT_ERROR_LINK,
     PERMANENT_VISAS_NO_RESULTS,
     PERMANENT_VISAS_TITLE,
     RECRUITMENT_QUOTA,
@@ -41,6 +43,7 @@ from data.visa.constants import (
     USER_CANNOT_SIGN_AGREEMENT_CONTENT_EXP,
     USER_CANNOT_SIGN_AGREEMENT_TITLE_EST,
     USER_CANNOT_SIGN_AGREEMENT_TITLE_EXP,
+    WORK_PERMIT_URL,
     WORK_VISA_PAGE_TITLE_TEXT,
     BalanceRequestStatus,
     BRRefundMessages,
@@ -129,7 +132,8 @@ class PermWorkVisaPage:
     modal_return_button = modal_window.s('.//button/*[text()="Back to Permanent work visas"]')
     page_navigation_chain = s("//nav")
     page_title = ss('//div[@data-component="Layout"]/div[@data-component="Box"]//p').first
-    banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
+    internal_validation_banner = s('//*[@data-testid="internalValidationErrorMessageCard"]')
+    work_permit_banner = s('//*[@data-testid="workPermitErrorMessageCard"]')
     modal_error_message = modal_window.s('.//*[@data-component="ErrorMessage"]')
     modal_retry_button = modal_window.s('.//button/*[text()="Retry"]')
     action_menu = s('//*[@data-component="ActionsMenu"]')
@@ -590,7 +594,7 @@ class PermWorkVisaPage:
     @allure.step("Check the error text above Recruitment quota title on the work visa dashboard.")
     def verify_error_banner(self):
         soft_assert_text(
-            self.banner,
+            self.internal_validation_banner,
             text=ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
             element_name="Error banner",
         )
@@ -612,13 +616,13 @@ class PermWorkVisaPage:
 
     @allure.step("Verify tier four, balance more than zero case validations")
     def verify_increase_perm_work_visa_quota_blocked(self):
-        self.banner.should(be.hidden)
+        self.internal_validation_banner.should(be.hidden)
         self.verify_issue_visa_button_enabled()
         self.verify_increase_recruitment_quota_button_disabled(self.increase_quota_button)
 
     @allure.step("Verify tier four, balance zero case validations")
     def verify_increase_perm_work_visa_quota_and_issue_blocked(self):
-        self.banner.should(be.hidden)
+        self.internal_validation_banner.should(be.hidden)
         self.verify_issue_visa_button_disabled(
             ISSUE_VISA_MODAL_TITLE_TEXT, ISSUE_VISA_MODAL_CONTENT_HIGHEST_TIER_TEXT
         )
@@ -812,3 +816,19 @@ class PermWorkVisaPage:
     def verify_user_can_sign_agreement(self):
         self.verify_issue_visa_button_enabled()
         self.verify_increase_recruitment_quota_button_enabled(self.increase_quota_button)
+
+    @allure.step("Verify expired work permit error banner")
+    def verify_exp_work_permit_error_shown(self):
+        self.work_permit_banner.should(be.visible)
+        soft_assert_text(
+            element=self.work_permit_banner,
+            text=PERM_VISA_EXP_WORK_PERMIT_ERROR,
+            element_name="Work permit error banner",
+        )
+        soft_assert_text(
+            element=self.work_permit_banner.s(self.LINK),
+            text=PERM_VISA_EXP_WORK_PERMIT_ERROR_LINK,
+            element_name="Work permit error banner link",
+        )
+        self.work_permit_banner.s(self.LINK).click()
+        verify_new_tab_url_contains(WORK_PERMIT_URL)

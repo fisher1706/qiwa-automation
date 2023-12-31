@@ -3,7 +3,9 @@ from selene import browser
 
 from data.delegation import general_data
 from src.api.app import QiwaApi
-from src.database.sql_requests.delegation_requests import DelegationRequests
+from src.database.sql_requests.sso_requests.delegation_requests import (
+    DelegationRequests,
+)
 from src.ui.qiwa import qiwa
 from utils.assertion import assert_that
 from utils.helpers import set_cookies_for_browser

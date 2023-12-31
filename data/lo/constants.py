@@ -161,7 +161,7 @@ class OfficesInfo:
     REGION_NAJRAN = "Najran"
     REGION_TABUK = "Tabuk"
     REGION_MADINAH = {Language.EN: "Madinah", Language.AR: "المدينة المنورة"}
-    REGION_RIYADH = {Language.EN: "Riyadh", Language.AR: ""}
+    REGION_RIYADH = {Language.EN: "Riyadh", Language.AR: "الرياض"}
     REGION_HAIL_WITHOUT_OFFICES = "Hail"
 
     REGION_ITEM_EDITED = "Riyadh"
@@ -184,7 +184,7 @@ class ServicesInfo:
     }
     SERVICE_NAME_VIRTUAL = {
         Language.EN: "Alina_Individuals_Virtual",
-        Language.AR: "Alina_Individuals_Virtual",
+        Language.AR: "Alina_ndividualVirtual",
     }
     SUB_SERVICE_NAME_VIRTUAL = {
         Language.EN: "Alina_New_Individuals",

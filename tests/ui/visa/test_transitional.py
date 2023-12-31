@@ -5,6 +5,7 @@ import pytest
 from dateutil.relativedelta import relativedelta
 from selene.support.shared import browser
 
+from data.constants import CARD, Language
 from data.visa.constants import (
     BR_ACCEPTED,
     BR_CANNOT,
@@ -27,6 +28,7 @@ from data.visa.constants import (
     EBR_TERMINATED,
     EBR_WAITING,
     ERROR_CODE,
+    EXP_PERMIT_ERROR_CODE,
     ISSUE_VISA_MODAL_CONTENT_EXPANSION_TEXT,
     VR_CANCELED,
     VR_NEW,
@@ -480,8 +482,8 @@ def test_verify_perm_work_visa_request_expansion_pdf(visa_mock, visa_db):
     ref_num = qiwa.increase_quota.create_balance_request(visa_db, Numbers.ONE_THOUSAND)
     qiwa.work_visa.verify_perm_work_visa_request_pdf(ref_num, VisaType.EXPANSION)
     qiwa.work_visa.view_action.click()
-    qiwa.balnce_request.verify_page_is_open()
-    qiwa.balnce_request.verify_pdf_is_downloaded()
+    qiwa.balance_request.verify_page_is_open()
+    qiwa.balance_request.verify_pdf_is_downloaded()
 
 
 @case_id(25470)
@@ -915,3 +917,73 @@ def test_verify_possibility_refund_expansion_balance_request(visa_mock, visa_db)
     visa_mock.change_balance_request(ref_number, status_id=EBR_TERMINATED.id)
     browser.driver.refresh()
     qiwa.work_visa.verify_exceptional_balance_request_status(ref_number, status=EBR_TERMINATED)
+
+
+@case_id(134807)
+@allure.title('Test verifies expired work permits errors')
+def test_verify_general_expired_work_permits_errors(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            common_eligibility_errors=join_codes(code=EXP_PERMIT_ERROR_CODE, times=Numbers.ONE),
+                            estab_eligibility_errors=join_codes(code=EXP_PERMIT_ERROR_CODE, times=Numbers.ONE))
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.verify_generic_exp_work_permit_error_shown()
+    qiwa.transitional.verify_perm_visa_card_exp_work_permit_error_shown()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.verify_work_visa_page_open()
+    qiwa.work_visa.verify_exp_work_permit_error_shown()
+
+
+@case_id(134809)
+@allure.title('Test verifies locale to Knowledge Center')
+def test_verify_locale_link_knowledge_center(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.verify_local_link_knowledge_center(Language.EN)
+    qiwa.header.change_local(Language.AR)
+    qiwa.transitional.verify_local_link_knowledge_center(Language.AR)
+    qiwa.header.change_local(Language.EN)
+
+
+@case_id(167532)
+@allure.title("Test verifies zero balance validation on transitional page for seasonal visa, "
+              "so that know I can't issue visa")
+def test_verify_seasonal_visa_zero_balance_issue_button(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            total_endorsements_balance=Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.verify_seasonal_visa_issue_button()
+
+
+@case_id(41420)
+@allure.title('Test verifies issue visa button enabled on the work visa card on the transitional '
+              'page if company in the expansion phase and has specific error codes')
+def test_verify_perm_work_visa_issue_enabled_depends_on_br_statuses(visa_mock, visa_db):
+    visa_mock.setup_company(visa_type=VisaType.EXPANSION)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.perm_work_visa_service_page_button.click()
+    qiwa.work_visa.increase_quota_button.click()
+    qiwa.increase_quota.create_balance_request_until_payment(Numbers.ONE_THOUSAND)
+    qiwa.transitional.verify_issue_visa_enabled(new_tab=True)
+    qiwa.payment_gateway.pay_completely_by(payment_type=CARD)
+    ref_number = qiwa.increase_quota.finish_balance_request(visa_db)
+    visa_db.remove_balance_request_records()
+    qiwa.work_visa.return_to_transitional_page()
+    qiwa.transitional.verify_issue_visa_enabled()
+    visa_db.set_balance_request_to_submit_failed(ref_number)
+    qiwa.transitional.verify_issue_visa_enabled()
+
+
+@case_id(165298)
+@allure.title('Test verifies issue visa button enabled on the work visa card on the transitional '
+              'page if balance is zero and eligibility error')
+def test_verify_perm_work_visa_issue_enabled_depends_on_establishing_eligibility_error(visa_mock):
+    visa_mock.setup_company(visa_type=VisaType.ESTABLISHMENT,
+                            estab_eligibility_errors=join_codes(code=ERROR_CODE, times=Numbers.ONE))
+    visa_mock.change_visa_quantity(Numbers.ONE, Numbers.ZERO)
+    browser.driver.refresh()
+    qiwa.transitional.page_is_loaded()
+    qiwa.transitional.verify_perm_work_visa_error_shown()

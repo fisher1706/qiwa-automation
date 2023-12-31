@@ -74,6 +74,7 @@ class QiwaUrls:
         self.contract_management: str = f"{protocol}contract-management.{domain}"
         self.internal_payment: str = f"{protocol}internal-payment.{domain}"
         self.payment: str = f"{protocol}internal-dynamic-gateway-api.{domain}"
+        self.payment_ui: str = f"{protocol}dynamic-gateway.{domain}"
         self.agent_sys_url: str = f"{protocol}lo-agent-system.{domain}"
         self.lo_work_permit: str = f"{protocol}lo-work-permits.{domain}"
         self.data_portal_url: str = f"{protocol}data.{domain}"
@@ -86,6 +87,7 @@ class QiwaUrls:
         self.e_services: str = f"{protocol}e-services.{domain}"
         self.workspaces: str = f"{protocol}workspaces.{domain}"
         self.employee_list: str = f"{protocol}employee-management.{domain}"
+        self.establishment_file_api: str = f"{protocol}establishment-file-api.{domain}"
 
 
 settings = Settings.for_env(os.getenv("ENV"))
