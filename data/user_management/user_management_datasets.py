@@ -16,8 +16,7 @@ from data.user_management.user_management_users import (
     owner_with_active_subscription,
     owner_with_expired_subscription_always,
     owner_group_manager,
-    establishment_delegator_type_three,
-    establishment_delegator_type_two,
+    establishment_delegator,
     user_for_subscription_one,
     user_for_subscription_two,
     owner_without_subscription_always,
@@ -388,6 +387,14 @@ class UserAccess:
 class AddEstablishmentDelegatorData:
     users = [
         # (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
-        # (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
-        (establishment_delegator_type_three, user_for_subscription_one, user_for_subscription_two),
+        (establishment_delegator, user_for_subscription_one, user_for_subscription_two),
     ]
+
+
+@dataclasses.dataclass
+class DataOfLocators:
+    SELECTED_USER = ["//td[contains(text()", ")]"]
+    USER_FROM_NEW_ESTABLISHMENT = ["//td[contains(text()", ")]/..//a/span", ")]"]
+    USERS_INTO_WORKSPACE = ["//p[contains(text(), "
+                            "'New Workspace User(s) selected')]/../../../..//p[contains(text()", ")]"
+                            ]

@@ -17,9 +17,6 @@ from data.user_management.user_management_datasets import (
     Privileges,
     Texts,
 )
-
-from src.ui.pages.user_management_pages.add_new_establishment_delegator_page import AddNewEstablishmentDelegator
-
 from src.database.sql_requests.user_management.user_management_requests import (
     UserManagementRequests,
 )
@@ -47,7 +44,6 @@ class UserManagementActions(
     PaymentSummary,
     ThankYouPage,
     RenewSubscription,
-    AddNewEstablishmentDelegator,
     EstablishmentInfoPage,
 ):  # pylint: disable=too-many-ancestors
     @allure.step
@@ -854,7 +850,7 @@ class UserManagementActions(
         self.click_subscribe_btn()
         ConfirmationPage.page_title.wait_until(be.visible)
         self.click_btn_proceed_subscription()
-        AddNewEstablishmentDelegator.main_text.wait_until(be.visible)
+        OwnerFLowPage.main_text.wait_until(be.visible)
         return self
 
     @allure.step

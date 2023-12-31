@@ -310,20 +310,12 @@ owner_group_manager = User(
     unified_number_id=9086,
 )
 
-establishment_delegator_type_three = User(
+establishment_delegator = User(
     personal_number="1014157000",
     user_id=1668068,
     labor_office_id=9,
     sequence_number=157949,
     unified_number_id=1315525,
-)
-
-establishment_delegator_type_two = User(
-    personal_number="1019865797",
-    user_id=1667090,
-    labor_office_id=1,
-    sequence_number=1910,
-    unified_number_id=9086,
 )
 
 user_for_subscription_one = User(

@@ -413,8 +413,6 @@ def test_content_on_confirmation_page():
     check_establishment_data_are_identical_for_both_localizations(owner, qiwa_api)
 
 
-#
-
 @allure.title("Check confirmation page is hidden after subscription was started in the current session")
 @case_id(17412, 41497)
 def test_confirmation_page_is_hidden_after_subscription_was_started_in_the_current_session():
@@ -524,7 +522,7 @@ def test_establishment_delegator_flow(subscriber, user_one, user_two):
 @allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
 @case_id(7894, 7895, 7897, 7934)
 @pytest.mark.parametrize("subscriber, user_one, user_two", AddEstablishmentDelegatorData.users)
-def test_verify_btn_edit(subscriber, user_one, user_two):
+def test_verify_edit_delegator(subscriber, user_one, user_two):
     user_management = UserManagementActions()
     log_in_and_open_user_management(subscriber, Language.EN)
 
@@ -535,10 +533,10 @@ def test_verify_btn_edit(subscriber, user_one, user_two):
         .check_field_search(user_management_data.INCORRECT_ESTABLISHMENT, subscriber.sequence_number)
 
 
-@allure.step("Test verify the 'New Establishment Delegator selected' section and ability to Edit it")
-@case_id(7899, 33014, 43165, 71517, 71518)
+@allure.step("Test verify 'Select all' checkbox provides selection of all available privileges for establishment")
+@case_id(7899, 7893, 33014, 43165, 71517, 71518)
 @pytest.mark.parametrize("subscriber, user_one, user_two", AddEstablishmentDelegatorData.users)
-def test_verify_select_all(subscriber, user_one, user_two):
+def test_verify_select_deselect_all_added_users(subscriber, user_one, user_two):
     user_management = UserManagementActions()
     log_in_and_open_user_management(subscriber, Language.EN)
 
