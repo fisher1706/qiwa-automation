@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import allure
+from selene.support.conditions import be
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 from selenium.webdriver.common.keys import Keys
@@ -13,7 +14,6 @@ from src.database.sql_requests.user_management.user_management_requests import (
     UserManagementRequests,
 )
 from utils.assertion import assert_that
-from selene.support.conditions import be
 
 
 class BaseEstablishmentPayment:

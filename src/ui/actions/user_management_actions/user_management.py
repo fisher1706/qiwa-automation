@@ -854,7 +854,9 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def verify_possibility_upload_data_of_few_users_as_delegator(self, *args: User) -> UserManagementActions:
+    def verify_possibility_upload_data_of_few_users_as_delegator(
+        self, *args: User
+    ) -> UserManagementActions:
         for arg in args:
             self.upload_establishment_delegator_data(arg.personal_number)
             self.verify_user_identity(arg.personal_number)
@@ -875,7 +877,9 @@ class UserManagementActions(
         return self
 
     @allure.step
-    def verify_possibility_add_additional_users_as_delegator(self, *args: User) -> UserManagementActions:
+    def verify_possibility_add_additional_users_as_delegator(
+        self, *args: User
+    ) -> UserManagementActions:
         for arg in args:
             self.click_btn_add_another_establishment_delegator()
             self.upload_establishment_delegator_data(arg.personal_number)

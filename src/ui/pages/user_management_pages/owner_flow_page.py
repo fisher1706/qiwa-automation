@@ -3,15 +3,13 @@ from __future__ import annotations
 import random
 
 import allure
-from selene import be, command
-from selene import browser
-from selene import have
+from selene import be, browser, command, have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
 import config
 from data.user_management import user_management_data
-from data.user_management.user_management_datasets import Texts, DataOfLocators
+from data.user_management.user_management_datasets import DataOfLocators, Texts
 from utils.helpers import scroll_to_coordinates
 
 
@@ -26,7 +24,9 @@ class OwnerFLowPage:
     btn_upload_user_data = s("//button//p[contains(text(), 'Upload user data')]")
     btn_check_another_users_data = s('//button//p[contains(text(), "Check another user\'s data")]')
     btn_add_establishment_delegator = s("//p[contains(text(), 'Add Establishment Delegator')]")
-    btn_add_another_establishment_delegator = s("//p[contains(text(), 'Add Another Establishment Delegator')]")
+    btn_add_another_establishment_delegator = s(
+        "//p[contains(text(), 'Add Another Establishment Delegator')]"
+    )
     user_name_value = s("//*[@id='root']//table//tr[1]//p[2]")
     user_id_value = s("//*[@id='root']//table//tr[2]//p[2]")
     field_user_national_id = s("//*[@id='user_nid']")
@@ -35,12 +35,16 @@ class OwnerFLowPage:
     total_summary_value = s("//p[contains(text(), 'Total')]/../div/p/span[1]")
     btn_next_step = s("//p[contains(text(), 'Next step')]")
     checkbox_select_establishment = ss("[data-component='Checkbox'] input")
-    error_message_establishment = s("//p[contains(text(), "
-                                    "'Please select the establishments to which this user can have access.')]")
+    error_message_establishment = s(
+        "//p[contains(text(), "
+        "'Please select the establishments to which this user can have access.')]"
+    )
     access_and_privileges = ss("//p[contains(text(), 'Access and privileges')]/../../p")
     selected_establishments = ss("//p[contains(text(), 'Selected establishments')]/../div//p[2]")
     btn_customize_privileges = s("//*[@id='one']/../span")
-    subscription_expiration_data_value = s("//p[contains(text(), 'Subscription expiration date')]/../p[2]")
+    subscription_expiration_data_value = s(
+        "//p[contains(text(), 'Subscription expiration date')]/../p[2]"
+    )
     summary_section_total_value = ss("//p[contains(text(), 'Total')]/../..//span")
     btn_edit = ss('//button//p[contains(text(), "Edit")]')
     select_all_link = s("//a/span[contains(text(), 'Select all')]")
@@ -49,22 +53,33 @@ class OwnerFLowPage:
     clear_filter = s("[aria-label='Delete']")
     search_not_result = s("//p[contains(text(), 'No results found.')]")
     fundamental_privileges = s("//p[contains(text(), 'Fundamental privileges')]")
-    fundamental_privileges_item = ss("//p[contains(text(), 'Fundamental privileges')]/../div[1]//p")
+    fundamental_privileges_item = ss(
+        "//p[contains(text(), 'Fundamental privileges')]/../div[1]//p"
+    )
     employees_management = s("//p[contains(text(), 'Employees Management')]")
     employees_management_item = ss("//p[contains(text(), 'Employees Management')]/..//input/..//p")
     establishment_management = s("//p[contains(text(), 'Establishment Management')]")
-    establishment_management_item = ss("//p[contains(text(), 'Establishment Management')]/..//input/..//p")
+    establishment_management_item = ss(
+        "//p[contains(text(), 'Establishment Management')]/..//input/..//p"
+    )
     establishment_performance = s("//*[text()='Establishment Performance']")
-    establishment_performance_item = ss("//*[text()='Establishment Performance']/..//input/../span")
+    establishment_performance_item = ss(
+        "//*[text()='Establishment Performance']/..//input/../span"
+    )
     workspaces_management = s("//p[contains(text(), 'Workspaces Management')]")
-    workspaces_management_item = ss("//p[contains(text(), 'Workspaces Management')]/../..//label//p")
+    workspaces_management_item = ss(
+        "//p[contains(text(), 'Workspaces Management')]/../..//label//p"
+    )
     checkboxes = ss("//div/label/input[contains(@aria-checked,'false')]")
     btn_save_privileges = s("//p[contains(text(), 'Save privileges')]/..")
     btn_save_and_go_to_next_step = s("//p[contains(text(), 'Save and go to next step')]/..")
-    href_how_calculate_subscription_price = s("//span[contains(text(), "
-                                              "'How is the price of subscription calculated?')]/..")
-    warning_message_establishment = s("//p[contains(text(), "
-                                      "'Please read and accept Qiwa’s Terms and Conditions to submit the request')]")
+    href_how_calculate_subscription_price = s(
+        "//span[contains(text(), " "'How is the price of subscription calculated?')]/.."
+    )
+    warning_message_establishment = s(
+        "//p[contains(text(), "
+        "'Please read and accept Qiwa’s Terms and Conditions to submit the request')]"
+    )
 
     @allure.step
     def check_title(self, title) -> OwnerFLowPage:
@@ -128,7 +143,9 @@ class OwnerFLowPage:
 
     @allure.step
     def upload_establishment_delegator_data(self, personal_number: str) -> OwnerFLowPage:
-        self.field_user_national_id.should(be.visible).perform(command.js.set_value("")).type(personal_number)
+        self.field_user_national_id.should(be.visible).perform(command.js.set_value("")).type(
+            personal_number
+        )
         self.btn_upload_user_data.should(be.visible).click()
         return self
 
@@ -155,22 +172,30 @@ class OwnerFLowPage:
 
     @allure.step
     def verify_add_selected_user(self, personal_number: str) -> OwnerFLowPage:
-        s(f"{DataOfLocators.SELECTED_USER[0]}, '{personal_number}'{DataOfLocators.SELECTED_USER[1]}").should(be.visible)
+        s(
+            f"{DataOfLocators.SELECTED_USER[0]}, '{personal_number}'{DataOfLocators.SELECTED_USER[1]}"
+        ).should(be.visible)
         return self
 
     @allure.step
     def verify_total_selected(self, *args: str) -> OwnerFLowPage:
         self.number_of_added_users_value.should(have.exact_text(str(len(args))))
         self.subscription_period_value.should(have.text(user_management_data.SUBSCRIPTION_PERIOD))
-        self.total_summary_value.should(be.visible).should(have.text(user_management_data.SUBSCRIPTION_CURRENCY))
+        self.total_summary_value.should(be.visible).should(
+            have.text(user_management_data.SUBSCRIPTION_CURRENCY)
+        )
         return self
 
     @allure.step
     def delete_user_from_new_establishment_delegators(self, personal_number: str) -> OwnerFLowPage:
-        s(f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
-          f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[1]}").click()
-        s(f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
-          f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[2]}").should(be.hidden)
+        s(
+            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
+            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[1]}"
+        ).click()
+        s(
+            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
+            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[2]}"
+        ).should(be.hidden)
         return self
 
     @allure.step
@@ -181,8 +206,9 @@ class OwnerFLowPage:
 
     @allure.step
     def select_establishment(self, number: int = None) -> OwnerFLowPage:
-        self.checkbox_select_establishment[number].press(Keys.SPACE) if number \
-            else self.checkbox_select_establishment[1].press(Keys.SPACE)
+        self.checkbox_select_establishment[number].press(
+            Keys.SPACE
+        ) if number else self.checkbox_select_establishment[1].press(Keys.SPACE)
         return self
 
     @allure.step
@@ -197,8 +223,10 @@ class OwnerFLowPage:
 
     @allure.step
     def verify_added_users_into_workspace(self, personal_number: str) -> OwnerFLowPage:
-        s(f"{DataOfLocators.USERS_INTO_WORKSPACE[0]}, '{personal_number}'"
-          f"{DataOfLocators.USERS_INTO_WORKSPACE[1]}").should(be.visible)
+        s(
+            f"{DataOfLocators.USERS_INTO_WORKSPACE[0]}, '{personal_number}'"
+            f"{DataOfLocators.USERS_INTO_WORKSPACE[1]}"
+        ).should(be.visible)
         return self
 
     @allure.step
@@ -215,8 +243,9 @@ class OwnerFLowPage:
         self.number_of_added_users_value.should(have.exact_text(str(len(args))))
         self.subscription_period_value.should(have.text(user_management_data.SUBSCRIPTION_PERIOD))
         self.subscription_expiration_data_value.should(be.visible)
-        self.summary_section_total_value[0].should(be.visible) \
-            .should(have.text(user_management_data.SUBSCRIPTION_CURRENCY))
+        self.summary_section_total_value[0].should(be.visible).should(
+            have.text(user_management_data.SUBSCRIPTION_CURRENCY)
+        )
         return self
 
     @allure.step
@@ -266,36 +295,41 @@ class OwnerFLowPage:
     def verify_fundamental_privileges(self) -> OwnerFLowPage:
         self.fundamental_privileges.wait_until(be.visible)
         self.fundamental_privileges.should(be.visible)
-        self.fundamental_privileges_item.should(be.visible.each) \
-            .should(have.size(user_management_data.COUNT_FUNDAMENTAL_PRIVILEGES))
+        self.fundamental_privileges_item.should(be.visible.each).should(
+            have.size(user_management_data.COUNT_FUNDAMENTAL_PRIVILEGES)
+        )
         return self
 
     @allure.step
     def verify_employees_management(self) -> OwnerFLowPage:
         self.employees_management.should(be.visible)
-        self.employees_management_item.should(be.visible.each) \
-            .should(have.size(user_management_data.COUNT_EMPLOYEES_MANAGEMENT))
+        self.employees_management_item.should(be.visible.each).should(
+            have.size(user_management_data.COUNT_EMPLOYEES_MANAGEMENT)
+        )
         return self
 
     @allure.step
     def verify_establishment_management(self) -> OwnerFLowPage:
         self.employees_management.should(be.visible)
-        self.establishment_management_item.should(be.visible.each) \
-            .should(have.size(user_management_data.COUNT_ESTABLISHMENT_MANAGEMENT))
+        self.establishment_management_item.should(be.visible.each).should(
+            have.size(user_management_data.COUNT_ESTABLISHMENT_MANAGEMENT)
+        )
         return self
 
     @allure.step
     def verify_establishment_performance(self) -> OwnerFLowPage:
         self.establishment_performance.should(be.visible)
-        self.establishment_performance_item.should(be.visible.each) \
-            .should(have.size(user_management_data.COUNT_ESTABLISHMENT_PERFORMANCE))
+        self.establishment_performance_item.should(be.visible.each).should(
+            have.size(user_management_data.COUNT_ESTABLISHMENT_PERFORMANCE)
+        )
         return self
 
     @allure.step
     def verify_workspaces_management(self) -> OwnerFLowPage:
         self.workspaces_management.should(be.visible)
-        self.workspaces_management_item.should(be.visible.each) \
-            .should(have.size(user_management_data.COUNT_WORKSPACES_MANAGEMENT))
+        self.workspaces_management_item.should(be.visible.each).should(
+            have.size(user_management_data.COUNT_WORKSPACES_MANAGEMENT)
+        )
         return self
 
     @allure.step

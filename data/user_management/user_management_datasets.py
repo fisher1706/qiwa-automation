@@ -7,19 +7,19 @@ from data.user_management.subscriptions_price_discount import (
 )
 from data.user_management.user_management_users import (
     delegator_with_um,
+    establishment_delegator,
     establishment_discount_val_0,
     establishment_discount_val_10,
     establishment_discount_val_25,
     establishment_type_four,
     establishment_type_one,
     owner_account,
+    owner_group_manager,
     owner_with_active_subscription,
     owner_with_expired_subscription_always,
-    owner_group_manager,
-    establishment_delegator,
+    owner_without_subscription_always,
     user_for_subscription_one,
     user_for_subscription_two,
-    owner_without_subscription_always,
     user_type_three_employee,
     user_type_three_employee_1,
     user_type_three_employee_2,
@@ -395,6 +395,8 @@ class AddEstablishmentDelegatorData:
 class DataOfLocators:
     SELECTED_USER = ["//td[contains(text()", ")]"]
     USER_FROM_NEW_ESTABLISHMENT = ["//td[contains(text()", ")]/..//a/span", ")]"]
-    USERS_INTO_WORKSPACE = ["//p[contains(text(), "
-                            "'New Workspace User(s) selected')]/../../../..//p[contains(text()", ")]"
-                            ]
+    USERS_INTO_WORKSPACE = [
+        "//p[contains(text(), "
+        "'New Workspace User(s) selected')]/../../../..//p[contains(text()",
+        ")]",
+    ]

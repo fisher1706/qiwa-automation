@@ -5,6 +5,7 @@ import pytest
 from data.constants import Language
 from data.user_management import user_management_data
 from data.user_management.user_management_datasets import (
+    AddEstablishmentDelegatorData,
     ErrorsMessage,
     EstablishmentAddresses,
     Privileges,
@@ -13,7 +14,6 @@ from data.user_management.user_management_datasets import (
     Texts,
     UserAccess,
     UsersTypes,
-    AddEstablishmentDelegatorData,
 )
 from data.user_management.user_management_users import (
     delegator_type_three,
@@ -48,11 +48,11 @@ from tests.conftest import (
     prepare_data_for_terminate_company,
 )
 from tests.ui.user_management.conftest import (
-    delete_subscriptions,
     check_access_and_update_permissions,
     check_establishment_data_are_identical_for_both_localizations,
     check_vat_number_is_empty,
     clear_establishment_data,
+    delete_subscriptions,
     expire_user_subscription,
     get_subscription_cookie,
     log_in_and_open_establishment_account,
