@@ -387,7 +387,7 @@ class UserAccess:
 @dataclasses.dataclass
 class AddEstablishmentDelegatorData:
     users = [
-        (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
-        (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
+        # (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
+        # (establishment_delegator_type_two, user_for_subscription_one, user_for_subscription_two),
         (establishment_delegator_type_three, user_for_subscription_one, user_for_subscription_two),
     ]

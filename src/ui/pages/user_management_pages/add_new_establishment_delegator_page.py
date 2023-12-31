@@ -8,7 +8,7 @@ from selene import have
 from selene.support.shared.jquery_style import s, ss
 from selenium.webdriver.common.keys import Keys
 
-from utils.helpers import scroll_to_top
+from utils.helpers import scroll_to_coordinates
 from data.user_management import user_management_data
 
 
@@ -149,7 +149,7 @@ class AddNewEstablishmentDelegator:
 
     @allure.step
     def click_btn_edit(self, number: int = None) -> AddNewEstablishmentDelegator:
-        scroll_to_top()
+        scroll_to_coordinates()
         self.main_text.wait_until(be.visible)
         if number:
             self.btn_edit[number].wait_until(be.visible)

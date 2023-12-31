@@ -852,7 +852,7 @@ class UserManagementActions(
     @allure.step
     def check_open_add_establishment_delegator_page(self) -> UserManagementActions:
         self.click_subscribe_btn()
-        EstablishmentUser.main_text.wait_until(be.visible)
+        ConfirmationPage.page_title.wait_until(be.visible)
         self.click_btn_proceed_subscription()
         AddNewEstablishmentDelegator.main_text.wait_until(be.visible)
         return self
