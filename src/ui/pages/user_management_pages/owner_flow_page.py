@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 
 import config
 from data.user_management import user_management_data
-from data.user_management.user_management_datasets import DataOfLocators, Texts
+from data.user_management.user_management_datasets import Texts
 from utils.helpers import scroll_to_coordinates
 
 
@@ -80,6 +80,14 @@ class OwnerFLowPage:
         "//p[contains(text(), "
         "'Please read and accept Qiwa’s Terms and Conditions to submit the request')]"
     )
+
+    SELECTED_USER = ["//td[contains(text()", ")]"]
+    USER_FROM_NEW_ESTABLISHMENT = ["//td[contains(text()", ")]/..//a/span", ")]"]
+    USERS_INTO_WORKSPACE = [
+        "//p[contains(text(), "
+        "'New Workspace User(s) selected')]/../../../..//p[contains(text()",
+        ")]",
+    ]
 
     @allure.step
     def check_title(self, title) -> OwnerFLowPage:
@@ -173,7 +181,7 @@ class OwnerFLowPage:
     @allure.step
     def verify_add_selected_user(self, personal_number: str) -> OwnerFLowPage:
         s(
-            f"{DataOfLocators.SELECTED_USER[0]}, '{personal_number}'{DataOfLocators.SELECTED_USER[1]}"
+            f"{self.SELECTED_USER[0]}, '{personal_number}'{self.SELECTED_USER[1]}"
         ).should(be.visible)
         return self
 
@@ -189,12 +197,12 @@ class OwnerFLowPage:
     @allure.step
     def delete_user_from_new_establishment_delegators(self, personal_number: str) -> OwnerFLowPage:
         s(
-            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
-            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[1]}"
+            f"{self.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
+            f"{self.USER_FROM_NEW_ESTABLISHMENT[1]}"
         ).click()
         s(
-            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
-            f"{DataOfLocators.USER_FROM_NEW_ESTABLISHMENT[2]}"
+            f"{self.USER_FROM_NEW_ESTABLISHMENT[0]}, '{personal_number}'"
+            f"{self.USER_FROM_NEW_ESTABLISHMENT[2]}"
         ).should(be.hidden)
         return self
 
@@ -224,8 +232,8 @@ class OwnerFLowPage:
     @allure.step
     def verify_added_users_into_workspace(self, personal_number: str) -> OwnerFLowPage:
         s(
-            f"{DataOfLocators.USERS_INTO_WORKSPACE[0]}, '{personal_number}'"
-            f"{DataOfLocators.USERS_INTO_WORKSPACE[1]}"
+            f"{self.USERS_INTO_WORKSPACE[0]}, '{personal_number}'"
+            f"{self.USERS_INTO_WORKSPACE[1]}"
         ).should(be.visible)
         return self
 

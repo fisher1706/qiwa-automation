@@ -23,7 +23,3 @@ def delete_subscription(personal_number: str, unified_number: int):
         )
     except (IntegrityError, AttributeError):
         pass
-
-
-if __name__ == "__main__":
-    delete_subscription("1019865797", 9086)
