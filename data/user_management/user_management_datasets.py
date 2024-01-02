@@ -386,17 +386,6 @@ class UserAccess:
 @dataclasses.dataclass
 class AddEstablishmentDelegatorData:
     users = [
-        # (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
+        (owner_group_manager, user_for_subscription_one, user_for_subscription_two),
         (establishment_delegator, user_for_subscription_one, user_for_subscription_two),
     ]
-
-
-# @dataclasses.dataclass
-# class DataOfLocators:
-#     SELECTED_USER = ["//td[contains(text()", ")]"]
-#     USER_FROM_NEW_ESTABLISHMENT = ["//td[contains(text()", ")]/..//a/span", ")]"]
-#     USERS_INTO_WORKSPACE = [
-#         "//p[contains(text(), "
-#         "'New Workspace User(s) selected')]/../../../..//p[contains(text()",
-#         ")]",
-#     ]
