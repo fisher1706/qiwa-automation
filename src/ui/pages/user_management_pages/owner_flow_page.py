@@ -180,9 +180,9 @@ class OwnerFLowPage:
 
     @allure.step
     def verify_add_selected_user(self, personal_number: str) -> OwnerFLowPage:
-        s(
-            f"{self.SELECTED_USER[0]}, '{personal_number}'{self.SELECTED_USER[1]}"
-        ).should(be.visible)
+        s(f"{self.SELECTED_USER[0]}, '{personal_number}'{self.SELECTED_USER[1]}").should(
+            be.visible
+        )
         return self
 
     @allure.step

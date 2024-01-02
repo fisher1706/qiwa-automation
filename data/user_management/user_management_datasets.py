@@ -390,6 +390,7 @@ class AddEstablishmentDelegatorData:
         (establishment_delegator, user_for_subscription_one, user_for_subscription_two),
     ]
 
+
 # @dataclasses.dataclass
 # class DataOfLocators:
 #     SELECTED_USER = ["//td[contains(text()", ")]"]
